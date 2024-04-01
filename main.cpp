@@ -50,7 +50,7 @@ enum class ConstantPoolTag : uint8_t {
 };
 
 struct cp_info{
-    uint8_t tag;
+    ConstantPoolTag tag;
     union {
         struct { //CONSTANT_Class_info, CONSTANT_NameAndType_info
             uint16_t name_index;
@@ -107,10 +107,10 @@ struct method_info{
     std::vector<attribute_info> attributes;
 };
 
-std::unique_ptr<cp_info> buildConstantPoolEntry(buffer_iterator *iter, int tag) {
-    std::unique_ptr<cp_info> Entry(new cp_info{});
+cp_info* buildConstantPoolEntry(buffer_iterator *iter, int tag) {
+    auto Entry = new cp_info{};
 
-    Entry->tag = tag;
+    Entry->tag = static_cast<ConstantPoolTag>(tag);
     //ler os bytes de acordo com o tag
     switch (static_cast<ConstantPoolTag>(tag)) {
         case ConstantPoolTag::CONSTANT_Utf8: {
@@ -243,16 +243,37 @@ std::unique_ptr<cp_info> buildConstantPoolEntry(buffer_iterator *iter, int tag) 
 }
 
 
-void buildConstantPoolTable(buffer_iterator *iter, int constant_pool_count,std::vector<std::unique_ptr<cp_info>> &constant_pool){
+void buildConstantPoolTable(buffer_iterator *iter, int constant_pool_count,std::vector<cp_info*> &constant_pool){
     uint8_t tag;
-    std::unique_ptr<cp_info> uPtr;
+
     constant_pool.reserve(constant_pool_count);
+
     for(int i = 0; i<constant_pool_count-1; i++){
 
         COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, tag);
-        constant_pool.emplace_back(std::move(buildConstantPoolEntry(iter,tag)));
+        constant_pool.push_back(buildConstantPoolEntry(iter,tag));
 
     }
+}
+
+std::vector<uint8_t> FileToBuffer(const char* nomeArquivo) {
+    std::ifstream arquivo(nomeArquivo, std::ios::binary);
+
+    if (!arquivo) {
+        std::cerr << "Não foi possível abrir o arquivo: " << nomeArquivo << std::endl;
+        return {};
+    }
+
+    // Obter o tamanho do arquivo
+    arquivo.seekg(0, std::ios::end);
+    std::streampos tamanhoArquivo = arquivo.tellg();
+    arquivo.seekg(0, std::ios::beg);
+
+    // Ler o arquivo byte a byte e armazená-lo no vetor buffer
+    std::vector<uint8_t> buffer(tamanhoArquivo);
+    arquivo.read(reinterpret_cast<char*>(buffer.data()), tamanhoArquivo);
+
+    return buffer;
 }
 
 int main(int argc, char* argv[]) {
@@ -265,21 +286,29 @@ int main(int argc, char* argv[]) {
 
 
 
-    std::string class_file_path = "/home/matheus/CLionProjects/JVM/Main.class";
+    char* class_file_path = "/home/matheus/CLionProjects/JVM/Main.class";
 
-    std::ifstream class_file(class_file_path, std::ios::binary);
+    std::vector<uint8_t> buffer = FileToBuffer(class_file_path);
 
-    if(!class_file) std::cerr << "deu ruim pra abrir o arquivo:"<<class_file_path<<std::endl;
 
-    std::vector<uint8_t> buffer(std::istream_iterator<char>(class_file),{});
+
+    int i = 0;
+    for( auto byte: buffer){
+        i++;
+        printf("%02X ", byte);
+        if (i == 10){
+            printf("\n");
+            i = 0;
+        }
+    }
 
     auto iter = buffer.begin();
-    using unique_cp_info = std::unique_ptr<cp_info>; // so pras var ficar na mesma coluna msm
+
     uint32_t                    magic;
     uint16_t                    minor_version;
     uint16_t                    major_version;
     uint16_t                    constant_pool_count;
-    std::vector<std::unique_ptr<cp_info>> constant_pool;
+    std::vector<cp_info*>       constant_pool;
     uint16_t                    access_flags;
     uint16_t                    this_class;
     uint16_t                    super_class;
@@ -301,12 +330,15 @@ int main(int argc, char* argv[]) {
 
     COPY_BYTES_AND_ADVANCE_ITERATOR(iter, constant_pool_count);
 
-    printf("magic: %X\n",magic);
+    printf("\nmagic: %X\n",magic);
     printf("version: %d.%d\n",major_version,minor_version);
-    printf("constant pool count: %d",constant_pool_count);
+    printf("constant pool count: %d\n",constant_pool_count);
 
     buildConstantPoolTable(&iter, constant_pool_count, constant_pool);
 
+    COPY_BYTES_AND_ADVANCE_ITERATOR(iter, access_flags);
+
+    printf("access flags: %04X", access_flags);
 
 
     return 0;
