@@ -27,10 +27,34 @@ std::copy((iter), (iter) + sizeof(X), reinterpret_cast<uint8_t*>(&X)); \
 iter += sizeof(X); \
 swapBytes(&X);
 
-
-
+typedef uint8_t  u1;
+typedef uint16_t u2;
+typedef uint32_t u4;
 
 typedef std::vector<uint8_t>::iterator buffer_iterator;
+
+u1 read_u1(buffer_iterator *iter){
+    u1 temp;
+    std::copy((*iter), (*iter) + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
+    *iter+= sizeof(u1);
+    return temp;
+}
+
+u2 read_u2(buffer_iterator *iter){
+    u2 temp;
+    std::copy((*iter), (*iter) + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
+    *iter+=sizeof(u2);
+    return temp;
+}
+
+u4 read_u4(buffer_iterator *iter){
+    u4 temp;
+    std::copy((*iter), (*iter) + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
+    *iter+=sizeof(u2);
+    return temp;
+}
+
+
 
 enum class ConstantPoolTag : uint8_t {
     CONSTANT_Utf8 = 1,
@@ -48,6 +72,7 @@ enum class ConstantPoolTag : uint8_t {
     CONSTANT_MethodType = 16,
     CONSTANT_InvokeDynamic = 18
 };
+
 
 struct cp_info{
     ConstantPoolTag tag;
@@ -89,22 +114,22 @@ struct cp_info{
 struct attribute_info{
     uint16_t attribute_name_index;
     uint32_t attribute_length;
-    std::vector<uint8_t> info; // em tese nesse caso aqui e byte, num sei
+    std::vector<uint8_t>* info; // em tese nesse caso aqui e byte, num sei
 };
 
 struct field_info{
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
-    uint16_t attibutes_count;
-    std::vector<attribute_info> attributes;
+    uint16_t attributes_count;
+    std::vector<attribute_info*>* attributes;
 };
 struct method_info{
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
     uint16_t attributes_count;
-    std::vector<attribute_info> attributes;
+    std::vector<attribute_info*>* attributes;
 };
 
 cp_info* buildConstantPoolEntry(buffer_iterator *iter, int tag) {
@@ -255,6 +280,83 @@ void buildConstantPoolTable(buffer_iterator *iter, int constant_pool_count,std::
 
     }
 }
+attribute_info* buildAttributeInfo(buffer_iterator *iter){
+    auto Entry = new attribute_info{};
+
+    uint16_t attribute_name_index;
+    uint32_t attribute_lenght;
+
+    auto info = new std::vector<uint8_t>;
+    info->reserve(attribute_lenght);
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, attribute_name_index);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, attribute_lenght);
+
+    std::copy((*iter), (*iter) + attribute_lenght, std::back_inserter(*info));
+    *iter += attribute_lenght;
+
+    Entry->attribute_name_index = attribute_name_index;
+    Entry->attribute_length = attribute_lenght;
+    Entry->info = info;
+
+    return Entry;
+}
+
+void buildAttributes(buffer_iterator *iter,int attributes_count, std::vector<attribute_info*> &attributes){
+    attributes.reserve(attributes_count);
+    for (int i = 0; i < attributes_count; ++i) {
+        attributes.push_back(buildAttributeInfo(iter));
+    }
+}
+
+
+field_info* buildFieldInfo(buffer_iterator *iter){
+    auto Entry = new field_info{};
+    uint16_t access_flags;
+    uint16_t name_index;
+    uint16_t attributes_count;
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, access_flags);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, name_index);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, attributes_count);
+
+    Entry->access_flags = access_flags;
+    Entry->name_index = name_index;
+    Entry->attributes_count = attributes_count;
+
+    buildAttributes(iter, attributes_count, *Entry->attributes);
+
+
+
+}
+
+void buildFields(buffer_iterator *iter, int fields_count,std::vector<field_info*> &fields){
+    for (int i = 0; i < fields_count; ++i) {
+        fields.push_back(buildFieldInfo(iter));
+    }
+}
+
+method_info* buildMethodInfo(buffer_iterator *iter){
+    auto Entry = new method_info{};
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, Entry->access_flags);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, Entry-> name_index);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, Entry->descriptor_index);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(*iter, Entry->attributes_count)
+
+    buildAttributes(iter, Entry->attributes_count, *Entry->attributes);
+
+    return Entry;
+}
+
+void buildMethods(buffer_iterator *iter, int methods_count, std::vector<method_info*> &methods){
+    methods.reserve(methods_count);
+    for (int i = 0; i < methods_count; ++i) {
+        methods.push_back(buildMethodInfo(iter));
+    }
+}
+
+
 
 std::vector<uint8_t> FileToBuffer(const char* nomeArquivo) {
     std::ifstream arquivo(nomeArquivo, std::ios::binary);
@@ -315,11 +417,11 @@ int main(int argc, char* argv[]) {
     uint16_t                    interfaces_count;
     std::vector<uint16_t>       interfaces;
     uint16_t                    fields_count;
-    std::vector<field_info>     fields;
+    std::vector<field_info*>     fields;
     uint16_t                    methods_count;
-    std::vector<method_info>    methods;
+    std::vector<method_info*>    methods;
     uint16_t                    attributes_count;
-    std::vector<attribute_info> attributes;
+    std::vector<attribute_info*> attributes;
 
 
     COPY_BYTES_AND_ADVANCE_ITERATOR(iter, magic);
@@ -339,6 +441,17 @@ int main(int argc, char* argv[]) {
     COPY_BYTES_AND_ADVANCE_ITERATOR(iter, access_flags);
 
     printf("access flags: %04X", access_flags);
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(iter, this_class);
+    COPY_BYTES_AND_ADVANCE_ITERATOR(iter, super_class);
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(iter, interfaces_count);
+
+    std::copy(iter, iter + interfaces_count * 2, std::back_inserter(interfaces));
+    *iter += interfaces_count * 2;
+
+    COPY_BYTES_AND_ADVANCE_ITERATOR(iter, fields_count);
+
 
 
     return 0;
