@@ -4,4 +4,10 @@ project(JVM)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(JVM main.cpp
+        ClassLoader.cpp
+        ClassLoader.h
+        ClassFileStructs.h
+        ClassFileEnums.h
+        typedefs.h
+        velharia.cpp
 )
