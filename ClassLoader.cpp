@@ -16,6 +16,8 @@ void ClassLoader::LoadClass(const char *nomeArquivo) {
     super_class         = read_u2();
     interfaces_count    = read_u2();
     BuildInterfaces();
+    interfaces_count    = read_u2();
+    BuildInterfaces();
     methods_count       = read_u2();
     BuildMethods();
     attributes_count    = read_u2();
@@ -82,7 +84,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
 
     switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
         case ConstantPoolTag::CONSTANT_Utf8: {
-            std::cout << "Constante Utf8" << std::endl;
 
             Entry->length    = read_u2();
             Entry->bytes_vec = read_vec<u1>(Entry->length);
@@ -91,7 +92,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
         }
         case ConstantPoolTag::CONSTANT_Integer:
         case ConstantPoolTag::CONSTANT_Float: {
-            std::cout << "Constante Integer ou Float" << std::endl;
 
             Entry->bytes = read_u4();
 
@@ -99,7 +99,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
         }
         case ConstantPoolTag::CONSTANT_Long:
         case ConstantPoolTag::CONSTANT_Double: {
-            std::cout << "Constante Long ou Double" << std::endl;
 
             Entry->high_bytes = read_u4();
             Entry->low_bytes  = read_u4();
@@ -107,14 +106,12 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
             break;
         }
         case ConstantPoolTag::CONSTANT_Class: {
-            std::cout << "Constante Class" << std::endl;
 
             Entry->name_index = read_u2();
 
             break;
         }
         case ConstantPoolTag::CONSTANT_String: {
-            std::cout << "Constante String" << std::endl;
 
             Entry->string_index = read_u2();
 
@@ -123,7 +120,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
         case ConstantPoolTag::CONSTANT_Fieldref:
         case ConstantPoolTag::CONSTANT_Methodref:
         case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
-            std::cout << "Constante Fieldref ou Methodref ou InterfaceMethodref" << std::endl;
 
             Entry->class_index         = read_u2();
             Entry->name_and_type_index = read_u2();
@@ -131,7 +127,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
             break;
         }
         case ConstantPoolTag::CONSTANT_NameAndType: {
-            std::cout << "Constante NameAndType" << std::endl;
 
             Entry->name_index       = read_u2();
             Entry->descriptor_index = read_u2();
@@ -139,20 +134,17 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
             break;
         }
         case ConstantPoolTag::CONSTANT_MethodHandle:
-            std::cout << "Constante MethodHandle" << std::endl;
 
             Entry->reference_kind  = read_u1();
             Entry->reference_index = read_u2();
 
             break;
         case ConstantPoolTag::CONSTANT_MethodType:
-            std::cout << "Constante MethodType" << std::endl;
 
             Entry->descriptor_index = read_u2();
 
             break;
         case ConstantPoolTag::CONSTANT_InvokeDynamic:
-            std::cout << "Constante InvokeDynamic" << std::endl;
 
             Entry->bootstrap_method_attr_index = read_u2();
             Entry->name_and_type_index = read_u2();
