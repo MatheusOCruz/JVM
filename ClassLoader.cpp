@@ -16,12 +16,13 @@ void ClassLoader::LoadClass(const char *nomeArquivo) {
     super_class         = read_u2();
     interfaces_count    = read_u2();
     BuildInterfaces();
-    interfaces_count    = read_u2();
-    BuildInterfaces();
+    fields_count        = read_u2();
+    BuildFields();
     methods_count       = read_u2();
     BuildMethods();
     attributes_count    = read_u2();
     BuildAttributes();
+    delete file_buffer; // free na memoria
 
 }
 // TODO: tem q pegar esse ponteiro inicial pra poder limpar da memoria dps
@@ -39,10 +40,11 @@ void ClassLoader::LoadFile(const char *nomeArquivo) {
     arquivo.seekg(0, std::ios::beg);
 
     // Ler o arquivo byte a byte e armazená-lo no vetor buffer
-    auto buffer = new std::vector<uint8_t>(tamanhoArquivo);
-    arquivo.read(reinterpret_cast<char*>(buffer->data()), tamanhoArquivo);
+    file_buffer = new std::vector<uint8_t>(tamanhoArquivo);
+    arquivo.read(reinterpret_cast<char*>(file_buffer->data()), tamanhoArquivo);
 
-    iter = buffer->begin();
+    iter = file_buffer->begin();
+    arquivo.close();
 }
 
 u1 ClassLoader::read_u1() {
@@ -87,7 +89,6 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
 
             Entry->length    = read_u2();
             Entry->bytes_vec = read_vec<u1>(Entry->length);
-
             break;
         }
         case ConstantPoolTag::CONSTANT_Integer:
