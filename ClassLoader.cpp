@@ -24,6 +24,8 @@ void ClassLoader::LoadClass(const char *nomeArquivo) {
     BuildAttributes();
     delete file_buffer; // free na memoria
 
+    PrintConstantPoolTable();
+
 }
 // TODO: tem q pegar esse ponteiro inicial pra poder limpar da memoria dps
 void ClassLoader::LoadFile(const char *nomeArquivo) {
@@ -172,6 +174,7 @@ field_info* ClassLoader::BuildFieldInfo() {
 
     Entry->access_flags     = read_u2();
     Entry->name_index       = read_u2();
+    Entry->descriptor_index = read_u2();
     Entry->attributes_count = read_u2();
     Entry->attributes       = new std::vector<attribute_info*>;
 
@@ -229,6 +232,129 @@ void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_i
     _attributes.reserve(_attributes_count);
     for (int i = 0; i < _attributes_count; ++i) {
         _attributes.push_back(BuildAttributeInfo());
+    }
+}
+//TODO: tem que terminar os print
+void ClassLoader::PrintConstantPoolTable() {
+    int i = 0;
+    for(auto Entry : constant_pool){
+       if(static_cast<uint8_t>(Entry->tag) == 0) continue; // pra pular a primeira entrada (index 0 n tem nada)
+
+        std::cout<<"Entry index: "<<++i<<"\n";
+        switch (Entry->tag) {
+            case ConstantPoolTag::CONSTANT_Utf8: {
+
+                std::cout<<"CONSTANT_Utf8\n";
+                std::cout<<"  lenght: "<<Entry->length<<"\n  ";
+                // futuramente precisamos de uma funcao pra lidar com utf8 e os char de 16 bits do java
+                std::cout.write(reinterpret_cast<char*>(Entry->bytes_vec->data()), Entry->length);
+                std::cout<<"\n\n";
+                break;
+            }
+
+            case ConstantPoolTag::CONSTANT_Integer:{
+
+                std::cout<<"CONSTANT_Integer\n";
+                std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_Float: {
+
+                std::cout<<"CONSTANT_Float\n";
+                std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
+
+                break;
+            }
+
+            case ConstantPoolTag::CONSTANT_Long:{
+
+                std::cout<<"CONSTANT_Long\n";
+                std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_Double: {
+
+                std::cout<<"CONSTANT_Double\n";
+                std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_Class: {
+
+                std::cout<<"CONSTANT_Class\n";
+                std::cout<<"  Class name: "<< Entry->name_index <<"\n\n";
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_String: {
+
+                std::cout<<"CONSTANT_String\n";
+                std::cout<<"  string index: "<< Entry->string_index <<"\n\n";
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_Fieldref:{
+                std::cout<<"CONSTANT_Fieldref\n";
+
+                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
+                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_Methodref:{
+                std::cout<<"CONSTANT_Methodref\n";
+
+                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
+                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+
+                break;
+            }
+            case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
+
+                std::cout<<"CONSTANT_InterfaceMethodref\n";
+
+                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
+                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+
+                break;
+            }
+
+            case ConstantPoolTag::CONSTANT_NameAndType: {
+
+                std::cout<<"CONSTANT_NameAndType\n";
+
+                std::cout<<"  name index:       "<<Entry->name_index<<"\n";
+                std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
+
+
+                break;
+            }
+
+            case ConstantPoolTag::CONSTANT_MethodHandle:
+                std::cout<<"CONSTANT_MethodHandle\n";
+
+                std::cout<<"  reference kind:  "<<Entry->reference_kind<<"\n";
+                std::cout<<"  reference index: "<<Entry->reference_index<<"\n\n";
+
+                break;
+            case ConstantPoolTag::CONSTANT_MethodType:
+                std::cout<<"CONSTANT_MethodType\n";
+                std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
+
+                break;
+            case ConstantPoolTag::CONSTANT_InvokeDynamic:
+                std::cout<<"CONSTANT_InvokeDynamic\n";
+
+                std::cout<<"  bootstrap method attr index:  "<<Entry->bootstrap_method_attr_index<<"\n";
+                std::cout<<"  name and type index:          "<<Entry->name_and_type_index<<"\n\n";
+
+                break;
+
+            default:
+                break;
+        }
     }
 }
 

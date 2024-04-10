@@ -20,6 +20,7 @@ public:
      ClassLoader() = default;
     ~ClassLoader() = default;
     void LoadClass(const char* nomeArquivo);
+    void PrintClass();
 
 private:
     void LoadFile(const char* nomeArquivo);
@@ -47,9 +48,10 @@ private:
     void BuildAttributes();
     void BuildAttributes(int attribute_count, std::vector<attribute_info*> &attributes); // pro attributes dentro do field e method info
 
+    void PrintConstantPoolTable();
 
-
-    buffer_iterator iter;
+    std::vector<uint8_t>* file_buffer; // pra poder liberar o arquivo dps
+    buffer_iterator iter; // ler bytes sem ter q recalcular o offset
 
     u4                           magic;
     u2                           minor_version;
@@ -67,6 +69,8 @@ private:
     std::vector<method_info*>    methods;
     u2                           attributes_count;
     std::vector<attribute_info*> attributes;
+
+
 };
 
 

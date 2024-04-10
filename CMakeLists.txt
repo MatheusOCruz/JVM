@@ -9,4 +9,7 @@ add_executable(JVM main.cpp
         ClassFileStructs.h
         ClassFileEnums.h
         typedefs.h
+        Attributes.h
+        ClassPrinter.cpp
+        ClassPrinter.h
 )
