@@ -38,7 +38,7 @@ struct cp_info{
         };
         struct{ // CONSTANT_UTF8_info
             uint16_t  length;
-            std::vector<uint8_t> *bytes_vec; //o vetor ta dando bo, vamo ter q ir de malloc msm
+            std::vector<uint8_t>* bytes_vec; //o vetor ta dando bo, vamo ter q ir de malloc msm
         };
         struct{ // CONSTANT_MethodHandle_info
             uint8_t reference_kind;
@@ -69,21 +69,21 @@ struct method_info{
 };
 
 struct class_file{
-    u4                           magic;
-    u2                           minor_version;
-    u2                           major_version;
-    u2                           constant_pool_count;
-    std::vector<cp_info*>        constant_pool;
-    u2                           access_flags;
-    u2                           this_class;
-    u2                           super_class;
-    u2                           interfaces_count;
-    std::vector<u2>*             interfaces;
-    u2                           fields_count;
-    std::vector<field_info*>     fields;
-    u2                           methods_count;
-    std::vector<method_info*>    methods;
-    u2                           attributes_count;
-    std::vector<attribute_info*> attributes;};
+    u4                            magic;
+    u2                            minor_version;
+    u2                            major_version;
+    u2                            constant_pool_count;
+    std::vector<cp_info*>*        constant_pool;
+    u2                            access_flags;
+    u2                            this_class;
+    u2                            super_class;
+    u2                            interfaces_count;
+    std::vector<u2>*              interfaces;
+    u2                            fields_count;
+    std::vector<field_info*>*     fields;
+    u2                            methods_count;
+    std::vector<method_info*>*    methods;
+    u2                            attributes_count;
+    std::vector<attribute_info*>* attributes;};
 
 #endif //JVM_CLASSFILESTRUCTS_H

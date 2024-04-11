@@ -23,13 +23,15 @@ public:
     ~ClassLoader() = default;
 
     void LoadMain(char* nomeArquivo);
-    //le um arquivo individual
-    void LoadClass(const char* nomeArquivo);
+
     void PrintClass();
 
 private:
     //carrega arquivo em buffer
     void LoadFile(const char* nomeArquivo);
+
+
+    class_file* LoadClass(const char* nomeArquivo);
 
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador
@@ -55,12 +57,12 @@ private:
     void BuildAttributes(class_file* Entry);
     void BuildAttributes(int attribute_count, std::vector<attribute_info*> &attributes); // pro attributes dentro do field e method info
 
-    void PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *const, class_file *>> ClassFile);
+    void PrintConstantPoolTable(class_file* ClassFile);
 
     std::vector<uint8_t>* file_buffer; // pra poder liberar o arquivo dps
     buffer_iterator       iter; // ler bytes sem ter q recalcular o offset
     u4 magic;
-    std::map<char*,class_file*>* class_files;
+    std::map<char*,class_file*> class_files;
 
 };
 

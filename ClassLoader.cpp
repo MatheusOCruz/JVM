@@ -5,15 +5,16 @@
 #include "ClassLoader.h"
 
 void ClassLoader::LoadMain(char *nomeArquivo) {
-    //class_files->emplace(std::make_pair(nomeArquivo, LoadClass(nomeArquivo)));
-    PrintConstantPoolTable(class_files->find(nomeArquivo));
+
+    class_files[nomeArquivo] = LoadClass(nomeArquivo);
+    PrintConstantPoolTable(class_files[nomeArquivo]);
 }
 
 
-void ClassLoader::LoadClass(const char *nomeArquivo) {
+class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
     auto Entry = new class_file;
     LoadFile(nomeArquivo);
-    magic               = read_u4();
+    Entry->magic               = read_u4();
     Entry->minor_version       = read_u2();
     Entry->major_version       = read_u2();
     Entry->constant_pool_count = read_u2();
@@ -35,7 +36,7 @@ void ClassLoader::LoadClass(const char *nomeArquivo) {
 
     delete file_buffer; // free na memoria
 
-    //return Entry;
+    return Entry;
 }
 
 void ClassLoader::LoadFile(const char *nomeArquivo) {
@@ -207,34 +208,39 @@ method_info* ClassLoader::BuildMethodInfo() {
 }
 
 void ClassLoader::BuildConstantPoolTable(class_file* Entry) {
-    Entry->constant_pool.reserve(Entry->constant_pool_count);
-    Entry->constant_pool.push_back(new cp_info{}); // id 0 n conta
+    Entry->constant_pool = new std::vector<cp_info*>;
+    Entry->constant_pool->reserve(Entry->constant_pool_count);
+    Entry->constant_pool->push_back(new cp_info{}); // id 0 n conta
     for(int i = 0; i<Entry->constant_pool_count-1; i++){
-        Entry->constant_pool.push_back(BuildConstantPoolInfo());
+        Entry->constant_pool->push_back(BuildConstantPoolInfo());
     }
 }
 void ClassLoader::BuildInterfaces(class_file* Entry){
+    Entry->interfaces = new std::vector<u2>;
     Entry->interfaces = read_vec<u2>(Entry->interfaces_count);
 }
 
 void ClassLoader::BuildFields(class_file* Entry) {
-    Entry->fields.reserve(Entry->fields_count);
+    Entry->fields = new std::vector<field_info*>;
+    Entry->fields->reserve(Entry->fields_count);
     for (int i = 0; i < Entry->fields_count; ++i) {
-        Entry->fields.push_back(BuildFieldInfo());
+        Entry->fields->push_back(BuildFieldInfo());
     }
 }
 
 void ClassLoader::BuildMethods(class_file* Entry) {
-    Entry->methods.reserve(Entry->methods_count);
+    Entry->methods = new std::vector<method_info*>;
+    Entry->methods->reserve(Entry->methods_count);
     for (int i = 0; i < Entry->methods_count; ++i) {
-        Entry->methods.push_back(BuildMethodInfo());
+        Entry->methods->push_back(BuildMethodInfo());
     }
 }
 
 void ClassLoader::BuildAttributes(class_file* Entry) {
-    Entry->attributes.reserve(Entry->attributes_count);
+    Entry->attributes = new std::vector<attribute_info*>;
+    Entry->attributes->reserve(Entry->attributes_count);
     for (int i = 0; i < Entry->attributes_count; ++i) {
-        Entry->attributes.push_back(BuildAttributeInfo());
+        Entry->attributes->push_back(BuildAttributeInfo());
     }
 }
 
@@ -245,10 +251,10 @@ void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_i
     }
 }
 //TODO: tem que terminar os print
-void ClassLoader::PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *const, class_file *>> Iter) {
+void ClassLoader::PrintConstantPoolTable(class_file* ClassFile) {
     int i = 0;
-    auto ClassFile = Iter->second;
-    for(auto Entry : ClassFile->constant_pool){
+
+    for(auto Entry : *ClassFile->constant_pool){
        if(static_cast<uint8_t>(Entry->tag) == 0) continue; // pra pular a primeira entrada (index 0 n tem nada)
         std::cout<<"Entry index: "<<++i<<"\n";
         switch (Entry->tag) {
@@ -309,7 +315,7 @@ void ClassLoader::PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *
                 std::cout<<"CONSTANT_Fieldref\n";
 
                 std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
 
                 break;
             }
@@ -317,7 +323,7 @@ void ClassLoader::PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *
                 std::cout<<"CONSTANT_Methodref\n";
 
                 std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
 
                 break;
             }
@@ -326,7 +332,7 @@ void ClassLoader::PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *
                 std::cout<<"CONSTANT_InterfaceMethodref\n";
 
                 std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->class_index<<"\n\n";
+                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
 
                 break;
             }
