@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <vector>
 #include "ClassFileEnums.h"
+#include "typedefs.h"
 
 struct cp_info{
     ConstantPoolTag tag;
@@ -60,12 +61,29 @@ struct field_info{
     std::vector<attribute_info*>* attributes;
 };
 struct method_info{
-    uint16_t access_flags;
-    uint16_t name_index;
-    uint16_t descriptor_index;
-    uint16_t attributes_count;
+    u2 access_flags;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 attributes_count;
     std::vector<attribute_info*>* attributes;
 };
 
+struct class_file{
+    u4                           magic;
+    u2                           minor_version;
+    u2                           major_version;
+    u2                           constant_pool_count;
+    std::vector<cp_info*>        constant_pool;
+    u2                           access_flags;
+    u2                           this_class;
+    u2                           super_class;
+    u2                           interfaces_count;
+    std::vector<u2>*             interfaces;
+    u2                           fields_count;
+    std::vector<field_info*>     fields;
+    u2                           methods_count;
+    std::vector<method_info*>    methods;
+    u2                           attributes_count;
+    std::vector<attribute_info*> attributes;};
 
 #endif //JVM_CLASSFILESTRUCTS_H

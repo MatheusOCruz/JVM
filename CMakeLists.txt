@@ -9,5 +9,7 @@ add_executable(JVM main.cpp
         ClassFileStructs.h
         ClassFileEnums.h
         typedefs.h
-        velharia.cpp
+        Attributes.h
+        ClassPrinter.cpp
+        ClassPrinter.h
 )
