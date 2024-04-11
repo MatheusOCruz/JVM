@@ -4,12 +4,12 @@ project(JVM)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(JVM main.cpp
-        ClassLoader.cpp
-        ClassLoader.h
-        ClassFileStructs.h
-        ClassFileEnums.h
-        typedefs.h
-        Attributes.h
-        ClassPrinter.cpp
-        ClassPrinter.h
+        src/ClassLoader.cpp
+        include/ClassLoader.h
+        include/ClassFileStructs.h
+        include/ClassFileEnums.h
+        include/typedefs.h
+        include/Attributes.h
+        src/ClassPrinter.cpp
+        include/ClassPrinter.h
 )

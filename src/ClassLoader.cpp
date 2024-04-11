@@ -2,7 +2,7 @@
 // Created by matheus on 4/2/24.
 //
 
-#include "ClassLoader.h"
+#include "../include/ClassLoader.h"
 
 void ClassLoader::LoadMain(char *nomeArquivo) {
 

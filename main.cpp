@@ -7,7 +7,7 @@
 #include <memory>
 #include <regex>
 #include <cstring>
-#include "ClassLoader.h"
+#include "include/ClassLoader.h"
 
 
 
@@ -38,6 +38,6 @@ int main(int argc, char* argv[]) {
     */
     auto TesteLoader = new ClassLoader();
 
-    TesteLoader->LoadMain("/home/matheus/CLionProjects/JVM/Main.class");
+    TesteLoader->LoadMain("/home/matheus/CLionProjects/JVM/testes/Main.class");
     return EXIT_SUCCESS;
 }
