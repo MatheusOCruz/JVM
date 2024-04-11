@@ -32,7 +32,6 @@ struct Code_attribute {
     u2 attributes_count;
     std::vector<attribute_info*>* attributes;
 };
-
 //TODO: esse aqui parece q e do cao
 struct StackMapTable_attribute {
     u2 attribute_name_index;  // utf-8 com "StackMapTable"

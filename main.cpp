@@ -1,3 +1,6 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -35,6 +38,6 @@ int main(int argc, char* argv[]) {
     */
     auto TesteLoader = new ClassLoader();
 
-    TesteLoader->LoadClass("/home/matheus/CLionProjects/JVM/Main.class");
+    TesteLoader->LoadMain("/home/matheus/CLionProjects/JVM/Main.class");
     return EXIT_SUCCESS;
 }
