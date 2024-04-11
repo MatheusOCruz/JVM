@@ -4,30 +4,40 @@
 
 #include "ClassLoader.h"
 
+void ClassLoader::LoadMain(char *nomeArquivo) {
+    //class_files->emplace(std::make_pair(nomeArquivo, LoadClass(nomeArquivo)));
+    PrintConstantPoolTable(class_files->find(nomeArquivo));
+}
+
+
 void ClassLoader::LoadClass(const char *nomeArquivo) {
+    auto Entry = new class_file;
     LoadFile(nomeArquivo);
     magic               = read_u4();
-    minor_version       = read_u2();
-    major_version       = read_u2();
-    constant_pool_count = read_u2();
-    BuildConstantPoolTable();
-    access_flags        = read_u2();
-    this_class          = read_u2();
-    super_class         = read_u2();
-    interfaces_count    = read_u2();
-    BuildInterfaces();
-    fields_count        = read_u2();
-    BuildFields();
-    methods_count       = read_u2();
-    BuildMethods();
-    attributes_count    = read_u2();
-    BuildAttributes();
+    Entry->minor_version       = read_u2();
+    Entry->major_version       = read_u2();
+    Entry->constant_pool_count = read_u2();
+    BuildConstantPoolTable(Entry);
+    Entry->access_flags        = read_u2();
+    Entry->this_class          = read_u2();
+    Entry->super_class         = read_u2();
+    Entry->interfaces_count    = read_u2();
+    BuildInterfaces(Entry);
+    Entry->fields_count        = read_u2();
+    BuildFields(Entry);
+    Entry->methods_count       = read_u2();
+    BuildMethods(Entry);
+    Entry->attributes_count    = read_u2();
+    BuildAttributes(Entry);
+    //checa se arquivo inteiro foi lido
+    if(!(iter == file_buffer->end()))
+        throw std::runtime_error("Formatacao desse arquivo ta suspeita meu mestre\n");
+
     delete file_buffer; // free na memoria
 
-    PrintConstantPoolTable();
-
+    //return Entry;
 }
-// TODO: tem q pegar esse ponteiro inicial pra poder limpar da memoria dps
+
 void ClassLoader::LoadFile(const char *nomeArquivo) {
     std::ifstream arquivo(nomeArquivo, std::ios::binary);
 
@@ -83,7 +93,7 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
-cp_info *ClassLoader::BuildConstantPoolEntry() {
+cp_info *ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
     switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
@@ -154,7 +164,7 @@ cp_info *ClassLoader::BuildConstantPoolEntry() {
 
             break;
         default:
-            throw std::runtime_error("cp_info nao existe amigao");
+            throw std::runtime_error("entrada da constant_pool nao existe amigao\n");
     }
     return Entry;
 }
@@ -196,35 +206,35 @@ method_info* ClassLoader::BuildMethodInfo() {
     return Entry;
 }
 
-void ClassLoader::BuildConstantPoolTable() {
-    constant_pool.reserve(constant_pool_count);
-    constant_pool.push_back(new cp_info{}); // id 0 n conta
-    for(int i = 0; i<constant_pool_count-1; i++){
-        constant_pool.push_back(BuildConstantPoolEntry());
+void ClassLoader::BuildConstantPoolTable(class_file* Entry) {
+    Entry->constant_pool.reserve(Entry->constant_pool_count);
+    Entry->constant_pool.push_back(new cp_info{}); // id 0 n conta
+    for(int i = 0; i<Entry->constant_pool_count-1; i++){
+        Entry->constant_pool.push_back(BuildConstantPoolInfo());
     }
 }
-void ClassLoader::BuildInterfaces(){
-    interfaces = read_vec<u2>(interfaces_count);
+void ClassLoader::BuildInterfaces(class_file* Entry){
+    Entry->interfaces = read_vec<u2>(Entry->interfaces_count);
 }
 
-void ClassLoader::BuildFields() {
-    fields.reserve(fields_count);
-    for (int i = 0; i < fields_count; ++i) {
-        fields.push_back(BuildFieldInfo());
-    }
-}
-
-void ClassLoader::BuildMethods() {
-    methods.reserve(methods_count);
-    for (int i = 0; i < methods_count; ++i) {
-        methods.push_back(BuildMethodInfo());
+void ClassLoader::BuildFields(class_file* Entry) {
+    Entry->fields.reserve(Entry->fields_count);
+    for (int i = 0; i < Entry->fields_count; ++i) {
+        Entry->fields.push_back(BuildFieldInfo());
     }
 }
 
-void ClassLoader::BuildAttributes() {
-    attributes.reserve(attributes_count);
-    for (int i = 0; i < attributes_count; ++i) {
-        attributes.push_back(BuildAttributeInfo());
+void ClassLoader::BuildMethods(class_file* Entry) {
+    Entry->methods.reserve(Entry->methods_count);
+    for (int i = 0; i < Entry->methods_count; ++i) {
+        Entry->methods.push_back(BuildMethodInfo());
+    }
+}
+
+void ClassLoader::BuildAttributes(class_file* Entry) {
+    Entry->attributes.reserve(Entry->attributes_count);
+    for (int i = 0; i < Entry->attributes_count; ++i) {
+        Entry->attributes.push_back(BuildAttributeInfo());
     }
 }
 
@@ -235,11 +245,11 @@ void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_i
     }
 }
 //TODO: tem que terminar os print
-void ClassLoader::PrintConstantPoolTable() {
+void ClassLoader::PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *const, class_file *>> Iter) {
     int i = 0;
-    for(auto Entry : constant_pool){
+    auto ClassFile = Iter->second;
+    for(auto Entry : ClassFile->constant_pool){
        if(static_cast<uint8_t>(Entry->tag) == 0) continue; // pra pular a primeira entrada (index 0 n tem nada)
-
         std::cout<<"Entry index: "<<++i<<"\n";
         switch (Entry->tag) {
             case ConstantPoolTag::CONSTANT_Utf8: {

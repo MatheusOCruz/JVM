@@ -35,6 +35,6 @@ int main(int argc, char* argv[]) {
     */
     auto TesteLoader = new ClassLoader();
 
-    TesteLoader->LoadClass("/home/matheus/CLionProjects/JVM/teste2.class");
+    TesteLoader->LoadClass("/home/matheus/CLionProjects/JVM/Main.class");
     return EXIT_SUCCESS;
 }

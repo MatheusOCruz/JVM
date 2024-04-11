@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stack>
+#include <map>
 #include <iterator>
 #include <memory>
 
@@ -19,11 +21,16 @@ class ClassLoader {
 public:
      ClassLoader() = default;
     ~ClassLoader() = default;
+
+    void LoadMain(char* nomeArquivo);
+    //le um arquivo individual
     void LoadClass(const char* nomeArquivo);
     void PrintClass();
 
 private:
+    //carrega arquivo em buffer
     void LoadFile(const char* nomeArquivo);
+
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador
     u1 read_u1();
@@ -35,41 +42,25 @@ private:
 
 
     // cria as estruturas a partir do buffer_iterator
-    cp_info* BuildConstantPoolEntry();
+    cp_info* BuildConstantPoolInfo();
     attribute_info* BuildAttributeInfo();
     field_info* BuildFieldInfo();
     method_info* BuildMethodInfo();
 
     // chama builder de structs de acordo com counter e adiciona ao vector
-    void BuildConstantPoolTable();
-    void BuildInterfaces();
-    void BuildFields();
-    void BuildMethods();
-    void BuildAttributes();
+    void BuildConstantPoolTable(class_file* Entry);
+    void BuildInterfaces(class_file* Entry);
+    void BuildFields(class_file* Entry);
+    void BuildMethods(class_file* Entry);
+    void BuildAttributes(class_file* Entry);
     void BuildAttributes(int attribute_count, std::vector<attribute_info*> &attributes); // pro attributes dentro do field e method info
 
-    void PrintConstantPoolTable();
+    void PrintConstantPoolTable(std::_Rb_tree_iterator<std::pair<char *const, class_file *>> ClassFile);
 
     std::vector<uint8_t>* file_buffer; // pra poder liberar o arquivo dps
-    buffer_iterator iter; // ler bytes sem ter q recalcular o offset
-
-    u4                           magic;
-    u2                           minor_version;
-    u2                           major_version;
-    u2                           constant_pool_count;
-    std::vector<cp_info*>        constant_pool;
-    u2                           access_flags;
-    u2                           this_class;
-    u2                           super_class;
-    u2                           interfaces_count;
-    std::vector<u2>*             interfaces;
-    u2                           fields_count;
-    std::vector<field_info*>     fields;
-    u2                           methods_count;
-    std::vector<method_info*>    methods;
-    u2                           attributes_count;
-    std::vector<attribute_info*> attributes;
-
+    buffer_iterator       iter; // ler bytes sem ter q recalcular o offset
+    u4 magic;
+    std::map<char*,class_file*>* class_files;
 
 };
 
