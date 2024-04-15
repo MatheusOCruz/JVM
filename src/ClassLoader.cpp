@@ -94,7 +94,7 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
-cp_info *ClassLoader::BuildConstantPoolInfo() {
+void ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
     switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
@@ -167,7 +167,10 @@ cp_info *ClassLoader::BuildConstantPoolInfo() {
         default:
             throw std::runtime_error("entrada da constant_pool nao existe amigao\n");
     }
-    return Entry;
+    current_file->constant_pool->push_back(Entry);
+    // reboco deselagante pq pelo visto esses trem pega 2 entradas
+    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
+        current_file->constant_pool->push_back(new cp_info{});
 }
 
 attribute_info* ClassLoader::BuildAttributeInfo() {
@@ -208,11 +211,12 @@ method_info* ClassLoader::BuildMethodInfo() {
 }
 
 void ClassLoader::BuildConstantPoolTable(class_file* Entry) {
-    Entry->constant_pool = new std::vector<cp_info*>;
-    Entry->constant_pool->reserve(Entry->constant_pool_count);
-    Entry->constant_pool->push_back(new cp_info{}); // id 0 n conta
+    current_file = new class_file();
+    current_file->constant_pool = new std::vector<cp_info*>;
+    current_file->constant_pool->reserve(Entry->constant_pool_count);
+    current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
     for(int i = 0; i<Entry->constant_pool_count-1; i++){
-        Entry->constant_pool->push_back(BuildConstantPoolInfo());
+        BuildConstantPoolInfo();
     }
 }
 void ClassLoader::BuildInterfaces(class_file* Entry){

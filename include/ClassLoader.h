@@ -44,7 +44,7 @@ private:
 
 
     // cria as estruturas a partir do buffer_iterator
-    cp_info* BuildConstantPoolInfo();
+    void BuildConstantPoolInfo();
     attribute_info* BuildAttributeInfo();
     field_info* BuildFieldInfo();
     method_info* BuildMethodInfo();
@@ -62,6 +62,7 @@ private:
     std::vector<uint8_t>* file_buffer; // pra poder liberar o arquivo dps
     buffer_iterator       iter; // ler bytes sem ter q recalcular o offset
     u4 magic;
+    class_file* current_file;
     std::map<char*,class_file*> class_files;
 
 };
