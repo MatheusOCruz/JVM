@@ -51,10 +51,10 @@ private:
 
     // chama builder de structs de acordo com counter e adiciona ao vector
     void BuildConstantPoolTable();
-    void BuildInterfaces(class_file* Entry);
-    void BuildFields(class_file* Entry);
-    void BuildMethods(class_file* Entry);
-    void BuildAttributes(class_file* Entry);
+    void BuildInterfaces();
+    void BuildFields();
+    void BuildMethods();
+    void BuildAttributes();
     void BuildAttributes(int attribute_count, std::vector<attribute_info*> &attributes); // pro attributes dentro do field e method info
 
     void PrintConstantPoolTable(class_file* ClassFile);

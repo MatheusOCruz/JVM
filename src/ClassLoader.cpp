@@ -24,13 +24,13 @@ class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
     current_file->this_class          = read_u2();
     current_file->super_class         = read_u2();
     current_file->interfaces_count    = read_u2();
-    BuildInterfaces(current_file);
+    BuildInterfaces();
     current_file->fields_count        = read_u2();
-    BuildFields(current_file);
+    BuildFields();
     current_file->methods_count       = read_u2();
-    BuildMethods(current_file);
+    BuildMethods();
     current_file->attributes_count    = read_u2();
-    BuildAttributes(current_file);
+    BuildAttributes();
     //checa se arquivo inteiro foi lido
     if(!(iter == file_buffer->end()))
         throw std::runtime_error("Formatacao desse arquivo ta suspeita meu mestre\n");
@@ -221,32 +221,32 @@ void ClassLoader::BuildConstantPoolTable() {
     }
 
 }
-void ClassLoader::BuildInterfaces(class_file* Entry){
-    Entry->interfaces = new std::vector<u2>;
-    Entry->interfaces = read_vec<u2>(Entry->interfaces_count);
+void ClassLoader::BuildInterfaces(){
+    current_file->interfaces = new std::vector<u2>;
+    current_file->interfaces = read_vec<u2>(current_file->interfaces_count);
 }
 
-void ClassLoader::BuildFields(class_file* Entry) {
-    Entry->fields = new std::vector<field_info*>;
-    Entry->fields->reserve(Entry->fields_count);
-    for (int i = 0; i < Entry->fields_count; ++i) {
-        Entry->fields->push_back(BuildFieldInfo());
+void ClassLoader::BuildFields() {
+    current_file->fields = new std::vector<field_info*>;
+    current_file->fields->reserve(current_file->fields_count);
+    for (int i = 0; i < current_file->fields_count; ++i) {
+        current_file->fields->push_back(BuildFieldInfo());
     }
 }
 
-void ClassLoader::BuildMethods(class_file* Entry) {
-    Entry->methods = new std::vector<method_info*>;
-    Entry->methods->reserve(Entry->methods_count);
-    for (int i = 0; i < Entry->methods_count; ++i) {
-        Entry->methods->push_back(BuildMethodInfo());
+void ClassLoader::BuildMethods() {
+    current_file->methods = new std::vector<method_info*>;
+    current_file->methods->reserve(current_file->methods_count);
+    for (int i = 0; i < current_file->methods_count; ++i) {
+        current_file->methods->push_back(BuildMethodInfo());
     }
 }
 
-void ClassLoader::BuildAttributes(class_file* Entry) {
-    Entry->attributes = new std::vector<attribute_info*>;
-    Entry->attributes->reserve(Entry->attributes_count);
-    for (int i = 0; i < Entry->attributes_count; ++i) {
-        Entry->attributes->push_back(BuildAttributeInfo());
+void ClassLoader::BuildAttributes() {
+    current_file->attributes = new std::vector<attribute_info*>;
+    current_file->attributes->reserve(current_file->attributes_count);
+    for (int i = 0; i < current_file->attributes_count; ++i) {
+        current_file->attributes->push_back(BuildAttributeInfo());
     }
 }
 
@@ -262,7 +262,7 @@ void ClassLoader::PrintConstantPoolTable(class_file* ClassFile) {
 
     for(auto Entry : *ClassFile->constant_pool){
        if(static_cast<uint8_t>(Entry->tag) == 0) continue; // pra pular a primeira entrada (index 0 n tem nada)
-        std::cout<<"Entry index: "<<++i<<"\n";
+        std::cout<<"["<<++i<<"]";
         switch (Entry->tag) {
             case ConstantPoolTag::CONSTANT_Utf8: {
 
