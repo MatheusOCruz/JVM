@@ -50,7 +50,7 @@ private:
     method_info* BuildMethodInfo();
 
     // chama builder de structs de acordo com counter e adiciona ao vector
-    void BuildConstantPoolTable(class_file* Entry);
+    void BuildConstantPoolTable();
     void BuildInterfaces(class_file* Entry);
     void BuildFields(class_file* Entry);
     void BuildMethods(class_file* Entry);

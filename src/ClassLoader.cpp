@@ -12,31 +12,32 @@ void ClassLoader::LoadMain(char *nomeArquivo) {
 
 
 class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
-    auto Entry = new class_file;
+
+    current_file = new class_file;
     LoadFile(nomeArquivo);
-    Entry->magic               = read_u4();
-    Entry->minor_version       = read_u2();
-    Entry->major_version       = read_u2();
-    Entry->constant_pool_count = read_u2();
-    BuildConstantPoolTable(Entry);
-    Entry->access_flags        = read_u2();
-    Entry->this_class          = read_u2();
-    Entry->super_class         = read_u2();
-    Entry->interfaces_count    = read_u2();
-    BuildInterfaces(Entry);
-    Entry->fields_count        = read_u2();
-    BuildFields(Entry);
-    Entry->methods_count       = read_u2();
-    BuildMethods(Entry);
-    Entry->attributes_count    = read_u2();
-    BuildAttributes(Entry);
+    current_file->magic               = read_u4();
+    current_file->minor_version       = read_u2();
+    current_file->major_version       = read_u2();
+    current_file->constant_pool_count = read_u2();
+    BuildConstantPoolTable();
+    current_file->access_flags        = read_u2();
+    current_file->this_class          = read_u2();
+    current_file->super_class         = read_u2();
+    current_file->interfaces_count    = read_u2();
+    BuildInterfaces(current_file);
+    current_file->fields_count        = read_u2();
+    BuildFields(current_file);
+    current_file->methods_count       = read_u2();
+    BuildMethods(current_file);
+    current_file->attributes_count    = read_u2();
+    BuildAttributes(current_file);
     //checa se arquivo inteiro foi lido
     if(!(iter == file_buffer->end()))
         throw std::runtime_error("Formatacao desse arquivo ta suspeita meu mestre\n");
 
     delete file_buffer; // free na memoria
 
-    return Entry;
+    return current_file;
 }
 
 void ClassLoader::LoadFile(const char *nomeArquivo) {
@@ -210,14 +211,15 @@ method_info* ClassLoader::BuildMethodInfo() {
     return Entry;
 }
 
-void ClassLoader::BuildConstantPoolTable(class_file* Entry) {
-    current_file = new class_file();
+void ClassLoader::BuildConstantPoolTable() {
+
     current_file->constant_pool = new std::vector<cp_info*>;
-    current_file->constant_pool->reserve(Entry->constant_pool_count);
+    current_file->constant_pool->reserve(current_file->constant_pool_count);
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
-    for(int i = 0; i<Entry->constant_pool_count-1; i++){
+    for(int i = 0; i< current_file->constant_pool_count-1; i++){
         BuildConstantPoolInfo();
     }
+
 }
 void ClassLoader::BuildInterfaces(class_file* Entry){
     Entry->interfaces = new std::vector<u2>;
