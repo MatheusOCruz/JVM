@@ -15,6 +15,7 @@
 #include "ClassFileEnums.h"
 #include "ClassFileStructs.h"
 #include "typedefs.h"
+#include "ClassLoaderErrors.h"
 
 // ainda n sei como que tem q retornar essas info, ent por enquanto so vai dar load
 class ClassLoader {
@@ -49,6 +50,10 @@ private:
     field_info* BuildFieldInfo();
     method_info* BuildMethodInfo();
 
+
+    void CheckMagic();
+    void CheckVersion();
+
     // chama builder de structs de acordo com counter e adiciona ao vector
     void BuildConstantPoolTable();
     void BuildInterfaces();
@@ -57,12 +62,13 @@ private:
     void BuildAttributes();
     void BuildAttributes(int attribute_count, std::vector<attribute_info*> &attributes); // pro attributes dentro do field e method info
 
+    void FormatCheck();
+
     void PrintConstantPoolTable(class_file* ClassFile);
 
-    std::vector<uint8_t>* file_buffer; // pra poder liberar o arquivo dps
-    buffer_iterator       iter; // ler bytes sem ter q recalcular o offset
-    u4 magic;
-    class_file* current_file;
+    std::vector<uint8_t>*       file_buffer; // pra poder liberar o arquivo dps
+    buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
+    class_file*                 current_file;
     std::map<char*,class_file*> class_files;
 
 };

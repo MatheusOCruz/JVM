@@ -12,32 +12,28 @@ void ClassLoader::LoadMain(char *nomeArquivo) {
 
 
 class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
-
     current_file = new class_file;
+
     LoadFile(nomeArquivo);
-    current_file->magic               = read_u4();
-    current_file->minor_version       = read_u2();
-    current_file->major_version       = read_u2();
-    current_file->constant_pool_count = read_u2();
+    CheckMagic();
+    CheckVersion();
     BuildConstantPoolTable();
     current_file->access_flags        = read_u2();
     current_file->this_class          = read_u2();
     current_file->super_class         = read_u2();
-    current_file->interfaces_count    = read_u2();
     BuildInterfaces();
-    current_file->fields_count        = read_u2();
     BuildFields();
-    current_file->methods_count       = read_u2();
     BuildMethods();
-    current_file->attributes_count    = read_u2();
     BuildAttributes();
-    //checa se arquivo inteiro foi lido
-    if(!(iter == file_buffer->end()))
-        throw std::runtime_error("Formatacao desse arquivo ta suspeita meu mestre\n");
 
-    delete file_buffer; // free na memoria
+    FormatCheck();
+
+
+
+    delete file_buffer;
 
     return current_file;
+
 }
 
 void ClassLoader::LoadFile(const char *nomeArquivo) {
@@ -212,7 +208,7 @@ method_info* ClassLoader::BuildMethodInfo() {
 }
 
 void ClassLoader::BuildConstantPoolTable() {
-
+    current_file->constant_pool_count = read_u2();
     current_file->constant_pool = new std::vector<cp_info*>;
     current_file->constant_pool->reserve(current_file->constant_pool_count);
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
@@ -222,11 +218,13 @@ void ClassLoader::BuildConstantPoolTable() {
 
 }
 void ClassLoader::BuildInterfaces(){
+    current_file->interfaces_count = read_u2();
     current_file->interfaces = new std::vector<u2>;
     current_file->interfaces = read_vec<u2>(current_file->interfaces_count);
 }
 
 void ClassLoader::BuildFields() {
+    current_file->fields_count = read_u2();
     current_file->fields = new std::vector<field_info*>;
     current_file->fields->reserve(current_file->fields_count);
     for (int i = 0; i < current_file->fields_count; ++i) {
@@ -235,6 +233,7 @@ void ClassLoader::BuildFields() {
 }
 
 void ClassLoader::BuildMethods() {
+    current_file->methods_count = read_u2();
     current_file->methods = new std::vector<method_info*>;
     current_file->methods->reserve(current_file->methods_count);
     for (int i = 0; i < current_file->methods_count; ++i) {
@@ -243,6 +242,7 @@ void ClassLoader::BuildMethods() {
 }
 
 void ClassLoader::BuildAttributes() {
+    current_file->attributes_count = read_u2();
     current_file->attributes = new std::vector<attribute_info*>;
     current_file->attributes->reserve(current_file->attributes_count);
     for (int i = 0; i < current_file->attributes_count; ++i) {
@@ -256,6 +256,40 @@ void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_i
         _attributes.push_back(BuildAttributeInfo());
     }
 }
+void ClassLoader::CheckMagic() {
+    current_file->magic = read_u4();
+
+    if (current_file->magic != 0xCAFEBABE)
+        throw ClassFormatError("first four bytes must contain the right magic number");
+}
+
+
+void ClassLoader::CheckVersion() {
+    current_file->minor_version = read_u2();
+    current_file->major_version = read_u2();
+
+    if(current_file->major_version > 52){
+        throw UnsupportedClassVersionError(current_file->major_version);
+    }
+}
+
+void ClassLoader::FormatCheck() {
+    // magic e checado no comeco
+
+    if(!(iter == file_buffer->end()))
+        throw ClassFormatError("The class file must not be truncated or have extra bytes at the end.");
+
+    /*
+    TODO:he constant pool must satisfy the constraints documented throughout §4.4.
+         For example, each CONSTANT_Class_info structure in the constant pool must contain
+         in its name_index item a valid constant pool index for a CONSTANT_Utf8_info
+         structure.
+         • All field references and method references in the constant pool must have valid
+         names, valid classes, and valid descriptors (§4.3).
+     */
+}
+
+
 //TODO: tem que terminar os print
 void ClassLoader::PrintConstantPoolTable(class_file* ClassFile) {
     int i = 0;
@@ -379,6 +413,10 @@ void ClassLoader::PrintConstantPoolTable(class_file* ClassFile) {
         }
     }
 }
+
+
+
+
 
 
 
