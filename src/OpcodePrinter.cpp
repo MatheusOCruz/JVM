@@ -19,23 +19,53 @@ std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
 
 
 void OpcodePrinter::nop() {
-    StringBuffer.append(" nop\n");
+    StringBuffer.append(" aconst_null\n");
 }
-void OpcodePrinter::aconst_null() {}
-void OpcodePrinter::iconst_m1() {}
-void OpcodePrinter::iconst_0() {}
-void OpcodePrinter::iconst_1() {}
-void OpcodePrinter::iconst_2() {}
-void OpcodePrinter::iconst_3() {}
-void OpcodePrinter::iconst_4() {}
-void OpcodePrinter::iconst_5() {}
-void OpcodePrinter::lconst_0() {}
-void OpcodePrinter::lconst_1() {}
-void OpcodePrinter::fconst_0() {}
-void OpcodePrinter::fconst_1() {}
-void OpcodePrinter::fconst_2() {}
-void OpcodePrinter::dconst_0() {}
-void OpcodePrinter::dconst_1() {}
+void OpcodePrinter::aconst_null() {
+    StringBuffer.append(" aconst_null\n");
+}
+void OpcodePrinter::iconst_m1() {
+    StringBuffer.append(" iconst_m1\n");
+}
+void OpcodePrinter::iconst_0() {
+    StringBuffer.append(" iconst_0\n");
+}
+void OpcodePrinter::iconst_1() {
+    StringBuffer.append(" iconst_1\n");
+}
+void OpcodePrinter::iconst_2() {
+    StringBuffer.append(" iconst_2\n");
+}
+void OpcodePrinter::iconst_3() {
+    StringBuffer.append(" iconst_3\n");
+}
+void OpcodePrinter::iconst_4() {
+    StringBuffer.append(" iconst_4\n");
+}
+void OpcodePrinter::iconst_5() {
+    StringBuffer.append(" iconst_5\n");
+}
+void OpcodePrinter::lconst_0() {
+    StringBuffer.append(" lconst_0\n");
+}
+void OpcodePrinter::lconst_1() {
+    StringBuffer.append(" lconst_1\n");
+}
+void OpcodePrinter::fconst_0() {
+    StringBuffer.append(" fconst_0\n");
+}
+void OpcodePrinter::fconst_1() {
+    StringBuffer.append(" fconst_1\n");
+}
+void OpcodePrinter::fconst_2() {
+    StringBuffer.append(" fconst_2\n");
+}
+void OpcodePrinter::dconst_0() {
+    StringBuffer.append(" dconst_0\n");
+}
+void OpcodePrinter::dconst_1() {
+    StringBuffer.append(" dconst_1\n");
+}
 
 void OpcodePrinter::bipush() {
     u1 byte = code[code_iterator++];
@@ -44,30 +74,110 @@ void OpcodePrinter::bipush() {
     StringBuffer.append("\n");
 }
 
-void OpcodePrinter::sipush() {}
-void OpcodePrinter::ldc() {}
-void OpcodePrinter::ldc_w() {}
-void OpcodePrinter::ldc2_w() {}
-void OpcodePrinter::iload() {}
-void OpcodePrinter::lload() {}
-void OpcodePrinter::fload() {}
-void OpcodePrinter::dload() {}
-void OpcodePrinter::aload() {}
-void OpcodePrinter::iload_0() {}
-void OpcodePrinter::iload_1() {}
-void OpcodePrinter::iload_2() {}
-void OpcodePrinter::iload_3() {}
-void OpcodePrinter::lload_0() {}
-void OpcodePrinter::lload_1() {}
-void OpcodePrinter::lload_2() {}
-void OpcodePrinter::lload_3() {}
-void OpcodePrinter::fload_0() {}
-void OpcodePrinter::fload_1() {}
-void OpcodePrinter::fload_2() {}
-void OpcodePrinter::fload_3() {}
-void OpcodePrinter::dload_0() {}
-void OpcodePrinter::dload_1() {}
-void OpcodePrinter::dload_2() {}
+void OpcodePrinter::sipush() {
+    u2 short_ = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+
+    StringBuffer.append(" sipush ");
+    StringBuffer.append(std::to_string(short_));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::ldc() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" ldc #");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+//TODO: incluir constant_pool como argumento da classe pra pegar valor no indice
+void OpcodePrinter::ldc_w() {
+    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+
+    StringBuffer.append(" ldc_w #");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::ldc2_w() {
+    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+
+    StringBuffer.append(" ldc2_w #");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::iload() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" iload ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::lload() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" lload ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::fload() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" fload ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::dload() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" dload ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::aload() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" aload ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::iload_0() {
+    StringBuffer.append(" iload_0\n");
+}
+void OpcodePrinter::iload_1() {
+    StringBuffer.append(" iload_1\n");
+}
+void OpcodePrinter::iload_2() {
+    StringBuffer.append(" iload_2\n");
+}
+void OpcodePrinter::iload_3() {
+    StringBuffer.append(" iload_3\n");
+}
+void OpcodePrinter::lload_0() {
+    StringBuffer.append(" lload_0\n");
+}
+void OpcodePrinter::lload_1() {
+    StringBuffer.append(" lload_1n");
+}
+void OpcodePrinter::lload_2() {
+    StringBuffer.append(" lload_2\n");
+}
+void OpcodePrinter::lload_3() {
+    StringBuffer.append(" lload_3\n");
+}
+void OpcodePrinter::fload_0() {
+    StringBuffer.append(" fload_0\n");
+}
+void OpcodePrinter::fload_1() {
+    StringBuffer.append(" fload_1\n");
+}
+void OpcodePrinter::fload_2() {
+    StringBuffer.append(" fload_2\n");
+}
+void OpcodePrinter::fload_3() {
+    StringBuffer.append(" fload_3\n");
+}
+void OpcodePrinter::dload_0() {
+    StringBuffer.append(" dload_0\n");
+}
+void OpcodePrinter::dload_1() {
+    StringBuffer.append(" dload_1\n");
+}
+void OpcodePrinter::dload_2() {
+    StringBuffer.append(" dload_2\n");
+}
+
 void OpcodePrinter::dload_3() {}
 void OpcodePrinter::aload_0() {}
 void OpcodePrinter::aload_1() {}
