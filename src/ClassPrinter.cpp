@@ -3,3 +3,9 @@
 //
 
 #include "../include/ClassPrinter.h"
+
+void ClassPrinter::Run() {
+    auto TesteLoader = new ClassLoader();
+    TesteLoader->LoadMain(main_file);
+}
+
