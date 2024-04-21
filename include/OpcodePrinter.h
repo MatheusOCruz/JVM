@@ -129,6 +129,95 @@ private:
     void fdiv();
     void ddiv();
     void irem();
+    void lrem();
+    void frem();
+    void drem();
+    void ineg();
+    void lneg();
+    void fneg();
+    void dneg();
+    void ishl();
+    void lshl();
+    void ishr();
+    void lshr();
+    void iushr();
+    void lushr();
+    void iand();
+    void land();
+    void ior();
+    void lor();
+    void ixor();
+    void lxor();
+    void iinc();
+    void i2l();
+    void i2f();
+    void i2d();
+    void l2i();
+    void l2f();
+    void l2d();
+    void f2i();
+    void f2l();
+    void f2d();
+    void d2i();
+    void d2l();
+    void d2f();
+    void i2b();
+    void i2c();
+    void i2s();
+    void lcmp();
+    void fcmpl();
+    void fcmpg();
+    void dcmpl();
+    void dcmpg();
+    void ifeq();
+    void ifne();
+    void iflt();
+    void ifge();
+    void ifgt();
+    void ifle();
+    void if_icmpeq();
+    void if_icmpne();
+    void if_icmplt();
+    void if_icmpge();
+    void if_icmpgt();
+    void if_icmple();
+    void if_acmpeq();
+    void if_acmpne();
+    void goto_();
+    void jsr_();
+    void ret_();
+    void tableswitch();
+    void lookupswitch();
+    void ireturn();
+    void lreturn();
+    void freturn();
+    void dreturn();
+    void areturn();
+    void return_();
+    void getstatic();
+    void putstatic();
+    void getfield();
+    void putfield();
+    void invokevirtual();
+    void invokespecial();
+    void invokestatic();
+    void invokeinterface();
+    void invokedynamic();
+    void new_();
+    void newarray();
+    void anewarray();
+    void arraylength();
+    void athrow();
+    void checkcast();
+    void instanceof();
+    void monitorenter();
+    void monitorexit();
+    void wide();
+    void multianewarray();
+    void ifnull();
+    void ifnonnull();
+    void goto_w();
+    void jsr_w();
 
 
     using BytecodeFunc = void (OpcodePrinter::*)();
@@ -172,7 +261,39 @@ private:
             &OpcodePrinter::fsub,     &OpcodePrinter::dsub,     &OpcodePrinter::imul,
             &OpcodePrinter::lmul,     &OpcodePrinter::fmul,     &OpcodePrinter::dmul,
             &OpcodePrinter::idiv,     &OpcodePrinter::ldiv,     &OpcodePrinter::fdiv,
-            &OpcodePrinter::ddiv,     &OpcodePrinter::irem
+            &OpcodePrinter::ddiv,     &OpcodePrinter::irem,     &OpcodePrinter::lrem,
+            &OpcodePrinter::frem,     &OpcodePrinter::drem,     &OpcodePrinter::ineg,
+            &OpcodePrinter::lneg,     &OpcodePrinter::fneg,        &OpcodePrinter::dneg,
+            &OpcodePrinter::ishl,     &OpcodePrinter::lshl,        &OpcodePrinter::ishr,
+            &OpcodePrinter::lshr,     &OpcodePrinter::iushr,       &OpcodePrinter::lushr,
+            &OpcodePrinter::iand,     &OpcodePrinter::land,        &OpcodePrinter::ior,
+            &OpcodePrinter::lor,      &OpcodePrinter::ixor,        &OpcodePrinter::lxor,
+            &OpcodePrinter::iinc,     &OpcodePrinter::i2l,         &OpcodePrinter::i2f,
+            &OpcodePrinter::i2d,      &OpcodePrinter::l2i,         &OpcodePrinter::l2f,
+            &OpcodePrinter::l2d,      &OpcodePrinter::f2i,         &OpcodePrinter::f2l,
+            &OpcodePrinter::f2d,      &OpcodePrinter::d2i,         &OpcodePrinter::d2l,
+            &OpcodePrinter::d2f,      &OpcodePrinter::i2b,         &OpcodePrinter::i2c,
+            &OpcodePrinter::i2s,      &OpcodePrinter::lcmp,        &OpcodePrinter::fcmpl,
+            &OpcodePrinter::fcmpg,    &OpcodePrinter::dcmpl,       &OpcodePrinter::dcmpg,
+            &OpcodePrinter::ifeq,     &OpcodePrinter::ifne,        &OpcodePrinter::iflt,
+            &OpcodePrinter::ifge,     &OpcodePrinter::ifgt,        &OpcodePrinter::ifle,
+            &OpcodePrinter::if_icmpeq,&OpcodePrinter::if_icmpne,   &OpcodePrinter::if_icmplt,
+            &OpcodePrinter::if_icmpge,  &OpcodePrinter::if_icmpgt,   &OpcodePrinter::if_icmple,
+            &OpcodePrinter::if_acmpeq,   &OpcodePrinter::if_acmpne,   &OpcodePrinter::goto_,
+            &OpcodePrinter::jsr_,        &OpcodePrinter::ret_,        &OpcodePrinter::tableswitch,
+            &OpcodePrinter::lookupswitch,&OpcodePrinter::ireturn,     &OpcodePrinter::lreturn,
+            &OpcodePrinter::freturn,  &OpcodePrinter::dreturn,
+            &OpcodePrinter::areturn,        &OpcodePrinter::return_,       &OpcodePrinter::getstatic,
+            &OpcodePrinter::putstatic,      &OpcodePrinter::getfield,      &OpcodePrinter::putfield,
+            &OpcodePrinter::invokevirtual,  &OpcodePrinter::invokespecial, &OpcodePrinter::invokestatic,
+            &OpcodePrinter::invokeinterface,&OpcodePrinter::invokedynamic, &OpcodePrinter::new_,
+            &OpcodePrinter::newarray,       &OpcodePrinter::anewarray,     &OpcodePrinter::arraylength,
+            &OpcodePrinter::athrow,         &OpcodePrinter::checkcast,     &OpcodePrinter::instanceof,
+            &OpcodePrinter::monitorenter,   &OpcodePrinter::monitorexit,   &OpcodePrinter::wide,
+            &OpcodePrinter::multianewarray, &OpcodePrinter::ifnull,        &OpcodePrinter::ifnonnull,
+            &OpcodePrinter::goto_w,         &OpcodePrinter::jsr_w
+
+
     };
 
     std::string StringBuffer;

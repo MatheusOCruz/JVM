@@ -36,12 +36,14 @@ void OpcodePrinter::fconst_1() {}
 void OpcodePrinter::fconst_2() {}
 void OpcodePrinter::dconst_0() {}
 void OpcodePrinter::dconst_1() {}
+
 void OpcodePrinter::bipush() {
     u1 byte = code[code_iterator++];
     StringBuffer.append(" bipush ");
     StringBuffer.append(std::to_string(byte));
     StringBuffer.append("\n");
 }
+
 void OpcodePrinter::sipush() {}
 void OpcodePrinter::ldc() {}
 void OpcodePrinter::ldc_w() {}
@@ -138,4 +140,93 @@ void OpcodePrinter::ldiv() {}
 void OpcodePrinter::fdiv() {}
 void OpcodePrinter::ddiv() {}
 void OpcodePrinter::irem() {}
+void OpcodePrinter::lrem() {}
+void OpcodePrinter::frem() {}
+void OpcodePrinter::drem() {}
+void OpcodePrinter::ineg() {}
+void OpcodePrinter::lneg() {}
+void OpcodePrinter::fneg() {}
+void OpcodePrinter::dneg() {}
+void OpcodePrinter::ishl() {}
+void OpcodePrinter::lshl() {}
+void OpcodePrinter::ishr() {}
+void OpcodePrinter::lshr() {}
+void OpcodePrinter::iushr() {}
+void OpcodePrinter::lushr() {}
+void OpcodePrinter::iand() {}
+void OpcodePrinter::land() {}
+void OpcodePrinter::ior() {}
+void OpcodePrinter::lor() {}
+void OpcodePrinter::ixor() {}
+void OpcodePrinter::lxor() {}
+void OpcodePrinter::iinc() {}
+void OpcodePrinter::i2l() {}
+void OpcodePrinter::i2f() {}
+void OpcodePrinter::i2d() {}
+void OpcodePrinter::l2i() {}
+void OpcodePrinter::l2f() {}
+void OpcodePrinter::l2d() {}
+void OpcodePrinter::f2i() {}
+void OpcodePrinter::f2l() {}
+void OpcodePrinter::f2d() {}
+void OpcodePrinter::d2i() {}
+void OpcodePrinter::d2l() {}
+void OpcodePrinter::d2f() {}
+void OpcodePrinter::i2b() {}
+void OpcodePrinter::i2c() {}
+void OpcodePrinter::i2s() {}
+void OpcodePrinter::lcmp() {}
+void OpcodePrinter::fcmpl() {}
+void OpcodePrinter::fcmpg() {}
+void OpcodePrinter::dcmpl() {}
+void OpcodePrinter::dcmpg() {}
+void OpcodePrinter::ifeq() {}
+void OpcodePrinter::ifne() {}
+void OpcodePrinter::iflt() {}
+void OpcodePrinter::ifge() {}
+void OpcodePrinter::ifgt() {}
+void OpcodePrinter::ifle() {}
+void OpcodePrinter::if_icmpeq() {}
+void OpcodePrinter::if_icmpne() {}
+void OpcodePrinter::if_icmplt() {}
+void OpcodePrinter::if_icmpge() {}
+void OpcodePrinter::if_icmpgt() {}
+void OpcodePrinter::if_icmple() {}
+void OpcodePrinter::if_acmpeq() {}
+void OpcodePrinter::if_acmpne() {}
+void OpcodePrinter::goto_() {} // Usando goto_ para evitar conflito com a palavra reservada goto
+void OpcodePrinter::jsr_() {} // Usando jsr_ para evitar conflito com a palavra reservada jsr
+void OpcodePrinter::ret_() {} // Usando ret_ para evitar conflito com a palavra reservada ret
+void OpcodePrinter::tableswitch() {}
+void OpcodePrinter::lookupswitch() {}
+void OpcodePrinter::ireturn() {}
+void OpcodePrinter::lreturn() {}
+void OpcodePrinter::freturn() {}
+void OpcodePrinter::dreturn() {}
+void OpcodePrinter::areturn() {}
+void OpcodePrinter::return_() {}
+void OpcodePrinter::getstatic() {}
+void OpcodePrinter::putstatic() {}
+void OpcodePrinter::getfield() {}
+void OpcodePrinter::putfield() {}
+void OpcodePrinter::invokevirtual() {}
+void OpcodePrinter::invokespecial() {}
+void OpcodePrinter::invokestatic() {}
+void OpcodePrinter::invokeinterface() {}
+void OpcodePrinter::invokedynamic() {}
+void OpcodePrinter::new_() {}
+void OpcodePrinter::newarray() {}
+void OpcodePrinter::anewarray() {}
+void OpcodePrinter::arraylength() {}
+void OpcodePrinter::athrow() {}
+void OpcodePrinter::checkcast() {}
+void OpcodePrinter::instanceof() {}
+void OpcodePrinter::monitorenter() {}
+void OpcodePrinter::monitorexit() {}
+void OpcodePrinter::wide() {}
+void OpcodePrinter::multianewarray() {}
+void OpcodePrinter::ifnull() {}
+void OpcodePrinter::ifnonnull() {}
+void OpcodePrinter::goto_w() {}
+void OpcodePrinter::jsr_w() {}
 
