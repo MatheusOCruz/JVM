@@ -177,98 +177,294 @@ void OpcodePrinter::dload_1() {
 void OpcodePrinter::dload_2() {
     StringBuffer.append(" dload_2\n");
 }
-
-void OpcodePrinter::dload_3() {}
-void OpcodePrinter::aload_0() {}
-void OpcodePrinter::aload_1() {}
-void OpcodePrinter::aload_2() {}
-void OpcodePrinter::aload_3() {}
-void OpcodePrinter::iaload() {}
-void OpcodePrinter::laload() {}
-void OpcodePrinter::faload() {}
-void OpcodePrinter::daload() {}
-void OpcodePrinter::aaload() {}
-void OpcodePrinter::baload() {}
-void OpcodePrinter::caload() {}
-void OpcodePrinter::saload() {}
-void OpcodePrinter::istore() {}
-void OpcodePrinter::lstore() {}
-void OpcodePrinter::fstore() {}
-void OpcodePrinter::dstore() {}
-void OpcodePrinter::astore() {}
-void OpcodePrinter::istore_0() {}
-void OpcodePrinter::istore_1() {}
-void OpcodePrinter::istore_2() {}
-void OpcodePrinter::istore_3() {}
-void OpcodePrinter::lstore_0() {}
-void OpcodePrinter::lstore_1() {}
-void OpcodePrinter::lstore_2() {}
-void OpcodePrinter::lstore_3() {}
-void OpcodePrinter::fstore_0() {}
-void OpcodePrinter::fstore_1() {}
-void OpcodePrinter::fstore_2() {}
-void OpcodePrinter::fstore_3() {}
-void OpcodePrinter::dstore_0() {}
-void OpcodePrinter::dstore_1() {}
-void OpcodePrinter::dstore_2() {}
-void OpcodePrinter::dstore_3() {}
-void OpcodePrinter::astore_0() {}
-void OpcodePrinter::astore_1() {}
-void OpcodePrinter::astore_2() {}
-void OpcodePrinter::astore_3() {}
-void OpcodePrinter::iastore() {}
-void OpcodePrinter::lastore() {}
-void OpcodePrinter::fastore() {}
-void OpcodePrinter::dastore() {}
-void OpcodePrinter::aastore() {}
-void OpcodePrinter::bastore() {}
-void OpcodePrinter::castore() {}
-void OpcodePrinter::sastore() {}
-void OpcodePrinter::pop() {}
-void OpcodePrinter::pop2() {}
-void OpcodePrinter::dup() {}
-void OpcodePrinter::dup_x1() {}
-void OpcodePrinter::dup_x2() {}
-void OpcodePrinter::dup2() {}
-void OpcodePrinter::dup2_x1() {}
-void OpcodePrinter::dup2_x2() {}
-void OpcodePrinter::swap() {}
-void OpcodePrinter::iadd() {}
-void OpcodePrinter::ladd() {}
-void OpcodePrinter::fadd() {}
-void OpcodePrinter::dadd() {}
-void OpcodePrinter::isub() {}
-void OpcodePrinter::lsub() {}
-void OpcodePrinter::fsub() {}
-void OpcodePrinter::dsub() {}
-void OpcodePrinter::imul() {}
-void OpcodePrinter::lmul() {}
-void OpcodePrinter::fmul() {}
-void OpcodePrinter::dmul() {}
-void OpcodePrinter::idiv() {}
-void OpcodePrinter::ldiv() {}
-void OpcodePrinter::fdiv() {}
-void OpcodePrinter::ddiv() {}
-void OpcodePrinter::irem() {}
-void OpcodePrinter::lrem() {}
-void OpcodePrinter::frem() {}
-void OpcodePrinter::drem() {}
-void OpcodePrinter::ineg() {}
-void OpcodePrinter::lneg() {}
-void OpcodePrinter::fneg() {}
-void OpcodePrinter::dneg() {}
-void OpcodePrinter::ishl() {}
-void OpcodePrinter::lshl() {}
-void OpcodePrinter::ishr() {}
-void OpcodePrinter::lshr() {}
-void OpcodePrinter::iushr() {}
-void OpcodePrinter::lushr() {}
-void OpcodePrinter::iand() {}
-void OpcodePrinter::land() {}
-void OpcodePrinter::ior() {}
-void OpcodePrinter::lor() {}
-void OpcodePrinter::ixor() {}
-void OpcodePrinter::lxor() {}
+void OpcodePrinter::dload_3() {
+    StringBuffer.append(" dload_3\n");
+}
+void OpcodePrinter::aload_0() {
+    StringBuffer.append(" aload_0\n");
+}
+void OpcodePrinter::aload_1() {
+    StringBuffer.append(" aload_1\n");
+}
+void OpcodePrinter::aload_2() {
+    StringBuffer.append(" aload_2\n");
+}
+void OpcodePrinter::aload_3() {
+    StringBuffer.append(" aload_3\n");
+}
+void OpcodePrinter::iaload() {
+    StringBuffer.append(" iaload\n");
+}
+void OpcodePrinter::laload() {
+    StringBuffer.append(" laload\n");
+}
+void OpcodePrinter::faload() {
+    StringBuffer.append(" faload\n");
+}
+void OpcodePrinter::daload() {
+    StringBuffer.append(" daload\n");
+}
+void OpcodePrinter::aaload() {
+    StringBuffer.append(" aaload\n");
+}
+void OpcodePrinter::baload() {
+    StringBuffer.append(" baload\n");
+}
+void OpcodePrinter::caload() {
+    StringBuffer.append(" caload\n");
+}
+void OpcodePrinter::saload() {
+    StringBuffer.append(" saload\n");
+}
+void OpcodePrinter::istore() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append(" istore ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append("\n");
+}
+void OpcodePrinter::lstore() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append( " lstore " );
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" \n ");
+}
+void OpcodePrinter::fstore() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append( " fstore " );
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append( " \n " );
+}
+void OpcodePrinter::dstore() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append( " dstore " );
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" \n ");
+}
+void OpcodePrinter::astore() {
+    u1 index = code[code_iterator++];
+    StringBuffer.append( " astore ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" \n ");
+}
+void OpcodePrinter::istore_0() {
+    StringBuffer.append(" istore_0\n");
+}
+void OpcodePrinter::istore_1() {
+    StringBuffer.append(" istore_1\n");
+}
+void OpcodePrinter::istore_2() {
+    StringBuffer.append(" istore_2\n");
+}
+void OpcodePrinter::istore_3() {
+    StringBuffer.append(" istore_3\n");
+}
+void OpcodePrinter::lstore_0() {
+    StringBuffer.append(" lstore_0\n");
+}
+void OpcodePrinter::lstore_1() {
+    StringBuffer.append(" lstore_1\n");
+}
+void OpcodePrinter::lstore_2() {
+    StringBuffer.append(" lstore_2\n");
+}
+void OpcodePrinter::lstore_3() {
+    StringBuffer.append(" lstore_3\n");
+}
+void OpcodePrinter::fstore_0() {
+    StringBuffer.append(" fstore_0\n");
+}
+void OpcodePrinter::fstore_1() {
+    StringBuffer.append(" fstore_1\n");
+}
+void OpcodePrinter::fstore_2() {
+    StringBuffer.append(" fstore_2\n");
+}
+void OpcodePrinter::fstore_3() {
+    StringBuffer.append(" fstore_3\n");
+}
+void OpcodePrinter::dstore_0() {
+    StringBuffer.append(" dstore_0\n");
+}
+void OpcodePrinter::dstore_1() {
+    StringBuffer.append(" dstore_1\n");
+}
+void OpcodePrinter::dstore_2() {
+    StringBuffer.append(" dstore_2\n");
+}
+void OpcodePrinter::dstore_3() {
+    StringBuffer.append(" dstore_3\n");
+}
+void OpcodePrinter::astore_0() {
+    StringBuffer.append(" astore_0\n");
+}
+void OpcodePrinter::astore_1() {
+    StringBuffer.append(" astore_1\n");
+}
+void OpcodePrinter::astore_2() {
+    StringBuffer.append(" astore_2\n");
+}
+void OpcodePrinter::astore_3() {
+    StringBuffer.append(" astore_3\n");
+}
+void OpcodePrinter::iastore() {
+    StringBuffer.append(" iastore\n");
+}
+void OpcodePrinter::lastore() {
+    StringBuffer.append(" lastore\n");
+}
+void OpcodePrinter::fastore() {
+    StringBuffer.append(" lastore\n");
+}
+void OpcodePrinter::dastore() {
+    StringBuffer.append(" dastore\n");
+}
+void OpcodePrinter::aastore() {
+    StringBuffer.append(" aastore\n");
+}
+void OpcodePrinter::bastore() {
+    StringBuffer.append(" bastore\n");
+}
+void OpcodePrinter::castore() {
+    StringBuffer.append(" castore\n");
+}
+void OpcodePrinter::sastore() {
+    StringBuffer.append(" sastore\n");
+}
+void OpcodePrinter::pop() {
+    StringBuffer.append(" pop\n");
+}
+void OpcodePrinter::pop2() {
+    StringBuffer.append(" pop2\n");
+}
+void OpcodePrinter::dup() {
+    StringBuffer.append(" dup\n");
+}
+void OpcodePrinter::dup_x1() {
+    StringBuffer.append(" dup_x1\n");
+}
+void OpcodePrinter::dup_x2() {
+    StringBuffer.append(" dup_x2\n");
+}
+void OpcodePrinter::dup2() {
+    StringBuffer.append(" dup2\n");
+}
+void OpcodePrinter::dup2_x1() {
+    StringBuffer.append(" dup2_x1\n");
+}
+void OpcodePrinter::dup2_x2() {
+    StringBuffer.append(" dup2_x2\n");
+}
+void OpcodePrinter::swap() {
+    StringBuffer.append(" swap\n");
+}
+void OpcodePrinter::iadd() {
+    StringBuffer.append(" iadd\n");
+}
+void OpcodePrinter::ladd() {
+    StringBuffer.append(" ladd\n");
+}
+void OpcodePrinter::fadd() {
+    StringBuffer.append(" fadd\n");
+}
+void OpcodePrinter::dadd() {
+    StringBuffer.append(" dadd\n");
+}
+void OpcodePrinter::isub() {
+    StringBuffer.append(" isub\n");
+}
+void OpcodePrinter::lsub() {
+    StringBuffer.append(" lsub\n");
+}
+void OpcodePrinter::fsub() {
+    StringBuffer.append(" fsub\n");
+}
+void OpcodePrinter::dsub() {
+    StringBuffer.append(" dsub\n");
+}
+void OpcodePrinter::imul() {
+    StringBuffer.append(" imul\n");
+}
+void OpcodePrinter::lmul() {
+    StringBuffer.append(" lmul\n");
+}
+void OpcodePrinter::fmul() {
+    StringBuffer.append(" fmul\n");
+}
+void OpcodePrinter::dmul() {
+    StringBuffer.append(" dmul\n");
+}
+void OpcodePrinter::idiv() {
+    StringBuffer.append(" idiv\n");
+}
+void OpcodePrinter::ldiv() {
+    StringBuffer.append(" ldiv\n");
+}
+void OpcodePrinter::fdiv() {
+    StringBuffer.append(" fdiv\n");
+}
+void OpcodePrinter::ddiv() {
+    StringBuffer.append(" ddiv\n");
+}
+void OpcodePrinter::irem() {
+    StringBuffer.append(" irem\n");
+}
+void OpcodePrinter::lrem() {
+    StringBuffer.append(" lrem\n");
+}
+void OpcodePrinter::frem() {
+    StringBuffer.append(" frem\n");
+}
+void OpcodePrinter::drem() {
+    StringBuffer.append(" drem\n");
+}
+void OpcodePrinter::ineg() {
+    StringBuffer.append(" ineg\n");
+}
+void OpcodePrinter::lneg() {
+    StringBuffer.append(" lneg\n");
+}
+void OpcodePrinter::fneg() {
+    StringBuffer.append(" fneg\n");
+}
+void OpcodePrinter::dneg() {
+    StringBuffer.append(" dneg\n");
+}
+void OpcodePrinter::ishl() {
+    StringBuffer.append(" ishl\n");
+}
+void OpcodePrinter::lshl() {
+    StringBuffer.append(" lshl\n");
+}
+void OpcodePrinter::ishr() {
+    StringBuffer.append(" ishr\n");
+}
+void OpcodePrinter::lshr() {
+    StringBuffer.append(" lshr\n");
+}
+void OpcodePrinter::iushr() {
+    StringBuffer.append(" iushr\n");
+}
+void OpcodePrinter::lushr() {
+    StringBuffer.append(" lushr\n");
+}
+void OpcodePrinter::iand() {
+    StringBuffer.append(" iand\n");
+}
+void OpcodePrinter::land() {
+    StringBuffer.append(" land\n");
+}
+void OpcodePrinter::ior() {
+    StringBuffer.append(" ior\n");
+}
+void OpcodePrinter::lor() {
+    StringBuffer.append(" lor\n");
+}
+void OpcodePrinter::ixor() {
+    StringBuffer.append(" ixor\n");
+}
+void OpcodePrinter::lxor() {
+    StringBuffer.append(" lxor\n");
+}
 void OpcodePrinter::iinc() {}
 void OpcodePrinter::i2l() {}
 void OpcodePrinter::i2f() {}
