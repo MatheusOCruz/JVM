@@ -37,7 +37,6 @@ void help(){
 }
 
 int main(int argc, char* argv[]) {
-
     char* ClassFilePath;
     char* OutputFile = nullptr;
     int mode = JVM_MODE;
@@ -49,11 +48,11 @@ int main(int argc, char* argv[]) {
         std::cerr << "Erro: " << e.what() << std::endl;
         return EXIT_FAILURE;
      }
-
+*/
 
     switch (mode) {
         case JVM_MODE: {
-            auto JvmInstance = Jvm("/home/matheus/CLionProjects/JVM/testes/Main.class");
+            auto JvmInstance = Jvm("C:/Users/Raquel S/OneDrive/Documentos/Raquel/UNB/8semestre/SB/JVM/testes/Main.class");
             JvmInstance.Run();
             break;
 
@@ -72,7 +71,7 @@ int main(int argc, char* argv[]) {
         }
 
     }
-    */
+
     // so pra testar cada bytecode
     auto teste = OpcodePrinter();
     u4 count = 6;
