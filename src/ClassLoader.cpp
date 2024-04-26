@@ -175,7 +175,80 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
 
     Entry->attribute_name_index = read_u2();
     Entry->attribute_length     = read_u4();
-    Entry->info                 = read_vec<u1>(Entry->attribute_length);
+
+    // pega o nome da constant pool
+    cp_info* attribute_name_entry = (*current_file->constant_pool)[Entry->attribute_name_index];
+    std::string attribute_name(reinterpret_cast<char*>(attribute_name_entry->bytes_vec->data()), attribute_name_entry->length);
+    std::cout<<"atributo: "<<attribute_name<<"\n";
+
+    static std::unordered_map<std::string, int> cases = {
+            {"ConstantValue", 0},
+            {"Code", 1},
+            //
+            {"Exceptions", 3},
+            {"InnerClasses", 4},
+            //
+            {"SourceFile", 8}
+    };
+    AttributeType AttributeTypeName;
+    if(cases.find(attribute_name) == cases.end())
+         AttributeTypeName = static_cast<AttributeType>(cases[attribute_name]);
+    else
+         AttributeTypeName = AttributeType::NotImplemented;
+
+    //TODO: talvez criar um enum
+    switch (AttributeTypeName) {
+        case AttributeType::ConstantValue: {
+            Entry->constantvalue_index = read_u2();
+            break;
+        }
+        case AttributeType::Code: {
+            Entry->max_stack   = read_u2();
+            Entry->max_locals  = read_u2();
+            Entry->code_length = read_u4();
+            Entry->code = read_vec<u1>(Entry->code_length);
+
+            Entry->exception_table_length = read_u2();
+
+            Entry->exception_table = new std::vector<Exception_tableEntry*>;
+            Entry->exception_table->reserve(Entry->exception_table_length);
+            //TODO: provavelmente tirar esse for daqui
+            for (int i = 0; i < Entry->exception_table_length; ++i) {
+                auto TableEntry = new Exception_tableEntry{};
+                TableEntry->start_pc = read_u2();
+                TableEntry->end_pc = read_u2();
+                TableEntry->handler_pc = read_u2();
+                TableEntry->catch_type = read_u2();
+                Entry->exception_table->push_back(TableEntry);
+            }
+            Entry->attributes_count = read_u2();
+            BuildAttributes(Entry->attributes_count, *Entry->attributes);
+            break;
+        }
+        //TODO: esse read_vec e so pra pular os bytes, tem q implementar
+        case AttributeType::Exceptions: {
+            // Lógica para lidar com Exceptions
+            read_vec<u1>(Entry->attribute_length);
+            break;
+        }
+        case AttributeType::InnerClasses: {
+            // Lógica para lidar com InnerClasses
+            read_vec<u1>(Entry->attribute_length);
+            break;
+        }
+        case AttributeType::SourceFile: {
+            // Lógica para lidar com SourceFile
+            read_vec<u1>(Entry->attribute_length);
+            break;
+        }
+        case AttributeType::NotImplemented: {
+
+            read_vec<u1>(Entry->attribute_length);
+            break;
+        }
+    }
+
+
 
     return Entry;
 }

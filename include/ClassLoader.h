@@ -11,7 +11,7 @@
 #include <map>
 #include <iterator>
 #include <memory>
-
+#include <unordered_map>
 #include "ClassFileEnums.h"
 #include "ClassFileStructs.h"
 #include "typedefs.h"
@@ -34,6 +34,7 @@ private:
 
     class_file* LoadClass(const char* nomeArquivo);
 
+
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador
     u1 read_u1();
@@ -42,7 +43,6 @@ private:
 
     template<typename T>
     std::vector<T>* read_vec(int length);
-
 
     // cria as estruturas a partir do buffer_iterator
     void BuildConstantPoolInfo();

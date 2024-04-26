@@ -9,6 +9,8 @@
 #include <vector>
 #include "ClassFileEnums.h"
 #include "typedefs.h"
+#include "AttributeStructs.h"
+
 
 struct cp_info{
     ConstantPoolTag tag;
@@ -50,7 +52,29 @@ struct cp_info{
 struct attribute_info{
     uint16_t attribute_name_index;
     uint32_t attribute_length;
-    std::vector<uint8_t>* info; // em tese nesse caso aqui e byte, num sei
+    union {
+        struct { // ConstantValue_attribute
+            u2 constantvalue_index; // entrada com o valor em si
+        };
+        struct { // Code_attribute
+            u2 max_stack; // profundidade maxima da stack pro metodo
+            u2 max_locals; // tamanho maximo da array de variaveis locais
+            u4 code_length;
+            std::vector<u1>*code;
+            u2 exception_table_length;
+            std::vector<Exception_tableEntry*>*  exception_table;
+            u2 attributes_count;
+            std::vector<attribute_info*>* attributes;
+        };
+        struct {// Exceptions_attribute
+            u2 number_of_exceptions;
+            std::vector<u2>* exception_index_table;
+        };
+        struct { // InnerClasses_attribute
+            u2 number_of_classes;
+            std::vector<InnerClasses*>* classes;
+        };
+    };
 };
 
 struct field_info{

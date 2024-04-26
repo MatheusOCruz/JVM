@@ -10,7 +10,7 @@ add_executable(
         include/ClassFileStructs.h
         include/ClassFileEnums.h
         include/typedefs.h
-        include/Attributes.h
+        include/AttributeStructs.h
         include/ClassPrinter.h
         include/ClassLoaderErrors.h
         include/JvmStructs.h

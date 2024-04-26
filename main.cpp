@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 
     switch (mode) {
         case JVM_MODE: {
-            auto JvmInstance = Jvm("C:/Users/Raquel S/OneDrive/Documentos/Raquel/UNB/8semestre/SB/JVM/testes/Main.class");
+            auto JvmInstance = Jvm("/home/matheus/CLionProjects/JVM/testes/Main.class");
             JvmInstance.Run();
             break;
 
