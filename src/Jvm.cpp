@@ -12,7 +12,7 @@ void Jvm::Run(){
     // so pras funcoes n reclamarem enquanto to definindo
     CurrentFrame = new Frame;
     CurrentFrame->localVariables = new std::vector<u4>;
-    CurrentFrame->operandStack =  new std::stack<u4>;
+    CurrentFrame->operandStack =  new JVM::stack<u4>;
 
 
 
@@ -23,7 +23,7 @@ void Jvm::Run(){
 void Jvm::InvokeMethod() {
     auto NewFrame = new Frame;
     NewFrame->localVariables = new std::vector<u4>;
-    NewFrame->operandStack =  new std::stack<u4>;
+    NewFrame->operandStack =  new JVM::stack<u4>;
     FrameStack.push(NewFrame);
     CurrentFrame = NewFrame;
 
