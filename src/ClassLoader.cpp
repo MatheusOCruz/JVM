@@ -6,8 +6,7 @@
 
 void ClassLoader::LoadMain(char *nomeArquivo) {
 
-    class_files[nomeArquivo] = LoadClass(nomeArquivo);
-    PrintConstantPoolTable(class_files[nomeArquivo]);
+    (*class_files)[nomeArquivo] = LoadClass(nomeArquivo);
 }
 
 
@@ -179,7 +178,6 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     // pega o nome da constant pool
     cp_info* attribute_name_entry = (*current_file->constant_pool)[Entry->attribute_name_index];
     std::string attribute_name(reinterpret_cast<char*>(attribute_name_entry->bytes_vec->data()), attribute_name_entry->length);
-    std::cout<<"atributo: "<<attribute_name<<"\n";
 
     static std::unordered_map<std::string, int> cases = {
             {"ConstantValue", 0},
@@ -191,7 +189,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             {"SourceFile", 8}
     };
     AttributeType AttributeTypeName;
-    if(cases.find(attribute_name) == cases.end())
+    if(cases.find(attribute_name) != cases.end())
          AttributeTypeName = static_cast<AttributeType>(cases[attribute_name]);
     else
          AttributeTypeName = AttributeType::NotImplemented;
@@ -222,6 +220,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
                 Entry->exception_table->push_back(TableEntry);
             }
             Entry->attributes_count = read_u2();
+            Entry->attributes = new std::vector<attribute_info*>;
             BuildAttributes(Entry->attributes_count, *Entry->attributes);
             break;
         }
@@ -353,7 +352,7 @@ void ClassLoader::FormatCheck() {
         throw ClassFormatError("The class file must not be truncated or have extra bytes at the end.");
 
     /*
-    TODO:he constant pool must satisfy the constraints documented throughout §4.4.
+    TODO: the constant pool must satisfy the constraints documented throughout §4.4.
          For example, each CONSTANT_Class_info structure in the constant pool must contain
          in its name_index item a valid constant pool index for a CONSTANT_Utf8_info
          structure.
@@ -363,129 +362,6 @@ void ClassLoader::FormatCheck() {
 }
 
 
-//TODO: tem que terminar os print
-void ClassLoader::PrintConstantPoolTable(class_file* ClassFile) {
-    int i = 0;
-
-    for(auto Entry : *ClassFile->constant_pool){
-       if(static_cast<uint8_t>(Entry->tag) == 0) continue; // pra pular a primeira entrada (index 0 n tem nada)
-        std::cout<<"["<<++i<<"]";
-        switch (Entry->tag) {
-            case ConstantPoolTag::CONSTANT_Utf8: {
-
-                std::cout<<"CONSTANT_Utf8\n";
-                std::cout<<"  lenght: "<<Entry->length<<"\n  ";
-                // futuramente precisamos de uma funcao pra lidar com utf8 e os char de 16 bits do java
-                std::cout.write(reinterpret_cast<char*>(Entry->bytes_vec->data()), Entry->length);
-                std::cout<<"\n\n";
-                break;
-            }
-
-            case ConstantPoolTag::CONSTANT_Integer:{
-
-                std::cout<<"CONSTANT_Integer\n";
-                std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_Float: {
-
-                std::cout<<"CONSTANT_Float\n";
-                std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
-
-                break;
-            }
-
-            case ConstantPoolTag::CONSTANT_Long:{
-
-                std::cout<<"CONSTANT_Long\n";
-                std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_Double: {
-
-                std::cout<<"CONSTANT_Double\n";
-                std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_Class: {
-
-                std::cout<<"CONSTANT_Class\n";
-                std::cout<<"  Class name: "<< Entry->name_index <<"\n\n";
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_String: {
-
-                std::cout<<"CONSTANT_String\n";
-                std::cout<<"  string index: "<< Entry->string_index <<"\n\n";
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_Fieldref:{
-                std::cout<<"CONSTANT_Fieldref\n";
-
-                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_Methodref:{
-                std::cout<<"CONSTANT_Methodref\n";
-
-                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
-                break;
-            }
-            case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
-
-                std::cout<<"CONSTANT_InterfaceMethodref\n";
-
-                std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-                std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
-                break;
-            }
-
-            case ConstantPoolTag::CONSTANT_NameAndType: {
-
-                std::cout<<"CONSTANT_NameAndType\n";
-
-                std::cout<<"  name index:       "<<Entry->name_index<<"\n";
-                std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
-
-
-                break;
-            }
-
-            case ConstantPoolTag::CONSTANT_MethodHandle:
-                std::cout<<"CONSTANT_MethodHandle\n";
-
-                std::cout<<"  reference kind:  "<<Entry->reference_kind<<"\n";
-                std::cout<<"  reference index: "<<Entry->reference_index<<"\n\n";
-
-                break;
-            case ConstantPoolTag::CONSTANT_MethodType:
-                std::cout<<"CONSTANT_MethodType\n";
-                std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
-
-                break;
-            case ConstantPoolTag::CONSTANT_InvokeDynamic:
-                std::cout<<"CONSTANT_InvokeDynamic\n";
-
-                std::cout<<"  bootstrap method attr index:  "<<Entry->bootstrap_method_attr_index<<"\n";
-                std::cout<<"  name and type index:          "<<Entry->name_and_type_index<<"\n\n";
-
-                break;
-
-            default:
-                break;
-        }
-    }
-}
 
 
 

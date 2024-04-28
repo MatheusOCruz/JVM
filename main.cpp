@@ -6,8 +6,12 @@
 #include <cstring>
 #include "include/Jvm.h"
 
+
+#include "include/ClassPrinter.h"
+#include "include/Jvm.h"
+
 #include "include/OpcodePrinter.h"
-//TODO: dar um nome pra esse trem
+
 #define JVM_MODE 0
 #define LEITOR_EXIBIDOR 1
 #define HELP 2
@@ -39,7 +43,11 @@ void help(){
 int main(int argc, char* argv[]) {
     char* ClassFilePath;
     char* OutputFile = nullptr;
-    int mode = JVM_MODE;
+
+    // #define JVM_MODE 0
+    //#define LEITOR_EXIBIDOR 1
+
+    int mode = LEITOR_EXIBIDOR;
     /*
     try {
         semnome();
@@ -58,7 +66,8 @@ int main(int argc, char* argv[]) {
 
         }
         case LEITOR_EXIBIDOR: {
-
+            auto Printer = ClassPrinter("/home/matheus/CLionProjects/JVM/testes/Main.class");
+            Printer.Run();
             break;
         }
         case HELP: {
@@ -66,17 +75,18 @@ int main(int argc, char* argv[]) {
             break;
         }
         default:{
-            std::cerr <<"Modo de operacao invalido\n -m 0(default) para JVM ou -m 1 para leitor-exibidor\n ou -h para "<< std::endl;
+            std::cerr <<"Modo de operacao invalido\n -m 0(default) para JVM ou -m 1 para leitor-exibidor\n ou -h para lista de opcoes"<< std::endl;
             return EXIT_FAILURE;
         }
 
     }
 
     // so pra testar cada bytecode
+    /*
     auto teste = OpcodePrinter();
     u4 count = 6;
     u1 bytec [] = {0,0, 0x10, 23, 0x10, 43};
     std::cout<< teste.CodeToString(bytec, count);
-
+    */
     return EXIT_SUCCESS;
 }

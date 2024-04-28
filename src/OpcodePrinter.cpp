@@ -694,14 +694,14 @@ void OpcodePrinter::putfield() {
 void OpcodePrinter::invokevirtual() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
 
-    StringBuffer.append(" invokevirtual");
+    StringBuffer.append(" invokevirtual #");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::invokespecial() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
 
-    StringBuffer.append(" invokespecial");
+    StringBuffer.append(" invokespecial #");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }

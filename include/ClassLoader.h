@@ -20,8 +20,14 @@
 // ainda n sei como que tem q retornar essas info, ent por enquanto so vai dar load
 class ClassLoader {
 public:
-     ClassLoader() = default;
-    ~ClassLoader() = default;
+     // pro printer
+     ClassLoader() {class_files = new std::map<char*,class_file*>;}
+     class_file* GetClass(char* class_name) { return (*class_files)[class_name];};
+
+     // pro jvm
+     ClassLoader(std::map<char*,class_file*>* _class_files) : class_files(_class_files) {}
+
+     ~ClassLoader() = default;
 
     void LoadMain(char* nomeArquivo);
 
@@ -64,12 +70,10 @@ private:
 
     void FormatCheck();
 
-    void PrintConstantPoolTable(class_file* ClassFile);
-
     std::vector<uint8_t>*       file_buffer; // pra poder liberar o arquivo dps
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
     class_file*                 current_file;
-    std::map<char*,class_file*> class_files;
+    std::map<char*,class_file*>* class_files;
 
 };
 
