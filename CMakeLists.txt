@@ -22,5 +22,6 @@ add_executable(
         src/Jvm.cpp
         src/OpcodePrinter.cpp
         include/OpcodePrinter.h
+        include/JvmEnums.h
 
 )

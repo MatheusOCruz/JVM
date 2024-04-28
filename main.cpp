@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     // #define JVM_MODE 0
     //#define LEITOR_EXIBIDOR 1
 
-    int mode = LEITOR_EXIBIDOR;
+    int mode = JVM_MODE;
     /*
     try {
         semnome();

@@ -15,7 +15,6 @@ public:
     std::string CodeToString(u1 code[],const u4 code_lenght);
 private:
 
-    // Funções vazias para os bytecodes
     void nop();
     void aconst_null();
     void iconst_m1();

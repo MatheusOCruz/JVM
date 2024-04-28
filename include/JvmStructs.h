@@ -6,23 +6,35 @@
 #define JVM_JVMSTRUCTS_H
 #include "typedefs.h"
 
-struct frame{
-    std::vector<u4>* localVariables;
-    std::stack<u4>*  operandStack;
-};
-/*
-union Jlong{
-    struct{
-        u4 high_bytes;
-        u4 low_bytes;
+namespace JVM{
+
+    template<typename T>
+    class stack : public std::stack<T>{
+    public:
+
+        T Pop(){
+            if(this->empty()){
+                throw std::out_of_range("Pilha ta vazia meu rei\n");
+            }
+            T topValue = std::stack<T>::top();
+            std::stack<T>::pop();
+            return topValue;
+        }
+
     };
-    i64 value;
-};
-// num sei se so com isso ja vai funfar
-union Jdouble{
-    u1 bytes[8];
-    double value;
+}
+
+
+struct Frame{
+    std::vector<u4>* localVariables;
+    JVM::stack<u4>*  operandStack;
+    method_info*     frame_method;
 };
 
-*/
+// resolvi fazer uma stack
+// pq o stack do cpp n retorna valor no pop
+
+
+
+
 #endif //JVM_JVMSTRUCTS_H
