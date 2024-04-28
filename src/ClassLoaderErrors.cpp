@@ -6,6 +6,7 @@
 
 
 //TODO: formatar msg de retorno
+
 const char *ClassFormatError::what() const noexcept {
     return exception::what();
 }

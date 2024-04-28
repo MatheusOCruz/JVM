@@ -23,5 +23,7 @@ add_executable(
         src/OpcodePrinter.cpp
         include/OpcodePrinter.h
         include/JvmEnums.h
+        src/RunTimeExceptions.cpp
+        include/RunTimeExceptions.h
 
 )

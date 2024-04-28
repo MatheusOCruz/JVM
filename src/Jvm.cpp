@@ -55,49 +55,49 @@ void Jvm::aconst_null(){
 
 
 void Jvm::iconst_m1(){
-
+    CurrentFrame->operandStack->push(static_cast<u4>(-1));
 }
 
 
 
 
 void Jvm::iconst_0(){
-
+    CurrentFrame->operandStack->push(0);
 }
 
 
 
 
 void Jvm::iconst_1(){
-
+    CurrentFrame->operandStack->push(1);
 }
 
 
 
 
 void Jvm::iconst_2(){
-
+    CurrentFrame->operandStack->push(2);
 }
 
 
 
 
 void Jvm::iconst_3(){
-
+    CurrentFrame->operandStack->push(3);
 }
 
 
 
 
 void Jvm::iconst_4(){
-
+    CurrentFrame->operandStack->push(4);
 }
 
 
 
 
 void Jvm::iconst_5(){
-
+    CurrentFrame->operandStack->push(5);
 }
 
 
@@ -223,28 +223,36 @@ void Jvm::aload(){
 
 
 void Jvm::iload_0(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[0];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::iload_1(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[1];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::iload_2(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[2];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::iload_3(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[3];
+    CurrentFrame->operandStack->push(value);
 }
 
 
@@ -335,28 +343,36 @@ void Jvm::dload_3(){
 
 
 void Jvm::aload_0(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[0];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::aload_1(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[1];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::aload_2(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[2];
+    CurrentFrame->operandStack->push(value);
 }
 
 
 
 
 void Jvm::aload_3(){
-
+    u4 value;
+    value = (*CurrentFrame->localVariables)[3];
+    CurrentFrame->operandStack->push(value);
 }
 
 
@@ -454,28 +470,36 @@ void Jvm::astore(){
 
 
 void Jvm::istore_0(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[0] = value;
 }
 
 
 
 
 void Jvm::istore_1(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[1] = value;
 }
 
 
 
 
 void Jvm::istore_2(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[2] = value;
 }
 
 
 
 
 void Jvm::istore_3(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[3] = value;
 }
 
 
@@ -566,28 +590,36 @@ void Jvm::dstore_3(){
 
 
 void Jvm::astore_0(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[0] = value;
 }
 
 
 
 
 void Jvm::astore_1(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[1] = value;
 }
 
 
 
 
 void Jvm::astore_2(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[2] = value;
 }
 
 
 
 
 void Jvm::astore_3(){
-
+    u4 value;
+    value = CurrentFrame->operandStack->Pop();
+    (*CurrentFrame->localVariables)[3] = value;
 }
 
 
@@ -650,14 +682,15 @@ void Jvm::sastore(){
 
 
 void Jvm::pop(){
-
+    CurrentFrame->operandStack->pop();
 }
 
 
 
 
 void Jvm::pop2(){
-
+    CurrentFrame->operandStack->pop();
+    CurrentFrame->operandStack->pop();
 }
 
 
@@ -717,8 +750,8 @@ void Jvm::iadd(){
     int32_t value2;
     value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
     value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
-    int32_t sum = value1 + value2;
-    CurrentFrame->operandStack->push(static_cast<u4>(sum));
+    int32_t result = value1 + value2;
+    CurrentFrame->operandStack->push(static_cast<u4>(result));
 }
 
 
@@ -746,7 +779,12 @@ void Jvm::dadd(){
 
 
 void Jvm::isub(){
-
+    int32_t value1;
+    int32_t value2;
+    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    int32_t result = value1 - value2;
+    CurrentFrame->operandStack->push(static_cast<u4>(result));
 }
 
 
@@ -774,7 +812,12 @@ void Jvm::dsub(){
 
 
 void Jvm::imul(){
-
+    int32_t value1;
+    int32_t value2;
+    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    int32_t result = value1 * value2;
+    CurrentFrame->operandStack->push(static_cast<u4>(result));
 }
 
 
@@ -802,7 +845,14 @@ void Jvm::dmul(){
 
 
 void Jvm::idiv(){
-
+    int32_t value1;
+    int32_t value2;
+    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    if (value2 == 0)
+        throw ArithmeticException();
+    int32_t result = value1 / value2;
+    CurrentFrame->operandStack->push(static_cast<u4>(result));
 }
 
 
@@ -858,7 +908,10 @@ void Jvm::drem(){
 
 
 void Jvm::ineg(){
-
+    int32_t value;
+    value = static_cast<int>(CurrentFrame->operandStack->Pop());
+    int32_t result = - value;
+    CurrentFrame->operandStack->push(static_cast<u4>(result));
 }
 
 
@@ -1221,15 +1274,17 @@ void Jvm::goto_(){
 
 
 
-void Jvm::jsr_(){
+void Jvm::jsr(){
 
 }
 
 
 
 
-void Jvm::ret_(){
-
+void Jvm::ret(){
+    u1 index = (*CurrentCode->code)[pc++];
+    uint32_t NewPc = (*CurrentFrame->localVariables)[index];
+    pc = NewPc;
 }
 
 

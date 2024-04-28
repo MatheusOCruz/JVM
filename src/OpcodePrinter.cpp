@@ -636,13 +636,13 @@ void OpcodePrinter::jsr_() {
     StringBuffer.append(" jsr");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
-} // Usando jsr_ para evitar conflito com a palavra reservada jsr
+} // Usando jsr para evitar conflito com a palavra reservada jsr
 void OpcodePrinter::ret_() {
     u1 index = code[code_iterator++];
-    StringBuffer.append(" ret_ ");
+    StringBuffer.append(" ret ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
-} // Usando ret_ para evitar conflito com a palavra reservada ret
+} // Usando ret para evitar conflito com a palavra reservada ret
 void OpcodePrinter::tableswitch() {}
 void OpcodePrinter::lookupswitch() {}
 void OpcodePrinter::ireturn() {
