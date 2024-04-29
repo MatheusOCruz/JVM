@@ -1352,7 +1352,12 @@ void Jvm::putstatic(){
 }
 
 void Jvm::getfield(){
-
+    u1 indexbyte1 = (*CurrentCode->code)[pc++];
+    u1 indexbyte2 = (*CurrentCode->code)[pc++];
+    u2 index =  (indexbyte1 << 8) | indexbyte2;
+    cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
+    cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+    std::string NameAndType = NameAndType_UTF8_Entry->AsString();
 }
 
 void Jvm::putfield(){
@@ -1362,25 +1367,28 @@ void Jvm::putfield(){
     u2 index =  (indexbyte1 << 8) | indexbyte2;
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
     cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
-    std::string NameAndType(reinterpret_cast<char*>(NameAndType_UTF8_Entry->bytes_vec->data()),NameAndType_UTF8_Entry->length);
+    std::string NameAndType = NameAndType_UTF8_Entry->AsString();
     
     // <nomevar : tipo>
-    size_t = NameEnd = NameAndType.find(" ");
+    size_t   NameEnd = NameAndType.find(" ");
     std::string Name = NameAndType.substr(1,NameEnd);
-    
+    //if <out : Ljava/io/PrintStream;> fazer print
     size_t TypeStart = NameAndType.find(":")+2;
-    size_t TypeEnd   = NameAndType.size() - s - 1;
+    size_t TypeEnd   = NameAndType.size() - TypeStart - 1;
 
-    std::string Type = NameAndType.substr(TypeStart, TypeEnd); 
+    std::string Type = NameAndType.substr(TypeStart, TypeEnd);
+
+
     if(Type == "D" or Type == "L"){
-	u4 lowBytes  = CurrenFrame->operandStack->Pop();
-	u4 highBytes = CurrenFrame->operandStack->Pop();
+	u4 lowBytes  = CurrentFrame->operandStack->Pop();
+	u4 highBytes = CurrentFrame->operandStack->Pop();
 
-	u4 objectRef = CurrenFrame->operandStack->Pop();
+	u4 objectRef = CurrentFrame->operandStack->Pop();
+
     }
     else{
-    	u4 value     = CurrenFrame->operandStack->Pop();
-	u4 objectRef = CurrenFrame->operandStack->Pop();
+    	u4 value     = CurrentFrame->operandStack->Pop();
+	u4 objectRef = CurrentFrame->operandStack->Pop();
     }
 
 

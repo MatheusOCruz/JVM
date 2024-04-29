@@ -47,6 +47,13 @@ struct cp_info{
             uint16_t reference_index;
         };
     };
+
+    std::string AsString() const noexcept {
+        if(tag != ConstantPoolTag::CONSTANT_Utf8 ){
+            throw   std::invalid_argument("Entrada nao e um UTF8\n");
+        }
+        return { reinterpret_cast<char*>(bytes_vec->data()), length };
+    }
 };
 
 struct attribute_info{

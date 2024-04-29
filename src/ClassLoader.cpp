@@ -176,9 +176,9 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     Entry->attribute_length     = read_u4();
 
     // pega o nome da constant pool
-    cp_info* attribute_name_entry = (*current_file->constant_pool)[Entry->attribute_name_index];
-    std::string attribute_name(reinterpret_cast<char*>(attribute_name_entry->bytes_vec->data()), attribute_name_entry->length);
-
+    cp_info* AttributeNameEntry = (*current_file->constant_pool)[Entry->attribute_name_index];
+    std::string AttributeName = AttributeNameEntry->AsString();
+    //(reinterpret_cast<char*>(AttributeNameEntry->bytes_vec->data()), AttributeNameEntry->length)
     static std::unordered_map<std::string, int> cases = {
             {"ConstantValue", 0},
             {"Code", 1},
@@ -189,8 +189,8 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             {"SourceFile", 8}
     };
     AttributeType AttributeTypeName;
-    if(cases.find(attribute_name) != cases.end())
-         AttributeTypeName = static_cast<AttributeType>(cases[attribute_name]);
+    if(cases.find(AttributeName) != cases.end())
+         AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
     else
          AttributeTypeName = AttributeType::NotImplemented;
 

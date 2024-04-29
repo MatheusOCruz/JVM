@@ -31,9 +31,10 @@ private:
     JVM::stack<Frame*> FrameStack;
     std::map<char*,class_file*>* MethodArea;
 
-    Frame* CurrentFrame;
-    method_info* CurrentMethod;
-    class_file* CurrentClass;
+
+    Frame*          CurrentFrame;
+    class_file*     CurrentClass;
+    method_info*    CurrentMethod;
     attribute_info* CurrentCode;
 
 
