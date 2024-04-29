@@ -44,11 +44,13 @@ struct ClassInstance{
 };
 
 
-
-// resolvi fazer uma stack
-// pq o stack do cpp n retorna valor no pop
-
-
-
+union Cat2Value{
+  struct{
+	u4 HighBytes;
+	u4 LowBytes;
+  }
+  long long AsLong;
+  double AsDouble;
+}
 
 #endif //JVM_JVMSTRUCTS_H

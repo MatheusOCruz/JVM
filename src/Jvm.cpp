@@ -1,4 +1,4 @@
-//
+//jvm
 // Created by matheus on 4/11/24.
 //
 
@@ -1363,8 +1363,26 @@ void Jvm::putfield(){
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
     cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
     std::string NameAndType(reinterpret_cast<char*>(NameAndType_UTF8_Entry->bytes_vec->data()),NameAndType_UTF8_Entry->length);
+    
+    // <nomevar : tipo>
+    size_t = NameEnd = NameAndType.find(" ");
+    std::string Name = NameAndType.substr(1,NameEnd);
+    
+    size_t TypeStart = NameAndType.find(":")+2;
+    size_t TypeEnd   = NameAndType.size() - s - 1;
 
-    // descobrir tipo
+    std::string Type = NameAndType.substr(TypeStart, TypeEnd); 
+    if(Type == "D" or Type == "L"){
+	u4 lowBytes  = CurrenFrame->operandStack->Pop();
+	u4 highBytes = CurrenFrame->operandStack->Pop();
+
+	u4 objectRef = CurrenFrame->operandStack->Pop();
+    }
+    else{
+    	u4 value     = CurrenFrame->operandStack->Pop();
+	u4 objectRef = CurrenFrame->operandStack->Pop();
+    }
+
 
 
 }
