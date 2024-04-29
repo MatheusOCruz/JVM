@@ -21,9 +21,8 @@ public:
 private:
 
     void InvokeMethod();
-
-
-
+    void PopFrameStack();
+    
     char* main_file;
     uint32_t pc = 0;
 

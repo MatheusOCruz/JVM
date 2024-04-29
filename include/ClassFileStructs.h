@@ -50,10 +50,10 @@ struct cp_info{
 
     std::string AsString() const noexcept {
         if(tag != ConstantPoolTag::CONSTANT_Utf8 ){
-            throw   std::invalid_argument("Entrada nao e um UTF8\n");
+            //throw   std::runtime_error("Entrada nao e um UTF8\n");
         }
         return { reinterpret_cast<char*>(bytes_vec->data()), length };
-    }
+    };
 };
 
 struct attribute_info{

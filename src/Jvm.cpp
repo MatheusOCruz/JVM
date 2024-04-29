@@ -9,25 +9,59 @@ void Jvm::Run(){
     MethodArea = new std::map<char*,class_file*>;
     auto Loader = new ClassLoader(MethodArea);
     Loader->LoadMain(main_file);
-    // so pras funcoes n reclamarem enquanto to definindo
-    CurrentFrame = new Frame;
-    CurrentFrame->localVariables = new std::vector<u4>;
-    CurrentFrame->operandStack =  new JVM::stack<u4>;
+    
+    CurrentClass = Loader->getClass(main_file);
+    NewFrame();
 
 
+    //check for <clinit>
+    //exec 
+    //check for <init>
+    //exec
+    //check for <main>
+    //exec
+}
+
+void Jvm::PopFrameStack(){
+    
+    FrameStack.pop();
+
+    CurrentFrame    = FrameStack.top();
+    CurrentClass    = CurrentFrame->frameClass;
+    CurrentMethod   = CurrentFrame->frameMethod;
+    pc		    = CurrentFrame->nextPC; // Aponta pra instrucao seguinte a que chamou um novo frame
+    CurrentCode     = GetCurrentMethodCode();
 
 }
 
-
-
-void Jvm::InvokeMethod() {
+void Jvm::NewFrame(){
+    //salva valores atuais pro retorno ao frame
+    CurrentFrame->nextPC      = pc;
+    CurrentFrame->frameClass  = CurrentClass;
+    CurrentFrame->frameMethod = CurrentMethod;
+    //instancia novo frame
     auto NewFrame = new Frame;
     NewFrame->localVariables = new std::vector<u4>;
     NewFrame->operandStack =  new JVM::stack<u4>;
+    //substitui frame atual por novo frame
     FrameStack.push(NewFrame);
     CurrentFrame = NewFrame;
 
 }
+
+
+//TODO: ter um jeito de manter o current class do frame antigo( num sei se precisa ainda )
+void Jvm::GetCurrentMethodCode(){
+      
+    for(auto Attribute : CurrentMethod->attributes){
+	u2 NameIndex = Attribute->name_index;
+	if((*CurrentClass->constant_pool)[NameIndex].AsString() == "Code"){
+	    CurrentCode = Attribute;
+	}
+    }
+}  
+
+
 
 
 
@@ -982,6 +1016,12 @@ void Jvm::lushr(){
 
 void Jvm::iand(){
 
+    int32_t value2 = CurrentFrame->operandStack->Pop();
+    int32_t value1 = CurrentFrame->operandStack->Pop();
+    int32_t result =  value1 & value2;
+
+    CurrenteFrame->operandStack->push(static_cast<u4>(result));
+
 }
 
 
@@ -1305,14 +1345,16 @@ void Jvm::lookupswitch(){
 
 
 void Jvm::ireturn(){
-
+//check return == int
+    return_u4();
 }
 
 
 
 
 void Jvm::lreturn(){
-
+//check return == long
+    return_u8();
 }
 
 
@@ -1320,27 +1362,46 @@ void Jvm::lreturn(){
 
 void Jvm::freturn(){
 
+//check return == float
+    return_u4();
 }
 
 
 
 
 void Jvm::dreturn(){
-
+//check return == double
+    return_u8();
 }
 
 
 
 
 void Jvm::areturn(){
-
+//check return == ref
+    return_u4();
 }
 
 
 
+void Jvm::return_u4(){
+    u4 ReturnValue = CurrentFrame->OperandStack->Pop();
+    PopFrameStack();
+    CurrentFrame->OperandStack->push(ReturnValue);
+}
 
+void Jvm::return_u8(){
+    u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
+    u4 ReturnValue2 = CurrentFrame->OperandStack->Pop();
+    PopFrameStack();
+    CurrentFrame->OperandStack->push(ReturnValue1);
+    CurrentFrame->OperandStack->push(ReturnValue2);
+}
+
+//TODO: check return is void ( na fe q o compilador ja faz isso)
 void Jvm::return_(){
-
+//check return == void
+	PopFrameStack();		 
 }
 
 void Jvm::getstatic(){
@@ -1358,12 +1419,13 @@ void Jvm::getfield(){
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
     cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
     std::string NameAndType = NameAndType_UTF8_Entry->AsString();
+
 }
 
 void Jvm::putfield(){
 
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
-    u1 indexbyte2 = (*CurrentCode->code)[pc++];
+    //u1 indexbyte2 = (*CurrentCode->code)[pc++];
     u2 index =  (indexbyte1 << 8) | indexbyte2;
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
     cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
@@ -1374,7 +1436,7 @@ void Jvm::putfield(){
     std::string Name = NameAndType.substr(1,NameEnd);
     //if <out : Ljava/io/PrintStream;> fazer print
     size_t TypeStart = NameAndType.find(":")+2;
-    size_t TypeEnd   = NameAndType.size() - TypeStart - 1;
+     size_t TypeEnd   = NameAndType.size() - TypeStart - 1;
 
     std::string Type = NameAndType.substr(TypeStart, TypeEnd);
 
@@ -1400,6 +1462,10 @@ void Jvm::invokevirtual(){
 }
 
 void Jvm::invokespecial(){
+    u1 indexByte1 = (*CurrentCode->code)[pc++];
+    u1 indexByte2 = (*CurrentCode->code)[pc++];
+    int16_t index = (indexByte1 <<8 ) | indexByte2;
+    cp_info* MethodOrInterfaceMethod = CurrentClass
 
 }
 

@@ -31,7 +31,9 @@ void ClassPrinter::PrintMetaData() {
 }
 
 void ClassPrinter::PrintConstantPoolTable() {
-
+    for(auto ConstantPoolEntry : *ClassFile->constant_pool){
+    	PrintConstantPoolEntry(ConstantPoolEntry);
+    }
 }
 
 void ClassPrinter::PrintInterfaces() {

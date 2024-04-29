@@ -28,7 +28,9 @@ namespace JVM{
 struct Frame{
     std::vector<u4>* localVariables;
     JVM::stack<u4>*  operandStack;
-    method_info*     frame_method;
+    method_info*     frameMethod;
+    class_file*      frameClass;
+    int32_t 	     nextPC; 	
 };
 
 
@@ -48,9 +50,9 @@ union Cat2Value{
   struct{
 	u4 HighBytes;
 	u4 LowBytes;
-  }
+  };
   long long AsLong;
   double AsDouble;
-}
+};
 
 #endif //JVM_JVMSTRUCTS_H
