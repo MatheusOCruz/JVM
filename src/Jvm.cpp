@@ -1357,6 +1357,16 @@ void Jvm::getfield(){
 
 void Jvm::putfield(){
 
+    u1 indexbyte1 = (*CurrentCode->code)[pc++];
+    u1 indexbyte2 = (*CurrentCode->code)[pc++];
+    u2 index =  (indexbyte1 << 8) | indexbyte2;
+    cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
+    cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+    std::string NameAndType(reinterpret_cast<char*>(NameAndType_UTF8_Entry->bytes_vec->data()),NameAndType_UTF8_Entry->length);
+
+    // descobrir tipo
+
+
 }
 
 void Jvm::invokevirtual(){

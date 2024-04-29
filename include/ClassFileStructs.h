@@ -108,6 +108,7 @@ struct class_file{
     u2                            methods_count;
     std::vector<method_info*>*    methods;
     u2                            attributes_count;
-    std::vector<attribute_info*>* attributes;};
+    std::vector<attribute_info*>* attributes;
+};
 
 #endif //JVM_CLASSFILESTRUCTS_H

@@ -31,6 +31,20 @@ struct Frame{
     method_info*     frame_method;
 };
 
+
+
+struct Handle{
+    std::vector<method_info*>* MethodTable;
+    class_file* ClassObject;
+};
+
+struct ClassInstance{
+    Handle*         HandlePointer;
+   // std::unordered_map<std::string, > ObjectData;
+};
+
+
+
 // resolvi fazer uma stack
 // pq o stack do cpp n retorna valor no pop
 
