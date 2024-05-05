@@ -8,3 +8,7 @@
 const char *ArithmeticException::what() const noexcept {
     return exception::what();
 }
+
+const char *NegativeArraySizeException::what() const noexcept {
+    return exception::what();
+}

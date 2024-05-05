@@ -6,7 +6,7 @@
 
 void ClassPrinter::Run() {
     auto Loader = new ClassLoader();
-    Loader->LoadMain(main_file);
+    Loader->LoadClass(main_file);
     ClassFile = Loader->GetClass(main_file);
     PrintClassFile();
 }

@@ -60,13 +60,13 @@ int main(int argc, char* argv[]) {
 
     switch (mode) {
         case JVM_MODE: {
-            auto JvmInstance = Jvm("/home/matheus/CLionProjects/JVM/testes/Main.class");
+            auto JvmInstance = Jvm("/home/matheus/CLionProjects/JVM/Main.class");
             JvmInstance.Run();
             break;
 
         }
         case LEITOR_EXIBIDOR: {
-            auto Printer = ClassPrinter("/home/matheus/CLionProjects/JVM/testes/Main.class");
+            auto Printer = ClassPrinter("/home/matheus/CLionProjects/JVM/Main.class");
             Printer.Run();
             break;
         }

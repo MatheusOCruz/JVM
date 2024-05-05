@@ -21,24 +21,22 @@
 class ClassLoader {
 public:
      // pro printer
-     ClassLoader() {class_files = new std::map<char*,class_file*>;}
-     class_file* GetClass(char* class_name) { return (*class_files)[class_name];};
+     ClassLoader() {class_files = new std::unordered_map<const char*,class_file*>;}
+     class_file* GetClass(char* class_name) { return (*class_files)[class_name];}
 
      // pro jvm
-     ClassLoader(std::map<char*,class_file*>* _class_files) : class_files(_class_files) {}
+     explicit ClassLoader(std::unordered_map<const char*,class_file*>* _class_files) : class_files(_class_files) {}
 
      ~ClassLoader() = default;
 
-    void LoadMain(char* nomeArquivo);
-
-    void PrintClass();
+    void LoadClass(const char* nomeArquivo);
 
 private:
     //carrega arquivo em buffer
     void LoadFile(const char* nomeArquivo);
 
 
-    class_file* LoadClass(const char* nomeArquivo);
+
 
 
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
@@ -52,10 +50,9 @@ private:
 
     // cria as estruturas a partir do buffer_iterator
     void BuildConstantPoolInfo();
+    void BuildFieldInfo();
+    void BuildMethodInfo();
     attribute_info* BuildAttributeInfo();
-    field_info* BuildFieldInfo();
-    method_info* BuildMethodInfo();
-
 
     void CheckMagic();
     void CheckVersion();
@@ -70,10 +67,10 @@ private:
 
     void FormatCheck();
 
-    std::vector<uint8_t>*       file_buffer; // pra poder liberar o arquivo dps
+    std::vector<uint8_t>*       file_buffer{}; // pra poder liberar o arquivo dps
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
-    class_file*                 current_file;
-    std::map<char*,class_file*>* class_files;
+    class_file*                 current_file{};
+    std::unordered_map<const char*,class_file*>* class_files;
 
 };
 
