@@ -10,6 +10,8 @@ void ClassLoader::LoadMain(char *nomeArquivo) {
 }
 
 
+u2 read_u2();
+
 class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
     current_file = new class_file;
 
@@ -63,6 +65,8 @@ u1 ClassLoader::read_u1() {
     return temp;
 }
 
+u2 __builtin_bswap16(u2 u2);
+
 u2 ClassLoader::read_u2() {
     u2 temp;
     std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
@@ -70,6 +74,8 @@ u2 ClassLoader::read_u2() {
     temp = __builtin_bswap16(temp);
     return temp;
 }
+
+u4 __builtin_bswap32(u4 u4);
 
 u4 ClassLoader::read_u4() {
     u4 temp;

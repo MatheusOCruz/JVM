@@ -37,15 +37,18 @@ private:
     //carrega arquivo em buffer
     void LoadFile(const char* nomeArquivo);
 
+     u1 read_u1();
 
-    class_file* LoadClass(const char* nomeArquivo);
+     u2 read_u2();
+
+     u4 read_u4();
+
+
+     class_file* LoadClass(const char* nomeArquivo);
 
 
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador
-    u1 read_u1();
-    u2 read_u2();
-    u4 read_u4();
 
     template<typename T>
     std::vector<T>* read_vec(int length);
