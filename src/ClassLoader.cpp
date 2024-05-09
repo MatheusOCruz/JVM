@@ -4,8 +4,6 @@
 
 #include "../include/ClassLoader.h"
 
-
-
 void ClassLoader::LoadClass(const char *nomeArquivo) {
     current_file = new class_file;
 
@@ -355,7 +353,3 @@ void ClassLoader::FormatCheck() {
          names, valid classes, and valid descriptors (§4.3).
      */
 }
-
-
-
-

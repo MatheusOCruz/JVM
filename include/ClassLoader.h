@@ -22,7 +22,7 @@ class ClassLoader {
 public:
      // pro printer
      ClassLoader() {class_files = new std::unordered_map<const char*,class_file*>;}
-     class_file* GetClass(char* class_name) { return (*class_files)[class_name];}
+     class_file* GetClass(const char* class_name) { return (*class_files)[class_name];}
 
      // pro jvm
      explicit ClassLoader(std::unordered_map<const char*,class_file*>* _class_files) : class_files(_class_files) {}
@@ -71,7 +71,6 @@ private:
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
     class_file*                 current_file{};
     std::unordered_map<const char*,class_file*>* class_files;
-
 };
 
 
