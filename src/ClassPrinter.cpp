@@ -4,10 +4,6 @@
 
 #include "../include/ClassPrinter.h"
 
-#define FIRST_SEP 3
-#define NUM_SEP 3
-#define TYPE_SEP 20
-#define INFO_SEP 20
 
 void ClassPrinter::Run() {
     auto Loader = new ClassLoader();
@@ -77,8 +73,11 @@ void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
     }
 }
 
+#define FIRST_SEP 3
+#define NUM_SEP 3
+#define TYPE_SEP 20
+#define INFO_SEP 20
 
-//TODO: passar todo cout pra um append
 void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 
     switch (Entry->tag) {
