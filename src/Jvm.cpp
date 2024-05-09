@@ -5,14 +5,17 @@
 #include "../include/Jvm.h"
 
 void Jvm::Run(){
+    MethodArea = new std::unordered_map<const char*,class_file*>;
+    Loader     = new ClassLoader(MethodArea);
 
-    MethodArea = new std::map<char*,class_file*>;
-    auto Loader = new ClassLoader(MethodArea);
-    Loader->LoadMain(main_file);
-    
-    CurrentClass = Loader->getClass(main_file);
+    Loader->LoadClass(main_file);
+    CurrentClass = GetClass(main_file);
+
+    std::string MethodName = "main";
+    GetMethod(MethodName);
+    GetCurrentMethodCode();
+
     NewFrame();
-
 
     //check for <clinit>
     //exec 
@@ -20,54 +23,130 @@ void Jvm::Run(){
     //exec
     //check for <main>
     //exec
+
+
+    ExecBytecode();
+}
+
+
+void Jvm::ExecBytecode(){
+    while(pc != CurrentCode->code_length){
+        u1 bytecode = (*CurrentCode->code)[pc++];
+        (this->*bytecodeFuncs[bytecode])();
+    }
+}
+
+
+
+//salva valores atuais pro retorno ao frame
+void Jvm::SaveFrameState(){
+    CurrentFrame->nextPC      = pc;
+    CurrentFrame->frameClass  = CurrentClass;
+    CurrentFrame->frameMethod = CurrentMethod;
+}
+
+void Jvm::NewFrame(){
+
+    //instancia novo frame
+    auto NewFrame = new Frame;
+    NewFrame->localVariables = new JVM::vector<u4>;
+    NewFrame->OperandStack   = new JVM::stack<u4>;
+
+    u2 MaxLocals = CurrentCode->max_locals;
+    NewFrame->localVariables->resize(MaxLocals);
+
+    //substitui frame atual por novo frame
+    FrameStack.push(NewFrame);
+    CurrentFrame = NewFrame;
+    pc = 0;
+
 }
 
 void Jvm::PopFrameStack(){
     
-    FrameStack.pop();
-
+    Frame* OldFrame = FrameStack.Pop();
+    delete OldFrame;
+    if(FrameStack.empty())
+        return;
     CurrentFrame    = FrameStack.top();
     CurrentClass    = CurrentFrame->frameClass;
     CurrentMethod   = CurrentFrame->frameMethod;
-    pc		    = CurrentFrame->nextPC; // Aponta pra instrucao seguinte a que chamou um novo frame
-    CurrentCode     = GetCurrentMethodCode();
+    pc		        = CurrentFrame->nextPC; // Aponta pra instrucao seguinte a que chamou um novo frame
 
-}
-
-void Jvm::NewFrame(){
-    //salva valores atuais pro retorno ao frame
-    CurrentFrame->nextPC      = pc;
-    CurrentFrame->frameClass  = CurrentClass;
-    CurrentFrame->frameMethod = CurrentMethod;
-    //instancia novo frame
-    auto NewFrame = new Frame;
-    NewFrame->localVariables = new std::vector<u4>;
-    NewFrame->operandStack =  new JVM::stack<u4>;
-    //substitui frame atual por novo frame
-    FrameStack.push(NewFrame);
-    CurrentFrame = NewFrame;
-
+    GetCurrentMethodCode();
 }
 
 
+
+
+
+void Jvm::GetMethod(const std::string& MethodName){
+
+    for(auto Method: *CurrentClass->methods)
+        if((*CurrentClass->constant_pool)[Method->name_index]->AsString() == MethodName){
+            CurrentMethod = Method;
+            break;
+        }
+    throw std::runtime_error("no method with given name "+ MethodName);
+}
 //TODO: ter um jeito de manter o current class do frame antigo( num sei se precisa ainda )
 void Jvm::GetCurrentMethodCode(){
       
-    for(auto Attribute : CurrentMethod->attributes){
-	u2 NameIndex = Attribute->name_index;
-	if((*CurrentClass->constant_pool)[NameIndex].AsString() == "Code"){
-	    CurrentCode = Attribute;
-	}
+    for(auto Attribute : *CurrentMethod->attributes){
+        u2 NameIndex = Attribute->attribute_name_index;
+        cp_info* AttributeName = (*CurrentClass->constant_pool)[NameIndex];
+        if(AttributeName->AsString() == "Code"){
+            CurrentCode = Attribute;
+            return;
+        }
     }
 }  
 
 
 
+class_file* Jvm::GetClass(char* class_name){
+    if(MethodArea->find(class_name) == MethodArea->end())
+        Loader->LoadClass(class_name);
+
+    return (*MethodArea)[class_name];
+}
+
+// get class file and create instance
+
+void Jvm::NewClassInstance(char* class_name){
+    ClassInstance* NewClassInstance;
+    class_file* ClassFile = GetClass(class_name);
+    // magia da criacao
+    CurrentFrame->OperandStack->PushRef(NewClassInstance);
+}
 
 
 
 
+// funcoes auxiliares pros bytecode
 
+
+u2 Jvm::GetIndex2() {
+    u1 indexbyte1 = (*CurrentCode->code)[pc++];
+    u1 indexbyte2 = (*CurrentCode->code)[pc++];
+    return (indexbyte1 << 8) | indexbyte2;
+}
+
+void Jvm::return_u4(){
+    u4 ReturnValue = CurrentFrame->OperandStack->Pop();
+    PopFrameStack();
+    CurrentFrame->OperandStack->push(ReturnValue);
+}
+
+void Jvm::return_u8(){
+
+    u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
+    u4 ReturnValue2 = CurrentFrame->OperandStack->Pop();
+    PopFrameStack();
+    CurrentFrame->OperandStack->push(ReturnValue2);
+    CurrentFrame->OperandStack->push(ReturnValue1);
+
+}
 
 
 
@@ -75,191 +154,134 @@ void Jvm::GetCurrentMethodCode(){
 // so bytecode
 
 
+
+
+
 void Jvm::nop() {
 
 }
-
 
 void Jvm::aconst_null(){
   
 }
 
 
-
-
-
 void Jvm::iconst_m1(){
-    CurrentFrame->operandStack->push(static_cast<u4>(-1));
+    CurrentFrame->OperandStack->push(static_cast<u4>(-1));
 }
-
-
-
 
 void Jvm::iconst_0(){
-    CurrentFrame->operandStack->push(0);
+    CurrentFrame->OperandStack->push(0);
 }
-
-
-
 
 void Jvm::iconst_1(){
-    CurrentFrame->operandStack->push(1);
+    CurrentFrame->OperandStack->push(1);
 }
-
-
-
 
 void Jvm::iconst_2(){
-    CurrentFrame->operandStack->push(2);
+    CurrentFrame->OperandStack->push(2);
 }
-
-
-
 
 void Jvm::iconst_3(){
-    CurrentFrame->operandStack->push(3);
+    CurrentFrame->OperandStack->push(3);
 }
-
-
-
 
 void Jvm::iconst_4(){
-    CurrentFrame->operandStack->push(4);
+    CurrentFrame->OperandStack->push(4);
 }
-
-
-
 
 void Jvm::iconst_5(){
-    CurrentFrame->operandStack->push(5);
+    CurrentFrame->OperandStack->push(5);
 }
-
-
-
 
 void Jvm::lconst_0(){
 
 }
 
-
-
-
 void Jvm::lconst_1(){
 
 }
-
-
-
 
 void Jvm::fconst_0(){
 
 }
 
-
-
-
 void Jvm::fconst_1(){
 
 }
-
-
-
 
 void Jvm::fconst_2(){
 
 }
 
-
-
-
 void Jvm::dconst_0(){
 
 }
-
-
-
 
 void Jvm::dconst_1(){
 
 }
 
-
-
-
 void Jvm::bipush(){
 
 }
-
-
-
 
 void Jvm::sipush(){
 
 }
 
 
-
-
 void Jvm::ldc(){
+    u1 index = (*CurrentCode->code)[pc++];
+    cp_info* RunTimeConstant = (*CurrentClass->constant_pool)[index];
+    switch (RunTimeConstant->tag) {
+        case ConstantPoolTag::CONSTANT_Integer:
+        case ConstantPoolTag::CONSTANT_Float:{
+            u4 value = RunTimeConstant->bytes;
+        }
+        case ConstantPoolTag::CONSTANT_String:{
+            void* StringRef = (*CurrentClass->constant_pool)[RunTimeConstant->string_index];
+            CurrentFrame->OperandStack->PushRef(StringRef);
+        }
+        default:{
+            //deu ruim
+        }
+    }
 
 }
-
-
-
 
 void Jvm::ldc_w(){
 
 }
 
-
-
-
 void Jvm::ldc2_w(){
 
 }
-
-
-
 
 void Jvm::iload(){
 
 }
 
-
-
-
 void Jvm::lload(){
 
 }
-
-
-
 
 void Jvm::fload(){
 
 }
 
-
-
-
 void Jvm::dload(){
 
 }
-
-
-
 
 void Jvm::aload(){
 
 }
 
-
-
-
 void Jvm::iload_0(){
     u4 value;
     value = (*CurrentFrame->localVariables)[0];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -268,7 +290,7 @@ void Jvm::iload_0(){
 void Jvm::iload_1(){
     u4 value;
     value = (*CurrentFrame->localVariables)[1];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -277,7 +299,7 @@ void Jvm::iload_1(){
 void Jvm::iload_2(){
     u4 value;
     value = (*CurrentFrame->localVariables)[2];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -286,7 +308,7 @@ void Jvm::iload_2(){
 void Jvm::iload_3(){
     u4 value;
     value = (*CurrentFrame->localVariables)[3];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -379,7 +401,7 @@ void Jvm::dload_3(){
 void Jvm::aload_0(){
     u4 value;
     value = (*CurrentFrame->localVariables)[0];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -388,7 +410,7 @@ void Jvm::aload_0(){
 void Jvm::aload_1(){
     u4 value;
     value = (*CurrentFrame->localVariables)[1];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -397,7 +419,7 @@ void Jvm::aload_1(){
 void Jvm::aload_2(){
     u4 value;
     value = (*CurrentFrame->localVariables)[2];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -406,7 +428,7 @@ void Jvm::aload_2(){
 void Jvm::aload_3(){
     u4 value;
     value = (*CurrentFrame->localVariables)[3];
-    CurrentFrame->operandStack->push(value);
+    CurrentFrame->OperandStack->push(value);
 }
 
 
@@ -505,7 +527,7 @@ void Jvm::astore(){
 
 void Jvm::istore_0(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
 }
 
@@ -514,7 +536,7 @@ void Jvm::istore_0(){
 
 void Jvm::istore_1(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
 }
 
@@ -523,7 +545,7 @@ void Jvm::istore_1(){
 
 void Jvm::istore_2(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
 }
 
@@ -532,7 +554,7 @@ void Jvm::istore_2(){
 
 void Jvm::istore_3(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
 }
 
@@ -625,7 +647,7 @@ void Jvm::dstore_3(){
 
 void Jvm::astore_0(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
 }
 
@@ -634,7 +656,7 @@ void Jvm::astore_0(){
 
 void Jvm::astore_1(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
 }
 
@@ -643,7 +665,7 @@ void Jvm::astore_1(){
 
 void Jvm::astore_2(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
 }
 
@@ -652,7 +674,7 @@ void Jvm::astore_2(){
 
 void Jvm::astore_3(){
     u4 value;
-    value = CurrentFrame->operandStack->Pop();
+    value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
 }
 
@@ -716,15 +738,15 @@ void Jvm::sastore(){
 
 
 void Jvm::pop(){
-    CurrentFrame->operandStack->pop();
+    CurrentFrame->OperandStack->pop();
 }
 
 
 
 
 void Jvm::pop2(){
-    CurrentFrame->operandStack->pop();
-    CurrentFrame->operandStack->pop();
+    CurrentFrame->OperandStack->pop();
+    CurrentFrame->OperandStack->pop();
 }
 
 
@@ -782,10 +804,10 @@ void Jvm::swap(){
 void Jvm::iadd(){
     int32_t value1;
     int32_t value2;
-    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
     int32_t result = value1 + value2;
-    CurrentFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
@@ -815,10 +837,10 @@ void Jvm::dadd(){
 void Jvm::isub(){
     int32_t value1;
     int32_t value2;
-    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
     int32_t result = value1 - value2;
-    CurrentFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
@@ -848,10 +870,10 @@ void Jvm::dsub(){
 void Jvm::imul(){
     int32_t value1;
     int32_t value2;
-    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
     int32_t result = value1 * value2;
-    CurrentFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
@@ -879,14 +901,12 @@ void Jvm::dmul(){
 
 
 void Jvm::idiv(){
-    int32_t value1;
-    int32_t value2;
-    value2 = static_cast<int>(CurrentFrame->operandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->operandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     if (value2 == 0)
         throw ArithmeticException();
     int32_t result = value1 / value2;
-    CurrentFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
@@ -943,9 +963,9 @@ void Jvm::drem(){
 
 void Jvm::ineg(){
     int32_t value;
-    value = static_cast<int>(CurrentFrame->operandStack->Pop());
+    value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t result = - value;
-    CurrentFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
@@ -1016,11 +1036,11 @@ void Jvm::lushr(){
 
 void Jvm::iand(){
 
-    int32_t value2 = CurrentFrame->operandStack->Pop();
-    int32_t value1 = CurrentFrame->operandStack->Pop();
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t result =  value1 & value2;
 
-    CurrenteFrame->operandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1360,6 +1380,7 @@ void Jvm::lreturn(){
 
 
 
+
 void Jvm::freturn(){
 
 //check return == float
@@ -1383,21 +1404,6 @@ void Jvm::areturn(){
 }
 
 
-
-void Jvm::return_u4(){
-    u4 ReturnValue = CurrentFrame->OperandStack->Pop();
-    PopFrameStack();
-    CurrentFrame->OperandStack->push(ReturnValue);
-}
-
-void Jvm::return_u8(){
-    u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
-    u4 ReturnValue2 = CurrentFrame->OperandStack->Pop();
-    PopFrameStack();
-    CurrentFrame->OperandStack->push(ReturnValue1);
-    CurrentFrame->OperandStack->push(ReturnValue2);
-}
-
 //TODO: check return is void ( na fe q o compilador ja faz isso)
 void Jvm::return_(){
 //check return == void
@@ -1405,7 +1411,7 @@ void Jvm::return_(){
 }
 
 void Jvm::getstatic(){
-
+    u2 index = GetIndex2();
 }
 
 void Jvm::putstatic(){
@@ -1413,59 +1419,62 @@ void Jvm::putstatic(){
 }
 
 void Jvm::getfield(){
-    u1 indexbyte1 = (*CurrentCode->code)[pc++];
-    u1 indexbyte2 = (*CurrentCode->code)[pc++];
-    u2 index =  (indexbyte1 << 8) | indexbyte2;
+    u2 index = GetIndex2();
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
-    cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
-    std::string NameAndType = NameAndType_UTF8_Entry->AsString();
+    cp_info* NameAndTypeEntry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+
 
 }
 
 void Jvm::putfield(){
+    u2 index = GetIndex2();
 
-    u1 indexbyte1 = (*CurrentCode->code)[pc++];
-    //u1 indexbyte2 = (*CurrentCode->code)[pc++];
-    u2 index =  (indexbyte1 << 8) | indexbyte2;
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
-    cp_info* NameAndType_UTF8_Entry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
-    std::string NameAndType = NameAndType_UTF8_Entry->AsString();
-    
-    // <nomevar : tipo>
-    size_t   NameEnd = NameAndType.find(" ");
-    std::string Name = NameAndType.substr(1,NameEnd);
-    //if <out : Ljava/io/PrintStream;> fazer print
-    size_t TypeStart = NameAndType.find(":")+2;
-     size_t TypeEnd   = NameAndType.size() - TypeStart - 1;
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
 
-    std::string Type = NameAndType.substr(TypeStart, TypeEnd);
+    std::string Name            = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    std::string FieldDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+    //std::string Type = FieldDescriptor.substr(1,FieldDescriptor.size() - 2);
 
+    if(FieldDescriptor == "D" or FieldDescriptor == "L"){
+	u4 lowBytes  = CurrentFrame->OperandStack->Pop();
+	u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    if(Type == "D" or Type == "L"){
-	u4 lowBytes  = CurrentFrame->operandStack->Pop();
-	u4 highBytes = CurrentFrame->operandStack->Pop();
-
-	u4 objectRef = CurrentFrame->operandStack->Pop();
+	//u4 objectRef = CurrentFrame->OperandStack->Pop();
 
     }
     else{
-    	u4 value     = CurrentFrame->operandStack->Pop();
-	u4 objectRef = CurrentFrame->operandStack->Pop();
+    	u4 value = CurrentFrame->OperandStack->Pop();
+	    //u4 objectRef = CurrentFrame->OperandStack->Pop();
     }
 
 
 
 }
-
+//TODO: to fazendo so pro hello world por enquanto
 void Jvm::invokevirtual(){
+    u2 index = GetIndex2();
+
+    cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
+
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
+    // formato <valor>
+    std::string Name = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    std::string MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+
+    if(MethodDescriptor == "(Ljava/lang/String;)V"){
+        auto String = CurrentFrame->OperandStack->PopRef<cp_info>()->AsString();
+        std::cout<<String<<"\n";
+    }
+
+
 
 }
 
 void Jvm::invokespecial(){
-    u1 indexByte1 = (*CurrentCode->code)[pc++];
-    u1 indexByte2 = (*CurrentCode->code)[pc++];
-    int16_t index = (indexByte1 <<8 ) | indexByte2;
-    cp_info* MethodOrInterfaceMethod = CurrentClass
+    u2 index = GetIndex2();
+    cp_info* MethodOrInterfaceMethod = (*CurrentClass->constant_pool)[index];
+
 
 }
 
@@ -1487,6 +1496,41 @@ void Jvm::new_(){
 
 void Jvm::newarray(){
 
+    auto Count = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    if(Count < 0)
+        throw NegativeArraySizeException();
+
+    u1 ArrayTypeCodeValue = (*CurrentCode->code)[pc++];
+
+    u1 ArrayEntrySize;
+    switch (static_cast<ArrayTypeCode>(ArrayTypeCodeValue)) {
+        case ArrayTypeCode::T_BOOLEAN:
+        case ArrayTypeCode::T_BYTE: {
+            ArrayEntrySize = 1;
+            break;
+        }
+        case ArrayTypeCode::T_CHAR:
+        case ArrayTypeCode::T_SHORT:{
+            ArrayEntrySize = 2;
+            break;
+        }
+
+        case ArrayTypeCode::T_FLOAT:
+        case ArrayTypeCode::T_INT:{
+            ArrayEntrySize = 4;
+            break;
+        }
+
+        case ArrayTypeCode::T_DOUBLE:
+        case ArrayTypeCode::T_LONG:{
+            ArrayEntrySize = 8;
+            break;
+        }
+
+    }
+
+    void* ArrayRef = new char[Count * ArrayEntrySize];
+    CurrentFrame->OperandStack->PushRef(ArrayRef);
 }
 
 void Jvm::anewarray(){

@@ -19,16 +19,26 @@ public:
 
 
 private:
-
-    void InvokeMethod();
+    //funcoes da jvm
+    void SaveFrameState();
+    void NewFrame();
     void PopFrameStack();
-    
+
+    void GetMethod(const std::string& MethodName);
+    void GetCurrentMethodCode();
+
+    void ExecBytecode();
+
+    void NewClassInstance(char* class_name);
+    class_file* GetClass(char* class_name);
+
+    //vars jvm
     char* main_file;
-    uint32_t pc = 0;
+    uint16_t pc = 0;
 
 
     JVM::stack<Frame*> FrameStack;
-    std::map<char*,class_file*>* MethodArea;
+    std::unordered_map<const char*,class_file*>* MethodArea;
 
 
     Frame*          CurrentFrame;
@@ -36,8 +46,18 @@ private:
     method_info*    CurrentMethod;
     attribute_info* CurrentCode;
 
+    ClassLoader*    Loader;
 
-    // so os trem do bytecode
+
+
+    //funcoes auxiliares pro bytecode
+    void return_u4();
+    void return_u8();
+
+    u2 GetIndex2();
+
+
+    //funcoes do bytecode
 
     void nop();
     void aconst_null();

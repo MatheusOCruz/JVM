@@ -17,6 +17,11 @@ public:
     ArithmeticException() = default;
     const char* what() const noexcept override;
 };
+class NegativeArraySizeException : RunTimeExceptions{
+public:
+    NegativeArraySizeException() = default;
+    const char* what() const noexcept override;
+};
 
 
 #endif //JVM_RUNTIMEEXCEPTIONS_H

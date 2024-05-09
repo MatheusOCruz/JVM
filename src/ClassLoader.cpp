@@ -4,13 +4,7 @@
 
 #include "../include/ClassLoader.h"
 
-void ClassLoader::LoadMain(const char *nomeArquivo) {
-
-    (*class_files)[nomeArquivo] = LoadClass(nomeArquivo);
-}
-
-
-class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
+void ClassLoader::LoadClass(const char *nomeArquivo) {
     current_file = new class_file;
 
     LoadFile(nomeArquivo);
@@ -27,12 +21,9 @@ class_file* ClassLoader::LoadClass(const char *nomeArquivo) {
 
     FormatCheck();
 
-
+    (*class_files)[nomeArquivo] = current_file;
 
     delete file_buffer;
-
-    return current_file;
-
 }
 
 void ClassLoader::LoadFile(const char *nomeArquivo) {
@@ -164,7 +155,8 @@ void ClassLoader::BuildConstantPoolInfo() {
             throw std::runtime_error("entrada da constant_pool nao existe amigao\n");
     }
     current_file->constant_pool->push_back(Entry);
-    // reboco deselagante pq pelo visto esses trem pega 2 entradas
+
+    // entrada seguinte de Long ou Double nao e um indice valido
     if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
         current_file->constant_pool->push_back(new cp_info{});
 }
@@ -252,7 +244,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     return Entry;
 }
 
-field_info* ClassLoader::BuildFieldInfo() {
+void ClassLoader::BuildFieldInfo(){
     auto Entry = new field_info{};
 
     Entry->access_flags     = read_u2();
@@ -262,11 +254,10 @@ field_info* ClassLoader::BuildFieldInfo() {
     Entry->attributes       = new std::vector<attribute_info*>;
 
     BuildAttributes(Entry->attributes_count, *Entry->attributes);
-
-    return Entry;
+    current_file->fields->push_back(Entry);
 }
 
-method_info* ClassLoader::BuildMethodInfo() {
+void ClassLoader::BuildMethodInfo() {
     auto Entry = new method_info{};
 
     Entry->access_flags     = read_u2();
@@ -276,7 +267,8 @@ method_info* ClassLoader::BuildMethodInfo() {
     Entry->attributes       = new std::vector<attribute_info*>;
     BuildAttributes(Entry->attributes_count, *Entry->attributes);
 
-    return Entry;
+    current_file->methods->push_back(Entry);
+
 }
 
 void ClassLoader::BuildConstantPoolTable() {
@@ -284,6 +276,7 @@ void ClassLoader::BuildConstantPoolTable() {
     current_file->constant_pool = new std::vector<cp_info*>;
     current_file->constant_pool->reserve(current_file->constant_pool_count);
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
+
     for(int i = 0; i< current_file->constant_pool_count-1; i++){
         BuildConstantPoolInfo();
     }
@@ -300,7 +293,7 @@ void ClassLoader::BuildFields() {
     current_file->fields = new std::vector<field_info*>;
     current_file->fields->reserve(current_file->fields_count);
     for (int i = 0; i < current_file->fields_count; ++i) {
-        current_file->fields->push_back(BuildFieldInfo());
+        BuildFieldInfo();
     }
 }
 
@@ -309,7 +302,7 @@ void ClassLoader::BuildMethods() {
     current_file->methods = new std::vector<method_info*>;
     current_file->methods->reserve(current_file->methods_count);
     for (int i = 0; i < current_file->methods_count; ++i) {
-        current_file->methods->push_back(BuildMethodInfo());
+        BuildMethodInfo();
     }
 }
 
