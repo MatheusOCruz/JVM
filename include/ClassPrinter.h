@@ -16,12 +16,13 @@
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader
 class ClassPrinter {
 public:
-    ClassPrinter(const char* _main_file) : main_file(_main_file), output_file(nullptr) {}
-    ClassPrinter(const char* _main_file, const char* _output_file) : main_file(_main_file), output_file(_output_file) {}
+    ClassPrinter(const std::string _main_file) : main_file(_main_file) {Loader = new ClassLoader;}
     void Run();
 
 private:
     void SaveInFile();
+
+	std::string ClassName(const cp_info *Entry);
 
     void PrintClassFile();
     void PrintMetaData();
@@ -37,11 +38,10 @@ private:
     void PrintMethodEntry(method_info* Method);
     void PrintAttributeEntry(attribute_info* Attribute);
 
-    std::string outputBuffer;
-    const char* main_file;
-    const char* output_file;
+    const std::string main_file;
     class_file* ClassFile;
     OpcodePrinter CodePrinter;
+	ClassLoader* Loader;
 };
 
 

@@ -11,6 +11,7 @@
 #include <map>
 #include <iterator>
 #include <memory>
+#include <cstring>
 #include <unordered_map>
 #include "ClassFileEnums.h"
 #include "ClassFileStructs.h"
@@ -21,19 +22,20 @@
 class ClassLoader {
 public:
      // pro printer
-     ClassLoader() {class_files = new std::unordered_map<const char*,class_file*>;}
-     class_file* GetClass(const char* class_name) { return (*class_files)[class_name];}
+	ClassLoader() {class_files = new std::unordered_map<std::string,class_file*>;}
+	class_file* GetClass(const std::string class_file_path);
+	class_file* GetClassFromName(const std::string class_name);
 
      // pro jvm
-     explicit ClassLoader(std::unordered_map<const char*,class_file*>* _class_files) : class_files(_class_files) {}
+	explicit ClassLoader(std::unordered_map<std::string ,class_file*>* _class_files) : class_files(_class_files) {}
 
      ~ClassLoader() = default;
 
-    void LoadClass(const char* nomeArquivo);
 
 private:
     //carrega arquivo em buffer
-    void LoadFile(const char* nomeArquivo);
+    void LoadClass(const std::string nomeArquivo);
+    void LoadFile(const std::string nomeArquivo);
 
 
 
@@ -70,7 +72,7 @@ private:
     std::vector<uint8_t>*       file_buffer{}; // pra poder liberar o arquivo dps
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
     class_file*                 current_file{};
-    std::unordered_map<const char*,class_file*>* class_files;
+    std::unordered_map<std::string ,class_file*>* class_files;
 };
 
 

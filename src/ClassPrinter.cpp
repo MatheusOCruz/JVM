@@ -4,18 +4,39 @@
 
 #include "../include/ClassPrinter.h"
 
+std::string ClassPrinter::ClassName(const cp_info *Entry) {
+	if(Entry->tag != ConstantPoolTag::CONSTANT_Class ){
+		assert(0);
+	}
+	const auto constant_pool = *ClassFile->constant_pool;
+	return constant_pool[Entry->name_index]->AsString();
+}
 
 void ClassPrinter::Run() {
-    auto Loader = new ClassLoader();
-    Loader->LoadClass(main_file);
     ClassFile = Loader->GetClass(main_file);
     PrintClassFile();
 }
 
 void ClassPrinter::PrintClassFile(){
+
+	const auto constant_pool = *ClassFile->constant_pool;
+	const auto this_class_name = ClassName(constant_pool[ClassFile->this_class]);
+	const auto super_class_name = ClassName(constant_pool[ClassFile->super_class]);
+
     std::cout << std::endl
-			  << "Leitor Exibidor: "
-			  << std::endl << std::endl;
+			  << "Leitor Exibidor: " << this_class_name
+			  << std::endl << std::endl
+			  << "this_class:   #" << ClassFile->this_class
+			  << "       // " << this_class_name << std::endl
+			  << "super_class:  #" << ClassFile->super_class
+			  << "       // " << super_class_name << std::endl;
+
+	// TODO(ruan): Adicionar uma função para criar uma string dizendo
+	// quais flags sao
+	std::cout << "Flags: 0x"<< std::setw(5)
+			  << std::right << std::setfill('0')
+			  << std::setbase(16) << ClassFile->access_flags << std::endl
+			  << std::setbase(10) << std::setfill(' ');
 
     PrintMetaData();
     PrintConstantPoolTable();
@@ -24,11 +45,10 @@ void ClassPrinter::PrintClassFile(){
     PrintMethods();
     PrintAttributes();
 
-    // caso construtor tenha arquivo de saida
-    if(output_file)
-        SaveInFile();
-    else
-        std::cout<<outputBuffer;
+    ClassFile = Loader->GetClassFromName(super_class_name);
+	if (ClassFile) {
+		PrintClassFile();
+	}
 }
 
 void ClassPrinter::PrintMetaData() {
@@ -66,11 +86,11 @@ void ClassPrinter::PrintAttributes() {
 
 }
 void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
-    outputBuffer.append("Attributes: \n");
-    for(auto Attribute: *Attributes){
-        PrintAttributeEntry(Attribute);
-        outputBuffer.append("\n");
-    }
+    // outputBuffer.append("Attributes: \n");
+    // for(auto Attribute: *Attributes){
+    //     PrintAttributeEntry(Attribute);
+    //     outputBuffer.append("\n");
+    // }
 }
 
 #define FIRST_SEP 3
@@ -93,8 +113,7 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
         }
 
         case ConstantPoolTag::CONSTANT_Integer:{
-
-            std::cout<<"CONSTANT_Integer\n";
+std::cout<<"CONSTANT_Integer\n";
             std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
 
             break;
@@ -248,12 +267,13 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
 			  << std::setbase(16) << flags << std::endl
 			  << std::setbase(10) << std::setfill(' ');
 
+	// TODO(ruan): Adicionar uma função para criar uma string dizendo
+	// quais flags sao
 	std::cout << std::setw(2) <<  ""
 			  << "Attributes:" << std::endl;
 
     for(auto Attribute: *Method->attributes){
         PrintAttributeEntry(Attribute);
-        outputBuffer.append("\n");
     }
 
 }
