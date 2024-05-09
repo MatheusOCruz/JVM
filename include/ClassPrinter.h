@@ -5,6 +5,7 @@
 #ifndef JVM_CLASSPRINTER_H
 #define JVM_CLASSPRINTER_H
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 
 #include "ClassFileStructs.h"
@@ -15,8 +16,8 @@
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader
 class ClassPrinter {
 public:
-    ClassPrinter(char* _main_file) : main_file(_main_file), output_file(nullptr) {}
-    ClassPrinter(char* _main_file, char* _output_file) : main_file(_main_file), output_file(_output_file) {}
+    ClassPrinter(const char* _main_file) : main_file(_main_file), output_file(nullptr) {}
+    ClassPrinter(const char* _main_file, const char* _output_file) : main_file(_main_file), output_file(_output_file) {}
     void Run();
 
 private:
@@ -30,15 +31,15 @@ private:
     void PrintMethods();
     void PrintAttributes();
     void PrintAttributes(std::vector<attribute_info*>*);
-    void PrintConstantPoolEntry(cp_info* Entry);
+	void PrintConstantPoolEntry(const cp_info *Entry, size_t idx);
 
     void PrintFieldEntry();
     void PrintMethodEntry(method_info* Method);
     void PrintAttributeEntry(attribute_info* Attribute);
 
     std::string outputBuffer;
-    char* main_file;
-    char* output_file;
+    const char* main_file;
+    const char* output_file;
     class_file* ClassFile;
     OpcodePrinter CodePrinter;
 };

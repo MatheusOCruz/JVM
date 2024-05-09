@@ -9,7 +9,8 @@ std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
     code_iterator = 0;
     code = _code;
     while(code_iterator != code_lenght){
-        StringBuffer.append(std::to_string(code_iterator));
+        StringBuffer.append("      ");
+        StringBuffer.append(std::to_string(code_iterator) + ":");
         u1 bytecode = code[code_iterator++];
         (this->*bytecodeFuncs[bytecode])();
     }

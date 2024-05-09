@@ -21,15 +21,15 @@
 class ClassLoader {
 public:
      // pro printer
-     ClassLoader() {class_files = new std::map<char*,class_file*>;}
-     class_file* GetClass(char* class_name) { return (*class_files)[class_name];};
+     ClassLoader() {class_files = new std::map<const char*,class_file*>;}
+     class_file* GetClass(const char* class_name) { return (*class_files)[class_name];};
 
      // pro jvm
-     ClassLoader(std::map<char*,class_file*>* _class_files) : class_files(_class_files) {}
+     ClassLoader(std::map<const char*,class_file*>* _class_files) : class_files(_class_files) {}
 
      ~ClassLoader() = default;
 
-    void LoadMain(char* nomeArquivo);
+    void LoadMain(const char* nomeArquivo);
 
     void PrintClass();
 
@@ -73,7 +73,7 @@ private:
     std::vector<uint8_t>*       file_buffer; // pra poder liberar o arquivo dps
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
     class_file*                 current_file;
-    std::map<char*,class_file*>* class_files;
+    std::map<const char*,class_file*>* class_files;
 
 };
 

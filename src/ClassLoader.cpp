@@ -4,7 +4,7 @@
 
 #include "../include/ClassLoader.h"
 
-void ClassLoader::LoadMain(char *nomeArquivo) {
+void ClassLoader::LoadMain(const char *nomeArquivo) {
 
     (*class_files)[nomeArquivo] = LoadClass(nomeArquivo);
 }
@@ -360,15 +360,3 @@ void ClassLoader::FormatCheck() {
          names, valid classes, and valid descriptors (§4.3).
      */
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,6 +4,11 @@
 
 #include "../include/ClassPrinter.h"
 
+#define FIRST_SEP 3
+#define NUM_SEP 3
+#define TYPE_SEP 20
+#define INFO_SEP 20
+
 void ClassPrinter::Run() {
     auto Loader = new ClassLoader();
     Loader->LoadMain(main_file);
@@ -12,6 +17,10 @@ void ClassPrinter::Run() {
 }
 
 void ClassPrinter::PrintClassFile(){
+    std::cout << std::endl
+			  << "Leitor Exibidor: "
+			  << std::endl << std::endl;
+
     PrintMetaData();
     PrintConstantPoolTable();
     PrintInterfaces();
@@ -31,9 +40,13 @@ void ClassPrinter::PrintMetaData() {
 }
 
 void ClassPrinter::PrintConstantPoolTable() {
-    for(auto ConstantPoolEntry : *ClassFile->constant_pool){
-    	PrintConstantPoolEntry(ConstantPoolEntry);
+	std::cout << "Constant pool:" << std::endl;
+	const auto & constant_pool = *ClassFile->constant_pool;
+    for(size_t i = 1; i < constant_pool.size(); i++) {
+    	PrintConstantPoolEntry(constant_pool[i], i);
     }
+	std::cout << std::endl;
+
 }
 
 void ClassPrinter::PrintInterfaces() {
@@ -45,12 +58,12 @@ void ClassPrinter::PrintFields() {
 }
 
 void ClassPrinter::PrintMethods() {
-    outputBuffer.append("\nMethods:\n");
+	std::cout << "Methods:" << std::endl;
     for (auto Method : *ClassFile->methods) {
+		std::cout << "{" << std::endl;
         PrintMethodEntry(Method);
-        outputBuffer.append("\n");
+		std::cout << "}" << std::endl;
     }
-
 }
 
 void ClassPrinter::PrintAttributes() {
@@ -66,16 +79,17 @@ void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
 
 
 //TODO: passar todo cout pra um append
-void ClassPrinter::PrintConstantPoolEntry(cp_info *Entry) {
+void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 
     switch (Entry->tag) {
         case ConstantPoolTag::CONSTANT_Utf8: {
-
-            outputBuffer.append("CONSTANT_Utf8\n");
-            std::cout<<"  lenght: "<<Entry->length<<"\n  ";
-            // futuramente precisamos de uma funcao pra lidar com utf8 e os char de 16 bits do java
-            std::cout.write(reinterpret_cast<char*>(Entry->bytes_vec->data()), Entry->length);
-            std::cout<<"\n\n";
+			const std::string name = Entry->AsString();
+			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				      << std::setw(NUM_SEP) << std::left << idx
+				      << std::setw(3) << " = "
+				      << std::setw(TYPE_SEP) << std::left << "Utf8"
+				      << std::setw(INFO_SEP) << std::left << name
+				      << std::endl;
             break;
         }
 
@@ -109,33 +123,53 @@ void ClassPrinter::PrintConstantPoolEntry(cp_info *Entry) {
             break;
         }
         case ConstantPoolTag::CONSTANT_Class: {
+			std::string info =
+				"#"  + std::to_string(Entry->name_index);
 
-            std::cout<<"CONSTANT_Class\n";
-            std::cout<<"  Class name: "<< Entry->name_index <<"\n\n";
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "Class"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
 
             break;
         }
         case ConstantPoolTag::CONSTANT_String: {
-
-            std::cout<<"CONSTANT_String\n";
-            std::cout<<"  string index: "<< Entry->string_index <<"\n\n";
-
+			std::string info =
+				"#"  + std::to_string(Entry->string_index);
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "String"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
             break;
         }
-        case ConstantPoolTag::CONSTANT_Fieldref:{
-            std::cout<<"CONSTANT_Fieldref\n";
+        case ConstantPoolTag::CONSTANT_Fieldref: {
+			std::string info =
+				"#"  + std::to_string(Entry->class_index) +
+				".#" + std::to_string(Entry->name_and_type_index);
 
-            std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-            std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "Fieldref"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
             break;
         }
         case ConstantPoolTag::CONSTANT_Methodref:{
-            std::cout<<"CONSTANT_Methodref\n";
+			std::string info =
+				"#"  + std::to_string(Entry->class_index) +
+				".#" + std::to_string(Entry->name_and_type_index);
 
-            std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-            std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "Methodref"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
             break;
         }
         case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
@@ -149,13 +183,16 @@ void ClassPrinter::PrintConstantPoolEntry(cp_info *Entry) {
         }
 
         case ConstantPoolTag::CONSTANT_NameAndType: {
+			std::string info =
+				"#"  + std::to_string(Entry->name_index) +
+				":#" + std::to_string(Entry->descriptor_index);
 
-            std::cout<<"CONSTANT_NameAndType\n";
-
-            std::cout<<"  name index:       "<<Entry->name_index<<"\n";
-            std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
-
-
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "NameAndType"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
             break;
         }
 
@@ -194,16 +231,31 @@ void ClassPrinter::PrintFieldEntry() {
 void ClassPrinter::PrintMethodEntry(method_info* Method){
     //TODO: append Flags[...] dps do nome e descriptor
 
-    cp_info* method_name_entry = (*ClassFile->constant_pool)[Method->name_index];
-    std::string method_name(reinterpret_cast<char*>(method_name_entry->bytes_vec->data()), method_name_entry->length);
-    outputBuffer.append("  Name: ").append(method_name).append("\n");
+    const cp_info* method_name_entry = (*ClassFile->constant_pool)[Method->name_index];
+    const std::string method_name = method_name_entry->AsString();
 
-    cp_info* method_descriptor = (*ClassFile->constant_pool)[Method->descriptor_index];
-    std::string descriptor_name(reinterpret_cast<char*>(method_descriptor->bytes_vec->data()), method_descriptor->length);
-    outputBuffer.append("  Descriptor: ").append(descriptor_name).append("\n");
-    outputBuffer.append("  Attribute count: ").append(std::to_string(Method->attributes_count)).append("\n");
+    const cp_info* method_descriptor = (*ClassFile->constant_pool)[Method->descriptor_index];
+    const std::string descriptor_name = method_descriptor->AsString();
     // tem q fazer uma versao separada pro attribute da classe e dos methods/fields
-    PrintAttributes(Method->attributes);
+
+	const u2 flags = Method->access_flags;
+
+	std::cout << std::setw(2) <<  ""
+			  << "Name: " << method_name << std::endl
+			  << std::setw(2)<< ""
+			  << "Descriptor: " << descriptor_name << std::endl
+			  << std::setw(2)<< ""
+			  << "Flags: 0x"<< std::setw(5) << std::right << std::setfill('0')
+			  << std::setbase(16) << flags << std::endl
+			  << std::setbase(10) << std::setfill(' ');
+
+	std::cout << std::setw(2) <<  ""
+			  << "Attributes:" << std::endl;
+
+    for(auto Attribute: *Method->attributes){
+        PrintAttributeEntry(Attribute);
+        outputBuffer.append("\n");
+    }
 
 }
 
@@ -214,8 +266,7 @@ void ClassPrinter::SaveInFile() {}
 void ClassPrinter::PrintAttributeEntry(attribute_info *Attribute) {
 
     cp_info* attribute_name_entry = (*ClassFile->constant_pool)[Attribute->attribute_name_index];
-    std::string attribute_name(reinterpret_cast<char*>(attribute_name_entry->bytes_vec->data()), attribute_name_entry->length);
-
+    std::string attribute_name = attribute_name_entry->AsString();
     static std::unordered_map<std::string, int> cases = {
             {"ConstantValue", 0},
             {"Code", 1},
@@ -233,9 +284,10 @@ void ClassPrinter::PrintAttributeEntry(attribute_info *Attribute) {
 
     switch (AttributeTypeName) {
         case AttributeType::Code: {
-            outputBuffer.append("    Code:\n");
-            outputBuffer.append(CodePrinter.CodeToString(Attribute->code->data(), Attribute->code_length));
-            outputBuffer.append("\n");
+		std::cout << std::setw(4) <<  ""
+				  << "Code: " << std::endl;
+		std::cout << CodePrinter.CodeToString(Attribute->code->data(), Attribute->code_length)
+				  << std::endl;
         }
         defaut: {
             //por enquanto testar so o do code

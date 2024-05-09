@@ -4,6 +4,7 @@
 #include <memory>
 #include <regex>
 #include <cstring>
+#include <assert.h>
 #include "include/Jvm.h"
 
 
@@ -36,57 +37,46 @@ void semnome(int argc, char* argv[], char* ClassFilePath,char* OutputFile){
     }
 }
 
-void help(){
+void help(const char * program_name) {
+	std::cerr << "Como usar:" << std::endl;
+	std::cerr << "    " << program_name << " <command> <class_file_path>" << std::endl;
+	std::cerr << "Comandos:" << std::endl;
+	std::cerr << "    leitor_exibidor" << std::endl;
+	std::cerr << "    jvm" << std::endl;
+	std::cerr << "Exemplos:" << std::endl;
+	std::cerr << "    " << program_name << " leitor_exibidor ./testes/Main.class" << std::endl;
+	std::cerr << "    " << program_name << " jvm ./testes/Main.class" << std::endl;
+}
 
+const char* shift_args(int & argc, char **argv[]) {
+	assert(argc > 0);
+	argc--;
+	return *(*argv)++;
 }
 
 int main(int argc, char* argv[]) {
-    char* ClassFilePath;
-    char* OutputFile = nullptr;
+	const auto program_name = shift_args(argc, &argv);
+	if (!argc) {
+		std::cerr <<"Error: É necessário um comando"<< std::endl;
+		help(program_name);
+		return 1;
+	}
+	const auto command = shift_args(argc, &argv);
 
-    // #define JVM_MODE 0
-    //#define LEITOR_EXIBIDOR 1
-
-    int mode = JVM_MODE;
-    /*
-    try {
-        semnome();
-     }
-     catch(std::runtime_error& e){
-        std::cerr << "Erro: " << e.what() << std::endl;
-        return EXIT_FAILURE;
-     }
-*/
-
-    switch (mode) {
-        case JVM_MODE: {
-            auto JvmInstance = Jvm("/home/matheus/CLionProjects/JVM/testes/Main.class");
-            JvmInstance.Run();
-            break;
-
-        }
-        case LEITOR_EXIBIDOR: {
-            auto Printer = ClassPrinter("/home/matheus/CLionProjects/JVM/testes/Main.class");
-            Printer.Run();
-            break;
-        }
-        case HELP: {
-            help();
-            break;
-        }
-        default:{
-            std::cerr <<"Modo de operacao invalido\n -m 0(default) para JVM ou -m 1 para leitor-exibidor\n ou -h para lista de opcoes"<< std::endl;
-            return EXIT_FAILURE;
-        }
-
-    }
-
-    // so pra testar cada bytecode
-    /*
-    auto teste = OpcodePrinter();
-    u4 count = 6;
-    u1 bytec [] = {0,0, 0x10, 23, 0x10, 43};
-    std::cout<< teste.CodeToString(bytec, count);
-    */
-    return EXIT_SUCCESS;
+	if (strcmp(command, "leitor_exibidor") == 0) {
+		if (!argc) {
+			std::cerr <<"Error: É necessário um arquivo .class"<< std::endl;
+			help(program_name);
+			return 1;
+		}
+		const auto class_file_path = shift_args(argc, &argv);
+		auto printer = ClassPrinter(class_file_path);
+		printer.Run();
+	}
+	else {
+		std::cerr <<"Error: comando invalido: " << command << std::endl;
+		help(program_name);
+		return 1;
+	}
+	return 0;
 }
