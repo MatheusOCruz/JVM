@@ -1,4 +1,10 @@
-# Como usar:
+# Compilação
+Com make:
+```sh
+make
+```
+
+# Uso:
 ```sh
 Como usar:
     ./build/jvm <command> <class_file_path>
