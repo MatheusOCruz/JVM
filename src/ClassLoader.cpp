@@ -4,7 +4,26 @@
 
 #include "../include/ClassLoader.h"
 
-void ClassLoader::LoadClass(const char *nomeArquivo) {
+class_file* ClassLoader::GetClass(const std::string class_file_path) {
+	if (!((*class_files).count(class_file_path))) {
+		LoadClass(class_file_path);
+	}
+	return (*class_files)[class_file_path];
+}
+
+class_file* ClassLoader::GetClassFromName(const std::string class_name) {
+	if (class_name == "java/lang/Object") {
+		// TODO(ruan): Nao sei o que fazer ainda quando a superclasse
+		// e Object
+		return NULL;
+	}
+	else {
+		return GetClass(class_name + ".class");
+	}
+}
+
+void ClassLoader::LoadClass(const std::string nomeArquivo) {
+	if ((*class_files).count(nomeArquivo)) return;
     current_file = new class_file;
 
     LoadFile(nomeArquivo);
@@ -24,14 +43,19 @@ void ClassLoader::LoadClass(const char *nomeArquivo) {
     (*class_files)[nomeArquivo] = current_file;
 
     delete file_buffer;
+
+	// Recursive Loading superClass
+	const cp_info* SuperEntry = (*current_file->constant_pool)[current_file->super_class];
+	const auto SuperName =  (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
+	GetClassFromName(SuperName);
 }
 
-void ClassLoader::LoadFile(const char *nomeArquivo) {
+void ClassLoader::LoadFile(const std::string nomeArquivo) {
     std::ifstream arquivo(nomeArquivo, std::ios::binary);
 
     if (!arquivo) {
         std::cerr << "Não foi possível abrir o arquivo: " << nomeArquivo << std::endl;
-        return;
+        exit(1);
     }
 
     // Obter o tamanho do arquivo
@@ -334,7 +358,7 @@ void ClassLoader::CheckVersion() {
     current_file->major_version = read_u2();
 
     if(current_file->major_version > 52){
-        throw UnsupportedClassVersionError(current_file->major_version);
+        // throw UnsupportedClassVersionError(current_file->major_version);
     }
 }
 
