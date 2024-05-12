@@ -25,7 +25,6 @@ private:
 	std::string ClassName(const cp_info *Entry);
 
     void PrintClassFile();
-    void PrintMetaData();
     void PrintConstantPoolTable();
     void PrintInterfaces();
     void PrintFields();

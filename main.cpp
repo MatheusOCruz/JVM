@@ -1,17 +1,12 @@
 #include <iostream>
-#include <vector>
 #include <iterator>
-#include <memory>
 #include <regex>
 #include <cstring>
-#include <assert.h>
+#include <cassert>
+
 #include "include/Jvm.h"
-
-
 #include "include/ClassPrinter.h"
-#include "include/Jvm.h"
 
-#include "include/OpcodePrinter.h"
 
 #define JVM_MODE 0
 #define LEITOR_EXIBIDOR 1
@@ -45,6 +40,7 @@ void help(const char * program_name) {
 	std::cerr << "    jvm" << std::endl;
 	std::cerr << "Exemplos:" << std::endl;
 	std::cerr << "    " << program_name << " leitor_exibidor ./testes/Main.class" << std::endl;
+    std::cerr << "    " << program_name << " leitor_exibidor ./testes/Main.class > saida.txt" << std::endl;
 	std::cerr << "    " << program_name << " jvm ./testes/Main.class" << std::endl;
 }
 
@@ -54,29 +50,70 @@ const char* shift_args(int & argc, char **argv[]) {
 	return *(*argv)++;
 }
 
+// ESSA E A MAIN FUNCIONAL
+
 int main(int argc, char* argv[]) {
+
 	const auto program_name = shift_args(argc, &argv);
 	if (!argc) {
 		std::cerr <<"Error: É necessário um comando"<< std::endl;
 		help(program_name);
-		return 1;
+		return EXIT_FAILURE;
 	}
 	const auto command = shift_args(argc, &argv);
 
-	if (strcmp(command, "leitor_exibidor") == 0) {
-		if (!argc) {
-			std::cerr <<"Error: É necessário um arquivo .class"<< std::endl;
-			help(program_name);
-			return 1;
-		}
-		const auto class_file_path = shift_args(argc, &argv);
-		auto printer = ClassPrinter(class_file_path);
-		printer.Run();
-	}
-	else {
-		std::cerr <<"Error: comando invalido: " << command << std::endl;
-		help(program_name);
-		return 1;
-	}
-	return 0;
+    if (!argc) {
+        std::cerr <<"Error: É necessário um arquivo .class"<< std::endl;
+        help(program_name);
+        return EXIT_FAILURE;
+    }
+
+    const auto class_file_path  = shift_args(argc, &argv);
+
+    if (strcmp(command, "leitor_exibidor") == 0) {
+
+        std::string output_file_path = "";
+
+        if (argc) {
+            output_file_path = std::string(shift_args(argc, &argv));
+            std::ofstream outputFile(output_file_path);
+        }
+
+        ClassPrinter(class_file_path).Run();
+
+    }
+    else if (strcmp(command, "jvm") == 0)
+        Jvm(class_file_path).Run();
+
+    else {
+        std::cerr << "Error: comando invalido: " << command << std::endl;
+        help(program_name);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+
+
+// MAIN PRA TESTE JVM
+
+int mai2n(){
+
+    int mode = JVM_MODE;
+
+    std::string file = "/home/matheus/CLionProjects/JVM/Main.class";
+    switch (mode) {
+        case JVM_MODE:
+            Jvm(file).Run();
+            break;
+        case LEITOR_EXIBIDOR:
+            ClassPrinter(file).Run();
+            break;
+
+        default:
+            return 1;
+    }
+
+    return 0;
 }

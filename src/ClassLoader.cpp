@@ -11,28 +11,18 @@ class_file* ClassLoader::GetClass(const std::string class_file_path) {
 	return (*class_files)[class_file_path];
 }
 
-class_file* ClassLoader::GetClassFromName(const std::string class_name) {
-	if (class_name == "java/lang/Object") {
-		// TODO(ruan): Nao sei o que fazer ainda quando a superclasse
-		// e Object
-		return NULL;
-	}
-	else {
-		return GetClass(class_name + ".class");
-	}
-}
-
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
 	if ((*class_files).count(nomeArquivo)) return;
+
     current_file = new class_file;
 
     LoadFile(nomeArquivo);
     CheckMagic();
     CheckVersion();
     BuildConstantPoolTable();
-    current_file->access_flags        = read_u2();
-    current_file->this_class          = read_u2();
-    current_file->super_class         = read_u2();
+    current_file->access_flags = read_u2();
+    current_file->this_class   = read_u2();
+    current_file->super_class  = read_u2();
     BuildInterfaces();
     BuildFields();
     BuildMethods();
@@ -44,17 +34,30 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     delete file_buffer;
 
-	// Recursive Loading superClass
-	const cp_info* SuperEntry = (*current_file->constant_pool)[current_file->super_class];
-	const auto SuperName =  (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-	GetClassFromName(SuperName);
+
+
+	// Caso Nao seja a classe Object, carrega superclasse de forma recursiva
+    if (current_file->super_class == 0)
+        return;
+
+	const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
+	const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
+    LoadClass(SuperName);
 }
 
-void ClassLoader::LoadFile(const std::string nomeArquivo) {
-    std::ifstream arquivo(nomeArquivo, std::ios::binary);
+void ClassLoader::LoadFile(const std::string& nomeArquivo) {
+    // garante que arquivo fornecido e .class
+    auto classPath = nomeArquivo;
+    std::regex ClassFIleTermination (".*\\.class$");
+
+    if (!std::regex_search(nomeArquivo, ClassFIleTermination))
+        classPath = nomeArquivo + ".class";
+
+
+    std::ifstream arquivo(classPath, std::ios::binary);
 
     if (!arquivo) {
-        std::cerr << "Não foi possível abrir o arquivo: " << nomeArquivo << std::endl;
+        std::cerr << "Não foi possível abrir o arquivo: " << classPath << std::endl;
         exit(1);
     }
 
@@ -210,7 +213,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     else
          AttributeTypeName = AttributeType::NotImplemented;
 
-    //TODO: talvez criar um enum
+
     switch (AttributeTypeName) {
         case AttributeType::ConstantValue: {
             Entry->constantvalue_index = read_u2();

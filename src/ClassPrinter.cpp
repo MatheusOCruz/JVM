@@ -5,11 +5,12 @@
 #include "../include/ClassPrinter.h"
 
 std::string ClassPrinter::ClassName(const cp_info *Entry) {
-	if(Entry->tag != ConstantPoolTag::CONSTANT_Class ){
-		assert(0);
-	}
-	const auto constant_pool = *ClassFile->constant_pool;
-	return constant_pool[Entry->name_index]->AsString();
+
+    if(Entry->tag != ConstantPoolTag::CONSTANT_Class) // Classe == Object
+		return {""};
+
+	return (*ClassFile->constant_pool)[Entry->name_index]->AsString();
+
 }
 
 void ClassPrinter::Run() {
@@ -38,22 +39,22 @@ void ClassPrinter::PrintClassFile(){
 			  << std::setbase(16) << ClassFile->access_flags << std::endl
 			  << std::setbase(10) << std::setfill(' ');
 
-    PrintMetaData();
+
     PrintConstantPoolTable();
     PrintInterfaces();
     PrintFields();
     PrintMethods();
     PrintAttributes();
 
-    ClassFile = Loader->GetClassFromName(super_class_name);
+    //ClassFile = Loader->GetClassFromName(super_class_name);
+    /*
 	if (ClassFile) {
 		PrintClassFile();
 	}
+     */
 }
 
-void ClassPrinter::PrintMetaData() {
 
-}
 
 void ClassPrinter::PrintConstantPoolTable() {
 	std::cout << "Constant pool:" << std::endl;

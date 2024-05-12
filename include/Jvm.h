@@ -6,6 +6,7 @@
 #define JVM_JVM_H
 
 #include <stack>
+#include <utility>
 
 #include "ClassLoader.h"
 #include "JvmStructs.h"
@@ -14,7 +15,7 @@
 
 class Jvm {
 public:
-     explicit Jvm(char* _main_file) : main_file(_main_file) {}
+     explicit Jvm(std::string _main_file) : main_file(std::move(_main_file)) {}
      void Run();
 
 
@@ -29,16 +30,16 @@ private:
 
     void ExecBytecode();
 
-    void NewClassInstance(char* class_name);
-    class_file* GetClass(char* class_name);
+    void NewClassInstance(std::string class_name);
+    class_file* GetClass(std::string class_name);
 
     //vars jvm
-    char* main_file;
+    std::string main_file;
     uint16_t pc = 0;
 
 
     JVM::stack<Frame*> FrameStack;
-    std::unordered_map<const char*,class_file*>* MethodArea;
+    std::unordered_map<std::string, class_file*>* MethodArea;
 
 
     Frame*          CurrentFrame;

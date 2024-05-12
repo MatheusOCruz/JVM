@@ -12,6 +12,7 @@
 #include <iterator>
 #include <memory>
 #include <cstring>
+#include <regex>
 #include <unordered_map>
 #include "ClassFileEnums.h"
 #include "ClassFileStructs.h"
@@ -23,19 +24,20 @@ class ClassLoader {
 public:
      // pro printer
 	ClassLoader() {class_files = new std::unordered_map<std::string,class_file*>;}
-	class_file* GetClass(const std::string class_file_path);
-	class_file* GetClassFromName(const std::string class_name);
-
      // pro jvm
 	explicit ClassLoader(std::unordered_map<std::string ,class_file*>* _class_files) : class_files(_class_files) {}
-
      ~ClassLoader() = default;
 
 
+
+    class_file* GetClass(const std::string class_file_path);
+
+    void LoadClass(const std::string nomeArquivo);
+
 private:
     //carrega arquivo em buffer
-    void LoadClass(const std::string nomeArquivo);
-    void LoadFile(const std::string nomeArquivo);
+
+    void LoadFile(const std::string& nomeArquivo);
 
 
 

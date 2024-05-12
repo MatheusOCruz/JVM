@@ -5,11 +5,12 @@
 #include "../include/Jvm.h"
 
 void Jvm::Run(){
-    MethodArea = new std::unordered_map<const char*,class_file*>;
+    MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
     Loader->LoadClass(main_file);
     CurrentClass = GetClass(main_file);
+    //create method map by name
 
     std::string MethodName = "main";
     GetMethod(MethodName);
@@ -26,6 +27,7 @@ void Jvm::Run(){
 
 
     ExecBytecode();
+
 }
 
 
@@ -35,8 +37,6 @@ void Jvm::ExecBytecode(){
         (this->*bytecodeFuncs[bytecode])();
     }
 }
-
-
 
 //salva valores atuais pro retorno ao frame
 void Jvm::SaveFrameState(){
@@ -85,7 +85,7 @@ void Jvm::GetMethod(const std::string& MethodName){
     for(auto Method: *CurrentClass->methods)
         if((*CurrentClass->constant_pool)[Method->name_index]->AsString() == MethodName){
             CurrentMethod = Method;
-            break;
+            return;
         }
     throw std::runtime_error("no method with given name "+ MethodName);
 }
@@ -104,16 +104,18 @@ void Jvm::GetCurrentMethodCode(){
 
 
 
-class_file* Jvm::GetClass(char* class_name){
-    if(MethodArea->find(class_name) == MethodArea->end())
+class_file* Jvm::GetClass(std::string class_name){
+    if(MethodArea->find(class_name) == MethodArea->end()) {
         Loader->LoadClass(class_name);
+    //TODO: EXECUTAR METODO ESTATICO DESSA CLASSE
+    }
 
     return (*MethodArea)[class_name];
 }
 
 // get class file and create instance
 
-void Jvm::NewClassInstance(char* class_name){
+void Jvm::NewClassInstance(std::string class_name){
     ClassInstance* NewClassInstance;
     class_file* ClassFile = GetClass(class_name);
     // magia da criacao
