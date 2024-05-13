@@ -16,7 +16,7 @@ void ClassPrinter::PrintClassFile(){
     std::cout << std::endl
 			  << "Leitor Exibidor: "
 			  << std::endl << std::endl;
-
+    PrintGeneralInfo();
     PrintMetaData();
     PrintConstantPoolTable();
     PrintInterfaces();
@@ -29,6 +29,21 @@ void ClassPrinter::PrintClassFile(){
         SaveInFile();
     else
         std::cout<<outputBuffer;
+}
+
+void ClassPrinter::PrintGeneralInfo() {
+    std::cout << "General Information:" << std::endl;
+    std::cout << "Minor version: " << ClassFile->minor_version << std::endl;
+    std::cout << "Major version: " << ClassFile->major_version << std::endl;
+    std::cout << "Constant pool count: " << ClassFile->constant_pool->size() << std::endl;
+    std::cout << "Access flags: 0x" << std::hex << ClassFile->access_flags << std::dec << std::endl;
+    std::cout << "This class: " << ClassFile->this_class << std::endl;
+    std::cout << "Super class: " << ClassFile->super_class << std::endl;
+    std::cout << "Interfaces count: " << ClassFile->interfaces_count << std::endl;
+    std::cout << "Fields count: " << ClassFile->fields_count << std::endl;
+    std::cout << "Methods count: " << ClassFile->methods_count << std::endl;
+    std::cout << "Attributes count: " << ClassFile->attributes_count << std::endl;
+    std::cout << std::endl;
 }
 
 void ClassPrinter::PrintMetaData() {

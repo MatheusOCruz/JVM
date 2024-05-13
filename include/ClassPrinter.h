@@ -23,6 +23,7 @@ public:
 private:
     void SaveInFile();
 
+    void PrintGeneralInfo();
     void PrintClassFile();
     void PrintMetaData();
     void PrintConstantPoolTable();
