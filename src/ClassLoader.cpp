@@ -6,6 +6,7 @@
 
 class_file* ClassLoader::GetClass(const std::string class_file_path) {
 	if (!((*class_files).count(class_file_path))) {
+        std::cout << "Classe nao carregada, carregando: " << class_file_path << std::endl;
 		LoadClass(class_file_path);
 	}
 	return (*class_files)[class_file_path];
@@ -13,10 +14,13 @@ class_file* ClassLoader::GetClass(const std::string class_file_path) {
 
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
 	if ((*class_files).count(nomeArquivo)) return;
-
-    current_file = new class_file;
-
-    LoadFile(nomeArquivo);
+    std::cout << "Carregando arquivo: " << nomeArquivo << std::endl;
+  
+    current_file = new class_file; // TODO FIX THIS DONT USE HARDCODE?
+    if (nomeArquivo == "java/lang/Object")
+        LoadFile("Object.class");
+    else
+        LoadFile(nomeArquivo);
     CheckMagic();
     CheckVersion();
     BuildConstantPoolTable();
@@ -42,6 +46,7 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
 	const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
 	const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
+    std::cout << "Carregando superclasse: " << SuperName << std::endl;
     LoadClass(SuperName);
 }
 
@@ -50,8 +55,11 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
     auto classPath = nomeArquivo;
     std::regex ClassFIleTermination (".*\\.class$");
 
-    if (!std::regex_search(nomeArquivo, ClassFIleTermination))
-        classPath = nomeArquivo + ".class";
+    if (!std::regex_search(nomeArquivo, ClassFIleTermination)){
+        //  classPath = nomeArquivo + ".class";
+         std::cout << "Arquivo fornecido nao e .class, tentando abrir: " << classPath << std::endl;
+    }
+        
 
 
     std::ifstream arquivo(classPath, std::ios::binary);

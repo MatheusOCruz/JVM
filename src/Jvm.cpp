@@ -8,6 +8,7 @@ void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
+    std::cout<<"main file "<<main_file<<"\n";
     Loader->LoadClass(main_file);
     CurrentClass = GetClass(main_file);
     //create method map by name
@@ -106,6 +107,7 @@ void Jvm::GetCurrentMethodCode(){
 
 class_file* Jvm::GetClass(std::string class_name){
     if(MethodArea->find(class_name) == MethodArea->end()) {
+        std::cout<<"loading class "<<class_name<<"\n";
         Loader->LoadClass(class_name);
     //TODO: EXECUTAR METODO ESTATICO DESSA CLASSE
     }
