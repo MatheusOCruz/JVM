@@ -28,9 +28,11 @@ private:
     void GetMethod(const std::string& MethodName);
     void GetCurrentMethodCode();
 
+    u1   NextCodeByte();
     void ExecBytecode();
 
     void NewClassInstance(std::string class_name);
+
     class_file* GetClass(std::string class_name);
 
     //vars jvm
@@ -38,8 +40,9 @@ private:
     uint16_t pc = 0;
 
 
-    JVM::stack<Frame*> FrameStack;
+    JVM::stack<Frame*>                            FrameStack;
     std::unordered_map<std::string, class_file*>* MethodArea;
+    std::vector<void*>                            Heap;
 
 
     Frame*          CurrentFrame;
