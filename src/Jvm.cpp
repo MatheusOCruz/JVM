@@ -160,16 +160,20 @@ void Jvm::return_u8(){
 
 
 
-
+// Do nothing
 void Jvm::nop() {
 
 }
-
+// An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
 void Jvm::aconst_null(){
-  
+    // !TODO checar se a versao cpp especificada possui nullptr
+    CurrentFrame->OperandStack->PushRef(nullptr);
 }
 
-
+// Push the int constant <i> (-1, 0, 1, 2, 3, 4 or 5) onto the operand
+// stack.
+// Notes Each of this family of instructions is equivalent to bipush <i> for
+// the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
     CurrentFrame->OperandStack->push(static_cast<u4>(-1));
 }
@@ -206,15 +210,19 @@ void Jvm::lconst_1(){
 
 }
 
+// Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand
+// stack
 void Jvm::fconst_0(){
-
+    CurrentFrame->OperandStack->push(0.0);
 }
 
 void Jvm::fconst_1(){
+    CurrentFrame->OperandStack->push(1.0);
 
 }
 
 void Jvm::fconst_2(){
+    CurrentFrame->OperandStack->push(2.0);
 
 }
 
@@ -225,9 +233,13 @@ void Jvm::dconst_0(){
 void Jvm::dconst_1(){
 
 }
+// The immediate byte is sign-extended to an int value. That value
+// is pushed onto the operand stac
+// !TODO: checar se implmentacao ta certa
+
 
 void Jvm::bipush(){
-
+CurrentFrame->OperandStack->push((*CurrentCode->code)[++pc]);
 }
 
 void Jvm::sipush(){
