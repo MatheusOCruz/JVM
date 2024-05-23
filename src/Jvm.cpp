@@ -1585,8 +1585,8 @@ void Jvm::wide(){
 }
 
 void Jvm::multianewarray(){
-    u2 index      = GetIndex2();
-    u1 dimensions =  
+    // u2 index      = GetIndex2();
+    // u1 dimensions =  
 }
 
 void Jvm::ifnull(){

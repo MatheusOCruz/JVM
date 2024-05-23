@@ -6,7 +6,7 @@ BIN_DIR=$(BUILD_DIR)/elf
 SRC_DIR=src
 INCLUDE_DIR=include
 
-CFLAGS= -Wall -Wextra -Wshadow -std=c++11 -O2 -g
+CFLAGS= -Wall -Wextra -Wshadow -std=c++11 -O2 -g 
 CC=g++
 
 TARGET=$(BUILD_DIR)/jvm
@@ -18,8 +18,9 @@ SOURCES= main.cpp \
 		$(SRC_DIR)/ClassPrinter.cpp \
 		$(SRC_DIR)/OpcodePrinter.cpp \
 		$(SRC_DIR)/RunTimeExceptions.cpp \
-		$(SRC_DIR)/Jvm.cpp \
-		$(SRC_DIR)/OpcodePrinter.cpp 
+		$(SRC_DIR)/Jvm.cpp 
+		
+
 
 OBJ_NAMES=$(SOURCES:.cpp=.o)
 OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(OBJ_NAMES))
