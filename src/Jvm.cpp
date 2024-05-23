@@ -31,10 +31,13 @@ void Jvm::Run(){
 
 }
 
+u1 inline Jvm::NextCodeByte(){
+    return (*CurrentCode->code)[pc++];
+} 
 
 void Jvm::ExecBytecode(){
     while(pc != CurrentCode->code_length){
-        u1 bytecode = (*CurrentCode->code)[pc++];
+        u1 bytecode =  NextCodeByte();
         (this->*bytecodeFuncs[bytecode])();
     }
 }
@@ -1582,7 +1585,8 @@ void Jvm::wide(){
 }
 
 void Jvm::multianewarray(){
-
+    u2 index      = GetIndex2();
+    u1 dimensions =  
 }
 
 void Jvm::ifnull(){

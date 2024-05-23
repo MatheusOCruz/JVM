@@ -19,10 +19,7 @@ SOURCES= main.cpp \
 		$(SRC_DIR)/OpcodePrinter.cpp \
 		$(SRC_DIR)/RunTimeExceptions.cpp \
 		$(SRC_DIR)/Jvm.cpp \
-		$(SRC_DIR)/OpcodePrinter.cpp \
-		$(SRC_DIR)/RunTimeExceptions.cpp 
-		
-
+		$(SRC_DIR)/OpcodePrinter.cpp 
 
 OBJ_NAMES=$(SOURCES:.cpp=.o)
 OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(OBJ_NAMES))
