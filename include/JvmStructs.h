@@ -4,6 +4,7 @@
 
 #ifndef JVM_JVMSTRUCTS_H
 #define JVM_JVMSTRUCTS_H
+#include "JvmEnums.h"
 #include "typedefs.h"
 
 namespace JVM{
@@ -84,11 +85,13 @@ struct Frame{
 };
 
 
+struct Reference{
+    ReferenceType Type;
+    void* Value;
 
-struct Handle{
-    std::vector<method_info*>* MethodTable;
-    class_file* ClassObject;
+    Reference(ReferenceType type, void* value) : Type(type), Value(value) {}
 };
+
 
 union FieldEntry{
     u1 AsByte;
@@ -102,15 +105,41 @@ union FieldEntry{
     u8 AsLong;
     double AsDouble;
 
-    uintptr_t AsRef;
-
+    Reference AsRef; // infelizmente e oq temos pra hj   
 };
 
+
+
+struct Handle{
+    std::vector<method_info*>* MethodTable;
+    class_file* ClassObject;
+};
 
 struct ClassInstance{
     Handle*         HandlePointer;
     std::unordered_map<std::string, FieldEntry> ObjectData;
 };
+
+
+template<int N, ArrayTypeCode Type>
+struct ArrayInstance{
+    using SubArray = ArrayInstance<N-1,Type>;
+    std::vector<ArrayInstance<N-1,Type>> ComponentArray;
+    
+    ArrayInstance(u1 size, JVM::stack<int>* sizes) {
+        int SubArraySize = sizes->Pop();
+        ComponentArray   =  std::vector<SubArray>(size, ArrayIntance(SubArraySize,sizes));
+    }
+};
+
+template<ArrayTypeCode Type>
+struct ArrayInstance<1,Type>{
+    std::vector<char> ComponentArray;
+    ArrayInstance(u1 size, JVM::stack<int>*) : ComponentArray( new std::vector<char>(size) ){}
+};
+
+
+
 
 
 union Cat2Value{
@@ -121,5 +150,8 @@ union Cat2Value{
   long long AsLong;
   double AsDouble;
 };
+
+
+
 
 #endif //JVM_JVMSTRUCTS_H

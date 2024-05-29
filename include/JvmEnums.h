@@ -17,5 +17,12 @@ enum class ArrayTypeCode{
     T_LONG    = 11,
 };
 
+enum class ReferenceType{
+    NullReference,
+    ClassType,
+    ArrayType,
+    InterfaceType
+};
+
 
 #endif //JVM_JVMENUMS_H

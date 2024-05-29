@@ -30,9 +30,15 @@ void Jvm::Run(){
 
 }
 
+
+
 u1 inline Jvm::NextCodeByte(){
     return (*CurrentCode->code)[pc++];
 } 
+
+cp_info* inline Jvm::GetConstantPoolEntryAt(u2 index){
+    return (*CurrentClass->constant_pool)[index];
+}
 
 void Jvm::ExecBytecode(){
     while(pc != CurrentCode->code_length){
@@ -116,16 +122,19 @@ class_file* Jvm::GetClass(std::string class_name){
     return (*MethodArea)[class_name];
 }
 
-// get class file and create instance
+// Create intance of class based on class file
 
 void Jvm::NewClassInstance(std::string class_name){
+     
     ClassInstance* NewClassInstance;
     class_file* ClassFile = GetClass(class_name);
     // magia da criacao
     CurrentFrame->OperandStack->PushRef(NewClassInstance);
 }
 
-
+// create n dimensional array 
+// dimension_counts contem tamanho de cada array 
+// de forma recusiva
 
 
 // funcoes auxiliares pros bytecode
@@ -1511,30 +1520,26 @@ void Jvm::newarray(){
     switch (static_cast<ArrayTypeCode>(ArrayTypeCodeValue)) {
         case ArrayTypeCode::T_BOOLEAN:
         case ArrayTypeCode::T_BYTE: {
-            ArrayEntrySize = 1;
-            break;
+            return 1;
         }
         case ArrayTypeCode::T_CHAR:
         case ArrayTypeCode::T_SHORT:{
-            ArrayEntrySize = 2;
-            break;
+            return 2;
         }
 
         case ArrayTypeCode::T_FLOAT:
         case ArrayTypeCode::T_INT:{
-            ArrayEntrySize = 4;
-            break;
+            return 4;
         }
 
         case ArrayTypeCode::T_DOUBLE:
         case ArrayTypeCode::T_LONG:{
-            ArrayEntrySize = 8;
-            break;
+            return 8;
         }
-
     }
-
+    
     void* ArrayRef = new char[Count * ArrayEntrySize];
+
     CurrentFrame->OperandStack->PushRef(ArrayRef);
 }
 
@@ -1550,9 +1555,7 @@ void Jvm::athrow(){
 
 }
 
-void Jvm::checkcast(){
-
-}
+void Jvm::checkcast(){}
 
 void Jvm::instanceof() {
 
@@ -1570,10 +1573,33 @@ void Jvm::wide(){
 
 }
 
+
+
+ //TODO: vou usar 1 byte pra testar por enquanto, dps fazer pros outros; -> switch case do tipo
+ 
 void Jvm::multianewarray(){
-    u2 index      = GetIndex2();
-    u1 dimensions =  
-}
+    u2          index           = GetIndex2();
+    u1          dimensions      = NextCodeByte();
+    cp_info*    ArrayInfo       = GetConstantPoolEntryAt(index);
+    std::string ArrayDiscriptor = GetConstantPoolEntryAt(ArrayInfo->name_index)->AsString();
+    std::string ArrayType       = ArrayDiscriptor.substr(dimensions, ArrayDiscriptor.size());
+    
+      ArrayTypeCode Temp = ArrayTypeCode::T_BYTE
+    
+
+
+    JVM::stack sizes;
+
+    for(int i = 0; i < dimensions; i++) 
+        sizes.push(CurrentFrame->OperandStack->Pop());
+
+    auto Array = new  ArrayInstance<dimensions, Temp>(sizes.Pop(), &sizes);
+    Reference ArrayRef(ReferenceType::ArrayType, reinterpret_cast<void*>(Array));
+    
+    CurrentFrame->OperandStack->push(Heap.size()); // tamanho atual é indice da próxima entrada
+    
+    Heap.emplace_back(ArrayRef);
+  }
 
 void Jvm::ifnull(){
 
