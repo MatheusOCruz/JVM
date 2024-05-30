@@ -206,7 +206,7 @@ void Jvm::iconst_5(){
 }
 
 void Jvm::lconst_0(){
-
+    
 }
 
 void Jvm::lconst_1(){
@@ -217,6 +217,7 @@ void Jvm::lconst_1(){
 // stack
 void Jvm::fconst_0(){
     CurrentFrame->OperandStack->push(0.0);
+    //era pra dar pc++ ao final de cada funcao?
 }
 
 void Jvm::fconst_1(){
@@ -230,6 +231,7 @@ void Jvm::fconst_2(){
 }
 
 void Jvm::dconst_0(){
+    CurrentFrame->OperandStack->push(0.0);
 
 }
 
@@ -831,22 +833,47 @@ void Jvm::iadd(){
 
 
 
-
+// Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
 void Jvm::ladd(){
-
+    // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
+    int32_t value1;
+    int32_t value2;
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t result = value1 + value2;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
 
-
+// Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
 void Jvm::fadd(){
+    // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
+    float value1;
+    float value2;
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    float result = value1 + value2;
+    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
 
 
-
+// !todo: fix, erradasso
 void Jvm::dadd(){
+    // !TODO deve ta errado, como tratar double na op stack?
+    double value1;
+    double value2;
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    float result = value1 + value2;
+    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
+    // !TODO: fix static cast, e isso n ta double
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1212,8 +1239,19 @@ void Jvm::i2s(){
 
 
 
-
+// !TODO: fix, n eh assim q se trata long
 void Jvm::lcmp(){
+    long value1 = static_cast<long>(CurrentFrame->OperandStack->Pop());
+    long value2 = static_cast<long>(CurrentFrame->OperandStack->Pop());
+    int intValue = 9;
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+//!todo fix this is not how to push a long into op stack        
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
 
 }
 
