@@ -178,7 +178,7 @@ void Jvm::aconst_null(){
 // Notes Each of this family of instructions is equivalent to bipush <i> for
 // the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
-    CurrentFrame->OperandStack->push(static_cast<u4>(-1));
+    CurrentFrame->OperandStack->push(static_cast<u1>(-1));
 }
 
 void Jvm::iconst_0(){
@@ -856,7 +856,8 @@ void Jvm::fadd(){
 
     float result = value1 + value2;
     // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+    // !TODO check these static casts
+    CurrentFrame->OperandStack->push(static_cast<float>(result));
 
 }
 
@@ -873,7 +874,7 @@ void Jvm::dadd(){
     float result = value1 + value2;
     // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
     // !TODO: fix static cast, e isso n ta double
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+    CurrentFrame->OperandStack->push(static_cast<float>(result));
 
 }
 
@@ -1250,8 +1251,8 @@ void Jvm::lcmp(){
         intValue = 0;
     else // (value1 < value2)
         intValue = -1;
-//!todo fix this is not how to push a long into op stack        
-    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
+        
+    CurrentFrame->OperandStack->push(static_cast<u1>(intValue));
 
 }
 
