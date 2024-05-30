@@ -178,31 +178,32 @@ void Jvm::aconst_null(){
 // Notes Each of this family of instructions is equivalent to bipush <i> for
 // the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
-    CurrentFrame->OperandStack->push(static_cast<u1>(-1));
+    // TODO: static cast to const u1 or int??
+    CurrentFrame->OperandStack->push(static_cast<const u1>(-1));
 }
 
 void Jvm::iconst_0(){
-    CurrentFrame->OperandStack->push(0);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(0));
 }
 
 void Jvm::iconst_1(){
-    CurrentFrame->OperandStack->push(1);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(1));
 }
 
 void Jvm::iconst_2(){
-    CurrentFrame->OperandStack->push(2);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(2));
 }
 
 void Jvm::iconst_3(){
-    CurrentFrame->OperandStack->push(3);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(3));
 }
 
 void Jvm::iconst_4(){
-    CurrentFrame->OperandStack->push(4);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(4));
 }
 
 void Jvm::iconst_5(){
-    CurrentFrame->OperandStack->push(5);
+    CurrentFrame->OperandStack->push(static_cast<const u1>(5));
 }
 
 void Jvm::lconst_0(){
