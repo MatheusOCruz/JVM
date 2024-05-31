@@ -54,9 +54,11 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
         classPath = nomeArquivo + ".class";
 
     if(classPath == std::string("java/lang/Object.class")){
-        classPath = "C:\\Users\\Matheus\\CLionProjects\\JVM\\Object.class";
+        classPath = "./Object.class";
     }
-
+    #ifdef _WIN32
+    std::replace(classPath.begin(),classPath.end(),'/','\\');
+    #endif
     std::ifstream arquivo(classPath, std::ios::binary);
 
     if (!arquivo) {
