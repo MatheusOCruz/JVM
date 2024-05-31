@@ -93,6 +93,16 @@ struct attribute_info {
             u2 line_number_table_length;
             std::vector<line_number_table*>* line_number_table;
         };
+
+        struct { // Local variable table
+            u2 local_variable_table_length;
+            std::vector<LocalVariableTableEntry*>* local_variable_table;
+        };
+
+        struct { // Local variable type table
+            u2 local_variable_type_table_length;
+            std::vector<LocalVariableTypeTable*>* local_variable_type_table;
+        };
         struct { // StackMapTable_attribute
             u2 number_of_entries;
             std::vector<stack_map_table_attribute*>* entries;

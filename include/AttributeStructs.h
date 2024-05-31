@@ -31,6 +31,23 @@ struct verification_type_info {
     };
 };
 
+struct LocalVariableTableEntry {
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 index;
+};
+
+struct LocalVariableTypeTable {
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 signature_index;
+    u2 index;
+};
+
+
 struct stack_map_frame {
     u1 frame_type; // Pode variar entre 0-63, 64-127, 247, 248-250, 251, 252-254, 255
     union {
