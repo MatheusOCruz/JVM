@@ -295,7 +295,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             Entry->line_number_table_length = read_u2();
             Entry->line_number_table = new std::vector<line_number_table*>;
 
-            for (int i = 0; i < Entry->line_number_table_length; ++i) {
+            for (int i = 0; i < Entry->local_variable_table_length; ++i) {
                 auto local_aux = new LocalVariableTableEntry{};
                 local_aux -> start_pc= read_u2();
                 local_aux-> length = read_u2();
@@ -311,7 +311,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             Entry->line_number_table_length = read_u2();
             Entry->line_number_table = new std::vector<line_number_table*>;
 
-            for (int i = 0; i < Entry->line_number_table_length; ++i) {
+            for (int i = 0; i < Entry->local_variable_type_table_length; ++i) {
                 auto local_aux = new LocalVariableTypeTable{};
                 local_aux->start_pc = read_u2();
                 local_aux->length = read_u2();
