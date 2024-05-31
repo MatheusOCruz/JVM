@@ -32,11 +32,9 @@ private:
     void ExecBytecode();
 
     void NewClassInstance(std::string class_name);
-    void NewArray(u1 dimensions, std::stack<u4> counts);
-
 
     class_file* GetClass(std::string class_name);
-    cp_info*    GetConstantPoolEntryAt(u2 index){
+    cp_info*    GetConstantPoolEntryAt(u2 index);
 
 
     //vars jvm
@@ -343,6 +341,7 @@ private:
             &Jvm::monitorexit,   &Jvm::wide,         &Jvm::multianewarray,
             &Jvm::ifnull,        &Jvm::ifnonnull,    &Jvm::goto_w,
             &Jvm::jsr_w
+        
     };
 };
 

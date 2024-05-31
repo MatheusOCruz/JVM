@@ -1,4 +1,4 @@
-//jvm
+//jvmjvm.cjvm.c
 // Created by matheus on 4/11/24.
 //
 
@@ -32,11 +32,11 @@ void Jvm::Run(){
 
 
 
-u1 inline Jvm::NextCodeByte(){
+inline u1 Jvm::NextCodeByte(){
     return (*CurrentCode->code)[pc++];
 } 
 
-cp_info* inline Jvm::GetConstantPoolEntryAt(u2 index){
+inline cp_info* Jvm::GetConstantPoolEntryAt(u2 index){
     return (*CurrentClass->constant_pool)[index];
 }
 
@@ -1520,21 +1520,21 @@ void Jvm::newarray(){
     switch (static_cast<ArrayTypeCode>(ArrayTypeCodeValue)) {
         case ArrayTypeCode::T_BOOLEAN:
         case ArrayTypeCode::T_BYTE: {
-            return 1;
+            ArrayEntrySize = 1;
         }
         case ArrayTypeCode::T_CHAR:
         case ArrayTypeCode::T_SHORT:{
-            return 2;
+            ArrayEntrySize = 2;
         }
 
         case ArrayTypeCode::T_FLOAT:
         case ArrayTypeCode::T_INT:{
-            return 4;
+            ArrayEntrySize = 4;
         }
 
         case ArrayTypeCode::T_DOUBLE:
         case ArrayTypeCode::T_LONG:{
-            return 8;
+            ArrayEntrySize = 8;
         }
     }
     
@@ -1584,11 +1584,11 @@ void Jvm::multianewarray(){
     std::string ArrayDiscriptor = GetConstantPoolEntryAt(ArrayInfo->name_index)->AsString();
     std::string ArrayType       = ArrayDiscriptor.substr(dimensions, ArrayDiscriptor.size());
     
-      ArrayTypeCode Temp = ArrayTypeCode::T_BYTE
+    ArrayTypeCode Temp = ArrayTypeCode::T_BYTE;
     
 
-
-    JVM::stack sizes;
+    /*
+    JVM::stack<int> sizes;
 
     for(int i = 0; i < dimensions; i++) 
         sizes.push(CurrentFrame->OperandStack->Pop());
@@ -1599,6 +1599,7 @@ void Jvm::multianewarray(){
     CurrentFrame->OperandStack->push(Heap.size()); // tamanho atual é indice da próxima entrada
     
     Heap.emplace_back(ArrayRef);
+    */
   }
 
 void Jvm::ifnull(){

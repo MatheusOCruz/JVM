@@ -128,14 +128,14 @@ struct ArrayInstance{
     
     ArrayInstance(u1 size, JVM::stack<int>* sizes) {
         int SubArraySize = sizes->Pop();
-        ComponentArray   =  std::vector<SubArray>(size, ArrayIntance(SubArraySize,sizes));
+        ComponentArray   =  std::vector<SubArray>(size, ArrayInstance<N-1,Type>(SubArraySize,sizes));
     }
 };
 
 template<ArrayTypeCode Type>
 struct ArrayInstance<1,Type>{
     std::vector<char> ComponentArray;
-    ArrayInstance(u1 size, JVM::stack<int>*) : ComponentArray( new std::vector<char>(size) ){}
+    ArrayInstance(u1 size, JVM::stack<int>*) : ComponentArray( std::vector<char>(size) ){}
 };
 
 
