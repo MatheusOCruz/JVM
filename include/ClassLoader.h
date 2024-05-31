@@ -19,6 +19,8 @@
 #include "typedefs.h"
 #include "ClassLoaderErrors.h"
 
+
+
 // ainda n sei como que tem q retornar essas info, ent por enquanto so vai dar load
 class ClassLoader {
 public:
@@ -76,6 +78,4 @@ private:
     class_file*                 current_file{};
     std::unordered_map<std::string ,class_file*>* class_files;
 };
-
-
-#endif //JVM_CLASSLOADER_H
+#endif JVM_CLASSLOADER_H

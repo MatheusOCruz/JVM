@@ -1,21 +1,15 @@
-//
-// Created by matheus on 4/9/24.
-//
-
+// Definição das estruturas auxiliares necessárias
 #ifndef JVM_ATTRIBUTESTRUCTS_H
 #define JVM_ATTRIBUTESTRUCTS_H
 #include "typedefs.h"
 #include "ClassFileStructs.h"
 
-//TODO: falta um bocado
-
-struct Exception_tableEntry{
+struct Exception_tableEntry {
     u2 start_pc;
     u2 end_pc;
     u2 handler_pc;
     u2 catch_type;
 };
-
 
 struct InnerClasses {
     u2 inner_class_info_index;
@@ -24,71 +18,84 @@ struct InnerClasses {
     u2 inner_class_access_flags;
 };
 
-//TODO: esse aqui parece q e do cao
-struct StackMapTable_attribute {
-    u2 attribute_name_index;  // utf-8 com "StackMapTable"
-    u4 attribute_length;
+struct line_number_table {
+    u2 start_pc;
+    u2 line_number;
+};
+
+struct verification_type_info {
+    u1 tag;
+    union {
+        u2 cpool_index;   // Used by ITEM_Object and ITEM_Uninitialized
+        u2 offset;        // Used by ITEM_Uninitialized
+    };
+};
+
+struct stack_map_frame {
+    u1 frame_type; // Pode variar entre 0-63, 64-127, 247, 248-250, 251, 252-254, 255
+    union {
+        struct { // same_frame
+            // Nenhum campo adicional
+        } same_frame;
+
+        struct { // same_locals_1_stack_item_frame e same_locals_1_stack_item_frame_extended
+            verification_type_info stack;
+        } same_locals_1_stack_item_frame;
+
+        struct { // same_frame_extended
+            u2 offset_delta;
+        } same_frame_extended;
+
+        struct { // chop_frame, same_frame_extended, append_frame
+            u2 offset_delta;
+        } chop_frame;
+
+        struct { // full_frame
+            u2 offset_delta;
+            u2 number_of_locals;
+            std::vector<verification_type_info>* locals;
+            u2 number_of_stack_items;
+            std::vector<verification_type_info>* stack;
+        } full_frame;
+    };
+};
+
+struct stack_map_table_attribute {
     u2 number_of_entries;
-    //stack_map_frame entries[number_of_entries]; aindda n sei cole desse stack_map_frame
+    std::vector<stack_map_frame>* entries;
 };
 
-
-
-
-
-
-
-struct EnclosingMethod_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 class_index;
-    u2 method_index;
-};
-
-struct Synthetic_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-};
-
-struct Signature_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 signature_index;
-};
-
-struct SourceFile_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
+struct source_file_attribute {
     u2 sourcefile_index;
 };
 
-struct SourceDebugExtension_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    std::vector<u1>* debug_extension;
+struct signature_attribute {
+    u2 signature_index;
 };
 
-struct LineNumberTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 line_number_table_length;
-    struct { u2 start_pc;
-        u2 line_number;
-    } line_number_table; // tendeu ja ne
+struct constant_value_attribute {
+    u2 constantvalue_index;
 };
 
-struct a{
-    u2 start_pc;
-    u2 length;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 index;
-};
-struct LocalVariableTable_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 local_variable_table_length;
-    std::vector<a>* local_variable_table; // duvido adivinhar
+struct exception_attribute {
+    u2 number_of_exceptions;
+    std::vector<u2>* exception_index_table;
 };
 
-#endif //JVM_ATTRIBUTESTRUCTS_H
+struct code_attribute {
+    u2 max_stack;
+    u2 max_locals;
+    u4 code_length;
+    std::vector<u1>* code;
+    u2 exception_table_length;
+    std::vector<Exception_tableEntry*>* exception_table;
+    u2 attributes_count;
+    std::vector<attribute_info*>* attributes;
+};
+
+struct inner_classes_attribute {
+    u2 number_of_classes;
+    std::vector<InnerClasses*>* classes;
+};
+
+#endif JVM_ATTRIBUTESTRUCTS_H

@@ -45,9 +45,15 @@ enum class ConstantPoolTag : uint8_t {
 enum class AttributeType {
     ConstantValue = 0,
     Code = 1,
-    Exceptions = 3,
-    InnerClasses = 4,
-    SourceFile = 8,
+    Exceptions = 2,
+    InnerClasses = 3,
+    Signature = 6,
+    SourceFile = 7,
+    SourceDebugExtension = 8,
+    LineNumberTable = 9,
+    LocalVariableTable = 10,
+    LocalVariableTypeTable = 11,
+    StackMapTable = 20,
     NotImplemented = -1
 };
-#endif //JVM_CLASSFILEENUMS_H
+#endif JVM_CLASSFILEENUMS_H
