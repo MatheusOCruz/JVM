@@ -113,6 +113,21 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
+std::vector<verification_type_info> ReadVerificationTypeInfoList(int count) {
+    std::vector<verification_type_info> list;
+    for (int i = 0; i < count; ++i) {
+        verification_type_info info;
+        info.tag = read_u1();
+        if (info.tag == ITEM_Object || info.tag == ITEM_Uninitialized) {
+            info.cpool_index = read_u2();
+        } else if (info.tag == ITEM_Long || info.tag == ITEM_Double) {
+            info.offset = 0;
+        }
+        list.push_back(info);
+    }
+    return list;
+}
+
 void ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
@@ -197,12 +212,12 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     auto Entry = new attribute_info{};
 
     Entry->attribute_name_index = read_u2();
-    Entry->attribute_length     = read_u4();
+    Entry->attribute_length = read_u4();
 
     // pega o nome da constant pool
     cp_info* AttributeNameEntry = (*current_file->constant_pool)[Entry->attribute_name_index];
     std::string AttributeName = AttributeNameEntry->AsString();
-    
+
     static std::unordered_map<std::string, int> cases = {
         {"ConstantValue", 0},
         {"Code", 1},
@@ -215,7 +230,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
         {"LocalVariableTypeTable", 11},
         {"StackMapTable", 20},
     };
-    
+
     AttributeType AttributeTypeName;
     if (cases.find(AttributeName) != cases.end()) {
         AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
@@ -229,8 +244,8 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             break;
         }
         case AttributeType::Code: {
-            Entry->max_stack   = read_u2();
-            Entry->max_locals  = read_u2();
+            Entry->max_stack = read_u2();
+            Entry->max_locals = read_u2();
             Entry->code_length = read_u4();
             Entry->code = read_vec<u1>(Entry->code_length);
 
@@ -267,17 +282,14 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             }
             break;
         }
-
         case AttributeType::Signature: {
             Entry->signature_index = read_u2();
             break;
         }
-
         case AttributeType::SourceFile: {
             Entry->sourcefile_index = read_u2();
             break;
         }
-
         case AttributeType::LineNumberTable: {
             Entry->line_number_table_length = read_u2();
             Entry->line_number_table = new std::vector<line_number_table*>;
@@ -290,27 +302,23 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             }
             break;
         }
-
         case AttributeType::LocalVariableTable: {
-            Entry->line_number_table_length = read_u2();
-            Entry->line_number_table = new std::vector<line_number_table*>;
-
+            Entry->local_variable_table_length = read_u2();
+            Entry->local_variable_table = new std::vector<LocalVariableTableEntry*>;
             for (int i = 0; i < Entry->local_variable_table_length; ++i) {
                 auto local_aux = new LocalVariableTableEntry{};
-                local_aux -> start_pc= read_u2();
-                local_aux-> length = read_u2();
-                local_aux-> name_index = read_u2();
-                local_aux-> descriptor_index = read_u2();
-                local_aux-> index = read_u2();
+                local_aux->start_pc = read_u2();
+                local_aux->length = read_u2();
+                local_aux->name_index = read_u2();
+                local_aux->descriptor_index = read_u2();
+                local_aux->index = read_u2();
                 Entry->local_variable_table->push_back(local_aux);
             }
             break;
         }
-
         case AttributeType::LocalVariableTypeTable: {
-            Entry->line_number_table_length = read_u2();
-            Entry->line_number_table = new std::vector<line_number_table*>;
-
+            Entry->local_variable_type_table_length = read_u2();
+            Entry->local_variable_type_table = new std::vector<LocalVariableTypeTable*>;
             for (int i = 0; i < Entry->local_variable_type_table_length; ++i) {
                 auto local_aux = new LocalVariableTypeTable{};
                 local_aux->start_pc = read_u2();
@@ -322,56 +330,52 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             }
             break;
         }
-        
-        // case AttributeType::StackMapTable: {
-        //     Entry->number_of_entries = read_u2();
-        //     Entry->entries = new std::vector<stack_map_table_attribute*>;
+        case AttributeType::StackMapTable: {
+            Entry->number_of_entries = read_u2();
+            Entry->entries = new std::vector<stack_map_frame*>;
+            for (int i = 0; i < Entry->number_of_entries; ++i) {
+                auto entry = new stack_map_frame{};
+                entry->frame_type = read_u1();
 
-        //     for (int i = 0; i < Entry->number_of_entries; ++i) {
-        //         auto entry = new stack_map_frame{};
-        //         entry->frame_type = read_u1();
+                switch (entry->frame_type) {
+                    case 0 ... 63: // same_frame
+                        // Nenhum campo adicional
+                        break;
+                    case 64 ... 127: // same_locals_1_stack_item_frame
+                    case 247: // same_locals_1_stack_item_frame_extended
+                        entry->same_locals_1_stack_item_frame.stack.tag = read_u1();
+                        if (entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Object ||
+                            entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Uninitialized) {
+                            entry->same_locals_1_stack_item_frame.stack.cpool_index = read_u2();
+                        }
+                        break;
+                    case 248 ... 250: // chop_frame
+                        entry->chop_frame.offset_delta = read_u2();
+                        break;
+                    case 251: // same_frame_extended
+                        entry->same_frame_extended.offset_delta = read_u2();
+                        break;
+                    case 252 ... 254: // append_frame
+                        entry->append_frame.offset_delta = read_u2();
+                        entry->append_frame.locals = ReadVerificationTypeInfoList(entry->frame_type - 251);
+                        break;
+                    case 255: // full_frame
+                        entry->full_frame.offset_delta = read_u2();
+                        entry->full_frame.number_of_locals = read_u2();
+                        entry->full_frame.locals = ReadVerificationTypeInfoList(entry->full_frame.number_of_locals);
+                        entry->full_frame.number_of_stack_items = read_u2();
+                        entry->full_frame.stack = ReadVerificationTypeInfoList(entry->full_frame.number_of_stack_items);
+                        break;
+                    default:
+                        throw std::runtime_error("Invalid frame_type in StackMapTable_attribute");
+                }
 
-        //         switch (entry->frame_type) {
-        //             case 0 ... 63: // same_frame
-        //                 // Nenhum campo adicional
-        //                 break;
-        //             case 64 ... 127: // same_locals_1_stack_item_frame
-        //             case 247: // same_locals_1_stack_item_frame_extended
-        //                 entry->same_locals_1_stack_item_frame.stack.tag = read_u1();
-        //                 if (entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Object ||
-        //                     entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Uninitialized) {
-        //                     entry->same_locals_1_stack_item_frame.stack.cpool_index = read_u2(file);
-        //                 } else if (entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Long ||
-        //                         entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Double) {
-        //                     // entradas Long e Double consomem duas entradas de stack
-        //                     entry->same_locals_1_stack_item_frame.stack.offset = 0;
-        //                 }
-        //                 break;
-        //             case 248 ... 250: // chop_frame
-        //                 entry->chop_frame.offset_delta = read_u2();
-        //                 break;
-        //             case 251: // same_frame_extended
-        //                 entry->same_frame_extended.offset_delta = read_u2();
-        //                 break;
-        //             case 252 ... 254: // append_frame
-        //                 entry->append_frame.offset_delta = read_u2();
-        //                 entry->append_frame.locals = ReadVerificationTypeInfoList(file, entry->frame_type - 251);
-        //                 break;
-        //             case 255: // full_frame
-        //                 entry->full_frame.offset_delta = read_u2();
-        //                 entry->full_frame.number_of_locals = read_u2();
-        //                 entry->full_frame.locals = ReadVerificationTypeInfoList(file, entry->full_frame.number_of_locals);
-        //                 entry->full_frame.number_of_stack_items = read_u2();
-        //                 entry->full_frame.stack = ReadVerificationTypeInfoList(file, entry->full_frame.number_of_stack_items);
-        //                 break;
-        //             default:
-        //                 throw std::runtime_error("Invalid frame_type in StackMapTable_attribute");
-        //         }
-
-        // Entry->entries->push_back(entry);
-        // }
-        // break;
-        // }
+                Entry->entries->push_back(entry);
+            }
+            break;
+        }
+        default:
+            throw std::runtime_error("Unhandled attribute type");
     }
 
     return Entry;

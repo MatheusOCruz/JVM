@@ -105,7 +105,7 @@ struct attribute_info {
         };
         struct { // StackMapTable_attribute
             u2 number_of_entries;
-            std::vector<stack_map_table_attribute*>* entries;
+            std::vector<stack_map_frame*>* entries;
         };
         struct { // Signature_attribute
             u2 signature_index;

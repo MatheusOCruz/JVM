@@ -42,6 +42,15 @@ enum class ConstantPoolTag : uint8_t {
     CONSTANT_InvokeDynamic = 18
 };
 
+
+enum VerificationType {
+    ITEM_Object = 7,
+    ITEM_Uninitialized = 8,
+    ITEM_Long = 4,
+    ITEM_Double = 3
+};
+
+
 enum class AttributeType {
     ConstantValue = 0,
     Code = 1,

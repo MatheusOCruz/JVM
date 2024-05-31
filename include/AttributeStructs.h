@@ -67,12 +67,17 @@ struct stack_map_frame {
             u2 offset_delta;
         } chop_frame;
 
-        struct { // full_frame
+        struct { //full frame
+            u2 offset_delta;
+            std::vector<verification_type_info> locals;
+        } append_frame;
+
+        struct {
             u2 offset_delta;
             u2 number_of_locals;
-            std::vector<verification_type_info>* locals;
+            std::vector<verification_type_info> locals;
             u2 number_of_stack_items;
-            std::vector<verification_type_info>* stack;
+            std::vector<verification_type_info> stack;
         } full_frame;
     };
 };
