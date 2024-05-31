@@ -3,6 +3,8 @@
 //
 
 #include "../include/ClassLoader.h"
+#include <ClassLoader.h>
+
 
 class_file* ClassLoader::GetClass(const std::string class_file_path) {
 	if (!((*class_files).count(class_file_path))) {
@@ -10,6 +12,8 @@ class_file* ClassLoader::GetClass(const std::string class_file_path) {
 	}
 	return (*class_files)[class_file_path];
 }
+
+
 
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
 	if ((*class_files).count(nomeArquivo)) return;
@@ -197,22 +201,26 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     // pega o nome da constant pool
     cp_info* AttributeNameEntry = (*current_file->constant_pool)[Entry->attribute_name_index];
     std::string AttributeName = AttributeNameEntry->AsString();
-    //(reinterpret_cast<char*>(AttributeNameEntry->bytes_vec->data()), AttributeNameEntry->length)
+    
     static std::unordered_map<std::string, int> cases = {
-            {"ConstantValue", 0},
-            {"Code", 1},
-            //
-            {"Exceptions", 3},
-            {"InnerClasses", 4},
-            //
-            {"SourceFile", 8}
+        {"ConstantValue", 0},
+        {"Code", 1},
+        {"Exceptions", 2},
+        {"InnerClasses", 3},
+        {"Signature", 6},
+        {"SourceFile", 7},
+        {"LineNumberTable", 9},
+        {"LocalVariableTable", 10},
+        {"LocalVariableTypeTable", 11},
+        {"StackMapTable", 20},
     };
+    
     AttributeType AttributeTypeName;
-    if(cases.find(AttributeName) != cases.end())
-         AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
-    else
-         AttributeTypeName = AttributeType::NotImplemented;
-
+    if (cases.find(AttributeName) != cases.end()) {
+        AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
+    } else {
+        AttributeTypeName = AttributeType::NotImplemented;
+    }
 
     switch (AttributeTypeName) {
         case AttributeType::ConstantValue: {
@@ -226,10 +234,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             Entry->code = read_vec<u1>(Entry->code_length);
 
             Entry->exception_table_length = read_u2();
-
             Entry->exception_table = new std::vector<Exception_tableEntry*>;
-            Entry->exception_table->reserve(Entry->exception_table_length);
-            //TODO: provavelmente tirar esse for daqui
             for (int i = 0; i < Entry->exception_table_length; ++i) {
                 auto TableEntry = new Exception_tableEntry{};
                 TableEntry->start_pc = read_u2();
@@ -243,30 +248,130 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             BuildAttributes(Entry->attributes_count, *Entry->attributes);
             break;
         }
-        //TODO: esse read_vec e so pra pular os bytes, tem q implementar
         case AttributeType::Exceptions: {
-            // Lógica para lidar com Exceptions
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_exceptions = read_u2();
+            Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
             break;
         }
         case AttributeType::InnerClasses: {
-            // Lógica para lidar com InnerClasses
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_classes = read_u2();
+            Entry->classes = new std::vector<InnerClasses*>;
+            for (int i = 0; i < Entry->number_of_classes; ++i) {
+                auto ClassEntry = new InnerClasses{};
+                ClassEntry->inner_class_info_index = read_u2();
+                ClassEntry->outer_class_info_index = read_u2();
+                ClassEntry->inner_name_index = read_u2();
+                ClassEntry->inner_class_access_flags = read_u2();
+                Entry->classes->push_back(ClassEntry);
+            }
             break;
         }
-        case AttributeType::SourceFile: {
-            // Lógica para lidar com SourceFile
-            read_vec<u1>(Entry->attribute_length);
-            break;
-        }
-        case AttributeType::NotImplemented: {
 
-            read_vec<u1>(Entry->attribute_length);
+        case AttributeType::Signature: {
+            Entry->signature_index = read_u2(file);
             break;
+        }
+
+        case AttributeType::SourceFile: {
+            Entry->sourcefile_index = read_u2(file);
+            break;
+        }
+
+        case AttributeType::LineNumberTable: {
+            Entry->line_number_table_length = read_u2(file);
+            Entry->line_number_table = new std::vector<line_number_table*>;
+            Entry->line_number_table->reserve(attr_info->line_number_table_length);
+            for (int i = 0; i < Entry->line_number_table_length; ++i) {
+                auto TableEntry = new line_number_table{};
+                TableEntry->start_pc = read_u2(file);
+                TableEntry->line_number = read_u2(file);
+                Entry->line_number_table->push_back(TableEntry);
+            }
+            break;
+        }
+
+        case AttributeType::LocalVariableTable: {
+            Entry->line_number_table_length = read_u2(file);
+            Entry->line_number_table = new std::vector<line_number_table*>;
+
+            for (int i = 0; i < Entry->line_number_table_length; ++i) {
+                auto entry = new line_number_table{};
+                Entry->start_pc = read_u2(file);
+                Entry->length = read_u2(file);
+                Entry->name_index = read_u2(file);
+                Entry->descriptor_index = read_u2(file);
+                Entry->index = read_u2(file);
+                Entry->line_number_table->push_back(Entry);
+            }
+            break;
+        }
+
+        case AttributeType::LocalVariableTypeTable: {
+            Entry->line_number_table_length = read_u2(file);
+            Entry->line_number_table = new std::vector<line_number_table*>;
+
+            for (int i = 0; i < Entry->line_number_table_length; ++i) {
+                auto Entry = new line_number_table{};
+                Entry->start_pc = read_u2(file);
+                Entry->length = read_u2(file);
+                Entry->name_index = read_u2(file);
+                Entry->signature_index = read_u2(file);
+                Entry->index = read_u2(file);
+                Entry->line_number_table->push_back(Entry);
+            }
+            break;
+        }
+        
+        case AttributeType::StackMapTable: {
+            Entry->number_of_entries = read_u2(file);
+            Entry->entries = new std::vector<stack_map_table_attribute*>;
+
+            for (int i = 0; i < Entry->number_of_entries; ++i) {
+                auto entry = new stack_map_table_attribute{};
+                Entry->frame_type = read_u1(file);
+
+                switch (Entry->frame_type) {
+                    case 0 ... 63: // same_frame
+                        // Nenhum campo adicional
+                        break;
+                    case 64 ... 127: // same_locals_1_stack_item_frame
+                    case 247: // same_locals_1_stack_item_frame_extended
+                        Entry->same_locals_1_stack_item_frame.stack.tag = read_u1(file);
+                        if (Entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Object ||
+                            Entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Uninitialized) {
+                            Entry->same_locals_1_stack_item_frame.stack.cpool_index = read_u2(file);
+                        } else if (Entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Long ||
+                                Entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Double) {
+                            // entradas Long e Double consomem duas entradas de stack
+                            Entry->same_locals_1_stack_item_frame.stack.offset = 0;
+                        }
+                        break;
+                    case 248 ... 250: // chop_frame
+                        Entry->chop_frame.offset_delta = read_u2(file);
+                        break;
+                    case 251: // same_frame_extended
+                        Entry->same_frame_extended.offset_delta = read_u2(file);
+                        break;
+                    case 252 ... 254: // append_frame
+                        Entry->append_frame.offset_delta = read_u2(file);
+                        Entry->append_frame.locals = ReadVerificationTypeInfoList(file, Entry->frame_type - 251);
+                        break;
+                    case 255: // full_frame
+                        Entry->full_frame.offset_delta = read_u2(file);
+                        Entry->full_frame.number_of_locals = read_u2(file);
+                        Entry->full_frame.locals = ReadVerificationTypeInfoList(file, Entry->full_frame.number_of_locals);
+                        Entry->full_frame.number_of_stack_items = read_u2(file);
+                        Entry->full_frame.stack = ReadVerificationTypeInfoList(file, Entry->full_frame.number_of_stack_items);
+                        break;
+                    default:
+                        throw std::runtime_error("Invalid frame_type in StackMapTable_attribute");
+                }
+
+            attr_info->entries->push_back(Entry);
+        }
+        break;
         }
     }
-
-
 
     return Entry;
 }
