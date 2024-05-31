@@ -15,9 +15,12 @@ void Jvm::Run(){
 
     std::string MethodName = "main";
     GetMethod(MethodName);
+    std::cout<<"method found\n";
     GetCurrentMethodCode();
+    std::cout<<"code found\n";
 
     NewFrame();
+    std::cout<<"frame created\n";
 
     //check for <clinit>
     //exec 
@@ -27,7 +30,14 @@ void Jvm::Run(){
     //exec
 
 
+iload();
+
     ExecBytecode();
+
+
+// fconst_0();
+// fconst_1();
+// dconst_1();
 
 }
 
@@ -179,65 +189,114 @@ void Jvm::aconst_null(){
 // the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
     // TODO: static cast to const u1 or int??
-    CurrentFrame->OperandStack->push(static_cast<const u1>(-1));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(-1));
 }
 
 void Jvm::iconst_0(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(0));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(0));
 }
 
 void Jvm::iconst_1(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(1));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(1));
 }
 
 void Jvm::iconst_2(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(2));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(2));
 }
 
 void Jvm::iconst_3(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(3));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(3));
 }
 
 void Jvm::iconst_4(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(4));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(4));
 }
 
 void Jvm::iconst_5(){
-    CurrentFrame->OperandStack->push(static_cast<const u1>(5));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(5));
 }
 
 void Jvm::lconst_0(){
-    
+    // todo: check if anything wrong, was it the right cast??
+    CurrentFrame->OperandStack->push(static_cast<const Jlong>(0.0));
 }
 
 void Jvm::lconst_1(){
-
+    CurrentFrame->OperandStack->push(static_cast<const Jlong>(1.0));
 }
 
 // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand
 // stack
 void Jvm::fconst_0(){
-    CurrentFrame->OperandStack->push(0.0);
-    //era pra dar pc++ ao final de cada funcao?
+    const float value = 0.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
 }
 
 void Jvm::fconst_1(){
-    CurrentFrame->OperandStack->push(1.0);
-
+    const float value = 1.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
 }
 
 void Jvm::fconst_2(){
-    CurrentFrame->OperandStack->push(2.0);
+    const float value = 2.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
+// pra checar se pusha high ou low
+/*
+const uint32_t LowBytes = Cat2Value.LowBytes; 
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((LowBytes >> i) & 1);
+  }
 
+std::cout << " ";
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((HighBytes >> i) & 1);
+  }
+  */
+
+   //era pra dar pc++ ao final de cada funcao??
 }
 
 void Jvm::dconst_0(){
-    CurrentFrame->OperandStack->push(0.0);
-
+    const double value = 0.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsDouble = value;  
+    const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(LowBytes);
 }
 
 void Jvm::dconst_1(){
+    const double value = 1.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsDouble = value;  
+    const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(LowBytes);
+    // pra checar se pusha high ou low
+/*
+const uint32_t HighBytes = Cat2Value.HighBytes; 
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((LowBytes >> i) & 1);
+  }
 
+std::cout << " ";
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((HighBytes >> i) & 1);
+  }
+  
+*/
 }
 // The immediate byte is sign-extended to an int value. That value
 // is pushed onto the operand stac
@@ -281,6 +340,10 @@ void Jvm::ldc2_w(){
 }
 
 void Jvm::iload(){
+// !TODO: fix, ta errado/incompleto-- 1 index ta errado,2 pode usar wide() pra pegar index
+    int index = GetIndex2();
+    u4 value = (*CurrentFrame->localVariables)[index];
+    CurrentFrame->OperandStack->push(value);
 
 }
 
@@ -1407,17 +1470,24 @@ void Jvm::ret(){
 }
 
 
+// Description
 
+//     A tableswitch is a variable-length instruction. Immediately after the tableswitch opcode, between 0 and 3 null bytes (zeroed bytes, not the null object) are inserted as padding. The number of null bytes is chosen so that the following byte begins at an address that is a multiple of 4 bytes from the start of the current method (the opcode of its first instruction). Immediately after the padding follow bytes constituting three signed 32-bit values: default, low, and high. Immediately following those bytes are bytes constituting a series of high - low + 1 signed 32-bit offsets. The value low must be less than or equal to high. The high - low + 1 signed 32-bit offsets are treated as a 0-based jump table. Each of these signed 32-bit values is constructed as (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4.
 
-void Jvm::tableswitch(){
+//     The index must be of type int and is popped from the operand stack. If index is less than low or index is greater than high, then a target address is calculated by adding default to the address of the opcode of this tableswitch instruction. Otherwise, the offset at position index - low of the jump table is extracted. The target address is calculated by adding that offset to the address of the opcode of this tableswitch instruction. Execution then continues at the target address.
+
+//     The target address that can be calculated from each jump table offset, as well as the ones that can be calculated from default, must be the address of an opcode of an instruction within the method that contains this tableswitch instruction.
+
+// Notes
+
+    // The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
+void Jvm::tableswitch() {
 
 }
 
 
-
-
 void Jvm::lookupswitch(){
-
+  std::cout<<"tableswitch\n";  std::cout<<"tableswitch\n";
 }
 
 
