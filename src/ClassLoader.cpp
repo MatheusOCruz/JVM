@@ -113,7 +113,7 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
-void ClassLoader::BuildConstantPoolInfo() {
+int ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
     switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
@@ -189,8 +189,11 @@ void ClassLoader::BuildConstantPoolInfo() {
     current_file->constant_pool->push_back(Entry);
 
     // entrada seguinte de Long ou Double nao e um indice valido
-    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
+    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double) {
         current_file->constant_pool->push_back(new cp_info{});
+        return 1;
+    }
+    return 0;
 }
 
 attribute_info* ClassLoader::BuildAttributeInfo() {
@@ -310,7 +313,8 @@ void ClassLoader::BuildConstantPoolTable() {
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
 
     for(int i = 0; i< current_file->constant_pool_count-1; i++){
-        BuildConstantPoolInfo();
+        if(BuildConstantPoolInfo())
+            i++;
     }
 
 }

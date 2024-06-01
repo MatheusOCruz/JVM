@@ -53,7 +53,7 @@ private:
     std::vector<T>* read_vec(int length);
 
     // cria as estruturas a partir do buffer_iterator
-    void BuildConstantPoolInfo();
+    int  BuildConstantPoolInfo();
     void BuildFieldInfo();
     void BuildMethodInfo();
     attribute_info* BuildAttributeInfo();
