@@ -105,167 +105,180 @@ void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
 #define INFO_SEP 20
 
 void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
-
     switch (Entry->tag) {
-        case ConstantPoolTag::CONSTANT_Utf8: {
-			const std::string name = Entry->AsString();
-			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
-				      << std::setw(NUM_SEP) << std::left << idx
-				      << std::setw(3) << " = "
-				      << std::setw(TYPE_SEP) << std::left << "Utf8"
-				      << std::setw(INFO_SEP) << std::left << name
-				      << std::endl;
-            break;
-        }
+	case ConstantPoolTag::CONSTANT_Utf8: {
+		const std::string name = Entry->AsString();
+		std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				  << std::setw(NUM_SEP) << std::left << idx
+				  << std::setw(3) << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Utf8"
+				  << std::setw(INFO_SEP) << std::left << name
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Integer: {
+		const u4 bytes  = Entry->bytes;
+		const int value = *((int *)(&bytes));
+		std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				  << std::setw(NUM_SEP) << std::left << idx
+				  << std::setw(3) << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Integer"
+				  << std::setw(INFO_SEP) << std::left << value 
+				  << std::endl;
 
-        case ConstantPoolTag::CONSTANT_Integer:{
-			const u4 bytes  = Entry->bytes;
-			const int value = *((int *)(&bytes));
-			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
-			 	      << std::setw(NUM_SEP) << std::left << idx
-			 	      << std::setw(3) << " = "
-			 	      << std::setw(TYPE_SEP) << std::left << "Integer"
-			 	      << std::setw(INFO_SEP) << std::left << value 
-			 	      << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Float: {
+		const u4 bytes  = Entry->bytes;
+		const float value = *((float *)(&bytes));
+		std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				  << std::setw(NUM_SEP) << std::left << idx
+				  << std::setw(3) << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Float"
+				  << std::setw(INFO_SEP) << std::left << value 
+				  << std::endl;
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Float: {
-			const u4 bytes  = Entry->bytes;
-			const float value = *((float *)(&bytes));
-			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
-			 	      << std::setw(NUM_SEP) << std::left << idx
-			 	      << std::setw(3) << " = "
-			 	      << std::setw(TYPE_SEP) << std::left << "Float"
-			 	      << std::setw(INFO_SEP) << std::left << value 
-			 	      << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Long: {
+		const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
+		const long long value = *((long long * )(&bytes));
+		std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				  << std::setw(NUM_SEP) << std::left << idx
+				  << std::setw(3) << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Long"
+				  << std::setw(INFO_SEP) << std::left << value 
+				  << std::endl;
 
-            break;
-        }
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Double: {
+		const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
+		const double value = *((double * )(&bytes));
+		std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+				  << std::setw(NUM_SEP) << std::left << idx
+				  << std::setw(3) << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Double"
+				  << std::setw(INFO_SEP) << std::left << value 
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Class: {
+		std::string info =
+			"#"  + std::to_string(Entry->name_index);
 
-        case ConstantPoolTag::CONSTANT_Long:{
-			const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
-			const long long value = *((long long * )(&bytes));
-			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
-			 	      << std::setw(NUM_SEP) << std::left << idx
-			 	      << std::setw(3) << " = "
-			 	      << std::setw(TYPE_SEP) << std::left << "Long"
-			 	      << std::setw(INFO_SEP) << std::left << value 
-			 	      << std::endl;
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Class"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Double: {
-			const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
-			const double value = *((double * )(&bytes));
-			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
-			 	      << std::setw(NUM_SEP) << std::left << idx
-			 	      << std::setw(3) << " = "
-			 	      << std::setw(TYPE_SEP) << std::left << "Double"
-			 	      << std::setw(INFO_SEP) << std::left << value 
-			 	      << std::endl;
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Class: {
-			std::string info =
-				"#"  + std::to_string(Entry->name_index);
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_String: {
+		std::string info =
+			"#"  + std::to_string(Entry->string_index);
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "String"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Fieldref: {
+		std::string info =
+			"#"  + std::to_string(Entry->class_index) +
+			".#" + std::to_string(Entry->name_and_type_index);
 
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "Class"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Fieldref"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_Methodref: {
+		std::string info =
+			"#"  + std::to_string(Entry->class_index) +
+			".#" + std::to_string(Entry->name_and_type_index);
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_String: {
-			std::string info =
-				"#"  + std::to_string(Entry->string_index);
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "String"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Fieldref: {
-			std::string info =
-				"#"  + std::to_string(Entry->class_index) +
-				".#" + std::to_string(Entry->name_and_type_index);
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "Methodref"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
+		std::string info =
+			"#"  + std::to_string(Entry->class_index) +
+			".#" + std::to_string(Entry->name_and_type_index);
 
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "Fieldref"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Methodref:{
-			std::string info =
-				"#"  + std::to_string(Entry->class_index) +
-				".#" + std::to_string(Entry->name_and_type_index);
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "InterfaceMethodref"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_NameAndType: {
+		std::string info =
+			"#"  + std::to_string(Entry->name_index) +
+			":#" + std::to_string(Entry->descriptor_index);
 
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "Methodref"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
-			std::string info =
-				"#"  + std::to_string(Entry->class_index) +
-				".#" + std::to_string(Entry->name_and_type_index);
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "NameAndType"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_MethodHandle: {
+		std::string info =
+			"#"  + std::to_string(Entry->reference_kind) +
+			":#" + std::to_string(Entry->reference_index);
 
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "InterfaceMethodref"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
-            break;
-        }
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "MethodHandle"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_MethodType: {
+		std::string info =
+			"#"  + std::to_string(Entry->descriptor_index);
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "MethodType"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	case ConstantPoolTag::CONSTANT_InvokeDynamic: {
+		std::string info =
+			"#"  + std::to_string(Entry->bootstrap_method_attr_index) +
+			":#" + std::to_string(Entry->name_and_type_index);
 
-        case ConstantPoolTag::CONSTANT_NameAndType: {
-			std::string info =
-				"#"  + std::to_string(Entry->name_index) +
-				":#" + std::to_string(Entry->descriptor_index);
-
-			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
-				      << std::setw(NUM_SEP)  << std::left << idx
-				      << std::setw(3)  << " = "
-				      << std::setw(TYPE_SEP) << std::left << "NameAndType"
-				      << std::setw(INFO_SEP) << std::left << info
-				      << std::endl;
-            break;
-        }
-
-        case ConstantPoolTag::CONSTANT_MethodHandle:
-            std::cout<<"CONSTANT_MethodHandle\n";
-
-            std::cout<<"  reference kind:  "<<Entry->reference_kind<<"\n";
-            std::cout<<"  reference index: "<<Entry->reference_index<<"\n\n";
-
-            break;
-        case ConstantPoolTag::CONSTANT_MethodType:
-            std::cout<<"CONSTANT_MethodType\n";
-            std::cout<<"  descriptor index: "<<Entry->descriptor_index<<"\n\n";
-
-            break;
-        case ConstantPoolTag::CONSTANT_InvokeDynamic:
-            std::cout<<"CONSTANT_InvokeDynamic\n";
-
-            std::cout<<"  bootstrap method attr index:  "<<Entry->bootstrap_method_attr_index<<"\n";
-            std::cout<<"  name and type index:          "<<Entry->name_and_type_index<<"\n\n";
-
-            break;
-
-        default:
-            break;
+		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				  << std::setw(NUM_SEP)  << std::left << idx
+				  << std::setw(3)  << " = "
+				  << std::setw(TYPE_SEP) << std::left << "InvokeDynamic"
+				  << std::setw(INFO_SEP) << std::left << info
+				  << std::endl;
+		break;
+	}
+	default:
+		assert(0 && "Not implemented");
+		break;
     }
 }
 
