@@ -98,6 +98,7 @@ struct field_info{
     uint16_t attributes_count;
     std::vector<attribute_info*>* attributes;
 };
+
 struct method_info{
     u2 access_flags;
     u2 name_index;

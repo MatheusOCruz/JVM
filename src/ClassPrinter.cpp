@@ -30,7 +30,9 @@ void ClassPrinter::PrintClassFile(){
 			  << "this_class:   #" << ClassFile->this_class
 			  << "       // " << this_class_name << std::endl
 			  << "super_class:  #" << ClassFile->super_class
-			  << "       // " << super_class_name << std::endl;
+			  << "       // " << super_class_name << std::endl
+			  << "minor version:    " << ClassFile->minor_version << std::endl
+			  << "major version:    " << ClassFile->major_version << std::endl;
 
 	// TODO(ruan): Adicionar uma função para criar uma string dizendo
 	// quais flags sao
@@ -40,18 +42,16 @@ void ClassPrinter::PrintClassFile(){
 			  << std::setbase(10) << std::setfill(' ');
 
 
+	std::cout << "interfaces: " << ClassFile->interfaces_count << ", "
+			  << "fields: " << ClassFile->fields_count << ", "
+			  << "methods: " << ClassFile->methods_count << ", "
+			  << "attributes: " << ClassFile->attributes_count << std::endl;
+
     PrintConstantPoolTable();
     PrintInterfaces();
     PrintFields();
     PrintMethods();
     PrintAttributes();
-
-    //ClassFile = Loader->GetClassFromName(super_class_name);
-    /*
-	if (ClassFile) {
-		PrintClassFile();
-	}
-     */
 }
 
 
@@ -71,7 +71,12 @@ void ClassPrinter::PrintInterfaces() {
 }
 
 void ClassPrinter::PrintFields() {
-
+	std::cout << "Fields {" << std::endl;
+	for (const auto f: *ClassFile->fields) {
+		PrintFieldEntry(f);
+		std::cout << std::endl;
+	}
+	std::cout << "}" << std::endl;
 }
 
 void ClassPrinter::PrintMethods() {
@@ -114,31 +119,51 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
         }
 
         case ConstantPoolTag::CONSTANT_Integer:{
-std::cout<<"CONSTANT_Integer\n";
-            std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
+			const u4 bytes  = Entry->bytes;
+			const int value = *((int *)(&bytes));
+			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+			 	      << std::setw(NUM_SEP) << std::left << idx
+			 	      << std::setw(3) << " = "
+			 	      << std::setw(TYPE_SEP) << std::left << "Integer"
+			 	      << std::setw(INFO_SEP) << std::left << value 
+			 	      << std::endl;
 
             break;
         }
         case ConstantPoolTag::CONSTANT_Float: {
-
-            std::cout<<"CONSTANT_Float\n";
-            std::cout<<"  Bytes: 0x"<< std::hex << Entry->bytes<<"\n\n"<< std::dec;
+			const u4 bytes  = Entry->bytes;
+			const float value = *((float *)(&bytes));
+			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+			 	      << std::setw(NUM_SEP) << std::left << idx
+			 	      << std::setw(3) << " = "
+			 	      << std::setw(TYPE_SEP) << std::left << "Float"
+			 	      << std::setw(INFO_SEP) << std::left << value 
+			 	      << std::endl;
 
             break;
         }
 
         case ConstantPoolTag::CONSTANT_Long:{
-
-            std::cout<<"CONSTANT_Long\n";
-            std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
+			const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
+			const long long value = *((long long * )(&bytes));
+			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+			 	      << std::setw(NUM_SEP) << std::left << idx
+			 	      << std::setw(3) << " = "
+			 	      << std::setw(TYPE_SEP) << std::left << "Long"
+			 	      << std::setw(INFO_SEP) << std::left << value 
+			 	      << std::endl;
 
             break;
         }
         case ConstantPoolTag::CONSTANT_Double: {
-
-            std::cout<<"CONSTANT_Double\n";
-            std::cout<<"  bytes: 0x" << std::hex << Entry->high_bytes << Entry->low_bytes <<"\n\n"<< std::dec;
-
+			const u8 bytes     = ((u8) Entry->high_bytes << 32) | Entry->low_bytes;
+			const double value = *((double * )(&bytes));
+			std::cout << std::setw(FIRST_SEP) << std::right <<  "#"
+			 	      << std::setw(NUM_SEP) << std::left << idx
+			 	      << std::setw(3) << " = "
+			 	      << std::setw(TYPE_SEP) << std::left << "Double"
+			 	      << std::setw(INFO_SEP) << std::left << value 
+			 	      << std::endl;
             break;
         }
         case ConstantPoolTag::CONSTANT_Class: {
@@ -192,12 +217,16 @@ std::cout<<"CONSTANT_Integer\n";
             break;
         }
         case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
+			std::string info =
+				"#"  + std::to_string(Entry->class_index) +
+				".#" + std::to_string(Entry->name_and_type_index);
 
-            std::cout<<"CONSTANT_InterfaceMethodref\n";
-
-            std::cout<<"  class index:         "<<Entry->class_index<<"\n";
-            std::cout<<"  name and type index: "<<Entry->name_and_type_index<<"\n\n";
-
+			std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
+				      << std::setw(NUM_SEP)  << std::left << idx
+				      << std::setw(3)  << " = "
+				      << std::setw(TYPE_SEP) << std::left << "InterfaceMethodref"
+				      << std::setw(INFO_SEP) << std::left << info
+				      << std::endl;
             break;
         }
 
@@ -243,8 +272,33 @@ std::cout<<"CONSTANT_Integer\n";
 
 
 
-void ClassPrinter::PrintFieldEntry() {
+void ClassPrinter::PrintFieldEntry(const field_info *field) {
+    const cp_info* field_name_entry = (*ClassFile->constant_pool)[field->name_index];
+    const std::string field_name = field_name_entry->AsString();
 
+    const cp_info* field_descriptor = (*ClassFile->constant_pool)[field->descriptor_index];
+    const std::string descriptor_name = field_descriptor->AsString();
+
+	const u2 flags = field->access_flags;
+
+	std::cout << std::setw(2) <<  ""
+			  << "Name: " << field_name << std::endl
+			  << std::setw(2)<< ""
+			  << "Descriptor: " << descriptor_name << std::endl
+			  << std::setw(2)<< ""
+			  << "Flags: 0x"<< std::setw(5) << std::right << std::setfill('0')
+			  << std::setbase(16) << flags << std::endl
+			  << std::setbase(10) << std::setfill(' ');
+
+	// TODO(ruan): Adicionar uma função para criar uma string dizendo
+	// quais flags sao
+	if (field->attributes_count) {
+		std::cout << std::setw(2) <<  ""
+				<< "Attributes:" << std::endl;
+		for(auto Attribute: *field->attributes){
+			PrintAttributeEntry(Attribute);
+		}
+	}
 }
 
 void ClassPrinter::PrintMethodEntry(method_info* Method){
@@ -276,10 +330,7 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
     for(auto Attribute: *Method->attributes){
         PrintAttributeEntry(Attribute);
     }
-
 }
-
-
 
 void ClassPrinter::SaveInFile() {}
 

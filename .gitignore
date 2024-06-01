@@ -1,3 +1,8 @@
 # Project exclude paths
 /cmake-build-debug/
 build
+JVM
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake

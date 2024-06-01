@@ -55,7 +55,7 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
 
     if(classPath == std::string("java/lang/Object.class")){
         classPath = "./Object.class";
-        classPath = "/home/matheus/prog/JVM/Object.class";
+        // classPath = "/home/matheus/prog/JVM/Object.class";
     }
     #ifdef _WIN32
     std::replace(classPath.begin(),classPath.end(),'/','\\');
@@ -374,8 +374,9 @@ void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_i
 void ClassLoader::CheckMagic() {
     current_file->magic = read_u4();
 
-    if (current_file->magic != 0xCAFEBABE)
+    if (current_file->magic != 0xCAFEBABE) {
         throw ClassFormatError("first four bytes must contain the right magic number");
+	}
 }
 
 
@@ -391,8 +392,9 @@ void ClassLoader::CheckVersion() {
 void ClassLoader::FormatCheck() {
     // magic e checado no comeco
 
-    if(!(iter == file_buffer->end()))
+    if(!(iter == file_buffer->end())) {
         throw ClassFormatError("The class file must not be truncated or have extra bytes at the end.");
+	}
 
     /*
     TODO: the constant pool must satisfy the constraints documented throughout §4.4.
