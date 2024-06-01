@@ -3,20 +3,26 @@
 //
 
 #include "../include/Jvm.h"
+#include <cmath>
+#include <limits>
 
 void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
+    std::cout<<"main file "<<main_file<<"\n";
     Loader->LoadClass(main_file);
     CurrentClass = GetClass(main_file);
     //create method map by name
 
     std::string MethodName = "main";
     GetMethod(MethodName);
+    std::cout<<"method found\n";
     GetCurrentMethodCode();
+    std::cout<<"code found\n";
 
     NewFrame();
+    std::cout<<"frame created\n";
 
     //check for <clinit>
     //exec 
@@ -24,7 +30,6 @@ void Jvm::Run(){
     //exec
     //check for <main>
     //exec
-
 
     ExecBytecode();
 
@@ -115,6 +120,7 @@ void Jvm::GetCurrentMethodCode(){
 
 class_file* Jvm::GetClass(std::string class_name){
     if(MethodArea->find(class_name) == MethodArea->end()) {
+        std::cout<<"loading class "<<class_name<<"\n";
         Loader->LoadClass(class_name);
     //TODO: EXECUTAR METODO ESTATICO DESSA CLASSE
     }
@@ -170,74 +176,128 @@ void Jvm::return_u8(){
 
 
 
-
+// Do nothing
 void Jvm::nop() {
 
 }
-
+// An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
 void Jvm::aconst_null(){
-  
+    // !TODO checar se a versao cpp especificada possui nullptr
+    CurrentFrame->OperandStack->PushRef(nullptr);
 }
 
-
+// Push the int constant <i> (-1, 0, 1, 2, 3, 4 or 5) onto the operand
+// stack.
+// Notes Each of this family of instructions is equivalent to bipush <i> for
+// the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
-    CurrentFrame->OperandStack->push(static_cast<u4>(-1));
+    CurrentFrame->OperandStack->push(static_cast<const u4>(-1));
 }
 
 void Jvm::iconst_0(){
-    CurrentFrame->OperandStack->push(0);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(0));
 }
 
 void Jvm::iconst_1(){
-    CurrentFrame->OperandStack->push(1);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(1));
 }
 
 void Jvm::iconst_2(){
-    CurrentFrame->OperandStack->push(2);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(2));
 }
 
 void Jvm::iconst_3(){
-    CurrentFrame->OperandStack->push(3);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(3));
 }
 
 void Jvm::iconst_4(){
-    CurrentFrame->OperandStack->push(4);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(4));
 }
 
 void Jvm::iconst_5(){
-    CurrentFrame->OperandStack->push(5);
+    CurrentFrame->OperandStack->push(static_cast<const u4>(5));
 }
 
 void Jvm::lconst_0(){
-
+    // todo: check if anything wrong, was it the right cast??
+    CurrentFrame->OperandStack->push(static_cast<const Jlong>(0.0));
 }
 
 void Jvm::lconst_1(){
-
+    CurrentFrame->OperandStack->push(static_cast<const Jlong>(1.0));
 }
-
+ // big-endian order, where the high bytes come first
+// Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
 void Jvm::fconst_0(){
-
+    const float value = 0.0;
+    //transforma de float pra uint32_t
+    // todo:checa se devia ta pushando dois u8
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
 }
 
 void Jvm::fconst_1(){
-
+    const float value = 1.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
 }
 
 void Jvm::fconst_2(){
+    const float value = 2.0;
+    //transforma de float pra uint32_t
+    Cat2Value Cat2Value;
+    Cat2Value.AsFloat = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
+// pra checar se pusha high ou low
+/*
+const uint32_t LowBytes = Cat2Value.LowBytes; 
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((LowBytes >> i) & 1);
+  }
 
+std::cout << " ";
+    for (int i = 31; i >= 0; i--) {
+    std::cout << ((HighBytes >> i) & 1);
+  }
+  */
+
+   //era pra dar pc++ ao final de cada funcao??
 }
 
 void Jvm::dconst_0(){
-
+    const double value = 0.0;
+    //pusha dois u4, big endian (most significant first)
+    Cat2Value Cat2Value;
+    Cat2Value.AsDouble = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
+    CurrentFrame->OperandStack->push(LowBytes);
 }
 
 void Jvm::dconst_1(){
-
+    const double value = 1.0;
+    //pusha dois u4, big endian (most significant first)
+    Cat2Value Cat2Value;
+    Cat2Value.AsDouble = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
+    CurrentFrame->OperandStack->push(LowBytes);
 }
+// The immediate byte is sign-extended to an int value. That value
+// is pushed onto the operand stac
+// !TODO: checar se implmentacao ta certa
+
 
 void Jvm::bipush(){
-
+CurrentFrame->OperandStack->push((*CurrentCode->code)[++pc]);
 }
 
 void Jvm::sipush(){
@@ -273,6 +333,10 @@ void Jvm::ldc2_w(){
 }
 
 void Jvm::iload(){
+// !TODO: fix, ta errado/incompleto-- 1 index ta errado,2 pode usar wide() pra pegar index
+    int index = GetIndex2();
+    u4 value = (*CurrentFrame->localVariables)[index];
+    CurrentFrame->OperandStack->push(value);
 
 }
 
@@ -826,22 +890,48 @@ void Jvm::iadd(){
 
 
 
-
+// Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
 void Jvm::ladd(){
-
+    // !TODO checar: implementacao erradisima
+    long value1;
+    long value2;
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t result = value1 + value2;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
 
 
-
+// Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
 void Jvm::fadd(){
+    // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
+    float value1;
+    float value2; //todo fix this static cast
+    value2 = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<float>(CurrentFrame->OperandStack->Pop());
+
+    float result = value1 + value2;
+    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
+    // !TODO check these static casts pode da erro precisa dos if f2i provavelmente
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
 
 
-
+// !todo: fix, erradasso
 void Jvm::dadd(){
+    // !TODO deve ta errado, como tratar double na op stack?
+    double value1;
+    double value2;
+    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    float result = value1 + value2;
+    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
+    // !TODO: fix static cast, e isso n ta double
+    CurrentFrame->OperandStack->push(static_cast<float>(result));
 
 }
 
@@ -1102,29 +1192,53 @@ void Jvm::iinc(){
 
 
 
-
+// idk todo test
 void Jvm::i2l(){
-
+    Cat2Value Cat2Value;
+    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsLong;
+    Cat2Value.LowBytes = Cat2Value.AsLong;
+    
+    // push pro operand stack em big endian
+    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
 }
 
 
 
 
 void Jvm::i2f(){
-
+    int value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    float result = static_cast<float>(value);
+    CurrentFrame->OperandStack->push(result);
 }
 
 
-
-
+// todo: checa se a frame devia ta só com um value. se sim, isso pode ta errado
+//Convert int to double
 void Jvm::i2d(){
-
+    Cat2Value Cat2Value;
+    
+    Cat2Value.AsDouble = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsDouble;
+    Cat2Value.LowBytes = Cat2Value.AsDouble;
+    
+    // push em big endian
+    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
+    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
+    CurrentFrame->OperandStack->push(Cat2Value.LowBytes );
 }
 
 
 
 
 void Jvm::l2i(){
+    Cat2Value Cat2Value;
+
+    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsLong;
+    Cat2Value.LowBytes = Cat2Value.AsLong;
+    // push pro stack de operandos em big endian
+    CurrentFrame->OperandStack->push(Cat2Value.LowBytes);
 
 }
 
@@ -1146,13 +1260,57 @@ void Jvm::l2d(){
 
 
 void Jvm::f2i(){
+    //converte u4 pra float, float pra int
+    float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    u4 intValue = static_cast<u4>(value);
+    u4 result;
+
+    if(std::isnan(intValue)){ 
+        result = 0;
+    } else if( intValue >= INT32_MAX || intValue == std::numeric_limits<int>::infinity()){ // todo test these infinities
+        result = INT32_MAX;
+    } else if( intValue <= INT32_MIN || intValue == -1 * std::numeric_limits<int>::infinity()) { 
+        result = INT32_MIN;
+    } else { 
+        result = static_cast<u4>(intValue);
+    }
+    
+    CurrentFrame->OperandStack->push(result);
 
 }
 
 
 
-
+// testado (hardcode, n cm file) ok
 void Jvm::f2l(){
+    //converte u4 pra float, float pra long
+    Cat2Value Cat2Value;
+    float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
+
+    Cat2Value.AsLong = value;
+
+    if(std::isnan(Cat2Value.AsLong)){ 
+        Cat2Value.HighBytes = 0;
+        Cat2Value.LowBytes = 0;
+         std::cout<<"0\n";
+
+    } else if(  Cat2Value.AsLong >= INT64_MAX ||  Cat2Value.AsLong == std::numeric_limits<float>::infinity()){ // todo test these infinities                         
+        Cat2Value.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
+        Cat2Value.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
+        std::cout<<"max\n";
+
+    } else if(  Cat2Value.AsLong <= INT64_MIN ||  Cat2Value.AsLong == -1 * std::numeric_limits<float>::infinity()) {         
+        Cat2Value.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
+        Cat2Value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
+        std::cout<<"min\n";
+        
+    } else { 
+        Cat2Value.HighBytes = Cat2Value.AsLong;
+        Cat2Value.LowBytes = Cat2Value.AsLong;
+         std::cout<<"ok\n";
+    }
+    
+    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
 
 }
 
@@ -1165,8 +1323,28 @@ void Jvm::f2d(){
 
 
 
-
 void Jvm::d2i(){
+    //big endian: highbytes first
+    double value;
+    u4 result;
+
+    u4 LowBytes  = CurrentFrame->OperandStack->Pop();
+    u4 HighBytes = CurrentFrame->OperandStack->Pop();
+    memcpy(&value, &HighBytes, sizeof(u4));
+    memcpy(&value, reinterpret_cast<void*>(&LowBytes), sizeof(u4));
+
+    // converte double pra int
+    if(std::isnan(value)){ 
+        result = 0;
+    } else if( value >= INT32_MAX || value == std::numeric_limits<double>::infinity()){ // todo test these infinities
+        result = INT32_MAX;
+    } else if( value <= INT32_MIN || value == -1 * std::numeric_limits<double>::infinity()) { 
+        result = INT32_MIN;
+    } else { // IEEE 754 round towards zero mode: check if rounded to zero 
+        result = static_cast<u4>(value);
+    }
+    // push pro stack de operandos
+    CurrentFrame->OperandStack->push(result);
 
 }
 
@@ -1207,8 +1385,19 @@ void Jvm::i2s(){
 
 
 
-
+// !TODO: fix, n eh assim q se trata long
 void Jvm::lcmp(){
+    long value1 = static_cast<long>(CurrentFrame->OperandStack->Pop());
+    long value2 = static_cast<long>(CurrentFrame->OperandStack->Pop());
+    int intValue = 9;
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+        
+    CurrentFrame->OperandStack->push(static_cast<u1>(intValue));
 
 }
 
@@ -1362,17 +1551,24 @@ void Jvm::ret(){
 }
 
 
+// Description
 
+//     A tableswitch is a variable-length instruction. Immediately after the tableswitch opcode, between 0 and 3 null bytes (zeroed bytes, not the null object) are inserted as padding. The number of null bytes is chosen so that the following byte begins at an address that is a multiple of 4 bytes from the start of the current method (the opcode of its first instruction). Immediately after the padding follow bytes constituting three signed 32-bit values: default, low, and high. Immediately following those bytes are bytes constituting a series of high - low + 1 signed 32-bit offsets. The value low must be less than or equal to high. The high - low + 1 signed 32-bit offsets are treated as a 0-based jump table. Each of these signed 32-bit values is constructed as (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4.
 
-void Jvm::tableswitch(){
+//     The index must be of type int and is popped from the operand stack. If index is less than low or index is greater than high, then a target address is calculated by adding default to the address of the opcode of this tableswitch instruction. Otherwise, the offset at position index - low of the jump table is extracted. The target address is calculated by adding that offset to the address of the opcode of this tableswitch instruction. Execution then continues at the target address.
+
+//     The target address that can be calculated from each jump table offset, as well as the ones that can be calculated from default, must be the address of an opcode of an instruction within the method that contains this tableswitch instruction.
+
+// Notes
+
+    // The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
+void Jvm::tableswitch() {
 
 }
 
 
-
-
 void Jvm::lookupswitch(){
-
+  std::cout<<"tableswitch\n";  std::cout<<"tableswitch\n";
 }
 
 
@@ -1418,7 +1614,6 @@ void Jvm::areturn(){
 }
 
 
-//TODO: check return is void ( na fe q o compilador ja faz isso)
 void Jvm::return_(){
 //check return == void
 	PopFrameStack();		 

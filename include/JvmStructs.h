@@ -149,6 +149,7 @@ union Cat2Value{
 	u4 HighBytes;
 	u4 LowBytes;
   };
+  float AsFloat;
   long long AsLong;
   double AsDouble;
 };
