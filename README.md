@@ -1,7 +1,7 @@
 # Compilação
 Com make:
 ```sh
-cmake CMakeLists.txt
+cmake ./
 make
 ```
 
