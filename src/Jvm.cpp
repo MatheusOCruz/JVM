@@ -339,6 +339,24 @@ void Jvm::ldc_w(){
 }
 
 void Jvm::ldc2_w(){
+    // Cat2Value converter;
+    u1 indexbyte1 = (*CurrentCode->code)[pc++];
+    u1 indexbyte2 = (*CurrentCode->code)[pc++];
+    u4 index = (indexbyte1 << 8) | indexbyte2;
+
+    cp_info* cpEntry = (*CurrentClass->constant_pool)[index];
+
+    switch (cpEntry->tag) {
+        case ConstantPoolTag::CONSTANT_Long:
+        case ConstantPoolTag::CONSTANT_Double:{
+            std::cout<<"pushing long or double\n";
+            pushU8ToOpStack(cpEntry->high_bytes, cpEntry->low_bytes);
+        }
+        default:{
+            //deu ruim
+        }
+    }
+    
 
 }
 
@@ -382,8 +400,11 @@ void Jvm::dload(){
     pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
-
+// todo aload, check docs to ensure dload fload etc r alright
 void Jvm::aload(){
+    u1 index = (*CurrentCode->code)[pc++];
+    u4 objectref = (*CurrentFrame->localVariables)[index];
+    CurrentFrame->OperandStack->push(objectref);
 
 }
 
@@ -752,7 +773,8 @@ void Jvm::dstore_0(){
 
 
 void Jvm::dstore_1(){
-
+    u8 value = popU8FromOpStack();
+    (*CurrentFrame->localVariables)[1] = value;
 }
 
 
