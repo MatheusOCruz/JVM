@@ -47,6 +47,13 @@ void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
     CurrentFrame->OperandStack->push(LowBytes);
 }
 
+// big endian
+u8 Jvm::getU8FromLocalVars(u4 startingIndex){
+    u4 LowBytes = (*CurrentFrame->localVariables)[startingIndex];
+    u4 HighBytes = (*CurrentFrame->localVariables)[startingIndex + 1];
+    return (static_cast<u8>(HighBytes) << 32) | LowBytes;
+}
+
 u1 inline Jvm::NextCodeByte(){
     return (*CurrentCode->code)[pc++];
 } 
@@ -344,14 +351,35 @@ void Jvm::iload(){
 }
 
 void Jvm::lload(){
+    u1 index = (*CurrentCode->code)[pc++];
+    Cat2Value converter;
+// todo should it throw error if index not valid
+    converter.AsLong = getU8FromLocalVars(index);
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
 void Jvm::fload(){
+    u1 index = (*CurrentCode->code)[pc++];
+    Cat2Value converter;
+    
+    converter.AsFloat = (*CurrentFrame->localVariables)[index];
+    CurrentFrame->OperandStack->push(converter.AsFloat);
 
 }
 
 void Jvm::dload(){
+    u1 index = (*CurrentCode->code)[pc++];
+    Cat2Value converter;
+
+    converter.AsDouble = getU8FromLocalVars(index);
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -393,15 +421,22 @@ void Jvm::iload_3(){
 }
 
 
-
-
+// !todo: implement these ez loads next
+// todo mb exception if index out of bounds
+// todo check
 void Jvm::lload_0(){
+    Cat2Value converter;
 
+    converter.AsLong = getU8FromLocalVars(0);
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 }
 
 
 
-
+// Both <n> and <n>+1 must be indices into the local variable array
 void Jvm::lload_1(){
 
 }
@@ -424,6 +459,10 @@ void Jvm::lload_3(){
 
 
 void Jvm::fload_0(){
+    Cat2Value converter;
+    
+    converter.AsFloat = (*CurrentFrame->localVariables)[0];
+    CurrentFrame->OperandStack->push(converter.AsFloat);
 
 }
 
@@ -450,8 +489,15 @@ void Jvm::fload_3(){
 
 
 
-
+// todo test
 void Jvm::dload_0(){
+    Cat2Value converter;
+
+    converter.AsDouble = getU8FromLocalVars(0);
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -641,7 +687,7 @@ void Jvm::istore_3(){
 
 
 
-
+// todo do these after next mb ez
 void Jvm::lstore_0(){
 
 }
@@ -1704,11 +1750,11 @@ void Jvm::return_(){
 void Jvm::getstatic(){
     u2 index = GetIndex2();
 }
-
+// todo mb ez
 void Jvm::putstatic(){
 
 }
-
+// todo mb ez
 void Jvm::getfield(){
     u2 index = GetIndex2();
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
