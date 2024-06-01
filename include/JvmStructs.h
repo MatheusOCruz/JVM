@@ -145,13 +145,18 @@ struct ArrayInstance<1,Type>{
 
 
 union Cat2Value{
-  struct{
-	u4 HighBytes;
-	u4 LowBytes;
-  };
-  float AsFloat;
-  long long AsLong;
-  double AsDouble;
+    struct{
+        u4 HighBytes;
+        u4 LowBytes;
+    };
+
+    float AsFloat;
+    s2 AsShort;
+    long long AsLong;
+    double AsDouble;
+    
+    u2 AsChar;
+    u1 AsByte;
 };
 
 
