@@ -35,7 +35,7 @@ private:
 
     void PrintFieldEntry(const field_info * field);
     void PrintMethodEntry(method_info* Method);
-    void PrintAttributeEntry(attribute_info* Attribute);
+    void PrintAttributeEntry(const attribute_info* Attribute, int indent_width=4);
 
     const std::string main_file;
     class_file* ClassFile;

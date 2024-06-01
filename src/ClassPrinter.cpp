@@ -48,9 +48,13 @@ void ClassPrinter::PrintClassFile(){
 			  << "attributes: " << ClassFile->attributes_count << std::endl;
 
     PrintConstantPoolTable();
+	std::cout << std::endl;
     PrintInterfaces();
+	std::cout << std::endl;
     PrintFields();
+	std::cout << std::endl;
     PrintMethods();
+	std::cout << std::endl;
     PrintAttributes();
 }
 
@@ -89,8 +93,12 @@ void ClassPrinter::PrintMethods() {
 }
 
 void ClassPrinter::PrintAttributes() {
-
+	std::cout << "Attributes:" << std::endl;
+	for(const auto a: (*ClassFile->attributes)) {
+		PrintAttributeEntry(a, 2);
+	}
 }
+
 void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
     // outputBuffer.append("Attributes: \n");
     // for(auto Attribute: *Attributes){
@@ -277,13 +285,9 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 		break;
 	}
 	default:
-		assert(0 && "Not implemented");
 		break;
     }
 }
-
-
-
 
 void ClassPrinter::PrintFieldEntry(const field_info *field) {
     const cp_info* field_name_entry = (*ClassFile->constant_pool)[field->name_index];
@@ -347,35 +351,70 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
 
 void ClassPrinter::SaveInFile() {}
 
-void ClassPrinter::PrintAttributeEntry(attribute_info *Attribute) {
+void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_width) {
 
-    cp_info* attribute_name_entry = (*ClassFile->constant_pool)[Attribute->attribute_name_index];
-    std::string attribute_name = attribute_name_entry->AsString();
-    static std::unordered_map<std::string, int> cases = {
-            {"ConstantValue", 0},
-            {"Code", 1},
-            //
-            {"Exceptions", 3},
-            {"InnerClasse", 4},
-            //
-            {"SourceFile", 8}
-    };
-    AttributeType AttributeTypeName;
-    if(cases.find(attribute_name) != cases.end())
-        AttributeTypeName = static_cast<AttributeType>(cases[attribute_name]);
-    else
-        AttributeTypeName = AttributeType::NotImplemented;
+    const cp_info* attribute_name_entry = (*ClassFile->constant_pool)[attr->attribute_name_index];
+    const std::string attr_name = attribute_name_entry->AsString();
 
-    switch (AttributeTypeName) {
-        case AttributeType::Code: {
-		std::cout << std::setw(4) <<  ""
+	if (attr_name == "Code") {
+		std::cout << std::setw(indent_width) <<  ""
 				  << "Code: " << std::endl;
-		std::cout << CodePrinter.CodeToString(Attribute->code->data(), Attribute->code_length)
+		std::cout << CodePrinter.CodeToString(
+											  attr->code->data(),
+											  attr->code_length)
 				  << std::endl;
-        }
-        defaut: {
-            //por enquanto testar so o do code
-        };
-    }
+		if (attr->exception_table_length) {
+			std::cout << std::setw(indent_width) <<  ""
+					<< "Exception Table:" << std::endl;
+			std::cout << std::setw(indent_width + 2) << ""
+					  << std::setw(6) << std::left << "from"
+					  << std::setw(6) << std::left << "to"
+					  << std::setw(8) << std::left << "target"
+					  << std::setw(6) << std::left << "type" << std::endl;
 
+			for(const auto e: *attr->exception_table){
+				std::cout << std::setw(indent_width + 2) << ""
+						  << std::setw(6) << std::left << e->start_pc
+						  << std::setw(6) << std::left << e->end_pc
+						  << std::setw(8) << std::left << e->handler_pc
+						  << std::setw(1) << std::left << "#"
+						  << std::setw(5) << std::left << e->catch_type
+						  << std::endl;
+			}
+		}
+
+		if (attr->attributes_count) {
+			std::cout << std::endl;
+			std::cout << std::setw(indent_width) <<  ""
+					<< "Attributes:" << std::endl;
+			for(const auto a: *attr->attributes){
+				PrintAttributeEntry(a, indent_width + 2);
+			}
+		}
+	}
+	else if (attr_name == "ConstantValue") {
+		std::cout << std::setw(indent_width) <<  ""
+			      << "ConstantValue: #" << attr->constantvalue_index
+				  << std::endl;
+	}
+	else if (attr_name == "Exceptions") {
+		std::cout << std::setw(indent_width) <<  ""
+			      << "Exception Table:" << std::endl;
+		for (int i = 0; i < attr->number_of_exceptions; i++) {
+			std::cout << std::setw(indent_width + 2) << ""
+					  << std::setw(4) << std::left << i << ":   #"
+					  << (*attr->exception_index_table)[i] << std::endl;
+		}
+	}
+	else if (attr_name == "SourceFile") {
+		std::cout << std::setw(indent_width) <<  ""
+			      << "SourceFile: #" << attr->sourcefile_index
+				  << std::endl;
+	}
+	else if (attr_name == "LineNumberTable") {}
+	else if (attr_name == "StackMapTable") {}
+	else {
+		std::cerr << std::setw(indent_width) <<  ""
+				  << "Error: atribute type " << attr_name << " printing not implemented" << std::endl;
+	}
 }
