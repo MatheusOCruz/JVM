@@ -1,4 +1,3 @@
-package java;
 
 public class ConstantValueTest {
 	public static final int VALUE = 123;

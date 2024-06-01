@@ -411,8 +411,26 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 			      << "SourceFile: #" << attr->sourcefile_index
 				  << std::endl;
 	}
+	else if (attr_name == "InnerClasses") {
+		std::cout << std::setw(indent_width) <<  ""
+				  << "InnerClasses:" << std::endl;
+
+		for(const auto c: *attr->classes){
+			std::cout << std::setw(indent_width + 2) << ""
+			 		  << std::setw(1) << std::left << "#"
+			 		  << std::setw(5) << std::left << c->inner_name_index
+			 		  << std::setw(2) << std::left << "= "
+			 		  << std::setw(1) << std::left << "#"
+			 		  << std::setw(5) << std::left << c->inner_class_info_index
+			 		  << std::setw(4) << std::left << " of "
+			 		  << std::setw(1) << std::left << "#"
+			 		  << std::setw(5) << std::left << c->outer_class_info_index
+			 		  << std::endl;
+		}
+	}
 	else if (attr_name == "LineNumberTable") {}
 	else if (attr_name == "StackMapTable") {}
+	else if (attr_name == "NestMembers") {}
 	else {
 		std::cerr << std::setw(indent_width) <<  ""
 				  << "Error: atribute type " << attr_name << " printing not implemented" << std::endl;
