@@ -49,13 +49,13 @@ void ClassPrinter::PrintClassFile(){
 
     PrintConstantPoolTable();
 	std::cout << std::endl;
-    PrintInterfaces();
-	std::cout << std::endl;
     PrintFields();
 	std::cout << std::endl;
     PrintMethods();
 	std::cout << std::endl;
     PrintAttributes();
+	std::cout << std::endl;
+    PrintInterfaces();
 }
 
 
@@ -71,16 +71,24 @@ void ClassPrinter::PrintConstantPoolTable() {
 }
 
 void ClassPrinter::PrintInterfaces() {
-
+	if (ClassFile->interfaces_count > 0) {
+		std::cout << "Interfaces:" << std::endl;
+		for (const auto idx: *ClassFile->interfaces) {
+			std::cout << std::setw(2) << ""
+					  << "#" << idx << std::endl;
+		}
+	}
 }
 
 void ClassPrinter::PrintFields() {
-	std::cout << "Fields {" << std::endl;
-	for (const auto f: *ClassFile->fields) {
-		PrintFieldEntry(f);
-		std::cout << std::endl;
+	if (ClassFile->fields_count > 0) {
+		std::cout << "Fields {" << std::endl;
+		for (const auto f: *ClassFile->fields) {
+			PrintFieldEntry(f);
+			std::cout << std::endl;
+		}
+		std::cout << "}" << std::endl;
 	}
-	std::cout << "}" << std::endl;
 }
 
 void ClassPrinter::PrintMethods() {

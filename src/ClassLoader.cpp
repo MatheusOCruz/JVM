@@ -114,6 +114,15 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
+std::vector<u2> *ClassLoader::read_vec_u2(int length) {
+    auto temp = new std::vector<u2>();
+    temp->reserve(length);
+
+	for (int i = 0; i < length; i++) temp->push_back(read_u2());
+    return temp;
+}
+
+
 int ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
@@ -256,7 +265,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
         case AttributeType::Exceptions: {
             // Lógica para lidar com Exceptions
             Entry->number_of_exceptions = read_u2();
-            Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
+            Entry->exception_index_table = read_vec_u2(Entry->number_of_exceptions);
             break;
         }
         case AttributeType::InnerClasses: {
@@ -334,8 +343,7 @@ void ClassLoader::BuildConstantPoolTable() {
 }
 void ClassLoader::BuildInterfaces(){
     current_file->interfaces_count = read_u2();
-    current_file->interfaces = new std::vector<u2>;
-    current_file->interfaces = read_vec<u2>(current_file->interfaces_count);
+    current_file->interfaces = read_vec_u2(current_file->interfaces_count);
 }
 
 void ClassLoader::BuildFields() {

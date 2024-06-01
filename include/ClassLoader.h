@@ -48,6 +48,7 @@ private:
     u1 read_u1();
     u2 read_u2();
     u4 read_u4();
+	std::vector<u2> *read_vec_u2(int length);
 
     template<typename T>
     std::vector<T>* read_vec(int length);
