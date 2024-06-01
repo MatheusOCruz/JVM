@@ -1507,7 +1507,7 @@ void Jvm::d2f(){
 
 
 void Jvm::i2b(){
-    FieldEntry converter;
+    Cat2Value converter;
     // trunca int (u4, 4 bytes) pra byte (u1)
     converter.AsByte = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(converter.AsByte);
@@ -1517,7 +1517,7 @@ void Jvm::i2b(){
 
 
 void Jvm::i2c(){
-    FieldEntry converter;
+    Cat2Value converter;
     converter.AsChar = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(converter.AsChar);
 

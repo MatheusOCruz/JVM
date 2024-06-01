@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 #include "ClassFileEnums.h"
 #include "typedefs.h"
 #include "assert.h"
@@ -50,10 +51,10 @@ struct cp_info{
     };
 
     std::string AsString() const noexcept {
-        if(tag != ConstantPoolTag::CONSTANT_Utf8 ){
+        //if(tag != ConstantPoolTag::CONSTANT_Utf8 ){
             //throw   std::runtime_error("Entrada nao e um UTF8\n");
-			assert(0);
-        }
+		//	assert(0);
+        //}
         return { reinterpret_cast<char*>(bytes_vec->data()), length };
     };
 };
@@ -81,8 +82,12 @@ struct attribute_info{
         };
         struct { // InnerClasses_attribute
             u2 number_of_classes;
-            std::vector<InnerClasses*>* classes;
+            std::vector<InnerClasse*>* classes;
         };
+        struct{ // source file
+            u2 sourcefile_index;
+        };
+
     };
 };
 
@@ -121,3 +126,4 @@ struct class_file{
 };
 
 #endif //JVM_CLASSFILESTRUCTS_H
+

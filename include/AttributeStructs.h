@@ -17,7 +17,7 @@ struct Exception_tableEntry{
 };
 
 
-struct InnerClasses {
+struct InnerClasse {
     u2 inner_class_info_index;
     u2 outer_class_info_index;
     u2 inner_name_index;

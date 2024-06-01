@@ -5,22 +5,18 @@
 #include "../include/ClassLoader.h"
 
 class_file* ClassLoader::GetClass(const std::string class_file_path) {
-	if (!((*class_files).count(class_file_path))) {
-        std::cout << "Classe nao carregada, carregando: " << class_file_path << std::endl;
-		LoadClass(class_file_path);
-	}
-	return (*class_files)[class_file_path];
+    if (!((*class_files).count(class_file_path))) {
+        LoadClass(class_file_path);
+    }
+    return (*class_files)[class_file_path];
 }
 
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
-	if ((*class_files).count(nomeArquivo)) return;
-    std::cout << "Carregando arquivo: " << nomeArquivo << std::endl;
-  
-    current_file = new class_file; // TODO FIX THIS DONT USE HARDCODE?
-    if (nomeArquivo == "java/lang/Object")
-        LoadFile("Object.class");
-    else
-        LoadFile(nomeArquivo);
+    if ((*class_files).count(nomeArquivo)) return;
+
+    current_file = new class_file;
+
+    LoadFile(nomeArquivo);
     CheckMagic();
     CheckVersion();
     BuildConstantPoolTable();
@@ -40,7 +36,7 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
 
 
-	// Caso Nao seja a classe Object, carrega superclasse de forma recursiva
+    // Caso Nao seja a classe Object, carrega superclasse de forma recursiva
     if (current_file->super_class == 0)
         return;
 
@@ -55,13 +51,16 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
     auto classPath = nomeArquivo;
     std::regex ClassFIleTermination (".*\\.class$");
 
-    if (!std::regex_search(nomeArquivo, ClassFIleTermination)){
-        //  classPath = nomeArquivo + ".class";
-         std::cout << "Arquivo fornecido nao e .class, tentando abrir: " << classPath << std::endl;
+    if (!std::regex_search(nomeArquivo, ClassFIleTermination))
+        classPath = nomeArquivo + ".class";
+
+    if(classPath == std::string("java/lang/Object.class")){
+        classPath = "./Object.class";
+        // classPath = "/home/matheus/prog/JVM/Object.class"; // TODO: fix 
     }
-        
-
-
+    #ifdef _WIN32
+    std::replace(classPath.begin(),classPath.end(),'/','\\');
+    #endif
     std::ifstream arquivo(classPath, std::ios::binary);
 
     if (!arquivo) {
@@ -116,7 +115,7 @@ std::vector<T> *ClassLoader::read_vec(int length) {
     return temp;
 }
 
-void ClassLoader::BuildConstantPoolInfo() {
+int ClassLoader::BuildConstantPoolInfo() {
     auto Entry = new cp_info{};
 
     switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
@@ -192,8 +191,11 @@ void ClassLoader::BuildConstantPoolInfo() {
     current_file->constant_pool->push_back(Entry);
 
     // entrada seguinte de Long ou Double nao e um indice valido
-    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
+    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double) {
         current_file->constant_pool->push_back(new cp_info{});
+        return 1;
+    }
+    return 0;
 }
 
 attribute_info* ClassLoader::BuildAttributeInfo() {
@@ -211,15 +213,15 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             {"Code", 1},
             //
             {"Exceptions", 3},
-            {"InnerClasses", 4},
+            {"InnerClasse", 4},
             //
             {"SourceFile", 8}
     };
     AttributeType AttributeTypeName;
     if(cases.find(AttributeName) != cases.end())
-         AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
+        AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
     else
-         AttributeTypeName = AttributeType::NotImplemented;
+        AttributeTypeName = AttributeType::NotImplemented;
 
 
     switch (AttributeTypeName) {
@@ -240,8 +242,8 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             //TODO: provavelmente tirar esse for daqui
             for (int i = 0; i < Entry->exception_table_length; ++i) {
                 auto TableEntry = new Exception_tableEntry{};
-                TableEntry->start_pc = read_u2();
-                TableEntry->end_pc = read_u2();
+                TableEntry->start_pc   = read_u2();
+                TableEntry->end_pc     = read_u2();
                 TableEntry->handler_pc = read_u2();
                 TableEntry->catch_type = read_u2();
                 Entry->exception_table->push_back(TableEntry);
@@ -254,17 +256,30 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
         //TODO: esse read_vec e so pra pular os bytes, tem q implementar
         case AttributeType::Exceptions: {
             // Lógica para lidar com Exceptions
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_exceptions = read_u2();
+            Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
             break;
         }
         case AttributeType::InnerClasses: {
-            // Lógica para lidar com InnerClasses
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_classes = read_u2();
+            Entry->classes = new std::vector<InnerClasse*>;
+            for (int i = 0; i < Entry->number_of_classes; ++i) {
+                auto ClassEntry = new InnerClasse{};
+                ClassEntry->inner_class_info_index   = read_u2();
+                ClassEntry->outer_class_info_index   = read_u2();
+                ClassEntry->inner_name_index         = read_u2();
+                ClassEntry->inner_class_access_flags = read_u2();
+                Entry->classes->push_back(ClassEntry);
+            }
+            break;
+        }
+        case AttributeType::Synthetic: {
+            assert(Entry->attribute_length == 0);
             break;
         }
         case AttributeType::SourceFile: {
             // Lógica para lidar com SourceFile
-            read_vec<u1>(Entry->attribute_length);
+            Entry->sourcefile_index = read_u2();
             break;
         }
         case AttributeType::NotImplemented: {
@@ -313,7 +328,8 @@ void ClassLoader::BuildConstantPoolTable() {
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
 
     for(int i = 0; i< current_file->constant_pool_count-1; i++){
-        BuildConstantPoolInfo();
+        if(BuildConstantPoolInfo())
+            i++;
     }
 
 }

@@ -2,6 +2,8 @@
 // Created by matheus on 4/20/24.
 //
 
+#include <iomanip>
+#include <sstream>
 #include "../include/OpcodePrinter.h"
 
 std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
@@ -10,7 +12,10 @@ std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
     code = _code;
     while(code_iterator != code_lenght){
         StringBuffer.append("      ");
-        StringBuffer.append(std::to_string(code_iterator) + ":");
+        std::ostringstream oss;
+        oss << std::setw(3) << code_iterator << ":";
+        std::string formatedIndex = oss.str();
+        StringBuffer.append(formatedIndex);
         u1 bytecode = code[code_iterator++];
         (this->*bytecodeFuncs[bytecode])();
     }
@@ -464,8 +469,18 @@ void OpcodePrinter::lxor() {
     StringBuffer.append(" lxor\n");
 }
 // index e const
-void OpcodePrinter::iinc() {}
+void OpcodePrinter::iinc() {
+    u1 index = code[code_iterator++];
+    u1 _const = code[code_iterator++];
+    StringBuffer.append(" iinc ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" by ");
+    StringBuffer.append(std::to_string(_const));
+    StringBuffer.append("\n");
+
+}
 void OpcodePrinter::i2l() {
+
     StringBuffer.append(" i2l\n");
 }
 void OpcodePrinter::i2f() {
@@ -625,9 +640,11 @@ void OpcodePrinter::if_acmpne() {
     StringBuffer.append("\n");
 }
 void OpcodePrinter::goto_() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
 
-    StringBuffer.append(" goto #");
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
+
+    StringBuffer.append(" goto ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 } // Usando goto_ para evitar conflito com a palavra reservada goto
@@ -662,7 +679,7 @@ void OpcodePrinter::areturn() {
     StringBuffer.append(" areturn\n");
 }
 void OpcodePrinter::return_() {
-    StringBuffer.append(" return_\n");
+    StringBuffer.append(" return\n");
 }
 void OpcodePrinter::getstatic() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;

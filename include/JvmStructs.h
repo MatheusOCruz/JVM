@@ -4,6 +4,7 @@
 
 #ifndef JVM_JVMSTRUCTS_H
 #define JVM_JVMSTRUCTS_H
+#include "JvmEnums.h"
 #include "typedefs.h"
 
 namespace JVM{
@@ -61,6 +62,8 @@ namespace JVM{
 
             return reinterpret_cast<RefType*>(ArrayRef);
         }
+
+
         void StoreRefAt(void* ArrayRef, u2 index){
             if(index + 1 >=this->size())
                 throw std::runtime_error("SegFault no vetor de varivaies\n");
@@ -84,11 +87,13 @@ struct Frame{
 };
 
 
+struct Reference{
+    ReferenceType Type;
+    void* Value;
 
-struct Handle{
-    std::vector<method_info*>* MethodTable;
-    class_file* ClassObject;
+    Reference(ReferenceType type, void* value) : Type(type), Value(value) {}
 };
+
 
 union FieldEntry{
     u1 AsByte;
@@ -102,10 +107,15 @@ union FieldEntry{
     u8 AsLong;
     double AsDouble;
 
-    uintptr_t AsRef;
-
+    Reference AsRef; // infelizmente e oq temos pra hj   
 };
 
+
+
+struct Handle{
+    std::vector<method_info*>* MethodTable;
+    class_file* ClassObject;
+};
 
 struct ClassInstance{
     Handle*         HandlePointer;
@@ -113,15 +123,43 @@ struct ClassInstance{
 };
 
 
-union Cat2Value{
-  struct{
-	u4 HighBytes;
-	u4 LowBytes;
-  };
-  float AsFloat;
-  s2 AsShort;
-  long long AsLong;
-  double AsDouble;
+template<int N, ArrayTypeCode Type>
+struct ArrayInstance{
+    using SubArray = ArrayInstance<N-1,Type>;
+    std::vector<ArrayInstance<N-1,Type>> ComponentArray;
+    
+    ArrayInstance(u1 size, JVM::stack<int>* sizes) {
+        int SubArraySize = sizes->Pop();
+        ComponentArray   =  std::vector<SubArray>(size, ArrayInstance<N-1,Type>(SubArraySize,sizes));
+    }
 };
+
+template<ArrayTypeCode Type>
+struct ArrayInstance<1,Type>{
+    std::vector<char> ComponentArray;
+    ArrayInstance(u1 size, JVM::stack<int>*) : ComponentArray( std::vector<char>(size) ){}
+};
+
+
+
+
+
+union Cat2Value{
+    struct{
+        u4 HighBytes;
+        u4 LowBytes;
+    };
+
+    float AsFloat;
+    s2 AsShort;
+    long long AsLong;
+    double AsDouble;
+    
+    u2 AsChar;
+    u1 AsByte;
+};
+
+
+
 
 #endif //JVM_JVMSTRUCTS_H

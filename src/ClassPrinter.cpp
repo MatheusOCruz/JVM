@@ -292,7 +292,7 @@ void ClassPrinter::PrintAttributeEntry(attribute_info *Attribute) {
             {"Code", 1},
             //
             {"Exceptions", 3},
-            {"InnerClasses", 4},
+            {"InnerClasse", 4},
             //
             {"SourceFile", 8}
     };
