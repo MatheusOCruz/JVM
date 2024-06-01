@@ -59,6 +59,8 @@ private:
     void return_u8();
 
     u2 GetIndex2();
+    u8 popU8FromOpStack(); //pop 2 u4 em big endian e retorna um u8
+    void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
 
 
     //funcoes do bytecode

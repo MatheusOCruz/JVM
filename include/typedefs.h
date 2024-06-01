@@ -13,7 +13,7 @@ typedef uint64_t u8;
 
 typedef int32_t  i32;
 typedef int64_t  Jlong;
-
+typedef float    Jfloat;
 
 typedef std::vector<uint8_t>::iterator buffer_iterator;
 #endif //JVM_TYPEDEFS_H
