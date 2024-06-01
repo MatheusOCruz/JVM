@@ -3,6 +3,8 @@
 //
 
 #include "../include/Jvm.h"
+#include <cmath>
+#include <limits>
 
 void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
@@ -29,15 +31,7 @@ void Jvm::Run(){
     //check for <main>
     //exec
 
-
-iload();
-
     ExecBytecode();
-
-
-// fconst_0();
-// fconst_1();
-// dconst_1();
 
 }
 
@@ -188,7 +182,6 @@ void Jvm::aconst_null(){
 // Notes Each of this family of instructions is equivalent to bipush <i> for
 // the respective value of <i>, except that the operand <i> is implicit.
 void Jvm::iconst_m1(){
-    // TODO: static cast to const u1 or int??
     CurrentFrame->OperandStack->push(static_cast<const u4>(-1));
 }
 
@@ -224,12 +217,12 @@ void Jvm::lconst_0(){
 void Jvm::lconst_1(){
     CurrentFrame->OperandStack->push(static_cast<const Jlong>(1.0));
 }
-
-// Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand
-// stack
+ // big-endian order, where the high bytes come first
+// Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
 void Jvm::fconst_0(){
     const float value = 0.0;
     //transforma de float pra uint32_t
+    // todo:checa se devia ta pushando dois u8
     Cat2Value Cat2Value;
     Cat2Value.AsFloat = value;  
     const u4 HighBytes = Cat2Value.HighBytes; 
@@ -270,33 +263,24 @@ std::cout << " ";
 
 void Jvm::dconst_0(){
     const double value = 0.0;
-    //transforma de float pra uint32_t
+    //pusha dois u4, big endian (most significant first)
     Cat2Value Cat2Value;
     Cat2Value.AsDouble = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
     const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
     CurrentFrame->OperandStack->push(LowBytes);
 }
 
 void Jvm::dconst_1(){
     const double value = 1.0;
-    //transforma de float pra uint32_t
+    //pusha dois u4, big endian (most significant first)
     Cat2Value Cat2Value;
     Cat2Value.AsDouble = value;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
     const u4 LowBytes = Cat2Value.LowBytes; 
+    CurrentFrame->OperandStack->push(HighBytes);
     CurrentFrame->OperandStack->push(LowBytes);
-    // pra checar se pusha high ou low
-/*
-const uint32_t HighBytes = Cat2Value.HighBytes; 
-    for (int i = 31; i >= 0; i--) {
-    std::cout << ((LowBytes >> i) & 1);
-  }
-
-std::cout << " ";
-    for (int i = 31; i >= 0; i--) {
-    std::cout << ((HighBytes >> i) & 1);
-  }
-  
-*/
 }
 // The immediate byte is sign-extended to an int value. That value
 // is pushed onto the operand stac
@@ -899,9 +883,9 @@ void Jvm::iadd(){
 
 // Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
 void Jvm::ladd(){
-    // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
-    int32_t value1;
-    int32_t value2;
+    // !TODO checar: implementacao erradisima
+    long value1;
+    long value2;
     value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
     value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
     int32_t result = value1 + value2;
@@ -1212,10 +1196,19 @@ void Jvm::i2f(){
 }
 
 
-
-
+// todo: checa se a frame devia ta só com um value. se sim, isso pode ta errado
+//Convert int to double
 void Jvm::i2d(){
-
+    Cat2Value Cat2Value;
+    // fetch int value as double
+    Cat2Value.AsDouble = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsDouble;
+    Cat2Value.LowBytes = Cat2Value.AsDouble;
+    
+    // pushes in big endian
+    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
+    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
+    CurrentFrame->OperandStack->push(Cat2Value.LowBytes );
 }
 
 
@@ -1261,9 +1254,30 @@ void Jvm::f2d(){
 }
 
 
-
-
+// todo: checa se a frame devia ta só com um value. se sim, checar outras funcoes que dao push em operandos maiores que u4, pra garantir que estao criando nova frame?
 void Jvm::d2i(){
+// !todo: checar se é highbytes ou lowbytes primeiro
+    //big endian: highbytes first=
+    double value;
+    u4 result;
+
+    u4 LowBytes  = CurrentFrame->OperandStack->Pop();
+    u4 HighBytes = CurrentFrame->OperandStack->Pop();
+    memcpy(&value, &HighBytes, sizeof(u4));
+    memcpy(&value, reinterpret_cast<void*>(&LowBytes), sizeof(u4));
+
+
+    if(std::isnan(value)){ 
+        result = 0;
+    } else if( value >= INT32_MAX || value == std::numeric_limits<double>::infinity()){ // todo test these infinities
+        result = INT32_MAX;
+    } else if( value <= INT32_MIN || value == -1 * std::numeric_limits<double>::infinity()) { 
+        result = INT32_MIN;
+    } else { // IEEE 754 round towards zero mode: check if rounded to zero 
+        result = static_cast<u4>(value);
+    }
+    
+    CurrentFrame->OperandStack->push(result);
 
 }
 
@@ -1533,7 +1547,6 @@ void Jvm::areturn(){
 }
 
 
-//TODO: check return is void ( na fe q o compilador ja faz isso)
 void Jvm::return_(){
 //check return == void
 	PopFrameStack();		 
