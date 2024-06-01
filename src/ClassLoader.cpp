@@ -55,6 +55,7 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
 
     if(classPath == std::string("java/lang/Object.class")){
         classPath = "./Object.class";
+        classPath = "/home/matheus/prog/JVM/Object.class";
     }
     #ifdef _WIN32
     std::replace(classPath.begin(),classPath.end(),'/','\\');
@@ -211,7 +212,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             {"Code", 1},
             //
             {"Exceptions", 3},
-            {"InnerClasses", 4},
+            {"InnerClasse", 4},
             //
             {"SourceFile", 8}
     };
@@ -240,8 +241,8 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             //TODO: provavelmente tirar esse for daqui
             for (int i = 0; i < Entry->exception_table_length; ++i) {
                 auto TableEntry = new Exception_tableEntry{};
-                TableEntry->start_pc = read_u2();
-                TableEntry->end_pc = read_u2();
+                TableEntry->start_pc   = read_u2();
+                TableEntry->end_pc     = read_u2();
                 TableEntry->handler_pc = read_u2();
                 TableEntry->catch_type = read_u2();
                 Entry->exception_table->push_back(TableEntry);
@@ -251,20 +252,33 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             BuildAttributes(Entry->attributes_count, *Entry->attributes);
             break;
         }
-            //TODO: esse read_vec e so pra pular os bytes, tem q implementar
+        //TODO: esse read_vec e so pra pular os bytes, tem q implementar
         case AttributeType::Exceptions: {
             // Lógica para lidar com Exceptions
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_exceptions = read_u2();
+            Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
             break;
         }
         case AttributeType::InnerClasses: {
-            // Lógica para lidar com InnerClasses
-            read_vec<u1>(Entry->attribute_length);
+            Entry->number_of_classes = read_u2();
+            Entry->classes = new std::vector<InnerClasse*>;
+            for (int i = 0; i < Entry->number_of_classes; ++i) {
+                auto ClassEntry = new InnerClasse{};
+                ClassEntry->inner_class_info_index   = read_u2();
+                ClassEntry->outer_class_info_index   = read_u2();
+                ClassEntry->inner_name_index         = read_u2();
+                ClassEntry->inner_class_access_flags = read_u2();
+                Entry->classes->push_back(ClassEntry);
+            }
+            break;
+        }
+        case AttributeType::Synthetic: {
+            assert(Entry->attribute_length == 0);
             break;
         }
         case AttributeType::SourceFile: {
             // Lógica para lidar com SourceFile
-            read_vec<u1>(Entry->attribute_length);
+            Entry->sourcefile_index = read_u2();
             break;
         }
         case AttributeType::NotImplemented: {

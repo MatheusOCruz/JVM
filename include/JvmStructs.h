@@ -62,6 +62,8 @@ namespace JVM{
 
             return reinterpret_cast<RefType*>(ArrayRef);
         }
+
+
         void StoreRefAt(void* ArrayRef, u2 index){
             if(index + 1 >=this->size())
                 throw std::runtime_error("SegFault no vetor de varivaies\n");
