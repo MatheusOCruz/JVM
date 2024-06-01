@@ -223,11 +223,11 @@ void Jvm::iconst_5(){
 
 void Jvm::lconst_0(){
     // todo: check if anything wrong, was it the right cast??
-    CurrentFrame->OperandStack->push(static_cast<const Jlong>(0.0));
+    CurrentFrame->OperandStack->push(static_cast<const s8>(0.0));
 }
 
 void Jvm::lconst_1(){
-    CurrentFrame->OperandStack->push(static_cast<const Jlong>(1.0));
+    CurrentFrame->OperandStack->push(static_cast<const s8>(1.0));
 }
  // big-endian order, where the high bytes come first
 // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
@@ -1197,13 +1197,13 @@ void Jvm::iinc(){
 
 // idk todo test
 void Jvm::i2l(){
-    Cat2Value Cat2Value;
-    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
-    Cat2Value.HighBytes = Cat2Value.AsLong;
-    Cat2Value.LowBytes = Cat2Value.AsLong;
+    Cat2Value converter;
+    converter.AsLong = CurrentFrame->OperandStack->Pop();
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
     
     // push pro operand stack em big endian
-    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 }
 
 
@@ -1216,32 +1216,31 @@ void Jvm::i2f(){
 }
 
 
-// todo: checa se a frame devia ta só com um value. se sim, isso pode ta errado
-//Convert int to double
+//Converte int pra double
 void Jvm::i2d(){
-    Cat2Value Cat2Value;
+    Cat2Value converter;
     
-    Cat2Value.AsDouble = CurrentFrame->OperandStack->Pop();
-    Cat2Value.HighBytes = Cat2Value.AsDouble;
-    Cat2Value.LowBytes = Cat2Value.AsDouble;
+    converter.AsDouble = CurrentFrame->OperandStack->Pop();
+    converter.HighBytes = converter.AsDouble;
+    converter.LowBytes = converter.AsDouble;
     
     // push em big endian
-    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
-    CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
-    CurrentFrame->OperandStack->push(Cat2Value.LowBytes );
+    CurrentFrame->OperandStack->push(converter.HighBytes);
+    CurrentFrame->OperandStack->push(converter.HighBytes);
+    CurrentFrame->OperandStack->push(converter.LowBytes );
 }
 
 
 
 
 void Jvm::l2i(){
-    Cat2Value Cat2Value;
+    Cat2Value converter;
 
-    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
-    Cat2Value.HighBytes = Cat2Value.AsLong;
-    Cat2Value.LowBytes = Cat2Value.AsLong;
+    converter.AsLong = popU8FromOpStack();
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
     // push pro stack de operandos em big endian
-    CurrentFrame->OperandStack->push(Cat2Value.LowBytes);
+    CurrentFrame->OperandStack->push(converter.LowBytes);
 
 }
 
@@ -1249,6 +1248,12 @@ void Jvm::l2i(){
 
 
 void Jvm::l2f(){
+    Cat2Value converter;
+
+    converter.AsLong = popU8FromOpStack();
+    // todo test
+    converter.AsFloat = converter.AsLong;
+    CurrentFrame->OperandStack->push(converter.AsFloat);
 
 }
 
@@ -1256,6 +1261,16 @@ void Jvm::l2f(){
 
 
 void Jvm::l2d(){
+    Cat2Value converter;
+
+    converter.AsLong = popU8FromOpStack();
+    converter.AsDouble = converter.AsLong;
+// todo: test if this is indeed the correct big endian low and high bytes
+    converter.HighBytes = converter.AsDouble;
+    converter.LowBytes = converter.AsDouble;
+    
+    // push pro operand stack em big endian
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1270,10 +1285,12 @@ void Jvm::f2i(){
 
     if(std::isnan(intValue)){ 
         result = 0;
-    } else if( intValue >= INT32_MAX || intValue == std::numeric_limits<int>::infinity()){ // todo test these infinities
+        // todo checar o que aqui devia ser comparacao com signed ou unsigned
+    } else if( intValue >= INT32_MAX || intValue == std::numeric_limits<u4>::infinity()){ // todo test these infinities
         result = INT32_MAX;
-    } else if( intValue <= INT32_MIN || intValue == -1 * std::numeric_limits<int>::infinity()) { 
+    } else if( intValue <= INT32_MIN || intValue == -1 * std::numeric_limits<u4>::infinity()) { 
         result = INT32_MIN;
+        // todo como converte negativo pra uint ? dependendo do compilador que carinha de erro
     } else { 
         result = static_cast<u4>(intValue);
     }
@@ -1285,42 +1302,54 @@ void Jvm::f2i(){
 
 
 // testado (hardcode, n cm file) ok
+// !todo: excluir prints ez
 void Jvm::f2l(){
     //converte u4 pra float, float pra long
-    Cat2Value Cat2Value;
+    Cat2Value converter;
     float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
 
-    Cat2Value.AsLong = value;
+    converter.AsLong = value;
 
-    if(std::isnan(Cat2Value.AsLong)){ 
-        Cat2Value.HighBytes = 0;
-        Cat2Value.LowBytes = 0;
+    if(std::isnan(converter.AsLong)){ 
+        converter.HighBytes = 0;
+        converter.LowBytes = 0;
          std::cout<<"0\n";
 
-    } else if(  Cat2Value.AsLong >= INT64_MAX ||  Cat2Value.AsLong == std::numeric_limits<float>::infinity()){ // todo test these infinities                         
-        Cat2Value.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
-        Cat2Value.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
+    } else if(  converter.AsLong >= INT64_MAX ||  converter.AsLong == std::numeric_limits<float>::infinity()){ // todo test these infinities                         
+        // !todo test if this rlly makes int64 in high & low bytes
+        converter.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
+        converter.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
         std::cout<<"max\n";
 
-    } else if(  Cat2Value.AsLong <= INT64_MIN ||  Cat2Value.AsLong == -1 * std::numeric_limits<float>::infinity()) {         
-        Cat2Value.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
-        Cat2Value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
+    } else if(  converter.AsLong <= INT64_MIN ||  converter.AsLong == -1 * std::numeric_limits<float>::infinity()) {         
+        converter.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
+        converter.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
         std::cout<<"min\n";
         
     } else { 
-        Cat2Value.HighBytes = Cat2Value.AsLong;
-        Cat2Value.LowBytes = Cat2Value.AsLong;
+        converter.HighBytes = converter.AsLong;
+        converter.LowBytes = converter.AsLong;
          std::cout<<"ok\n";
     }
     
-    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
 
 
-
+// todo test
 void Jvm::f2d(){
+    //converte u4 pra float, float pra double
+    Cat2Value converter;
+    converter.AsFloat = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    // todo check if static cast da problema e se sem ele ta ok
+
+    converter.AsDouble = converter.AsFloat ;
+    converter.HighBytes = converter.AsDouble;
+    converter.LowBytes = converter.AsDouble;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1344,6 +1373,7 @@ void Jvm::d2i(){
     } else if( value <= INT32_MIN || value == -1 * std::numeric_limits<double>::infinity()) { 
         result = INT32_MIN;
     } else { // IEEE 754 round towards zero mode: check if rounded to zero 
+    // !todo testa parece errado
         result = static_cast<u4>(value);
     }
     // push pro stack de operandos
@@ -1355,35 +1385,84 @@ void Jvm::d2i(){
 
 
 void Jvm::d2l(){
+    Cat2Value converter;
+
+    converter.AsDouble = popU8FromOpStack();
+    converter.AsLong =  converter.AsDouble;
+    long long value = converter.AsLong;
+
+    
+    // converte Long pra double
+    if(std::isnan(value)){ 
+        converter.HighBytes = 0;
+        converter.LowBytes = 0; 
+    } else if( value >= __LONG_LONG_MAX__ || value == std::numeric_limits<long long>::infinity()){ // todo test these infinities
+        converter.LowBytes = static_cast<u4>((__LONG_LONG_MAX__ & 0xffffffff00000000) >> 32);
+        converter.HighBytes = static_cast<u4>(__LONG_LONG_MAX__ & 0x00000000ffffffff); 
+   
+    } else if( value <=  std::numeric_limits<long long>::min() || value == -1 * std::numeric_limits<long long>::infinity()) { // n achei min pra long long em cpp (que funcionasse) mas como vai virar unsigned p min tá 0. long specs: In Java SE 8 and later, you can use the long data type to represent an unsigned 64-bit long, which has a minimum value of 0 and a maximum value of 264-1
+        converter.LowBytes = static_cast<u4>((std::numeric_limits<long long>::min() & 0xffffffff00000000) >> 32);
+        converter.HighBytes = static_cast<u4>(std::numeric_limits<long long>::min() & 0x00000000ffffffff); 
+
+    } else { // IEEE 754 round towards zero mode: check if rounded to zero 
+        converter.HighBytes = converter.AsLong;
+        converter.LowBytes = converter.AsLong;
+    }
+
 
 }
 
 
 
-
+// todo test
 void Jvm::d2f(){
+    Cat2Value converter;
+
+    converter.AsDouble = popU8FromOpStack();
+    double value = converter.AsDouble;
+
+    // converte Long pra double
+    if(std::isnan(value)){ 
+        // float nan
+        converter.AsFloat = std::nanf("");
+    } else if( value >= __FLT_MAX__ || value == std::numeric_limits<float>::infinity()){ // todo test these infinities
+        converter.AsFloat = std::numeric_limits<float>::max();
+    } else if( value <=  __FLT_MIN__ || value == -1 * std::numeric_limits<float>::infinity()) { // n achei min pra long long em cpp (que funcionasse) mas como vai virar unsigned p min tá 0. long specs: In Java SE 8 and later, you can use the long data type to represent an unsigned 64-bit long, which has a minimum value of 0 and a maximum value of 264-1
+        converter.AsFloat = std::numeric_limits<float>::min();
+    } else { 
+        converter.AsFloat = converter.AsDouble;
+    }
+
+    CurrentFrame->OperandStack->push(converter.AsFloat);
 
 }
-
-
 
 
 void Jvm::i2b(){
-
+    FieldEntry converter;
+    // trunca int (u4, 4 bytes) pra byte (u1)
+    converter.AsByte = CurrentFrame->OperandStack->Pop();
+    CurrentFrame->OperandStack->push(converter.AsByte);
 }
 
 
 
 
 void Jvm::i2c(){
+    FieldEntry converter;
+    converter.AsChar = CurrentFrame->OperandStack->Pop();
+    CurrentFrame->OperandStack->push(converter.AsChar);
 
 }
 
 
 
-
+// short is signed int16_t (s2)
 void Jvm::i2s(){
-
+    Cat2Value converter;
+    // trunca e faz sign extension
+    converter.AsShort = CurrentFrame->OperandStack->Pop();
+    CurrentFrame->OperandStack->push(converter.AsShort);
 }
 
 

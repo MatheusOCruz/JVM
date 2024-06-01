@@ -11,9 +11,11 @@ typedef uint16_t u2;
 typedef uint32_t u4;
 typedef uint64_t u8;
 
-typedef int32_t  i32;
-typedef int64_t  Jlong;
+typedef int16_t s2;
+typedef int32_t s4;
+typedef int64_t s8;
 typedef float    Jfloat;
+
 
 typedef std::vector<uint8_t>::iterator buffer_iterator;
 #endif //JVM_TYPEDEFS_H
