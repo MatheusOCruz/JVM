@@ -1317,6 +1317,7 @@ void Jvm::f2l(){
 
 
 
+
 void Jvm::f2d(){
 
 }
@@ -1814,5 +1815,7 @@ void Jvm::jsr_w(){
 }
 
 
-
+void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
+	assert(0 && "Not Implemented");
+}
 

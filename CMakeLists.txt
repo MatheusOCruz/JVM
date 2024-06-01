@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.25)
 project(JVM)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXXFLAGS "-Wall -Wextra -g")
 
 add_executable(
         JVM main.cpp
