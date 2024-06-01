@@ -35,6 +35,18 @@ void Jvm::Run(){
 
 }
 
+// big endian
+u8 Jvm::popU8FromOpStack(){
+    u4 LowBytes = CurrentFrame->OperandStack->Pop();
+    u4 HighBytes = CurrentFrame->OperandStack->Pop();
+    return (static_cast<u8>(HighBytes) << 32) | LowBytes;
+}
+// big endian
+void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
+    CurrentFrame->OperandStack->push(HighBytes);
+    CurrentFrame->OperandStack->push(LowBytes);
+}
+
 u1 inline Jvm::NextCodeByte(){
     return (*CurrentCode->code)[pc++];
 } 
@@ -898,14 +910,14 @@ void Jvm::ladd(){
 void Jvm::fadd(){
     // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
     float value1;
-    float value2;
-    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    float value2; //todo fix this static cast
+    value2 = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<float>(CurrentFrame->OperandStack->Pop());
 
     float result = value1 + value2;
     // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
-    // !TODO check these static casts
-    CurrentFrame->OperandStack->push(static_cast<float>(result));
+    // !TODO check these static casts pode da erro precisa dos if f2i provavelmente
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1183,16 +1195,24 @@ void Jvm::iinc(){
 
 
 
-
+// idk todo test
 void Jvm::i2l(){
-
+    Cat2Value Cat2Value;
+    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsLong;
+    Cat2Value.LowBytes = Cat2Value.AsLong;
+    
+    // push pro operand stack em big endian
+    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
 }
 
 
 
 
 void Jvm::i2f(){
-
+    int value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    float result = static_cast<float>(value);
+    CurrentFrame->OperandStack->push(result);
 }
 
 
@@ -1200,12 +1220,12 @@ void Jvm::i2f(){
 //Convert int to double
 void Jvm::i2d(){
     Cat2Value Cat2Value;
-    // fetch int value as double
+    
     Cat2Value.AsDouble = CurrentFrame->OperandStack->Pop();
     Cat2Value.HighBytes = Cat2Value.AsDouble;
     Cat2Value.LowBytes = Cat2Value.AsDouble;
     
-    // pushes in big endian
+    // push em big endian
     CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
     CurrentFrame->OperandStack->push(Cat2Value.HighBytes);
     CurrentFrame->OperandStack->push(Cat2Value.LowBytes );
@@ -1215,6 +1235,13 @@ void Jvm::i2d(){
 
 
 void Jvm::l2i(){
+    Cat2Value Cat2Value;
+
+    Cat2Value.AsLong = CurrentFrame->OperandStack->Pop();
+    Cat2Value.HighBytes = Cat2Value.AsLong;
+    Cat2Value.LowBytes = Cat2Value.AsLong;
+    // push pro stack de operandos em big endian
+    CurrentFrame->OperandStack->push(Cat2Value.LowBytes);
 
 }
 
@@ -1236,13 +1263,57 @@ void Jvm::l2d(){
 
 
 void Jvm::f2i(){
+    //converte u4 pra float, float pra int
+    float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    u4 intValue = static_cast<u4>(value);
+    u4 result;
+
+    if(std::isnan(intValue)){ 
+        result = 0;
+    } else if( intValue >= INT32_MAX || intValue == std::numeric_limits<int>::infinity()){ // todo test these infinities
+        result = INT32_MAX;
+    } else if( intValue <= INT32_MIN || intValue == -1 * std::numeric_limits<int>::infinity()) { 
+        result = INT32_MIN;
+    } else { 
+        result = static_cast<u4>(intValue);
+    }
+    
+    CurrentFrame->OperandStack->push(result);
 
 }
 
 
 
-
+// testado (hardcode, n cm file) ok
 void Jvm::f2l(){
+    //converte u4 pra float, float pra long
+    Cat2Value Cat2Value;
+    float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
+
+    Cat2Value.AsLong = value;
+
+    if(std::isnan(Cat2Value.AsLong)){ 
+        Cat2Value.HighBytes = 0;
+        Cat2Value.LowBytes = 0;
+         std::cout<<"0\n";
+
+    } else if(  Cat2Value.AsLong >= INT64_MAX ||  Cat2Value.AsLong == std::numeric_limits<float>::infinity()){ // todo test these infinities                         
+        Cat2Value.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
+        Cat2Value.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
+        std::cout<<"max\n";
+
+    } else if(  Cat2Value.AsLong <= INT64_MIN ||  Cat2Value.AsLong == -1 * std::numeric_limits<float>::infinity()) {         
+        Cat2Value.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
+        Cat2Value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
+        std::cout<<"min\n";
+        
+    } else { 
+        Cat2Value.HighBytes = Cat2Value.AsLong;
+        Cat2Value.LowBytes = Cat2Value.AsLong;
+         std::cout<<"ok\n";
+    }
+    
+    pushU8ToOpStack(Cat2Value.HighBytes, Cat2Value.LowBytes);
 
 }
 
@@ -1254,10 +1325,9 @@ void Jvm::f2d(){
 }
 
 
-// todo: checa se a frame devia ta só com um value. se sim, checar outras funcoes que dao push em operandos maiores que u4, pra garantir que estao criando nova frame?
+
 void Jvm::d2i(){
-// !todo: checar se é highbytes ou lowbytes primeiro
-    //big endian: highbytes first=
+    //big endian: highbytes first
     double value;
     u4 result;
 
@@ -1266,7 +1336,7 @@ void Jvm::d2i(){
     memcpy(&value, &HighBytes, sizeof(u4));
     memcpy(&value, reinterpret_cast<void*>(&LowBytes), sizeof(u4));
 
-
+    // converte double pra int
     if(std::isnan(value)){ 
         result = 0;
     } else if( value >= INT32_MAX || value == std::numeric_limits<double>::infinity()){ // todo test these infinities
@@ -1276,7 +1346,7 @@ void Jvm::d2i(){
     } else { // IEEE 754 round towards zero mode: check if rounded to zero 
         result = static_cast<u4>(value);
     }
-    
+    // push pro stack de operandos
     CurrentFrame->OperandStack->push(result);
 
 }
