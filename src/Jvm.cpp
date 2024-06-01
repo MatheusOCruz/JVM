@@ -1415,7 +1415,8 @@ void Jvm::f2l(){
 
 
 
-// todo test
+
+
 void Jvm::f2d(){
     //converte u4 pra float, float pra double
     Cat2Value converter;
@@ -1973,5 +1974,7 @@ void Jvm::jsr_w(){
 }
 
 
-
+void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
+	assert(0 && "Not Implemented");
+}
 
