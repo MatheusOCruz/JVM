@@ -49,9 +49,7 @@ private:
     u2 read_u2();
     u4 read_u4();
 	std::vector<u2> *read_vec_u2(int length);
-
-    template<typename T>
-    std::vector<T>* read_vec(int length);
+	std::vector<u1> *read_vec_u1(int length);
 
     // cria as estruturas a partir do buffer_iterator
     int  BuildConstantPoolInfo();

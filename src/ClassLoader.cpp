@@ -103,14 +103,11 @@ u4 ClassLoader::read_u4() {
     return temp;
 }
 
-template<typename T>
-std::vector<T> *ClassLoader::read_vec(int length) {
-    auto temp = new std::vector<T>();
+std::vector<u1> *ClassLoader::read_vec_u1(int length) {
+    auto temp = new std::vector<u1>();
     temp->reserve(length);
 
-    std::copy(iter, iter + (length* sizeof(T)), std::back_inserter(*temp));
-    iter += (length* sizeof(T));
-
+	for (int i = 0; i < length; i++) temp->push_back(read_u1());
     return temp;
 }
 
@@ -130,7 +127,7 @@ int ClassLoader::BuildConstantPoolInfo() {
         case ConstantPoolTag::CONSTANT_Utf8: {
 
             Entry->length    = read_u2();
-            Entry->bytes_vec = read_vec<u1>(Entry->length);
+            Entry->bytes_vec = read_vec_u1(Entry->length);
             break;
         }
         case ConstantPoolTag::CONSTANT_Integer:
@@ -241,7 +238,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             Entry->max_stack   = read_u2();
             Entry->max_locals  = read_u2();
             Entry->code_length = read_u4();
-            Entry->code = read_vec<u1>(Entry->code_length);
+            Entry->code = read_vec_u1(Entry->code_length);
 
             Entry->exception_table_length = read_u2();
 
@@ -292,7 +289,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
         }
         case AttributeType::NotImplemented: {
 
-            read_vec<u1>(Entry->attribute_length);
+            read_vec_u1(Entry->attribute_length);
             break;
         }
     }
