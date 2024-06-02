@@ -674,57 +674,171 @@ void OpcodePrinter::ret_() {
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 } // Usando ret para evitar conflito com a palavra reservada ret
-void OpcodePrinter::tableswitch() {
 
-}
-void OpcodePrinter::lookupswitch() {
-    short index = code_iterator - 1;
-    // Verificando padding
-    while(code_iterator % 4 != 0) {
-        code_iterator ++;
+void OpcodePrinter::tableswitch() {
+    std::string buffer;
+    size_t start_index = code_iterator;
+    size_t code_size;
+    u1 index = code[code_iterator++];  // Índice do opcode
+
+    // Verifica se há padding
+    while (code_iterator % 4 != 0) {
+        code_iterator++;
+    }
+
+    // Verifica se há bytes suficientes para ler default, low e high (12 bytes no total)
+    if (code_iterator + 12 > code_size) {
+        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.A" << std::endl;
+        return;
     }
 
     // Lendo default (4 bytes)
     int defaultoffset = (code[code_iterator] << 24) |
                         (code[code_iterator + 1] << 16) |
-                            (code[code_iterator + 2] << 8) |
-                                code[code_iterator + 3];
+                        (code[code_iterator + 2] << 8) |
+                        code[code_iterator + 3];
     code_iterator += 4;
 
-    // Lendo numeros pares (npairs) (4 bytes)
+    // Lendo low (4 bytes)
+    int low = (code[code_iterator] << 24) |
+              (code[code_iterator + 1] << 16) |
+              (code[code_iterator + 2] << 8) |
+              code[code_iterator + 3];
+    code_iterator += 4;
+
+    // Lendo high (4 bytes)
+    int high = (code[code_iterator] << 24) |
+               (code[code_iterator + 1] << 16) |
+               (code[code_iterator + 2] << 8) |
+               code[code_iterator + 3];
+    code_iterator += 4;
+
+    // Print default, low e high
+    StringBuffer.append(" tableswitch ");
+    StringBuffer.append(std::to_string(index));
+    //StringBuffer.append(" default: ").append(std::to_string(defaultoffset));
+    //StringBuffer.append(" ").append(std::to_string(low));
+    StringBuffer.append(" to ").append(std::to_string(high));
+    StringBuffer.append("\n");
+
+    // Calcula o número de jump offsets
+    int num_offsets = high - low + 1;
+
+    // Verifica se há bytes suficientes para ler os jump offsets
+    if (code_iterator + 4 * num_offsets > code_size) {
+        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.B" << std::endl;
+        return;
+    }
+
+    // Lê os jump offsets
+    for (int i = 0; i < num_offsets; i++) {
+        int offset = (code[code_iterator] << 24) |
+                     (code[code_iterator + 1] << 16) |
+                     (code[code_iterator + 2] << 8) |
+                     code[code_iterator + 3];
+        code_iterator += 4;
+        /*
+        StringBuffer.append(" offset: ").append(std::to_string(offset));
+        StringBuffer.append("\n");*/
+
+        size_t displacement = start_index + offset - 1;
+        StringBuffer.append("            "); // Indentação
+        // deslocamento
+        StringBuffer.append("").append(std::to_string(i)).append(": ").append(std::to_string(displacement));
+        //offset
+        StringBuffer.append(" (+").append(std::to_string(offset)).append(") ").append("\n");
+    }
+    StringBuffer.append("            "); // Indentação
+    StringBuffer.append("default: ").append(std::to_string(start_index + defaultoffset -1));
+    StringBuffer.append(" (+").append(std::to_string(defaultoffset)).append(")\n");
+
+    StringBuffer.append(buffer);
+    // mensagem completa
+    //std::cout << StringBuffer << std::endl;
+}
+
+void OpcodePrinter::lookupswitch() {
+    //StringBuffer.clear();  // Limpa o buffer antes de iniciar
+    std::string buffer;
+    size_t start_index = code_iterator;
+    size_t code_size;
+    u1 index = code[code_iterator++];  // Índice do opcode
+
+    // Verifica se há padding
+    while (code_iterator % 4 != 0) {
+        code_iterator++;
+    }
+
+    // Verifica se há bytes suficientes para ler o default e npairs (8 bytes no total)
+    if (code_iterator + 8 > code_size) {
+        std::cerr << "Erro: Acesso fora dos limites do array 'code'.A" << std::endl;
+        //StringBuffer.append(buffer);
+        return;
+    }
+
+    // Lendo default (4 bytes)
+    int defaultoffset = (code[code_iterator] << 24) |
+                        (code[code_iterator + 1] << 16) |
+                        (code[code_iterator + 2] << 8) |
+                        code[code_iterator + 3];
+    code_iterator += 4;
+
+    // Lendo npairs (4 bytes)
     int npairs = (code[code_iterator] << 24) |
                  (code[code_iterator + 1] << 16) |
-                     (code[code_iterator + 2] << 8) |
-                         code[code_iterator + 3];
+                 (code[code_iterator + 2] << 8) |
+                 code[code_iterator + 3];
     code_iterator += 4;
 
     // Print defaultoffset e npairs
-    StringBuffer.append(" lookupswitch ");
-    StringBuffer.append(std::to_string(index));
-    StringBuffer.append(" default: ", defaultoffset);
-    StringBuffer.append(std::to_string(index));
-    StringBuffer.append(" npairs: ", npairs);
+    StringBuffer.append("lookupswitch");
+    //StringBuffer.append(std::to_string(index));
+    //StringBuffer.append(" default: ").append(std::to_string(defaultoffset));
+    StringBuffer.append(" ").append(std::to_string(npairs));
     StringBuffer.append("\n");
 
-    // The key is compared against the match values
-    for(int i = 0; i <  npairs; i++) {
+    // Verifica se há bytes suficientes para ler os pares de valores de caso / deslocamento de ramificação
+    if (code_iterator + 8 * npairs > code_size) {
+        std::cerr << "Erro: Acesso fora dos limites do array 'code'. B" << std::endl;
+        //StringBuffer.append(buffer);
+        return;
+    }
+
+    // Lê os pares de valores de caso / deslocamento de ramificação
+    for (int i = 0; i < npairs; i++) {
         int match = (code[code_iterator] << 24) |
-                        (code[code_iterator + 1] << 16) |
-                        (code[code_iterator + 2] << 8) |
-                            code[code_iterator + 3];
+                    (code[code_iterator + 1] << 16) |
+                    (code[code_iterator + 2] << 8) |
+                    code[code_iterator + 3];
         code_iterator += 4;
 
         int offset = (code[code_iterator] << 24) |
-                         (code[code_iterator + 1] << 16) |
-                         (code[code_iterator + 2] << 8) |
-                         code[code_iterator + 3];
+                     (code[code_iterator + 1] << 16) |
+                     (code[code_iterator + 2] << 8) |
+                     code[code_iterator + 3];
         code_iterator += 4;
 
-        StringBuffer.append(" match: ", match);
-        StringBuffer.append(" offset: ", offset);
-        StringBuffer.append("\n");
-    }
+        size_t displacement = start_index + offset - 1;
+        StringBuffer.append("            "); // Indentação
+        StringBuffer.append("").append(std::to_string(match)).append(": ");
+        // deslocamento
+        StringBuffer.append("").append(std::to_string(displacement));
+        //offset
+        StringBuffer.append(" (+").append(std::to_string(offset)).append(") ").append("\n");
 
+        //size_t displacement = start_index + offset - 1;
+        // deslocamento
+        //StringBuffer.append("").append(std::to_string(i)).append(": ").append(std::to_string(displacement));
+        //offset
+       // StringBuffer.append(" (+").append(std::to_string(offset)).append(") ").append("\n");
+    }
+    StringBuffer.append("            "); // Indentação
+    StringBuffer.append("default: ").append(std::to_string(start_index + defaultoffset -1));
+    StringBuffer.append(" (+").append(std::to_string(defaultoffset)).append(")\n");
+
+    StringBuffer.append(buffer);
+    //  mensagem completa
+    //std::cout << StringBuffer << std::endl;
 }
 void OpcodePrinter::ireturn() {
     StringBuffer.append(" ireturn\n");
