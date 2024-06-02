@@ -730,16 +730,16 @@ void Jvm::aaload(){
 void Jvm::baload(){
     // ..., arrayref, index → ..., value: index ta empilhado em cima de arrayref pela documentacao
     u4 index = CurrentFrame->OperandStack->Pop();
-    u4* arrayRef;
-    *arrayRef = CurrentFrame->OperandStack->Pop();
+   // int* arrayRef = CurrentFrame->OperandStack->PopRef<int*>();
+    
 
-// Reference 
+
 
     // both boolean and byte arrays are treated the same way
     // boolean and byte are both treated as u4 to push into op stack
-    u4 value = arrayRef[index];
+    // u4 value = arrayRef[index];
     // todo acho q ta errado
-    CurrentFrame->OperandStack->push(value);
+    // CurrentFrame->OperandStack->push(value);
 
     
     // u4 arrayref = CurrentFrame->OperandStack->PopRef<u4>()->AsArrayRef();
@@ -1140,7 +1140,7 @@ void Jvm::dup_x2(){
 
 }
 
-
+// vals ok
 // Form1 escolhida: both value1 and value2 are values of a category 1 computational type
 void Jvm::dup2(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
@@ -1213,13 +1213,17 @@ void Jvm::iadd(){
 
 // Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
 void Jvm::ladd(){
-    // !TODO checar: implementacao erradisima
-    long value1;
-    long value2;
-    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    int32_t result = value1 + value2;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+    Cat2Value converter;
+    long value2 = static_cast<long>(popU8FromOpStack());
+    long value1 = static_cast<long>(popU8FromOpStack());
+
+    converter.AsLong = value1 + value2;
+
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
+
 }
 
 
@@ -1241,18 +1245,18 @@ void Jvm::fadd(){
 
 
 
-// !todo: fix, erradasso
-void Jvm::dadd(){
-    // !TODO deve ta errado, como tratar double na op stack?
-    double value1;
-    double value2;
-    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
-    float result = value1 + value2;
-    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
-    // !TODO: fix static cast, e isso n ta double
-    CurrentFrame->OperandStack->push(static_cast<float>(result));
+void Jvm::dadd(){
+    Cat2Value converter;
+    double value2 = static_cast<double>(popU8FromOpStack());
+    double value1 = static_cast<double>(popU8FromOpStack());
+
+    converter.AsDouble = value1 + value2;
+
+    converter.HighBytes = converter.AsDouble;
+    converter.LowBytes = converter.AsDouble;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1307,8 +1311,8 @@ void Jvm::dsub(){
     Cat2Value converter1, converter2, aux;
     double result;
 
-    converter2.AsDouble = popU8FromOpStack();
-    converter1.AsDouble = popU8FromOpStack();
+    converter2.AsDouble = static_cast<double>(popU8FromOpStack());
+    converter1.AsDouble = static_cast<double>(popU8FromOpStack());
 
     result = converter1.AsDouble - converter2.AsDouble;
     aux.HighBytes = result;
@@ -1339,8 +1343,8 @@ void Jvm::lmul(){
     Cat2Value converter1, converter2, aux;
     long result;
 
-    converter2.AsLong = popU8FromOpStack();
-    converter1.AsLong = popU8FromOpStack();
+    converter2.AsLong = static_cast<long>(popU8FromOpStack());
+    converter1.AsLong = static_cast<long>(popU8FromOpStack());
 // entendendo que cpp já segue  rules of IEEE arithmetic:
     result = converter1.AsLong * converter2.AsLong;
 
@@ -1356,8 +1360,8 @@ void Jvm::fmul(){
 
     float value1;
     float value2;
-    value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    value1 = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    value2 = static_cast<float>(CurrentFrame->OperandStack->Pop());
+    value1 = static_cast<float>(CurrentFrame->OperandStack->Pop());
 
     float result = value1 * value2;
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
@@ -1372,8 +1376,8 @@ void Jvm::dmul(){
     Cat2Value converter1, converter2, aux;
     double result;
 
-    converter2.AsDouble = popU8FromOpStack();
-    converter1.AsDouble = popU8FromOpStack();
+    converter2.AsDouble = static_cast<double>(popU8FromOpStack());
+    converter1.AsDouble = static_cast<double>(popU8FromOpStack());
 // entendendo que cpp já segue  rules of IEEE arithmetic:
     result = converter1.AsDouble * converter2.AsDouble;
 
@@ -1565,6 +1569,11 @@ void Jvm::dneg(){
 
 
 void Jvm::ishl(){
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    
+    int32_t result = value1 << (0x1F & value2);
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1572,6 +1581,16 @@ void Jvm::ishl(){
 
 
 void Jvm::lshl(){
+    Cat2Value converter;
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
+    
+    converter.AsLong = value1 << (0x3F & value2 );
+    
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1579,18 +1598,30 @@ void Jvm::lshl(){
 
 
 void Jvm::ishr(){
-
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    
+    int32_t result = value1 >> (0x1F & value2);
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
-
+// todo check if hex & val or val & he
 
 
 void Jvm::lshr(){
+    Cat2Value converter;
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
+    
+    converter.AsLong = value1 >> (0x3F & value2 );
+    
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
-
-// todo check when value1 comes before value2-- might be errors
 
 void Jvm::iushr(){
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -1607,12 +1638,15 @@ void Jvm::iushr(){
 
 
 void Jvm::lushr(){
+    Cat2Value converter;
     int value2 = CurrentFrame->OperandStack->Pop();
     long value1 = popU8FromOpStack();
 
-    long result = value1 >> value2;
+    converter.AsLong = value1 >> (value2 & 0x3F);
 
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1633,6 +1667,16 @@ void Jvm::iand(){
 
 
 void Jvm::land(){
+    Cat2Value converter;
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
+    
+    converter.AsLong = value1 & value2;
+    
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
 
@@ -1640,6 +1684,13 @@ void Jvm::land(){
 
 
 void Jvm::ior(){
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+   
+    int32_t result =  value1 | value2;
+
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+
 
 }
 
@@ -1647,6 +1698,17 @@ void Jvm::ior(){
 
 
 void Jvm::lor(){
+    Cat2Value converter;
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
+    
+    converter.AsLong = value1 | value2;
+    
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
+
 
 }
 
@@ -1654,6 +1716,12 @@ void Jvm::lor(){
 
 
 void Jvm::ixor(){
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+   
+    int32_t result =  value1 ^ value2;
+
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1661,13 +1729,27 @@ void Jvm::ixor(){
 
 
 void Jvm::lxor(){
+    Cat2Value converter;
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
+    
+    converter.AsLong = value1 ^ value2;
+    
+    converter.HighBytes = converter.AsLong;
+    converter.LowBytes = converter.AsLong;
+
+    pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
+
 
 }
 
 
 
 
-void Jvm::iinc(){
+void Jvm::iinc(){ //todo pode ser alterado por wide, ver --pc
+    u1 index = (*CurrentCode->code)[pc++];
+    int32_t const_ = static_cast<int32_t>((*CurrentCode->code)[pc++]);
+    (*CurrentFrame->localVariables)[index] += const_;
 
 }
 
