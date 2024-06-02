@@ -1,7 +1,7 @@
 //jvm
 // Created by matheus on 4/11/24.
 //
-
+// !todo: excluir prints ez
 #include "../include/Jvm.h"
 #include <cmath>
 #include <limits>
@@ -215,7 +215,6 @@ void Jvm::nop() {
 // An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
 void Jvm::aconst_null(){
     std::cout<<"aconst_null\n";
-    // !TODO checar se a versao cpp especificada possui nullptr
     CurrentFrame->OperandStack->PushRef(nullptr);
 }
 
@@ -260,45 +259,44 @@ void Jvm::iconst_5(){
 
 void Jvm::lconst_0(){
     std::cout<<"lconst_0\n";
-    // todo: check if anything wrong, was it the right cast??
-    CurrentFrame->OperandStack->push(static_cast<const s8>(0.0));
+    Cat2Value Cat2Value;
+    Cat2Value.AsLong = 0.0;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    const u4 LowBytes = Cat2Value.LowBytes; 
+
+    pushU8ToOpStack(HighBytes, LowBytes);
 }
 
 void Jvm::lconst_1(){
     std::cout<<"lconst_1\n";
-    CurrentFrame->OperandStack->push(static_cast<const s8>(1.0));
+    Cat2Value Cat2Value;
+    Cat2Value.AsLong = 1.0;  
+    const u4 HighBytes = Cat2Value.HighBytes; 
+    const u4 LowBytes = Cat2Value.LowBytes; 
+
+    pushU8ToOpStack(HighBytes, LowBytes);
 }
- // big-endian order, where the high bytes come first
+
 // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
 void Jvm::fconst_0(){
     std::cout<<"fconst_0\n";
     const float value = 0.0;
-    //transforma de float pra uint32_t
-    // todo:checa se devia ta pushando dois u8
-    Cat2Value Cat2Value;
-    Cat2Value.AsFloat = value;  
-    const u4 HighBytes = Cat2Value.HighBytes; 
-    CurrentFrame->OperandStack->push(HighBytes);
+    
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
 }
 
 void Jvm::fconst_1(){
     std::cout<<"fconst_1\n";
     const float value = 1.0;
-    //transforma de float pra uint32_t
-    Cat2Value Cat2Value;
-    Cat2Value.AsFloat = value;  
-    const u4 HighBytes = Cat2Value.HighBytes; 
-    CurrentFrame->OperandStack->push(HighBytes);
+    
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
 }
 
 void Jvm::fconst_2(){
     std::cout<<"fconst_2\n";
     const float value = 2.0;
-    //transforma de float pra uint32_t
-    Cat2Value Cat2Value;
-    Cat2Value.AsFloat = value;  
-    const u4 HighBytes = Cat2Value.HighBytes; 
-    CurrentFrame->OperandStack->push(HighBytes);
+    
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
 // pra checar se pusha high ou low
 /*
 const uint32_t LowBytes = Cat2Value.LowBytes; 
@@ -308,7 +306,6 @@ const uint32_t LowBytes = Cat2Value.LowBytes;
   }
   */
 
-   //era pra dar pc++ ao final de cada funcao??
 }
 
 void Jvm::dconst_0(){
@@ -341,12 +338,16 @@ void Jvm::dconst_1(){
 
 void Jvm::bipush(){
     std::cout<<"bipush\n";
-CurrentFrame->OperandStack->push((*CurrentCode->code)[++pc]);
+    u1 index = (*CurrentCode->code)[pc++];
+    int32_t value = static_cast<int32_t>(index);
+    CurrentFrame->OperandStack->push(value);
 }
 
 void Jvm::sipush(){
     std::cout<<"sipush\n";
-
+    s2 index = static_cast<s2>(GetIndex2());
+    int32_t value = static_cast<int32_t>(index);
+    CurrentFrame->OperandStack->push(value);
 }
 
 // tested, works
@@ -437,8 +438,8 @@ void Jvm::ldc2_w(){
 
 void Jvm::iload(){
     std::cout<<"iload\n";
-// !TODO: fix, ta errado/incompleto-- 1 index ta errado,2 pode usar wide() pra pegar index
-    int index = GetIndex2();
+    
+    u1 index = (*CurrentCode->code)[pc++];
     u4 value = (*CurrentFrame->localVariables)[index];
     CurrentFrame->OperandStack->push(value);
 
@@ -448,7 +449,7 @@ void Jvm::lload(){
     std::cout<<"lload\n";
     u1 index = (*CurrentCode->code)[pc++];
     Cat2Value converter;
-// todo should it throw error if index not valid
+
     converter.AsLong = getU8FromLocalVars(index);
     converter.HighBytes = converter.AsLong;
     converter.LowBytes = converter.AsLong;
@@ -479,7 +480,8 @@ void Jvm::dload(){
     pushU8ToOpStack(converter.HighBytes, converter.LowBytes);
 
 }
-// todo aload, check docs to ensure dload fload etc r alright
+// todo test aload, fix
+// deve ta errado n sei objectref arrayref
 void Jvm::aload(){
     std::cout<<"aload\n";
     u1 index = (*CurrentCode->code)[pc++];
@@ -527,9 +529,6 @@ void Jvm::iload_3(){
 }
 
 
-// !todo: implement these ez loads next
-// todo mb exception if index out of bounds
-// todo check
 void Jvm::lload_0(){
     std::cout<<"lload_0\n";
     Cat2Value converter;
@@ -736,7 +735,7 @@ void Jvm::aload_3(){
 
 
 
-
+// todo fix erradasso
 void Jvm::iaload(){
     std::cout<<"iaload\n";
     int index = CurrentFrame->OperandStack->Pop();
@@ -764,7 +763,7 @@ void Jvm::iaload(){
 
 
 
-
+// todo implement
 void Jvm::laload(){
     std::cout<<"laload\n";
 
@@ -772,7 +771,7 @@ void Jvm::laload(){
 
 
 
-
+// todo implement
 void Jvm::faload(){
     std::cout<<"faload\n";
 
@@ -780,7 +779,7 @@ void Jvm::faload(){
 
 
 
-
+// todo implement
 void Jvm::daload(){
     std::cout<<"daload\n";
 
@@ -788,15 +787,15 @@ void Jvm::daload(){
 
 
 
-
+// todo implement
 void Jvm::aaload(){
     std::cout<<"aaload\n";
 
 }
 
 
-
-// todo fix ctz errado
+// todo implement
+// todo fix ctz errado erradasso
 void Jvm::baload(){
     std::cout<<"baload\n";
     // ..., arrayref, index → ..., value: index ta empilhado em cima de arrayref pela documentacao
@@ -856,7 +855,6 @@ void Jvm::lstore(){
     u4 highBytes = CurrentFrame->OperandStack->Pop();
     // todo: required value set conversion in fstore dstore astore?
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[index] = highBytes;
     (*CurrentFrame->localVariables)[index + 1] = lowBytes;
 
@@ -875,15 +873,13 @@ void Jvm::fstore(){
 
 
 
-
+//todo test, not casting to double here
 void Jvm::dstore(){
     std::cout<<"dstore\n";
     u1 index = (*CurrentCode->code)[pc++];
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
-    // todo: required value set conversion in fstore dstore astore?
-
-    // todo throw error if index not valid
+    
     (*CurrentFrame->localVariables)[index] = highBytes;
     (*CurrentFrame->localVariables)[index + 1] = lowBytes;
 
@@ -948,7 +944,6 @@ void Jvm::lstore_0(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[0] = highBytes;
     (*CurrentFrame->localVariables)[0 + 1] = lowBytes;
 
@@ -962,9 +957,10 @@ void Jvm::lstore_1(){
     std::cout<<"lstore_1\n";
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
-    // todo throw error if index not valid
+
     (*CurrentFrame->localVariables)[1] = highBytes;
     (*CurrentFrame->localVariables)[1 + 1] = lowBytes;
+
 
 }
 
@@ -975,7 +971,7 @@ void Jvm::lstore_2(){
     std::cout<<"lstore_2\n";
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
-    // todo throw error if index not valid
+
     (*CurrentFrame->localVariables)[2] = highBytes;
     (*CurrentFrame->localVariables)[2 + 1] = lowBytes;
 
@@ -988,7 +984,7 @@ void Jvm::lstore_3(){
     std::cout<<"lstore_3\n";
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
-    // todo throw error if index not valid
+    
     (*CurrentFrame->localVariables)[3] = highBytes;
     (*CurrentFrame->localVariables)[3 + 1] = lowBytes;
 
@@ -1042,7 +1038,6 @@ void Jvm::dstore_0(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[0] = highBytes;
     (*CurrentFrame->localVariables)[0 + 1] = lowBytes;
 
@@ -1056,7 +1051,6 @@ void Jvm::dstore_1(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[1] = highBytes;
     (*CurrentFrame->localVariables)[1 + 1] = lowBytes;
     
@@ -1070,7 +1064,6 @@ void Jvm::dstore_2(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[2] = highBytes;
     (*CurrentFrame->localVariables)[2 + 1] = lowBytes;
 
@@ -1084,7 +1077,6 @@ void Jvm::dstore_3(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
-    // todo throw error if index not valid
     (*CurrentFrame->localVariables)[3] = highBytes;
     (*CurrentFrame->localVariables)[3 + 1] = lowBytes;
 
@@ -1139,8 +1131,7 @@ void Jvm::iastore(){
 }
 
 
-
-
+// todo implement
 void Jvm::lastore(){
     std::cout<<"lastore\n";
 
@@ -1148,7 +1139,7 @@ void Jvm::lastore(){
 
 
 
-
+// todo implement
 void Jvm::fastore(){
     std::cout<<"fastore\n";
 
@@ -1156,7 +1147,7 @@ void Jvm::fastore(){
 
 
 
-
+// todo implement
 void Jvm::dastore(){
     std::cout<<"dastore\n";
 
@@ -1164,7 +1155,7 @@ void Jvm::dastore(){
 
 
 
-
+// todo implement
 void Jvm::aastore(){
     std::cout<<"aastore\n";
 
@@ -1172,7 +1163,7 @@ void Jvm::aastore(){
 
 
 
-
+// todo implement
 void Jvm::bastore(){
     std::cout<<"bastore\n";
 
@@ -1180,7 +1171,7 @@ void Jvm::bastore(){
 
 
 
-
+// todo implement
 void Jvm::castore(){
     std::cout<<"castore\n";
 
@@ -1188,7 +1179,7 @@ void Jvm::castore(){
 
 
 
-
+// todo implement
 void Jvm::sastore(){
     std::cout<<"sastore\n";
 
@@ -1216,7 +1207,11 @@ void Jvm::pop2(){
 // tested, works
 void Jvm::dup(){
     std::cout<<"dup\n";
-    CurrentFrame->OperandStack->push(CurrentFrame->OperandStack->top());
+    u4 value = CurrentFrame->OperandStack->Pop();
+
+    CurrentFrame->OperandStack->push(value); // segfault
+    CurrentFrame->OperandStack->push(value); // segfault
+    std::cout<<"no seg\n";
 // The dup instruction must not be used unless value is a value of a category 1 computational type (§2.11.1).
 // Category 1 types occupy a single stack entry
 // ent n precisa preocupar com long double etc
@@ -1238,7 +1233,7 @@ void Jvm::dup_x1(){
 
 
 
-// Form1 only . todo: add form 2 where val2 is category 2 value? but how would it know    
+// Form1 only 
 void Jvm::dup_x2(){
     std::cout<<"dup_x2\n";
     u4 value1 = CurrentFrame->OperandStack->Pop();
@@ -1348,15 +1343,14 @@ void Jvm::ladd(){
 // Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
 void Jvm::fadd(){
     std::cout<<"fadd\n";
-    // !TODO checar: essa implementacao tava em iadd, colocada aqui, spec acima
+
     float value1;
-    float value2; //todo fix this static cast
+    float value2; 
     value2 = static_cast<float>(CurrentFrame->OperandStack->Pop());
     value1 = static_cast<float>(CurrentFrame->OperandStack->Pop());
 
     float result = value1 + value2;
-    // !todo: checar se necessita dos ifs pra nan, etc ali nos •  •  acima
-    // !TODO check these static casts pode da erro precisa dos if f2i provavelmente
+
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
@@ -1747,7 +1741,6 @@ void Jvm::ishr(){
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
-// todo check if hex & val or val & he
 
 
 void Jvm::lshr(){
@@ -1911,7 +1904,7 @@ std::cout<<"iinc\n";
 void Jvm::i2l(){
     std::cout<<"i2l\n";
     Cat2Value converter;
-    converter.AsLong = CurrentFrame->OperandStack->Pop();
+    converter.AsLong = static_cast<long>(CurrentFrame->OperandStack->Pop());
     converter.HighBytes = converter.AsLong;
     converter.LowBytes = converter.AsLong;
     
@@ -1983,7 +1976,7 @@ void Jvm::l2d(){
 
     converter.AsLong = popU8FromOpStack();
     converter.AsDouble = converter.AsLong;
-// todo: test if this is indeed the correct big endian low and high bytes
+    
     converter.HighBytes = converter.AsDouble;
     converter.LowBytes = converter.AsDouble;
     
@@ -2021,7 +2014,6 @@ void Jvm::f2i(){
 
 
 // testado (hardcode, n cm file) ok
-// !todo: excluir prints ez
 void Jvm::f2l(){
     std::cout<<"f2l\n";
     //converte u4 pra float, float pra long
@@ -2535,12 +2527,13 @@ void Jvm::ret(){
 // Notes
 
     // The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
+// todo implement
 void Jvm::tableswitch() {
     std::cout<<"tableswitch\n";
 
 }
 
-
+// todo implement
 void Jvm::lookupswitch(){
     std::cout<<"lookupswitch\n";
 }
@@ -2603,21 +2596,53 @@ void Jvm::getstatic(){
     std::cout<<"getstatic\n";
     u2 index = GetIndex2();
 }
-// todo mb ez
+// todo 
 void Jvm::putstatic(){
     std::cout<<"putstatic\n";
     u2 index = GetIndex2();
+    
+    cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+
     // todo implementar
 
 
 }
-// todo mb ez
+// todo implement
 void Jvm::getfield(){
     std::cout<<"getfield\n";
     u2 index = GetIndex2();
     cp_info* Fieldref = (*CurrentClass->constant_pool)[index]; // symb ref to a field
     cp_info* NameAndTypeEntry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
 
+
+}
+
+
+// todo implement, fix erradasso
+void Jvm::new_(){
+    std::cout<<"new_\n";
+    std::cout<<"vai da erro, n ta implementado\n";
+    //todo exceptions linking e run time
+    u2 index = GetIndex2(); 
+    cp_info* ref = (*CurrentClass->constant_pool)[index];
+
+    // resolvendo se classe ou interface
+    if(ref->tag == ConstantPoolTag::CONSTANT_Class){
+        cp_info* ClassNameIndex = (*CurrentClass->constant_pool)[ref->name_and_type_index];
+        //allocate memory to class by name
+        
+
+        // !todo complete
+    }
+    else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
+        cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
+        
+        std::string Name            = (*CurrentClass->constant_pool)[InterfaceNameAndType->name_index]->AsString();
+        std::string FieldDescriptor = (*CurrentClass->constant_pool)[InterfaceNameAndType->descriptor_index]->AsString();
+        // !todo complete
+    }
+    
 
 }
 
@@ -2647,7 +2672,7 @@ void Jvm::putfield(){
 
 
 } // tested, works
-//TODO: to fazendo so pro hello world por enquanto ??
+//TODO: to fazendo so pro hello world por enquanto 
 void Jvm::invokevirtual(){
     std::cout<<"invokevirtual\n";
     u2 index = GetIndex2();
@@ -2679,44 +2704,45 @@ void Jvm::invokespecial(){
 
 
 }
-
+// todo implement
 void Jvm::invokestatic(){
     std::cout<<"invokestatic\n";
 
 }
-
+// todo implement
 void Jvm::invokeinterface(){
     std::cout<<"invokeinterface\n";
 
 }
-
+// todo implement
 void Jvm::invokedynamic(){
     std::cout<<"invokedynamic\n";
 
 }
 
-// todo fix erradasso
-void Jvm::new_(){
-    std::cout<<"new_\n";
-    //todo exceptions linking e run time
-    u2 index = GetIndex2(); 
-    cp_info* ref = (*CurrentClass->constant_pool)[index];
+// // todo fix erradasso
+// void Jvm::new_(){
+//     std::cout<<"new_\n";
+//     std::cout<<"vai da erro, n ta implementado\n";
+//     //todo exceptions linking e run time
+//     u2 index = GetIndex2(); 
+//     cp_info* ref = (*CurrentClass->constant_pool)[index];
 
-    // // resolvendo se classe ou interface
-    // if(ref->tag == ConstantPoolTag::CONSTANT_Class){
-    //     u2 ClassName = ref->name_index;
-    //     //allocate memory to class by name
-    //     LoadClass(ClassName);
+//     // // resolvendo se classe ou interface
+//     // if(ref->tag == ConstantPoolTag::CONSTANT_Class){
+//     //     u2 ClassName = ref->name_index;
+//     //     //allocate memory to class by name
+//     //     LoadClass(ClassName);
 
-    //     // !todo complete
-    // }
-    // else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
-    //     u2 ClassName = ref->class_index;
-    //     // !todo complete
-    // }
+//     //     // !todo complete
+//     // }
+//     // else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
+//     //     u2 ClassName = ref->class_index;
+//     //     // !todo complete
+//     // }
     
 
-}
+// }
 
 void Jvm::newarray(){
     std::cout<<"newarray\n";
@@ -2757,59 +2783,59 @@ void Jvm::newarray(){
     void* ArrayRef = new char[Count * ArrayEntrySize];
     CurrentFrame->OperandStack->PushRef(ArrayRef);
 }
-
+// todo implement
 void Jvm::anewarray(){
     std::cout<<"anewarray\n";
 
 }
-
+// todo implement
 void Jvm::arraylength(){
     std::cout<<"arraylength\n";
 
 }
-
+// todo implement
 void Jvm::athrow(){
     std::cout<<"athrow\n";
     
 
 }
-
+// todo  implement
 void Jvm::checkcast(){
     std::cout<<"checkcast\n";
 
 }
-
+// todo  implement
 void Jvm::instanceof() {
     std::cout<<"instanceof\n";
 
 }
-
+// todo wdf implement
 void Jvm::monitorenter(){
     std::cout<<"monitorenter\n";
 
 }
-
+// todo implement
 void Jvm::monitorexit(){
     std::cout<<"monitorexit\n";
 
 }
-
+// todo implement
 void Jvm::wide(){
     std::cout<<"wide\n";
 
 }
-
+// todo wdf implement
 void Jvm::multianewarray(){
     std::cout<<"multianewarray\n";
     // u2 index      = GetIndex2();
     // u1 dimensions =  
 }
-// todo mb start here tomorrow
+// todo implement, how to deal w refs?
 void Jvm::ifnull(){
     std::cout<<"ifnull\n";
 
 }
-
+// todo implement
 void Jvm::ifnonnull(){
     std::cout<<"ifnonnull\n";
 
@@ -2825,9 +2851,13 @@ void Jvm::goto_w(){
 
     pc += branchoffset;
 }
-
+// todo implement
 void Jvm::jsr_w(){
     std::cout<<"jsr_w\n";
+    
+    u2 offset = GetIndex2();
+    CurrentFrame->OperandStack->push(pc + offset);
+    //nota: devia ter dado push como type returnAddress? n aconteceu
 
 }
 
