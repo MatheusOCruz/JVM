@@ -55,6 +55,7 @@ private:
     ClassLoader*    Loader;
 
 
+    void JavaPrint(std::string MethodDescriptor);
 
     //funcoes auxiliares pro bytecode
     void return_u4();
@@ -67,7 +68,11 @@ private:
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
 
-  //funcoes do bytecode
+
+    void fconst(float value);
+    void dconst(double value);
+
+    //funcoes do bytecode
 
     void nop();
     void aconst_null();
@@ -347,6 +352,8 @@ private:
             &Jvm::jsr_w
         
     };
+
+
 };
 
 

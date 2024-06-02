@@ -5,6 +5,7 @@
 #include "../include/Jvm.h"
 #include <cmath>
 #include <limits>
+#include <unordered_set>
 
 void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
@@ -79,7 +80,7 @@ void Jvm::NewFrame(){
 
     //instancia novo frame
     auto NewFrame = new Frame;
-    NewFrame->localVariables = new JVM::vector<u4>;
+    NewFrame->localVariables = new std::vector<u4>;
     NewFrame->OperandStack   = new JVM::stack<u4>;
 
     u2 MaxLocals = CurrentCode->max_locals;
@@ -188,6 +189,26 @@ void Jvm::return_u8(){
 
 
 
+
+void Jvm::JavaPrint(std::string MethodDescriptor) {
+    auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
+    std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
+    if(PrintType == "Ljava/lang/String;"){
+        auto Output = CurrentFrame->OperandStack->PopRef<cp_info>()->AsString();
+        std::cout<<Output<<"\n";
+    }
+    if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
+        int Output = CurrentFrame->OperandStack->Pop();
+        std::cout<<Output<<"\n";
+    }
+}
+
+
+
+
+
+
+
 // so bytecode
 
 
@@ -250,6 +271,7 @@ void Jvm::lconst_1(){
 }
 
 // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
+
 void Jvm::fconst_0(){
     const float value = 0.0;
     
@@ -2483,13 +2505,13 @@ void Jvm::invokevirtual(){
     cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
 
     // formato <valor>
-    std::string Name = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
-    std::string MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+    auto Name = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+    if(Name == "println"){
+        JavaPrint(MethodDescriptor);
 
-    if(MethodDescriptor == "(Ljava/lang/String;)V"){
-        auto String = CurrentFrame->OperandStack->PopRef<cp_info>()->AsString();
-        std::cout<<String<<"\n";
     }
+
 
 
 
@@ -2661,4 +2683,5 @@ void Jvm::jsr_w(){
     //nota: devia ter dado push como type returnAddress? n aconteceu
 
 }
+
 

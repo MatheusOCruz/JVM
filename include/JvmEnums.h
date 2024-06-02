@@ -15,6 +15,7 @@ enum class ArrayTypeCode{
     T_SHORT   = 9,
     T_INT     = 10,
     T_LONG    = 11,
+    T_REF     = 12,
 };
 
 enum class ReferenceType{
