@@ -2488,6 +2488,7 @@ void Jvm::invokevirtual(){
 
     if(MethodDescriptor == "(Ljava/lang/String;)V"){
         auto String = CurrentFrame->OperandStack->PopRef<cp_info>()->AsString();
+        std::cout<<String<<"\n";
     }
 
 
