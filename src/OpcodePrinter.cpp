@@ -542,105 +542,118 @@ void OpcodePrinter::dcmpg() {
 }
 // branchbyte1, branchbyte2
 void OpcodePrinter::ifeq() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifeq #");
+    StringBuffer.append(" ifeq ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ifne() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifne #");
+    StringBuffer.append(" ifne ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::iflt() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" iflt #");
+    StringBuffer.append(" iflt ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ifge() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifge #");
+    StringBuffer.append(" ifge ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ifgt() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifgt #");
+    StringBuffer.append(" ifgt ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ifle() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifle #");
+    StringBuffer.append(" ifle ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmpeq() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmpeq #");
+    StringBuffer.append(" if_icmpeq ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmpne() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmpne #");
+    StringBuffer.append(" if_icmpne ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmplt() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmplt #");
+    StringBuffer.append(" if_icmplt ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmpge() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmpge #");
+    StringBuffer.append(" if_icmpge ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmpgt() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmpgt #");
+    StringBuffer.append(" if_icmpgt ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_icmple() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_icmple #");
+    StringBuffer.append(" if_icmple ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_acmpeq() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_acmpeq #");
+    StringBuffer.append(" if_acmpeq ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::if_acmpne() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" if_acmpne #");
+    StringBuffer.append(" if_acmpne ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::goto_() {
-
     short index = code_iterator - 1;
     index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
@@ -661,8 +674,58 @@ void OpcodePrinter::ret_() {
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 } // Usando ret para evitar conflito com a palavra reservada ret
-void OpcodePrinter::tableswitch() {}
-void OpcodePrinter::lookupswitch() {}
+void OpcodePrinter::tableswitch() {
+
+}
+void OpcodePrinter::lookupswitch() {
+    short index = code_iterator - 1;
+    // Verificando padding
+    while(code_iterator % 4 != 0) {
+        code_iterator ++;
+    }
+
+    // Lendo default (4 bytes)
+    int defaultoffset = (code[code_iterator] << 24) |
+                        (code[code_iterator + 1] << 16) |
+                            (code[code_iterator + 2] << 8) |
+                                code[code_iterator + 3];
+    code_iterator += 4;
+
+    // Lendo numeros pares (npairs) (4 bytes)
+    int npairs = (code[code_iterator] << 24) |
+                 (code[code_iterator + 1] << 16) |
+                     (code[code_iterator + 2] << 8) |
+                         code[code_iterator + 3];
+    code_iterator += 4;
+
+    // Print defaultoffset e npairs
+    StringBuffer.append(" lookupswitch ");
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" default: ", defaultoffset);
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(" npairs: ", npairs);
+    StringBuffer.append("\n");
+
+    // The key is compared against the match values
+    for(int i = 0; i <  npairs; i++) {
+        int match = (code[code_iterator] << 24) |
+                        (code[code_iterator + 1] << 16) |
+                        (code[code_iterator + 2] << 8) |
+                            code[code_iterator + 3];
+        code_iterator += 4;
+
+        int offset = (code[code_iterator] << 24) |
+                         (code[code_iterator + 1] << 16) |
+                         (code[code_iterator + 2] << 8) |
+                         code[code_iterator + 3];
+        code_iterator += 4;
+
+        StringBuffer.append(" match: ", match);
+        StringBuffer.append(" offset: ", offset);
+        StringBuffer.append("\n");
+    }
+
+}
 void OpcodePrinter::ireturn() {
     StringBuffer.append(" ireturn\n");
 }
@@ -776,16 +839,18 @@ void OpcodePrinter::monitorexit() {
 void OpcodePrinter::wide() {}
 void OpcodePrinter::multianewarray() {}
 void OpcodePrinter::ifnull() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifnull #");
+    StringBuffer.append(" ifnull ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ifnonnull() {
-    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    short index = code_iterator - 1;
+    index += static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++];
 
-    StringBuffer.append(" ifnonnull #");
+    StringBuffer.append(" ifnonnull ");
     StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
