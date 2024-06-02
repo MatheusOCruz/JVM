@@ -32,13 +32,6 @@ void Jvm::Run(){
 
 }
 
-void* Jvm::popRefFromOpStack() {
-    std::cout<<"popRefFromOpStack\n";
-    u4 value = CurrentFrame->OperandStack->Pop();
-    void* pointer;
-    memcpy(&pointer, &value,4);
-    return pointer;
-}
 
 // big endian
 u8 Jvm::popU8FromOpStack(){
@@ -790,6 +783,8 @@ void Jvm::daload(){
 // todo implement
 void Jvm::aaload(){
     std::cout<<"aaload\n";
+    void* arrayRef = CurrentFrame->OperandStack->PopRef<void*>();
+
 
 }
 
