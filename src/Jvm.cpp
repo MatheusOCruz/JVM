@@ -1590,9 +1590,16 @@ void Jvm::lshr(){
 }
 
 
-
+// todo check when value1 comes before value2-- might be errors
 
 void Jvm::iushr(){
+    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+
+    s4 shift = value2 & 0x1F;
+    u4 result = static_cast<unsigned int>(value1) >> shift;
+
+    CurrentFrame->OperandStack->push(result);
 
 }
 
@@ -1600,6 +1607,12 @@ void Jvm::iushr(){
 
 
 void Jvm::lushr(){
+    int value2 = CurrentFrame->OperandStack->Pop();
+    long value1 = popU8FromOpStack();
+
+    long result = value1 >> value2;
+
+    CurrentFrame->OperandStack->push(static_cast<u4>(result));
 
 }
 
@@ -1928,10 +1941,9 @@ void Jvm::i2s(){
 
 
 
-// !TODO: fix, n eh assim q se trata long
 void Jvm::lcmp(){
-    long value1 = static_cast<long>(CurrentFrame->OperandStack->Pop());
-    long value2 = static_cast<long>(CurrentFrame->OperandStack->Pop());
+    long value2 = popU8FromOpStack();
+    long value1 = popU8FromOpStack();
     int intValue = 9;
     if(value1 > value2)
         intValue = 1;
@@ -1940,14 +1952,27 @@ void Jvm::lcmp(){
     else // (value1 < value2)
         intValue = -1;
         
-    CurrentFrame->OperandStack->push(static_cast<u1>(intValue));
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
 
 }
 
 
-
+// todo check these arithmeticsq tomorrow
 
 void Jvm::fcmpl(){
+    float value2 = CurrentFrame->OperandStack->Pop();
+    float value1 = CurrentFrame->OperandStack->Pop();
+    int intValue = 9;
+
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+        
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
+
 
 }
 
@@ -1955,6 +1980,18 @@ void Jvm::fcmpl(){
 
 
 void Jvm::fcmpg(){
+    float value2 = CurrentFrame->OperandStack->Pop();
+    float value1 = CurrentFrame->OperandStack->Pop();
+    int intValue = 9;
+
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+        
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
 
 }
 
@@ -1962,6 +1999,17 @@ void Jvm::fcmpg(){
 
 
 void Jvm::dcmpl(){
+    double value2 = static_cast<double>(popU8FromOpStack());
+    double value1 = static_cast<double>(popU8FromOpStack());
+    int intValue = 9;
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+        
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
 
 }
 
@@ -1969,6 +2017,17 @@ void Jvm::dcmpl(){
 
 
 void Jvm::dcmpg(){
+    double value2 = static_cast<double>(popU8FromOpStack());
+    double value1 = static_cast<double>(popU8FromOpStack());
+    int intValue = 9;
+    if(value1 > value2)
+        intValue = 1;
+    else if(value1 == value2)
+        intValue = 0;
+    else // (value1 < value2)
+        intValue = -1;
+        
+    CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
 
 }
 
@@ -1976,6 +2035,11 @@ void Jvm::dcmpg(){
 
 
 void Jvm::ifeq(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value == 0){
+        pc += GetIndex2();
+    }
 
 }
 
@@ -1983,6 +2047,12 @@ void Jvm::ifeq(){
 
 
 void Jvm::ifne(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value != 0){
+        pc += GetIndex2();
+    }
+ 
 
 }
 
@@ -1990,6 +2060,12 @@ void Jvm::ifne(){
 
 
 void Jvm::iflt(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value < 0){
+        pc += GetIndex2();
+    }
+
 
 }
 
@@ -1997,6 +2073,12 @@ void Jvm::iflt(){
 
 
 void Jvm::ifge(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value >= 0){
+        pc += GetIndex2();
+    }
+
 
 }
 
@@ -2004,6 +2086,12 @@ void Jvm::ifge(){
 
 
 void Jvm::ifgt(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value > 0){
+        pc += GetIndex2();
+    }
+
 
 }
 
@@ -2011,6 +2099,12 @@ void Jvm::ifgt(){
 
 
 void Jvm::ifle(){
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+
+    if(value <= 0){
+        pc += GetIndex2();
+    }
+
 
 }
 
@@ -2137,7 +2231,15 @@ void Jvm::goto_(){
 
 
 
-void Jvm::jsr(){
+    // todo testa, potencial de ta errado
+//     The address of the opcode of the instruction immediately
+// following this jsr instruction is pushed onto the operand stack as
+// a value of type returnAddress.
+void Jvm::jsr(){ 
+    u2 offset = GetIndex2();
+    CurrentFrame->OperandStack->push(pc + offset);
+    //nota: devia ter dado push como type returnAddress? n aconteceu
+
 
 }
 
@@ -2399,7 +2501,7 @@ void Jvm::multianewarray(){
     // u2 index      = GetIndex2();
     // u1 dimensions =  
 }
-
+// todo mb start here tomorrow
 void Jvm::ifnull(){
 
 }
