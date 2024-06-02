@@ -2113,8 +2113,8 @@ void Jvm::ifle(){
 
 void Jvm::if_icmpeq(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 == value2){
         pc += offset;
@@ -2127,8 +2127,8 @@ void Jvm::if_icmpeq(){
 
 void Jvm::if_icmpne(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 != value2){
         pc += offset;
@@ -2141,8 +2141,8 @@ void Jvm::if_icmpne(){
 
 void Jvm::if_icmplt(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 < value2){
         pc += offset;
@@ -2155,8 +2155,8 @@ void Jvm::if_icmplt(){
 
 void Jvm::if_icmpge(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 >= value2){
         pc += offset;
@@ -2169,8 +2169,8 @@ void Jvm::if_icmpge(){
 
 void Jvm::if_icmpgt(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 > value2){
         pc += offset;
@@ -2183,8 +2183,8 @@ void Jvm::if_icmpgt(){
 
 void Jvm::if_icmple(){
     u2 offset = GetIndex2();
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 <= value2){
         pc += offset;
@@ -2196,13 +2196,13 @@ void Jvm::if_icmple(){
 
 
 void Jvm::if_acmpeq(){
-    // u2 offset = GetIndex2();
-    // int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    // int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    u2 offset = GetIndex2();
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    // if(value1 == value2){
-    //     pc += offset;
-    // }
+    if(value1 == value2){
+        pc += offset;
+    }
 
 }
 
@@ -2210,13 +2210,13 @@ void Jvm::if_acmpeq(){
 
 
 void Jvm::if_acmpne(){
-    // u2 offset = GetIndex2();
-    // int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    // int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    u2 offset = GetIndex2();
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    // if(value1 != value2){
-    //     pc += offset;
-    // }
+    if(value1 != value2){
+        pc += offset;
+    }
 
 }
 
