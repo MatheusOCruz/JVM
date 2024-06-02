@@ -67,7 +67,7 @@ private:
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
 
-    //funcoes do bytecode
+  //funcoes do bytecode
 
     void nop();
     void aconst_null();
