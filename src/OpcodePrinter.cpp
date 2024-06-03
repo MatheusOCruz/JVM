@@ -907,20 +907,16 @@ void OpcodePrinter::invokestatic() {
     StringBuffer.append("\n");
 }
 void OpcodePrinter::invokeinterface() {
+// suspeitissimo esse
 // vai ter algo aqui - bloco de notas
     std::string buffer;
-    size_t code_size;
-    //size_t start_index = code_iterator;  // Posição inicial da instrução invokeinterface
-
-    // Verifica se há bytes suficientes para ler indexbyte1, indexbyte2, count e 0 (4 bytes no total)
-    if (code_iterator + 4 > code_size) {
-        StringBuffer.append("Erro: Acesso fora dos limites do array 'code'.");
-        return;
-    }
 
     // Lendo indexbyte1 e indexbyte2 (2 bytes)
     u1 indexbyte1 = code[code_iterator++];
     u1 indexbyte2 = code[code_iterator++];
+
+    // calculo do bendito indice
+    u2 method_index = (indexbyte1 << 8) | indexbyte2;
 
     // Lendo count (1 byte)
     u1 count = code[code_iterator++];
@@ -928,20 +924,64 @@ void OpcodePrinter::invokeinterface() {
     // Lendo 0 (1 byte)
     u1 zero = code[code_iterator++];
 
-    // Print invokeinterface, indexbytes, count e zero
-    StringBuffer.append("invokeinterface ");
-    StringBuffer.append("\n    indexbyte1: ").append(std::to_string(indexbyte1));
-    StringBuffer.append("\n    indexbyte2: ").append(std::to_string(indexbyte2));
-    StringBuffer.append("\n    count: ").append(std::to_string(count));
-    StringBuffer.append("\n    0: ").append(std::to_string(zero));
-    StringBuffer.append("\n");
+    // Verificação de erro para o byte 0, que deve ser zero
+    if (zero != 0) {
+        buffer.append("Erro: O quarto byte de 'invokeinterface' deve ser 0.");
+        StringBuffer.append(buffer);
+        return;
+    }
+
+    // saída suspeita
+    buffer.append(" invokeinterface #");
+    buffer.append(std::to_string(method_index));
+    buffer.append(" ");
+    buffer.append(std::to_string(count));
+    buffer.append("\n");
 
     // Adiciona ao StringBuffer
     StringBuffer.append(buffer);
-    //std::cout << StringBuffer << std::endl;
+    // std::cout << StringBuffer << std::endl;
+
 }
 void OpcodePrinter::invokedynamic() {
     // vai ter algo aqui - bloco de notas
+    std::string buffer;
+    //size_t code_size;
+    //size_t start_index = code_iterator;  // Posição inicial da instrução invokeinterface
+
+    // Verificar se há bytes suficientes para ler indexbyte1, indexbyte2 e dois bytes zero (4 bytes no total)
+    //if (code_iterator + 4 > code_size) {
+    //    StringBuffer.append("Erro: Acesso fora dos limites do array 'code'.");
+    //    return;
+    //}
+
+    // Lendo indexbyte1 e indexbyte2 (2 bytes)
+    u1 indexbyte1 = code[code_iterator++];
+    u1 indexbyte2 = code[code_iterator++];
+
+    // Lendo os dois bytes zero (2 bytes)
+    u1 zero1 = code[code_iterator++];
+    u1 zero2 = code[code_iterator++];
+
+    //  índice
+    int index = (indexbyte1 << 8) | indexbyte2;
+
+    // Verificar se os dois bytes zero são realmente zero
+    if (zero1 != 0 || zero2 != 0) {
+        StringBuffer.append("os bytes de zero não são zero.");
+        return;
+    }
+
+    //  saída suspeita
+    StringBuffer.append("invokedynamic #");
+    StringBuffer.append(" ").append(std::to_string(indexbyte1));
+    StringBuffer.append(" ").append(std::to_string(indexbyte2));
+    StringBuffer.append(" ").append(std::to_string(index));
+    StringBuffer.append(" ").append(std::to_string(zero1));
+    StringBuffer.append(" ").append(std::to_string(zero2));
+    StringBuffer.append("\n");
+
+    StringBuffer.append(buffer);
 }
 void OpcodePrinter::new_() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
@@ -1024,7 +1064,60 @@ void OpcodePrinter::monitorexit() {
 }
 void OpcodePrinter::wide() {
  // vai entrar algo aqui -> bloco de notas
+ // não sei o que tá acontecendo mais
+    std::string buffer;
+
+    // opcode que segue 'wide'
+    u1 modified_opcode = code[code_iterator++];
+
+    // Ldois bytes de índice
+    u1 indexbyte1 = code[code_iterator++];
+    u1 indexbyte2 = code[code_iterator++];
+    u2 index = (indexbyte1 << 8) | indexbyte2;
+
+    // Função lambda para obter o nome do opcode
+    // essa coisa é muito suspeita
+    // 0 confiança
+    auto getOpcodeName = [](u1 opcode) -> std::string {
+        switch (opcode) {
+            case 0x15: return "iload";
+            case 0x17: return "fload";
+            case 0x19: return "aload";
+            case 0x16: return "lload";
+            case 0x18: return "dload";
+            case 0x36: return "istore";
+            case 0x38: return "fstore";
+            case 0x3a: return "astore";
+            case 0x37: return "lstore";
+            case 0x39: return "dstore";
+            case 0xa9: return "ret";
+            case 0x84: return "iinc";
+            default: return "unknown";
+        }
+        // exemplo: wide iload 300
+    };
+
+    // saída
+    buffer.append(" wide ");
+    buffer.append(getOpcodeName(modified_opcode));
+    buffer.append(" ");
+    buffer.append(std::to_string(index));
+
+    // Se o opcode for 'iinc', ler os bytes de constante
+    if (modified_opcode == 0x84) { // 0x84 é o opcode para 'iinc'
+        u1 constbyte1 = code[code_iterator++];
+        u1 constbyte2 = code[code_iterator++];
+        int16_t constant = (constbyte1 << 8) | constbyte2;
+        buffer.append(" ");
+        buffer.append(std::to_string(constant));
+    }
+
+    buffer.append("\n");
+
+    StringBuffer.append(buffer);
+    // std::cout << StringBuffer << std::endl;
 }
+
 void OpcodePrinter::multianewarray() {
     std::string buffer;
     //size_t code_size;
