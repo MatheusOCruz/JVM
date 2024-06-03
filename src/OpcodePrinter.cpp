@@ -982,6 +982,7 @@ void OpcodePrinter::invokedynamic() {
     StringBuffer.append("\n");
 
     StringBuffer.append(buffer);
+    // std::cout << StringBuffer << std::endl;
 }
 void OpcodePrinter::new_() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
