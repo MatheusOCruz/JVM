@@ -922,19 +922,9 @@ void OpcodePrinter::new_() {
 void OpcodePrinter::newarray() {
 
     std::string buffer;
-    // tamanho do array
-    size_t code_size = 0;
-    while (code[code_size] != '\0') {
-        code_size++;
-    }
 
     u1 atype = code[code_iterator++];
 
-    // Verificar se há bytes suficientes para ler o atype (1 byte)
-    if (code_iterator + 1 > code_size) {
-        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table. Newarray teste" << std::endl;
-        return;
-    }
 
     //  atype (1 byte) non nexecisa
     //u1 atype = code[code_iterator++];
@@ -995,19 +985,8 @@ void OpcodePrinter::wide() {
  // vai entrar algo aqui -> bloco de notas
 }
 void OpcodePrinter::multianewarray() {
-    std::string buffer;
-    //size_t code_size;
-    // Determinar o tamanho do array code
-    size_t code_size = 0;
-    while (code[code_size] != '\0') {
-        code_size++;
-    }
 
-    // Verificação de bytes indexbyte1, indexbyte2 e dimensões (3 bytes no total)
-    if (code_iterator + 3 > code_size) {
-        StringBuffer.append(" fora dos limites do array 'code'. 8225\n");
-        return;
-    }
+
     // Ler indexbyte1, indexbyte2 e dimensõess
     u1 indexbyte1 = code[code_iterator++];
     u1 indexbyte2 = code[code_iterator++];
@@ -1022,14 +1001,11 @@ void OpcodePrinter::multianewarray() {
         return;
     }
 
-    // F--------------------------------
-    StringBuffer.append("multianewarray\n");
-    StringBuffer.append("indexbyte1: ").append(std::to_string(indexbyte1)).append("\n");
-    StringBuffer.append("indexbyte2: ").append(std::to_string(indexbyte2)).append("\n");
-    StringBuffer.append("index: #").append(std::to_string(index)).append("\n");
-    StringBuffer.append("dimensions: ").append(std::to_string(dimensions)).append("\n");
 
-    StringBuffer.append(buffer);
+    StringBuffer.append(" multianewarray ");
+    StringBuffer.append("# ").append(std::to_string(index));
+    StringBuffer.append(" dim ").append(std::to_string(dimensions)).append("\n");
+
 }
 
 void OpcodePrinter::ifnull() {
