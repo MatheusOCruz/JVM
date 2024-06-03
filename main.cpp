@@ -10,27 +10,8 @@
 
 #define JVM_MODE 0
 #define LEITOR_EXIBIDOR 1
-#define HELP 2
 
-void semnome(int argc, char* argv[], char* ClassFilePath,char* OutputFile){
-    if(argc < 2)
-        throw std::runtime_error("ta faltando o arquivo .class meu nobre, deve torcer pro ateltico...\n");
 
-    ClassFilePath = argv[1];
-    std::cout<<ClassFilePath<<"\n";
-    std::regex ClassFIleTermination (".*\\.class$");
-
-    if (!std::regex_search(ClassFilePath, ClassFIleTermination))
-        throw std::runtime_error("Arquivo fornecido não é .class");
-
-    //futuramente pro printer salvar o output em um arquivo
-    for (int i = 2; i < argc; ++i) {
-        if (strcmp(argv[i], "-o") == 0 && i + 1 <= argc) {
-            OutputFile = argv[++i];
-            std::cout << OutputFile;
-        }
-    }
-}
 
 void help(const char * program_name) {
 	std::cerr << "Como usar:" << std::endl;
@@ -69,7 +50,7 @@ int main(int argc, char* argv[]) {
     }
 
     const auto class_file_path  = shift_args(argc, &argv);
-
+    
     if (strcmp(command, "leitor_exibidor") == 0) {
 
         std::string output_file_path = "";
@@ -90,7 +71,7 @@ int main(int argc, char* argv[]) {
         help(program_name);
         return EXIT_FAILURE;
     }
-
+    
     return EXIT_SUCCESS;
 }
 
@@ -102,7 +83,7 @@ int mai2n(){
 
     int mode = JVM_MODE;
 
-    std::string file = "/home/matheus/CLionProjects/JVM/Main.class";
+    std::string file = "/home/matheus/prog/JVM/exemplos/TestFunctionCall.class";
     switch (mode) {
         case JVM_MODE:
             Jvm(file).Run();
