@@ -159,6 +159,57 @@ void Jvm::NewClassInstance(std::string class_name){
 // dimension_counts contem tamanho de cada array 
 // de forma recusiva
 
+void* NewBaseArray(ArrayTypeCode Type, int count){
+    int byteSize = 0;
+    switch (Type) {
+        case ArrayTypeCode::T_BOOLEAN:
+        case ArrayTypeCode::T_BYTE:{
+            byteSize = 1;
+            break;
+        }
+        case ArrayTypeCode::T_CHAR:
+        case ArrayTypeCode::T_SHORT:{
+            byteSize = 2;
+            break;
+        }
+        case ArrayTypeCode::T_INT:
+        case ArrayTypeCode::T_FLOAT:{
+            byteSize = 4;
+            break;
+        }
+        case ArrayTypeCode::T_DOUBLE:
+        case ArrayTypeCode::T_LONG:
+        case ArrayTypeCode::T_REF:
+        case ArrayTypeCode::T_ARRAY:{
+            byteSize = 8;
+            break;
+        }
+    }
+    return new char[count * byteSize];
+}
+
+
+ArrayInstance* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
+    auto Array = new ArrayInstance;
+    int count  = counts.Pop();
+    Array->size = count;
+    if(dims == 1){
+        Array->ComponentType = Type;
+        Array->DataVec       = NewBaseArray(Type, count);
+    }
+    else{
+        Array->ComponentType = ArrayTypeCode::T_ARRAY;
+        Array->ArrayVec      = new void*[count];
+
+        for (int i = 0; i < count; ++i)
+            Array->ArrayVec[i] = NewArray(Type, counts, dims - 1);
+    }
+
+    return Array;
+}
+
+
+
 
 // funcoes auxiliares pros bytecode
 
@@ -1446,8 +1497,8 @@ void Jvm::fdiv(){
     Cat2Value converter1, converter2, aux;
     float result;
 
-    converter2.AsFloat = CurrentFrame->OperandStack->Pop();
-    converter1.AsFloat = CurrentFrame->OperandStack->Pop();
+    converter2.HighBytes = CurrentFrame->OperandStack->Pop();
+    converter1.HighBytes = CurrentFrame->OperandStack->Pop();
 // entendendo que cpp já segue  rules of IEEE arithmetic:
     result = converter1.AsFloat / converter2.AsFloat;
     CurrentFrame->OperandStack->push(result);
@@ -1463,13 +1514,12 @@ void Jvm::ddiv(){
     Cat2Value converter1, converter2, aux;
     double result;
 
-    converter2.AsDouble = popU8FromOpStack();
-    converter1.AsDouble = popU8FromOpStack();
+    converter2.AsLong = popU8FromOpStack();
+    converter1.AsLong = popU8FromOpStack();
 // entendendo que cpp já segue  rules of IEEE arithmetic:
-    result = converter1.AsDouble / converter2.AsDouble;
-    aux.HighBytes = result;
-    aux.LowBytes = result;
-    pushU8ToOpStack(aux.HighBytes, aux.LowBytes);
+    converter1.AsDouble = converter1.AsDouble / converter2.AsDouble;
+
+    pushU8ToOpStack(converter1.HighBytes, converter1.LowBytes);
 
 }
 

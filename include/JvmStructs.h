@@ -97,7 +97,11 @@ struct ClassInstance{
 
 struct ArrayInstance{
     ArrayTypeCode ComponentType;
-    void**        ComponentData;
+    union {
+        void**    ArrayVec;
+        void*     DataVec;
+    };
+    int           size;
 };
 
 
