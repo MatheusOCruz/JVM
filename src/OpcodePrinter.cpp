@@ -908,6 +908,37 @@ void OpcodePrinter::invokestatic() {
 }
 void OpcodePrinter::invokeinterface() {
 // vai ter algo aqui - bloco de notas
+    std::string buffer;
+    size_t code_size;
+    //size_t start_index = code_iterator;  // Posição inicial da instrução invokeinterface
+
+    // Verifica se há bytes suficientes para ler indexbyte1, indexbyte2, count e 0 (4 bytes no total)
+    if (code_iterator + 4 > code_size) {
+        StringBuffer.append("Erro: Acesso fora dos limites do array 'code'.");
+        return;
+    }
+
+    // Lendo indexbyte1 e indexbyte2 (2 bytes)
+    u1 indexbyte1 = code[code_iterator++];
+    u1 indexbyte2 = code[code_iterator++];
+
+    // Lendo count (1 byte)
+    u1 count = code[code_iterator++];
+
+    // Lendo 0 (1 byte)
+    u1 zero = code[code_iterator++];
+
+    // Print invokeinterface, indexbytes, count e zero
+    StringBuffer.append("invokeinterface ");
+    StringBuffer.append("\n    indexbyte1: ").append(std::to_string(indexbyte1));
+    StringBuffer.append("\n    indexbyte2: ").append(std::to_string(indexbyte2));
+    StringBuffer.append("\n    count: ").append(std::to_string(count));
+    StringBuffer.append("\n    0: ").append(std::to_string(zero));
+    StringBuffer.append("\n");
+
+    // Adiciona ao StringBuffer
+    StringBuffer.append(buffer);
+    //std::cout << StringBuffer << std::endl;
 }
 void OpcodePrinter::invokedynamic() {
     // vai ter algo aqui - bloco de notas
