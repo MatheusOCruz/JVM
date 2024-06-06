@@ -11,6 +11,7 @@
 #include "ClassFileStructs.h"
 #include "ClassLoader.h"
 #include "OpcodePrinter.h"
+#include "Jvm.h"
 #include <unordered_map>
 
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader

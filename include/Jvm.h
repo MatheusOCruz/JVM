@@ -18,6 +18,7 @@ public:
      explicit Jvm(std::string _main_file) : main_file(std::move(_main_file)) {}
      void Run();
 
+	static int numberOfArgsFromString(const std::string & args);
 
 private:
     //funcoes da jvm
@@ -67,6 +68,7 @@ private:
     void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
+	
 
 
     void fconst(float value);
