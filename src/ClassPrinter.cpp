@@ -343,8 +343,6 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
 			  << std::setw(2)<< ""
 			  << "Descriptor: " << descriptor_name << std::endl
 			  << std::setw(2)<< ""
-			  << "Number of arguments: " << Jvm::numberOfArgsFromString(descriptor_name) << std::endl
-			  << std::setw(2)<< ""
 			  << "Flags: 0x"<< std::setw(5) << std::right << std::setfill('0')
 			  << std::setbase(16) << flags << std::endl
 			  << std::setbase(10) << std::setfill(' ');

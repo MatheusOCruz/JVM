@@ -18,7 +18,8 @@ public:
      explicit Jvm(std::string _main_file) : main_file(std::move(_main_file)) {}
      void Run();
 
-	static int numberOfArgsFromString(const std::string & args);
+	static int numberOfEntriesFromString(const std::string & args);
+
 
 private:
     //funcoes da jvm

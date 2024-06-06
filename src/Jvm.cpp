@@ -55,26 +55,42 @@ u8 Jvm::getU8FromLocalVars(u4 startingIndex){
 }
 
 
-int Jvm::numberOfArgsFromString(const std::string & args) {
+int Jvm::numberOfEntriesFromString(const std::string & args) {
 	assert(args.size() > 2);
 	assert(args[0] == '(');
+
+	std::map<char, int> num_entries_table;
+
+	num_entries_table['L'] = 1;
+	num_entries_table['B'] = 1;
+	num_entries_table['S'] = 1;
+	num_entries_table['I'] = 1;
+	num_entries_table['J'] = 2;
+
+	num_entries_table['F'] = 1;
+	num_entries_table['D'] = 2;
+	
+	num_entries_table['C'] = 1;
+	num_entries_table['Z'] = 1;
+
 
 	bool foundL = false;
 	int number_of_attr = 0;
 	for (const auto c: args) {
 		if (c == ')' && !foundL) break;
-		else if (c == 'L' && !foundL) foundL = true, number_of_attr++;
+		else if (c == 'L' && !foundL) foundL = true, number_of_attr += num_entries_table[c];
 		else if (c == ';' && foundL)  foundL = false;
 
-		else if (c == 'B' && !foundL) number_of_attr++;
-		else if (c == 'S' && !foundL) number_of_attr++;
-		else if (c == 'I' && !foundL) number_of_attr++;
+		else if (c == 'B' && !foundL) number_of_attr += num_entries_table[c];
+		else if (c == 'S' && !foundL) number_of_attr += num_entries_table[c];
+		else if (c == 'I' && !foundL) number_of_attr += num_entries_table[c];
+		else if (c == 'J' && !foundL) number_of_attr += num_entries_table[c];
 
-		else if (c == 'F' && !foundL) number_of_attr++;
-		else if (c == 'D' && !foundL) number_of_attr++;
+		else if (c == 'F' && !foundL) number_of_attr += num_entries_table[c];
+		else if (c == 'D' && !foundL) number_of_attr += num_entries_table[c];
 
-		else if (c == 'C' && !foundL) number_of_attr++;
-		else if (c == 'Z' && !foundL) number_of_attr++;
+		else if (c == 'C' && !foundL) number_of_attr += num_entries_table[c];
+		else if (c == 'Z' && !foundL) number_of_attr += num_entries_table[c];
 
 		else if (c == '[' && !foundL) {}
 		else if (c == '(' && !foundL) {}
