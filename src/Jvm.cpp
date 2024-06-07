@@ -15,21 +15,23 @@ void Jvm::Run(){
 
     Loader->LoadClass(main_file);
     CurrentClass = GetClass(main_file);
-    //create method map by name
 
-    std::string MethodName = "main";
+
+
+    std::string MethodName = "<clinit>";
+    GetMethod(MethodName);
+
+    GetCurrentMethodCode();
+    NewFrame();
+    CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
+    SaveFrameState();
+    ExecBytecode();
+
+    MethodName = "main";
     GetMethod(MethodName);
     GetCurrentMethodCode();
-
     NewFrame();
-
-    //check for <clinit>
-    //exec
-    //check for <init>
-    //exec
-    //check for <main>
-    //exec
-
+    SaveFrameState();
     ExecBytecode();
 
 }
@@ -56,52 +58,52 @@ u8 Jvm::getU8FromLocalVars(u4 startingIndex){
 
 
 int Jvm::numberOfEntriesFromString(const std::string & args) {
-	assert(args.size() > 2);
-	assert(args[0] == '(');
-
-	std::map<char, int> num_entries_table;
-
-	num_entries_table['L'] = 1;
-	num_entries_table['B'] = 1;
-	num_entries_table['S'] = 1;
-	num_entries_table['I'] = 1;
-	num_entries_table['J'] = 2;
-
-	num_entries_table['F'] = 1;
-	num_entries_table['D'] = 2;
-	
-	num_entries_table['C'] = 1;
-	num_entries_table['Z'] = 1;
+    assert(args.size() > 2);
+    assert(args[0] == '(');
 
 
-	bool foundL = false;
-	int number_of_attr = 0;
-	for (const auto c: args) {
-		if (c == ')' && !foundL) break;
-		else if (c == 'L' && !foundL) foundL = true, number_of_attr += num_entries_table[c];
-		else if (c == ';' && foundL)  foundL = false;
+    int number_of_attr = 0;
+    const char* iter = args.c_str();
+    do {
+        char c = *iter++ ;
+        switch (c) {
+            case ')':
 
-		else if (c == 'B' && !foundL) number_of_attr += num_entries_table[c];
-		else if (c == 'S' && !foundL) number_of_attr += num_entries_table[c];
-		else if (c == 'I' && !foundL) number_of_attr += num_entries_table[c];
-		else if (c == 'J' && !foundL) number_of_attr += num_entries_table[c];
+                break;
 
-		else if (c == 'F' && !foundL) number_of_attr += num_entries_table[c];
-		else if (c == 'D' && !foundL) number_of_attr += num_entries_table[c];
+            case 'L':
+                number_of_attr++;
+                while(c!=';') c = *iter++;
 
-		else if (c == 'C' && !foundL) number_of_attr += num_entries_table[c];
-		else if (c == 'Z' && !foundL) number_of_attr += num_entries_table[c];
+                break;
 
-		else if (c == '[' && !foundL) {}
-		else if (c == '(' && !foundL) {}
+            case 'B':
+            case 'S':
+            case 'I':
+            case 'F':
+            case 'C':
+            case 'Z':
+                number_of_attr++;
+                break;
 
-		else if (!foundL) {
-			std::cerr << "WARNING: " 
-				      << "Caracter " << c << " not recognize during attr parsing" 
-			          << std::endl;
-		}
-	}
-	return number_of_attr;
+            case 'J':
+            case 'D':
+                number_of_attr += 2;
+                break;
+
+            case '[':
+            case '(':
+                break;
+
+            default:
+                std::cerr << "WARNING: "
+                          << "Caracter " << c << " not recognized during attr parsing"
+                          << std::endl;
+
+                break;
+        }
+    } while(*iter);
+    return number_of_attr;
 }
 
 
@@ -118,6 +120,7 @@ void Jvm::ExecBytecode(){
         u1 bytecode =  NextCodeByte();
         (this->*bytecodeFuncs[bytecode])();
     }
+    PopFrameStack();
 }
 
 //salva valores atuais pro retorno ao frame
@@ -265,6 +268,9 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
 }
 
 
+u4 Jvm::PopOpStack(){
+    return CurrentFrame->OperandStack->Pop();
+}
 
 
 // funcoes auxiliares pros bytecode
@@ -363,13 +369,18 @@ void Jvm::iconst_5(){
 }
 
 void Jvm::lconst_0(){
-    // todo: check if anything wrong, was it the right cast??
-    CurrentFrame->OperandStack->push(static_cast<const s8>(0.0));
+    // todo: check if anything wrong, was it the right cast?? foi nao, s8 nao cabe em uma entrada quebra em 2 u4
+    // todo: so da push como u4, quando for usar da cast no tipo dnv
+    Cat2Value Value{};
+    Value.AsLong = 0;
+    CurrentFrame->OperandStack->push(Value.HighBytes);
+    CurrentFrame->OperandStack->push(Value.HighBytes);
+
 }
 
 void Jvm::lconst_1(){
-    CurrentFrame->OperandStack->push(static_cast<const s8>(1.0));
-    Cat2Value Cat2Value;
+    //CurrentFrame->OperandStack->push(static_cast<const s8>(1.0));
+    Cat2Value Cat2Value{};
     Cat2Value.AsLong = 1.0;
     const u4 HighBytes = Cat2Value.HighBytes;
     const u4 LowBytes = Cat2Value.LowBytes;
@@ -1257,13 +1268,12 @@ void Jvm::pop2(){
 
 // tested, works
 void Jvm::dup(){
+
     u4 value = CurrentFrame->OperandStack->Pop();
 
     CurrentFrame->OperandStack->push(value); // segfault
     CurrentFrame->OperandStack->push(value); // segfault
-// The dup instruction must not be used unless value is a value of a category 1 computational type (§2.11.1).
-// Category 1 types occupy a single stack entry
-// ent n precisa preocupar com long double etc
+
 }
 
 
@@ -1621,7 +1631,7 @@ void Jvm::irem(){
 
 
 void Jvm::lrem(){
-    Cat2Value converter;
+    Cat2Value converter{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
 
@@ -2538,6 +2548,7 @@ void Jvm::dreturn(){
     return_u8();
 }
 
+        auto ClassFile = (*MethodArea)[ClassName];
 
 
 
@@ -2549,21 +2560,46 @@ void Jvm::areturn(){
 // tested, works (prolly)
 void Jvm::return_(){
 //check return == void
+if(FrameStack.size() != 1) // caso seja 1, ta no final da main ou clinit da main
 	PopFrameStack();
 }
 // tested, works
+
 void Jvm::getstatic(){
     u2 index = GetIndex2();
+    cp_info* Fieldref     = GetConstantPoolEntryAt(index);
+    cp_info* NameAndType  = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
+    auto Name      = GetConstantPoolEntryAt(NameAndType->name_index)->AsString();
+    auto Descriptor= GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
+
+    if(Descriptor == "Ljava/io/PrintStream;")
+        return;
+
+    class_file* Class = CurrentFrame->frameClass;
+    auto StaticFields = *(Class->StaticFields);
+    auto Entry  = StaticFields[Name];
+
+
+    CurrentFrame->OperandStack->push(Entry->AsInt);
+
 }
-// todo
+//TODO:  so pra int para testar
+
 void Jvm::putstatic(){
     u2 index = GetIndex2();
-
-    cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
+    u4 value = PopOpStack();
+    cp_info* Fieldref    = GetConstantPoolEntryAt(index);
     cp_info* NameAndType = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+    auto Name     = GetConstantPoolEntryAt(NameAndType->name_index)->AsString();
+    auto Descriptor= GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
 
-    // todo implementar
+    class_file* Class = CurrentFrame->frameClass;
+    auto& StaticFields = *(Class->StaticFields);
 
+
+    auto Entry =  new FieldEntry;
+    Entry->AsInt = value;
+    StaticFields[Name] = Entry;
 
 }
 // todo implement
@@ -2580,15 +2616,25 @@ void Jvm::getfield(){
 void Jvm::new_(){
     //todo exceptions linking e run time
     u2 index = GetIndex2();
-    cp_info* ref = (*CurrentClass->constant_pool)[index];
+    cp_info* ref = GetConstantPoolEntryAt(index);
 
     // resolvendo se classe ou interface
     if(ref->tag == ConstantPoolTag::CONSTANT_Class){
-        cp_info* ClassNameIndex = (*CurrentClass->constant_pool)[ref->name_and_type_index];
+        auto ClassName = GetConstantPoolEntryAt(ref->name_and_type_index)->AsString();
         //allocate memory to class by name
+        if(MethodArea->find(ClassName) == MethodArea->end())
+            std::cerr<<"new: classe nao foi inicializada";
 
 
-        // !todo complete
+
+        auto ClassHandle = new Handle;
+        ClassHandle->ClassObject = ClassFile;
+        ClassHandle->MethodTable = ClassFile->methods;
+
+        auto ObjectRef = new ClassInstance;
+        ObjectRef->ClassHandle = ClassHandle;
+        ObjectRef->ObjectData = new std::unordered_map<std::string, FieldEntry>;
+        CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
     }
     else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
         cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
@@ -2596,6 +2642,9 @@ void Jvm::new_(){
         std::string Name            = (*CurrentClass->constant_pool)[InterfaceNameAndType->name_index]->AsString();
         std::string FieldDescriptor = (*CurrentClass->constant_pool)[InterfaceNameAndType->descriptor_index]->AsString();
         // !todo complete
+    }
+    else{
+        std::cerr<<"new: CP_INFO nao e nem classe nem interface\n";
     }
 
 
@@ -2609,6 +2658,7 @@ void Jvm::putfield(){
 
     std::string Name            = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
     std::string FieldDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+    std::cout<<FieldDescriptor;
     //std::string Type = FieldDescriptor.substr(1,FieldDescriptor.size() - 2);
 
     if(FieldDescriptor == "D" or FieldDescriptor == "L"){
@@ -2627,6 +2677,7 @@ void Jvm::putfield(){
 
 } // tested, works
 //TODO: to fazendo so pro hello world por enquanto
+
 void Jvm::invokevirtual(){
     u2 index = GetIndex2();
 
@@ -2646,47 +2697,58 @@ void Jvm::invokevirtual(){
 
 
 }
-
+/*
+ *
+ *
+ *
+ *
+ */
 // tested, works
+
+/*
+ *   copia do frame atual
+ *   novo frame, metodo
+ *   array de variaveis
+ *   long / double _> le 2 entradas
+ *   while(count--)
+ */
+// TODO: parse do descriptor pra ler os tipos e pegar na constant pool
+// TODO: lidar com new frame, to focando so em instanciar a classe da main pra teste
 void Jvm::invokespecial(){
     u2 index = GetIndex2();
-    cp_info* MethodOrInterfaceMethod = (*CurrentClass->constant_pool)[index];
+    cp_info* MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
+    cp_info* NameAndType = GetConstantPoolEntryAt(MethodOrInterfaceMethod->name_and_type_index);
 
+    auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
+    auto CallerOperandStack = CurrentFrame->OperandStack;
+
+    NewFrame();
+    GetMethod("<init>");
+    GetCurrentMethodCode();
+    SaveFrameState();
+
+    int count = 2;
+    while(count--){
+        u4 value = PopOpStack();
+        (*CurrentFrame->localVariables)[count] = value;
+    }
 
 }
 // todo implement
 void Jvm::invokestatic(){
+    auto a= reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
 
 }
 // todo implement
 void Jvm::invokeinterface(){
 
 }
+
 // todo implement
 void Jvm::invokedynamic(){
 
 }
 
-// // todo fix erradasso
-// void Jvm::new_(){
-//
-//
-//     //todo exceptions linking e run time
-//     u2 index = GetIndex2();
-//     cp_info* ref = (*CurrentClass->constant_pool)[index];
-
-//     // // resolvendo se classe ou interface
-//     // if(ref->tag == ConstantPoolTag::CONSTANT_Class){
-//     //     u2 ClassName = ref->name_index;
-//     //     //allocate memory to class by name
-//     //     LoadClass(ClassName);
-
-//     //     // !todo complete
-//     // }
-//     // else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
-//     //     u2 ClassName = ref->class_index;
-//     //     // !todo complete
-//     // }
 
 
 // }

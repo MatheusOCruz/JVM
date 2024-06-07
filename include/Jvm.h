@@ -38,7 +38,7 @@ private:
     class_file* GetClass(std::string class_name);
     cp_info*    GetConstantPoolEntryAt(u2 index);
 
-
+    u4 PopOpStack();
     //vars jvm
     std::string main_file;
     uint16_t pc = 0;
@@ -355,6 +355,7 @@ private:
             &Jvm::jsr_w
         
     };
+
 
 
 };

@@ -4,6 +4,7 @@
 
 #ifndef JVM_JVMSTRUCTS_H
 #define JVM_JVMSTRUCTS_H
+#include <stack>
 #include "JvmEnums.h"
 #include "typedefs.h"
 
@@ -53,6 +54,7 @@ union FieldEntry{
     double AsDouble;
 
     Reference* AsRef;
+
 };
 
 
@@ -62,8 +64,8 @@ struct Handle{
 };
 
 struct ClassInstance{
-    Handle*         HandlePointer;
-    std::unordered_map<std::string, FieldEntry> ObjectData;
+    Handle* ClassHandle;
+    std::unordered_map<std::string, FieldEntry>* ObjectData;
 };
 
 
@@ -79,6 +81,7 @@ struct ArrayInstance{
 
 
 
+
 struct Reference{
     ReferenceType Type;
     union{
@@ -87,6 +90,17 @@ struct Reference{
         ClassInstance* ClassRef;
     };
 };
+
+
+/*
+ *   pilha -> u4
+ *   value.Bytes
+ *   value.float
+ *
+ *
+ *
+ */
+
 
 
 
@@ -99,7 +113,7 @@ union Cat2Value{
     double    AsDouble;
 
     float     AsFloat;
-    s2    AsShort;
+    s2        AsShort;
 
 };
 

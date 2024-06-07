@@ -8,10 +8,19 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <cassert>
+#include <unordered_map>
+
+struct attribute_info;
+struct method_info;
+struct field_info;
+struct class_file;
+union FieldEntry;
+
 #include "ClassFileEnums.h"
 #include "typedefs.h"
-#include "assert.h"
 #include "AttributeStructs.h"
+#include "JvmStructs.h"
 
 
 struct cp_info{
@@ -123,6 +132,7 @@ struct class_file{
     std::vector<method_info*>*    methods;
     u2                            attributes_count;
     std::vector<attribute_info*>* attributes;
+    std::unordered_map<std::string,FieldEntry*>* StaticFields = nullptr;
 };
 
 #endif //JVM_CLASSFILESTRUCTS_H

@@ -19,5 +19,6 @@ typedef int64_t s8;
 
 
 
+
 typedef std::vector<uint8_t>::iterator buffer_iterator;
 #endif //JVM_TYPEDEFS_H
