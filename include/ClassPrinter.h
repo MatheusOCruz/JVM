@@ -37,6 +37,9 @@ private:
     void PrintFieldEntry(const field_info * field);
     void PrintMethodEntry(method_info* Method);
     void PrintAttributeEntry(const attribute_info* Attribute, int indent_width=4);
+	std::string ClassAccessFlagToString(u2 flag);
+	std::string MethodAccessFlagToString(u2 flag);
+	std::string FieldAccessFlagToString(u2 flag);
 
     const std::string main_file;
     class_file* ClassFile;

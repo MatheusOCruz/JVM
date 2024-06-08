@@ -34,12 +34,10 @@ void ClassPrinter::PrintClassFile(){
 			  << "minor version:    " << ClassFile->minor_version << std::endl
 			  << "major version:    " << ClassFile->major_version << std::endl;
 
-	// TODO(ruan): Adicionar uma função para criar uma string dizendo
-	// quais flags sao
-	std::cout << "Flags: 0x"<< std::setw(5)
-			  << std::right << std::setfill('0')
-			  << std::setbase(16) << ClassFile->access_flags << std::endl
-			  << std::setbase(10) << std::setfill(' ');
+	std::cout << "Flags: (0x"<< std::setw(5) << std::right << std::setfill('0')
+			  << std::setbase(16) << ClassFile->access_flags
+			  << std::setbase(10) << std::setfill(' ')
+			  << ") " << ClassAccessFlagToString(ClassFile->access_flags) << std::endl;
 
 
 	std::cout << "interfaces: " << ClassFile->interfaces_count << ", "
@@ -311,9 +309,10 @@ void ClassPrinter::PrintFieldEntry(const field_info *field) {
 			  << std::setw(2)<< ""
 			  << "Descriptor: " << descriptor_name << std::endl
 			  << std::setw(2)<< ""
-			  << "Flags: 0x"<< std::setw(5) << std::right << std::setfill('0')
-			  << std::setbase(16) << flags << std::endl
-			  << std::setbase(10) << std::setfill(' ');
+			  << "Flags: (0x"<< std::setw(5) << std::right << std::setfill('0')
+			  << std::setbase(16) << flags
+			  << std::setbase(10) << std::setfill(' ')
+			  << ") " << FieldAccessFlagToString(flags) << std::endl;
 
 	// TODO(ruan): Adicionar uma função para criar uma string dizendo
 	// quais flags sao
@@ -327,8 +326,6 @@ void ClassPrinter::PrintFieldEntry(const field_info *field) {
 }
 
 void ClassPrinter::PrintMethodEntry(method_info* Method){
-    //TODO: append Flags[...] dps do nome e descriptor
-
     const cp_info* method_name_entry = (*ClassFile->constant_pool)[Method->name_index];
     const std::string method_name = method_name_entry->AsString();
 
@@ -343,12 +340,11 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
 			  << std::setw(2)<< ""
 			  << "Descriptor: " << descriptor_name << std::endl
 			  << std::setw(2)<< ""
-			  << "Flags: 0x"<< std::setw(5) << std::right << std::setfill('0')
-			  << std::setbase(16) << flags << std::endl
-			  << std::setbase(10) << std::setfill(' ');
+			  << "Flags: (0x"<< std::setw(5) << std::right << std::setfill('0')
+			  << std::setbase(16) << flags
+			  << std::setbase(10) << std::setfill(' ')
+			  << ") " << MethodAccessFlagToString(flags) << std::endl;
 
-	// TODO(ruan): Adicionar uma função para criar uma string dizendo
-	// quais flags sao
 	std::cout << std::setw(2) <<  ""
 			  << "Attributes:" << std::endl;
 
@@ -443,4 +439,192 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 		std::cerr << std::setw(indent_width) <<  ""
 				  << "Error: atribute type " << attr_name << " printing not implemented" << std::endl;
 	}
+}
+
+std::string ClassPrinter::FieldAccessFlagToString(u2 flag) {
+	std::vector<std::string> flag_vec;
+	for (unsigned int bit = 0; bit < 32; bit++) {
+		if (flag & (1 << bit)) {
+			switch((FieldAccessFlag) (1 << bit)) {
+			case FieldAccessFlag::ACC_PUBLIC: {
+				flag_vec.push_back("ACC_PUBLIC");
+				break;
+			}
+			case FieldAccessFlag::ACC_PRIVATE: {
+				flag_vec.push_back("ACC_PRIVATE");
+				break;
+			}
+			case FieldAccessFlag::ACC_PROTECTED: {
+				flag_vec.push_back("ACC_PROTECTED");
+				break;
+			}
+			case FieldAccessFlag::ACC_STATIC: {
+				flag_vec.push_back("ACC_STATIC");
+				break;
+			}
+			case FieldAccessFlag::ACC_FINAL: {
+				flag_vec.push_back("ACC_FINAL");
+				break;
+			}
+			case FieldAccessFlag::ACC_SYNCHRONIZED: {
+				flag_vec.push_back("ACC_SYNCHRONIZED");
+				break;
+			}
+			case FieldAccessFlag::ACC_VOLATILE: {
+				flag_vec.push_back("ACC_VOLATILE");
+				break;
+			}
+			case FieldAccessFlag::ACC_TRANSIENT: {
+				flag_vec.push_back("ACC_TRANSIENT");
+				break;
+			}
+			case FieldAccessFlag::ACC_NATIVE: {
+				flag_vec.push_back("ACC_NATIVE");
+				break;
+			}
+			case FieldAccessFlag::ACC_INTERFACE: {
+				flag_vec.push_back("ACC_INTERFACE");
+				break;
+			}
+			case FieldAccessFlag::ACC_ABSTRACT: {
+				flag_vec.push_back("ACC_ABSTRACT");
+				break;
+			}
+			case FieldAccessFlag::ACC_STRICT: {
+				flag_vec.push_back("ACC_STRICT");
+				break;
+			}
+			case FieldAccessFlag::ACC_SYNTHETIC: {
+				flag_vec.push_back("ACC_SYNTHETIC");
+				break;
+			}
+			case FieldAccessFlag::ACC_ANNOTATION: {
+				flag_vec.push_back("ACC_ANNOTATION");
+				break;
+			}
+			case FieldAccessFlag::ACC_ENUM: {
+				flag_vec.push_back("ACC_ENUM");
+				break;
+			}
+			}
+		}
+	}
+	std::string flag_string = "";
+	for (int i = 0; i < (int)flag_vec.size(); i++) {
+		if (i > 0) flag_string += ", ";
+		flag_string += flag_vec[i];
+	}
+	return flag_string;
+}
+
+std::string ClassPrinter::ClassAccessFlagToString(u2 flag) {
+	std::vector<std::string> flag_vec;
+	for (unsigned int bit = 0; bit < 32; bit++) {
+		if (flag & (1 << bit)) {
+			switch((ClassAccessFlag) (1 << bit)) {
+			case ClassAccessFlag::ACC_PUBLIC: {
+				flag_vec.push_back("ACC_PUBLIC");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_FINAL: {
+				flag_vec.push_back("ACC_FINAL");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_SUPER: {
+				flag_vec.push_back("ACC_SUPER");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_INTERFACE: {
+				flag_vec.push_back("ACC_INTERFACE");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_ABSTRACT: {
+				flag_vec.push_back("ACC_ABSTRACT");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_SYNTHETIC: {
+				flag_vec.push_back("ACC_SYNTHETIC");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_ANNOTATION: {
+				flag_vec.push_back("ACC_ANNOTATION");
+				break;
+			}	 
+			case ClassAccessFlag::ACC_ENUM: {
+				flag_vec.push_back("ACC_ENUM");
+				break;
+			}
+			}
+		}
+	}
+	std::string flag_string = "";
+	for (int i = 0; i < (int)flag_vec.size(); i++) {
+		if (i > 0) flag_string += ", ";
+		flag_string += flag_vec[i];
+	}
+	return flag_string;
+}
+
+std::string ClassPrinter::MethodAccessFlagToString(u2 flag) {
+	std::vector<std::string> flag_vec;
+	for (unsigned int bit = 0; bit < 32; bit++) {
+		if (flag & (1 << bit)) {
+			switch((MethodAccessFlag) (1 << bit)) {
+			case MethodAccessFlag::ACC_PUBLIC: {
+				flag_vec.push_back("ACC_PUBLIC");
+				break;
+			}
+			case MethodAccessFlag::ACC_PRIVATE: {
+				flag_vec.push_back("ACC_PRIVATE");
+				break;
+			}
+			case MethodAccessFlag::ACC_PROTECTED: {
+				flag_vec.push_back("ACC_PROTECTED");
+				break;
+			}
+			case MethodAccessFlag::ACC_STATIC: {
+				flag_vec.push_back("ACC_STATIC");
+				break;
+			}
+			case MethodAccessFlag::ACC_FINAL: {
+				flag_vec.push_back("ACC_FINAL");
+				break;
+			}
+			case MethodAccessFlag::ACC_SYNCHRONIZED: {
+				flag_vec.push_back("ACC_SYNCHRONIZED");
+				break;
+			}
+			case MethodAccessFlag::ACC_BRIDGE: {
+				flag_vec.push_back("ACC_BRIDGE");
+				break;
+			}
+			case MethodAccessFlag::ACC_VARARGS: {
+				flag_vec.push_back("ACC_VARARGS");
+				break;
+			}
+			case MethodAccessFlag::ACC_NATIVE: {
+				flag_vec.push_back("ACC_NATIVE");
+				break;
+			}
+			case MethodAccessFlag::ACC_ABSTRACT: {
+				flag_vec.push_back("ACC_ABSTRACT");
+				break;
+			}
+			case MethodAccessFlag::ACC_STRICT: {
+				flag_vec.push_back("ACC_STRICT");
+				break;
+			}
+			case MethodAccessFlag::ACC_SYNTHETIC: {
+				flag_vec.push_back("ACC_SYNTHETIC");
+				break;
+			}
+			}
+		}
+	}
+	std::string flag_string = "";
+	for (int i = 0; i < (int)flag_vec.size(); i++) {
+		if (i > 0) flag_string += ", ";
+		flag_string += flag_vec[i];
+	}
+	return flag_string;
 }

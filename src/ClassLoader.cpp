@@ -8,7 +8,7 @@ class_file* ClassLoader::GetClass(const std::string class_file_path) {
     if (!((*class_files).count(class_file_path))) {
         LoadClass(class_file_path);
     }
-    return (*class_files)[class_file_path];
+    return (*class_files)[class_file_path.substr(0, class_file_path.size() - 6)];
 }
 
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
