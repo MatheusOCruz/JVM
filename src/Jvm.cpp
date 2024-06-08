@@ -15,21 +15,21 @@ void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
+    std::string MainClass = main_file.substr(0, main_file.size()-6);
     Loader->LoadClass(main_file);
-    CurrentClass = GetClass(main_file);
-    
+    CurrentClass = GetClass(MainClass);
+
+    std::cout<<main_file<<"\n";
 
 
-
-    // std::string MethodName = "<clinit>";
-    std::string MethodName = "main";
-    GetMethod(MethodName);
-
-    GetCurrentMethodCode();
-    NewFrame();
-    CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
-    SaveFrameState();
-    ExecBytecode();
+    std::string MethodName = "<clinit>";
+    if(GetMethod(MethodName)){
+        GetCurrentMethodCode();
+        NewFrame();
+        CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
+        SaveFrameState();
+        ExecBytecode();
+    }
 
     MethodName = "main";
     GetMethod(MethodName);
@@ -66,9 +66,8 @@ u8 Jvm::getU8FromLocalVars(u4 startingIndex){
 
 
 int Jvm::numberOfEntriesFromString(const std::string & args) {
-    std::cout<<'!numberOfEntriesFromString\n';
-    assert(args.size() > 2);
-    assert(args[0] == '(');
+    if(args.empty())
+        return 0;
 
 
     int number_of_attr = 0;
@@ -185,16 +184,14 @@ void Jvm::PopFrameStack(){
 
 
 
-void Jvm::GetMethod(const std::string& MethodName){
-    std::cout<<'!GetMethod\n';
-    
+int Jvm::GetMethod(const std::string& MethodName){
 
     for(auto Method: *CurrentClass->methods)
         if((*CurrentClass->constant_pool)[Method->name_index]->AsString() == MethodName){
             CurrentMethod = Method;
-            return;
+            return 1;
         }
-    throw std::runtime_error("no method with given name "+ MethodName);
+    return 0;
 }
 //TODO: ter um jeito de manter o current class do frame antigo( num sei se precisa ainda )
 void Jvm::GetCurrentMethodCode(){
@@ -226,15 +223,7 @@ class_file* Jvm::GetClass(std::string class_name){
 
 // Create intance of class based on class file
 
-void Jvm::NewClassInstance(std::string class_name){
-    std::cout<<'!NewClassInstance\n';
-    
 
-    ClassInstance* NewClassInstance;
-    class_file* ClassFile = GetClass(class_name);
-    // magia da criacao
-
-}
 
 // create n dimensional array
 // dimension_counts contem tamanho de cada array
@@ -2886,6 +2875,8 @@ void Jvm::dreturn(){
     return_u8();
 }
 
+
+
  
 
 void Jvm::areturn(){
@@ -2948,11 +2939,30 @@ void Jvm::putstatic(){
 }
 // todo implement
 void Jvm::getfield(){
-    std::cout<<'!getfield\n';
-    
-    u2 index = GetIndex2();
-    cp_info* Fieldref = (*CurrentClass->constant_pool)[index]; // symb ref to a field
-    cp_info* NameAndTypeEntry = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+    u2 index       = GetIndex2();
+
+    auto Fieldref    = GetConstantPoolEntryAt(index);
+    auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
+
+    auto Name            = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto FieldDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+
+    auto ObjectRef = reinterpret_cast<Reference*>(PopOpStack());
+
+    FieldEntry Value = (*ObjectRef->ClassRef->ObjectData)[Name];;
+    if(FieldDescriptor == "D" or FieldDescriptor == "L") {
+        Cat2Value CValue{};
+        CValue.AsLong = Value.AsLong;
+        CurrentFrame->OperandStack->push(CValue.HighBytes);
+        CurrentFrame->OperandStack->push(CValue.LowBytes);
+    }
+    else
+        CurrentFrame->OperandStack->push(Value.AsInt);
+
+
+
+
+
 
 
 }
@@ -2968,22 +2978,33 @@ void Jvm::new_(){
 
     // resolvendo se classe ou interface
     if(ref->tag == ConstantPoolTag::CONSTANT_Class){
-        auto ClassName = GetConstantPoolEntryAt(ref->name_and_type_index)->AsString();
-        auto ClassFile = (*MethodArea)[ClassName];
+        auto ClassName = GetConstantPoolEntryAt(ref->name_index)->AsString();
         //allocate memory to class by name
-        if(MethodArea->find(ClassName) == MethodArea->end())
-            std::cerr<<"new: classe nao foi inicializada";
 
 
 
+        //TODO: reboco pra achar o path, temos que estipular as regras pro path dps
+        std::string ClassPath = "/home/matheus/prog/JVM/exemplos/";
+        ClassPath.append(ClassName);
+
+
+        if(MethodArea->find(ClassPath) == MethodArea->end())
+            std::cerr<<"new: classe nao foi inicializada:"<<ClassPath;
+
+        auto ClassFile = GetClass(ClassPath);
         auto ClassHandle = new Handle;
         ClassHandle->ClassObject = ClassFile;
         ClassHandle->MethodTable = ClassFile->methods;
 
-        auto ObjectRef = new ClassInstance;
-        ObjectRef->ClassHandle = ClassHandle;
-        ObjectRef->ObjectData = new std::unordered_map<std::string, FieldEntry>;
-        CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef)); // so compila cm -fpermisse pq cast from ‘ClassInstance*’ to ‘u4’ {aka ‘unsigned int’} loses precision 
+        auto Object = new ClassInstance;
+        Object->ClassHandle = ClassHandle;
+        Object->ObjectData = new std::unordered_map<std::string, FieldEntry>;
+
+        auto ObjectRef = new Reference;
+        ObjectRef->Type = ReferenceType::ClassType;
+        ObjectRef->ClassRef = Object;
+
+        CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
     }
     else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
         cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
@@ -2999,58 +3020,23 @@ void Jvm::new_(){
 
 }
 
-
-// todo implement, fix erradasso
-void Jvm::new_(){
-    std::cout<<"new_\n";
-    std::cout<<"vai da erro, n ta implementado\n";
-    //todo exceptions linking e run time
-    u2 index = GetIndex2(); 
-    cp_info* ref = (*CurrentClass->constant_pool)[index];
-
-    // resolvendo se classe ou interface
-    if(ref->tag == ConstantPoolTag::CONSTANT_Class){
-        cp_info* ClassNameIndex = (*CurrentClass->constant_pool)[ref->name_and_type_index];
-        //allocate memory to class by name
-        
-
-        // !todo complete
-    }
-    else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
-        cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
-        
-        std::string Name            = (*CurrentClass->constant_pool)[InterfaceNameAndType->name_index]->AsString();
-        std::string FieldDescriptor = (*CurrentClass->constant_pool)[InterfaceNameAndType->descriptor_index]->AsString();
-        // !todo complete
-    }
-    
-
-}
-
 void Jvm::putfield(){
-    std::cout<<'!putfield\n';
-    
-    u2 index = GetIndex2();
+    u2 index       = GetIndex2();
 
-    cp_info* Fieldref = (*CurrentClass->constant_pool)[index];
-    cp_info* NameAndType = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
+    auto Fieldref    = GetConstantPoolEntryAt(index);
+    auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
 
-    std::string Name            = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
-    std::string FieldDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
-    std::cout<<FieldDescriptor;
-    //std::string Type = FieldDescriptor.substr(1,FieldDescriptor.size() - 2);
+    auto Name            = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto FieldDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
 
-    if(FieldDescriptor == "D" or FieldDescriptor == "L"){
-	u4 lowBytes  = CurrentFrame->OperandStack->Pop();
-	u4 highBytes = CurrentFrame->OperandStack->Pop();
+    FieldEntry Value{};
+    if(FieldDescriptor == "D" or FieldDescriptor == "L")
+        Value.AsLong = popU8FromOpStack();
+    else
+    	Value.AsInt = PopOpStack();
 
-	//u4 objectRef = CurrentFrame->OperandStack->Pop();
-
-    }
-    else{
-    	u4 value = CurrentFrame->OperandStack->Pop();
-	    //u4 objectRef = CurrentFrame->OperandStack->Pop();
-    }
+    auto ObjectRef = reinterpret_cast<Reference*>(PopOpStack());
+    (*ObjectRef->ClassRef->ObjectData)[Name] = Value;
 
 
 
@@ -3100,22 +3086,31 @@ void Jvm::invokespecial(){
     std::cout<<'!invokespecial\n';
     
     u2 index = GetIndex2();
-    cp_info* MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
-    cp_info* NameAndType = GetConstantPoolEntryAt(MethodOrInterfaceMethod->name_and_type_index);
+    auto MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
+
+    auto Class = GetConstantPoolEntryAt(MethodOrInterfaceMethod->class_index);
+    auto NameAndType = GetConstantPoolEntryAt(MethodOrInterfaceMethod->name_and_type_index);
+
+    auto ClassName = GetConstantPoolEntryAt(Class->name_index)->AsString();
+    if(ClassName == "java/lang/Object")
+        return;
 
     auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
     auto CallerOperandStack = CurrentFrame->OperandStack;
 
+    Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
+    SaveFrameState();
     NewFrame();
     GetMethod("<init>");
     GetCurrentMethodCode();
     SaveFrameState();
-
-    int count = 2;
-    while(count--){
-        u4 value = PopOpStack();
+    int count = 0;
+    if(!Descriptor.empty())
+        count = numberOfEntriesFromString(Descriptor);
+    do{
+        u4 value = CallerOperandStack->Pop();
         (*CurrentFrame->localVariables)[count] = value;
-    }
+    }while(count--);
 
 }
 // todo implement
