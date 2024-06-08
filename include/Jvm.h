@@ -18,6 +18,8 @@ public:
      explicit Jvm(std::string _main_file) : main_file(std::move(_main_file)) {}
      void Run();
 
+	static int numberOfEntriesFromString(const std::string & args);
+
 
 private:
     //funcoes da jvm
@@ -36,7 +38,7 @@ private:
     class_file* GetClass(std::string class_name);
     cp_info*    GetConstantPoolEntryAt(u2 index);
 
-
+    u4 PopOpStack();
     //vars jvm
     std::string main_file;
     uint16_t pc = 0;
@@ -55,6 +57,7 @@ private:
     ClassLoader*    Loader;
 
 
+    void JavaPrint(std::string MethodDescriptor);
 
     //funcoes auxiliares pro bytecode
     void return_u4();
@@ -66,8 +69,13 @@ private:
     void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
+	
 
-  //funcoes do bytecode
+
+    void fconst(float value);
+    void dconst(double value);
+
+    //funcoes do bytecode
 
     void nop();
     void aconst_null();
@@ -347,6 +355,9 @@ private:
             &Jvm::jsr_w
         
     };
+
+
+
 };
 
 

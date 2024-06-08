@@ -11,10 +11,13 @@ typedef uint16_t u2;
 typedef uint32_t u4;
 typedef uint64_t u8;
 
+typedef uintptr_t u4p;
+
 typedef int16_t s2;
 typedef int32_t s4;
-typedef int64_t s8; // todo check if Jlong anywhere in code
-typedef float    Jfloat;
+typedef int64_t s8; 
+
+
 
 
 typedef std::vector<uint8_t>::iterator buffer_iterator;

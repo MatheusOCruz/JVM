@@ -11,6 +11,7 @@
 #include "ClassFileStructs.h"
 #include "ClassLoader.h"
 #include "OpcodePrinter.h"
+#include "Jvm.h"
 #include <unordered_map>
 
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader
@@ -33,9 +34,9 @@ private:
     void PrintAttributes(std::vector<attribute_info*>*);
 	void PrintConstantPoolEntry(const cp_info *Entry, size_t idx);
 
-    void PrintFieldEntry();
+    void PrintFieldEntry(const field_info * field);
     void PrintMethodEntry(method_info* Method);
-    void PrintAttributeEntry(attribute_info* Attribute);
+    void PrintAttributeEntry(const attribute_info* Attribute, int indent_width=4);
 
     const std::string main_file;
     class_file* ClassFile;

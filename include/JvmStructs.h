@@ -4,6 +4,7 @@
 
 #ifndef JVM_JVMSTRUCTS_H
 #define JVM_JVMSTRUCTS_H
+#include <stack>
 #include "JvmEnums.h"
 #include "typedefs.h"
 
@@ -22,64 +23,13 @@ namespace JVM{
             return topValue;
         }
 
-        template<typename RefType>
-        RefType* PopRef(){
-            //ponteiro ocupa 2 espacos, (so e pra funcionar na pilha de u4 do frame)
-            if (this->size() < 2 || !std::is_same<T, u4>::value){
-                throw std::out_of_range("Pilha ta vazia meu rei\n");
-            }
-
-            T LowBytes  = this->Pop();
-            T HighBytes = this->Pop();
-
-            uintptr_t ArrayRef = (static_cast<uintptr_t>(HighBytes) << 32) | LowBytes;
-
-            return reinterpret_cast<RefType*>(ArrayRef);
-        }
-
-        void PushRef(void* ArrayRef){
-            u4 LowBytes  = reinterpret_cast<uintptr_t>(ArrayRef) & 0xFFFFFFFF;
-            u4 HighBytes = reinterpret_cast<uintptr_t>(ArrayRef) >> 32;
-            this->push(HighBytes);
-            this->push(LowBytes);
-
-        }
-
     };
-
-
-    template<typename T>
-    class vector : public std::vector<T>{
-    public:
-        template<typename RefType>
-        RefType* GetRefAt(u2 index){
-            if(index + 1 >=this->size())
-                throw std::runtime_error("SegFault no vetor de varivaies\n");
-            T LowBytes  = (*this)[index];
-            T HighBytes = (*this)[index + 1];
-
-            uintptr_t ArrayRef = (static_cast<uintptr_t>(HighBytes) << 32) | LowBytes;
-
-            return reinterpret_cast<RefType*>(ArrayRef);
-        }
-
-
-        void StoreRefAt(void* ArrayRef, u2 index){
-            if(index + 1 >=this->size())
-                throw std::runtime_error("SegFault no vetor de varivaies\n");
-
-            u4 LowBytes  = reinterpret_cast<uintptr_t>(ArrayRef) & 0xFFFFFFFF;
-            u4 HighBytes = reinterpret_cast<uintptr_t>(ArrayRef) >> 32;
-            (*this)[index]   = HighBytes;
-            (*this)[index+1] = LowBytes;
-
-        }
-    };
+ 
 }
 
 
 struct Frame{
-    JVM::vector<u4>* localVariables;
+    std::vector<u4>* localVariables;
     JVM::stack<u4>*  OperandStack;
     method_info*     frameMethod;
     class_file*      frameClass;
@@ -91,25 +41,24 @@ struct Reference{
     ReferenceType Type;
     void* Value;
 
-    Reference(ReferenceType type, void* value) : Type(type), Value(value) {}
-};
+// definicao pra resolver definicao circular
+struct ClassInstance;
+struct ArrayInstance;
+struct Reference;
 
 
 union FieldEntry{
-    u1 AsByte;
-    u1 AsBoolean;
-
-    u2 AsChar;
-
-    u4 AsInt;
-    float AsFloat;
-
-    u8 AsLong;
+    u1     AsByte;
+    u1     AsBoolean;
+    u2     AsChar;
+    u4     AsInt;
+    float  AsFloat;
+    u8     AsLong;
     double AsDouble;
 
-    Reference AsRef; // infelizmente e oq temos pra hj   
-};
+    Reference* AsRef;
 
+};
 
 
 struct Handle{
@@ -118,28 +67,42 @@ struct Handle{
 };
 
 struct ClassInstance{
-    Handle*         HandlePointer;
-    std::unordered_map<std::string, FieldEntry> ObjectData;
+    Handle* ClassHandle;
+    std::unordered_map<std::string, FieldEntry>* ObjectData;
 };
 
 
-template<int N, ArrayTypeCode Type>
 struct ArrayInstance{
-    using SubArray = ArrayInstance<N-1,Type>;
-    std::vector<ArrayInstance<N-1,Type>> ComponentArray;
-    
-    ArrayInstance(u1 size, JVM::stack<int>* sizes) {
-        int SubArraySize = sizes->Pop();
-        ComponentArray   =  std::vector<SubArray>(size, ArrayInstance<N-1,Type>(SubArraySize,sizes));
-    }
+    ArrayTypeCode ComponentType;
+    union {
+        void**    ArrayVec;
+        void*     DataVec;
+    };
+    int           size;
 };
 
-template<ArrayTypeCode Type>
-struct ArrayInstance<1,Type>{
-    std::vector<char> ComponentArray;
-    ArrayInstance(u1 size, JVM::stack<int>*) : ComponentArray( std::vector<char>(size) ){}
+
+
+
+
+struct Reference{
+    ReferenceType Type;
+    union{
+        void* Nullref = nullptr;
+        ArrayInstance* ArrayRef;
+        ClassInstance* ClassRef;
+    };
 };
 
+
+/*
+ *   pilha -> u4
+ *   value.Bytes
+ *   value.float
+ *
+ *
+ *
+ */
 
 
 
@@ -149,14 +112,17 @@ union Cat2Value{
         u4 HighBytes;
         u4 LowBytes;
     };
+    uint64_t  AsLong;
+    double    AsDouble;
 
+    float     AsFloat;
+    s2        AsShort;
+
+};
+
+union IntToFloat{
+    u4    Bytes;
     float AsFloat;
-    s2 AsShort;
-    long long AsLong;
-    double AsDouble;
-    
-    u2 AsChar;
-    u1 AsByte;
 };
 
 
