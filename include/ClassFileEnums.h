@@ -6,7 +6,19 @@
 #define JVM_CLASSFILEENUMS_H
 #include <cstdint>
 
-enum class AccessFlag: uint16_t {
+
+enum class ClassAccessFlag: uint16_t {
+	ACC_PUBLIC 	= 0x0001, // Declared public; may be accessed from outside its package.
+	ACC_FINAL =	0x0010, // Declared final; no subclasses allowed.
+	ACC_SUPER = 0x0020, // Treat superclass methods specially when invoked by the invokespecial instruction.
+	ACC_INTERFACE = 0x0200, // Is an interface, not a class.
+	ACC_ABSTRACT = 0x0400, // Declared abstract; must not be instantiated.
+	ACC_SYNTHETIC = 0x1000, // Declared synthetic; not present in the source code.
+	ACC_ANNOTATION = 0x2000, // Declared as an annotation type.
+	ACC_ENUM = 0x4000 // Declared as an enum type. 
+};
+
+enum class FieldAccessFlag: uint16_t {
     ACC_PUBLIC = 0x0001,         // Declarado público; pode ser acessado de fora do seu pacote.
     ACC_PRIVATE = 0x0002,        // Declarado privado; acessível apenas dentro da classe definidora.
     ACC_PROTECTED = 0x0004,      // Declarado protegido; pode ser acessado dentro de subclasses.
@@ -22,6 +34,21 @@ enum class AccessFlag: uint16_t {
     ACC_SYNTHETIC = 0x1000,      // Declarado synthetic; não está presente no código-fonte.
     ACC_ANNOTATION = 0x2000,     // Declarado como um tipo de anotação.
     ACC_ENUM = 0x4000            // Declarado como um tipo enum.
+};
+
+enum class MethodAccessFlag: uint16_t {
+	ACC_PUBLIC = 0x0001,
+	ACC_PRIVATE = 0x0002,
+	ACC_PROTECTED = 0x0004,
+	ACC_STATIC = 0x0008,
+	ACC_FINAL = 0x0010,
+	ACC_SYNCHRONIZED = 0x0020,
+	ACC_BRIDGE = 0x0040,
+	ACC_VARARGS = 0x0080,
+	ACC_NATIVE = 0x0100,
+	ACC_ABSTRACT = 0x0400,
+	ACC_STRICT = 0x0800,
+	ACC_SYNTHETIC = 0x1000,
 };
 
 
