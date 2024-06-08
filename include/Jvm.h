@@ -27,7 +27,7 @@ private:
     void NewFrame();
     void PopFrameStack();
 
-    void GetMethod(const std::string& MethodName);
+    int GetMethod(const std::string& MethodName);
     void GetCurrentMethodCode();
 
     u1   NextCodeByte();

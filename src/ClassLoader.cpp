@@ -30,7 +30,8 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     FormatCheck();
 
-    (*class_files)[nomeArquivo] = current_file;
+    std::string NomeDaClasse = nomeArquivo.substr(0, nomeArquivo.size()-6);
+    (*class_files)[NomeDaClasse] = current_file;
 
     delete file_buffer;
 
@@ -55,6 +56,7 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
 
     if(classPath == std::string("java/lang/Object.class")){
         classPath = "./Object.class";
+        //classPath = "/home/matheus/prog/JVM/Object.class";
     }
     #ifdef _WIN32
     std::replace(classPath.begin(),classPath.end(),'/','\\');
