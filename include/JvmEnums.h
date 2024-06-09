@@ -26,12 +26,6 @@ enum class ReferenceType{
     InterfaceType
 };
 
-enum class ReferenceType{
-    NullReference,
-    ClassType,
-    ArrayType,
-    InterfaceType
-};
 
 
 #endif //JVM_JVMENUMS_H

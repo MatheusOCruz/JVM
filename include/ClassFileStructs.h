@@ -96,10 +96,6 @@ struct attribute_info{
         struct{ // source file
             u2 sourcefile_index;
         };
-        struct{ // source file
-            u2 sourcefile_index;
-        };
-
     };
 };
 

@@ -9,9 +9,7 @@
 
 
 
-void Jvm::Run(){
-    std::cout<<'!Run\n';
-    
+void Jvm::Run(){    
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
@@ -43,14 +41,12 @@ void Jvm::Run(){
 
 // big endian
 u8 Jvm::popU8FromOpStack(){
-    std::cout<<'!popU8FromOpStack\n';
-    u4 LowBytes = CurrentFrame->OperandStack->Pop();
+u4 LowBytes = CurrentFrame->OperandStack->Pop();
     u4 HighBytes = CurrentFrame->OperandStack->Pop();
     return (static_cast<u8>(HighBytes) << 32) | LowBytes;
 }
 // big endian
 void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
-    std::cout<<'!pushU8ToOpStack\n';
     
     CurrentFrame->OperandStack->push(HighBytes);
     CurrentFrame->OperandStack->push(LowBytes);
@@ -58,7 +54,6 @@ void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
 
 // big endian
 u8 Jvm::getU8FromLocalVars(u4 startingIndex){
-    std::cout<<'!getU8FromLocalVars\n';
     u4 LowBytes = (*CurrentFrame->localVariables)[startingIndex];
     u4 HighBytes = (*CurrentFrame->localVariables)[startingIndex + 1];
     return (static_cast<u8>(HighBytes) << 32) | LowBytes;
@@ -116,18 +111,14 @@ int Jvm::numberOfEntriesFromString(const std::string & args) {
 
 
 inline u1 Jvm::NextCodeByte(){
-    std::cout<<'!NextCodeByte\n';
-    return (*CurrentCode->code)[pc++];
+return (*CurrentCode->code)[pc++];
 }
 
 inline cp_info* Jvm::GetConstantPoolEntryAt(u2 index){
-    std::cout<<'!GetConstantPoolEntryAt\n';
     return (*CurrentClass->constant_pool)[index];
 }
 
-void Jvm::ExecBytecode(){
-    std::cout<<'!ExecBytecode\n';
-    
+void Jvm::ExecBytecode(){    
     while(pc < CurrentCode->code_length){ //todo fix?
         u1 bytecode =  NextCodeByte();
         (this->*bytecodeFuncs[bytecode])();
@@ -136,23 +127,18 @@ void Jvm::ExecBytecode(){
 }
 
 //salva valores atuais pro retorno ao frame
-void Jvm::SaveFrameState(){
-    std::cout<<'!SaveFrameState\n';
-    
+void Jvm::SaveFrameState(){    
     CurrentFrame->nextPC      = pc;
     CurrentFrame->frameClass  = CurrentClass;
     CurrentFrame->frameMethod = CurrentMethod;
 }
 
-void Jvm::NewFrame(){
-    std::cout<<'!NewFrame\n';
-    
+void Jvm::NewFrame(){    
 
     //instancia novo frame
     auto NewFrame = new Frame;
     NewFrame->localVariables = new std::vector<u4>;
     NewFrame->OperandStack   = new JVM::stack<u4>;
-    std::cout<<'!stack\n';
 
     u2 MaxLocals = CurrentCode->max_locals;
     NewFrame->localVariables->resize(MaxLocals);
@@ -164,9 +150,7 @@ void Jvm::NewFrame(){
 
 }
 
-void Jvm::PopFrameStack(){
-    std::cout<<'!PopFrameStack\n';
-    
+void Jvm::PopFrameStack(){    
 
     Frame* OldFrame = FrameStack.Pop();
     delete OldFrame;
@@ -194,9 +178,7 @@ int Jvm::GetMethod(const std::string& MethodName){
     return 0;
 }
 //TODO: ter um jeito de manter o current class do frame antigo( num sei se precisa ainda )
-void Jvm::GetCurrentMethodCode(){
-    std::cout<<'!GetCurrentMethodCode\n';
-    
+void Jvm::GetCurrentMethodCode(){    
 
     for(auto Attribute : *CurrentMethod->attributes){
         u2 NameIndex = Attribute->attribute_name_index;
@@ -211,7 +193,6 @@ void Jvm::GetCurrentMethodCode(){
 
 
 class_file* Jvm::GetClass(std::string class_name){
-    std::cout<<'!GetClass\n';
     if(MethodArea->find(class_name) == MethodArea->end()) {
 
         Loader->LoadClass(class_name);
@@ -261,7 +242,6 @@ void* NewBaseArray(ArrayTypeCode Type, int count){
 //TODO: quando uma dimensao qualquer for 0, retorna o array ate la(ta na spec)
 
 Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
-    std::cout<<'!stack\n';
     auto Array = new ArrayInstance;
     int count  = counts.Pop();
     Array->size = count;
@@ -286,8 +266,7 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
 
 
 u4 Jvm::PopOpStack(){
-    std::cout<<'!PopOpStack\n';
-    return CurrentFrame->OperandStack->Pop();
+return CurrentFrame->OperandStack->Pop();
 }
 
 
@@ -295,24 +274,19 @@ u4 Jvm::PopOpStack(){
 
 
 u2 Jvm::GetIndex2() {
-    std::cout<<'!GetIndex2\n';
     // std::cout<<"GetIndex2\n";
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
     u1 indexbyte2 = (*CurrentCode->code)[pc++];
     return (indexbyte1 << 8) | indexbyte2;
 }
 
-void Jvm::return_u4(){
-    std::cout<<'!return_u4\n';
-    
+void Jvm::return_u4(){    
     u4 ReturnValue = CurrentFrame->OperandStack->Pop();
     PopFrameStack();
     CurrentFrame->OperandStack->push(ReturnValue);
 }
 
-void Jvm::return_u8(){
-    std::cout<<'!return_u8\n';
-    
+void Jvm::return_u8(){    
 
     u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
     u4 ReturnValue2 = CurrentFrame->OperandStack->Pop();
@@ -325,9 +299,8 @@ void Jvm::return_u8(){
 
 
 
-
+//todo quebrada pra console log hello world, print de string: cp_info* aponta p endereço inválido
 void Jvm::JavaPrint(std::string MethodDescriptor) {
-    std::cout<<'!JavaPrint\n';
     
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
@@ -354,14 +327,11 @@ void Jvm::JavaPrint(std::string MethodDescriptor) {
 
 // Do nothing
 void Jvm::nop() {
-    std::cout<<'!nop\n';
     
 
 }
 // An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
-void Jvm::aconst_null(){
-    std::cout<<'!aconst_null\n';
-    
+void Jvm::aconst_null(){    
 
 }
 
@@ -369,96 +339,63 @@ void Jvm::aconst_null(){
 // stack.
 // Notes Each of this family of instructions is equivalent to bipush <i> for
 // the respective value of <i>, except that the operand <i> is implicit.
-void Jvm::iconst_m1(){
-    std::cout<<'!iconst_m1\n';
-    
+void Jvm::iconst_m1(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(-1));
 }
 
-void Jvm::iconst_0(){
-    std::cout<<'!iconst_0\n';
-    
+void Jvm::iconst_0(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(0));
 }
 
-void Jvm::iconst_1(){
-    std::cout<<'!iconst_1\n';
-    
+void Jvm::iconst_1(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(1));
 }
 
-void Jvm::iconst_2(){
-    std::cout<<'!iconst_2\n';
-    
+void Jvm::iconst_2(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(2));
 }
 
-void Jvm::iconst_3(){
-    std::cout<<'!iconst_3\n';
-    
+void Jvm::iconst_3(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(3));
 }
 
-void Jvm::iconst_4(){
-    std::cout<<'!iconst_4\n';
-    
+void Jvm::iconst_4(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(4));
 }
 
-void Jvm::iconst_5(){
-    std::cout<<'!iconst_5\n';
-    
+void Jvm::iconst_5(){    
     CurrentFrame->OperandStack->push(static_cast<const u4>(5));
 }
 
-void Jvm::lconst_0(){
-    std::cout<<'!lconst_0\n';
-    
+void Jvm::lconst_0(){    
     Cat2Value Value{};
     Value.AsLong = 0;
     CurrentFrame->OperandStack->push(Value.HighBytes);
     CurrentFrame->OperandStack->push(Value.HighBytes);
 
-    pushU8ToOpStack(HighBytes, LowBytes);
+    pushU8ToOpStack(Value.HighBytes, Value.LowBytes);
 }
 
-void Jvm::lconst_1(){
-    std::cout<<'!lconst_1\n';
-    
+void Jvm::lconst_1(){    
     Cat2Value Value{};
     Value.AsLong = 1.0;
     pushU8ToOpStack(Value.HighBytes, Value.LowBytes);
 }
 
 
-// Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack
-void Jvm::fconst(float value) { // todo delete?
-    std::cout<<'!fconst\n';
-    
-
-    pushU8ToOpStack(HighBytes, LowBytes);
-}
-
-
-void Jvm::fconst_0(){
-    std::cout<<'!fconst_0\n';
-    
+void Jvm::fconst_0(){    
     const float value = 0.0;
 
     CurrentFrame->OperandStack->push(static_cast<const u4>(value));
 }
 
-void Jvm::fconst_1(){
-    std::cout<<'!fconst_1\n';
-    
+void Jvm::fconst_1(){    
     const float value = 1.0;
 
     CurrentFrame->OperandStack->push(static_cast<const u4>(value));
 }
 
-void Jvm::fconst_2(){
-    std::cout<<'!fconst_2\n';
-    
+void Jvm::fconst_2(){    
     const float value = 2.0;
 
     CurrentFrame->OperandStack->push(static_cast<const u4>(value));
@@ -467,7 +404,6 @@ void Jvm::fconst_2(){
 
 
 void Jvm::dconst(double value) {
-    std::cout<<'!dconst\n';
     
     Cat2Value Value{};
     Value.AsDouble = value;
@@ -476,40 +412,30 @@ void Jvm::dconst(double value) {
 
 }
 
-void Jvm::dconst_0(){
-    std::cout<<'!dconst_0\n';
-    
+void Jvm::dconst_0(){    
     dconst(0.0);
 }
 
-void Jvm::dconst_1(){
-    std::cout<<'!dconst_1\n';
-    
+void Jvm::dconst_1(){    
     dconst(1.0);
 }
 
 // The immediate byte is sign-extended to an int value. That value
 // is pushed onto the operand stac
 // !TODO: checar se implmentacao ta certa
-void Jvm::bipush(){
-    std::cout<<'!bipush\n';
-    
+void Jvm::bipush(){    
     u1 value = (*CurrentCode->code)[pc++];
 
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
 }
 
-void Jvm::sipush(){
-    std::cout<<'!sipush\n';
-    
+void Jvm::sipush(){    
     u2 value = GetIndex2();
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
 }
 
 // tested, works
-void Jvm::ldc(){
-    std::cout<<'!ldc\n';
-    
+void Jvm::ldc(){    
     u1 index = (*CurrentCode->code)[pc++];
     cp_info* RunTimeConstant = (*CurrentClass->constant_pool)[index];
     switch (RunTimeConstant->tag) {
@@ -538,9 +464,7 @@ void Jvm::ldc(){
 // type or method handle is resolved (§5.4.3.5) and a reference
 
 // todo test
-void Jvm::ldc_w(){
-    std::cout<<'!ldc_w\n';
-    
+void Jvm::ldc_w(){    
     u4 value;
     u2 index = GetIndex2();
     cp_info* cpEntry = (*CurrentClass->constant_pool)[index];
@@ -574,9 +498,7 @@ void Jvm::ldc_w(){
 
 }
 // tested, works
-void Jvm::ldc2_w(){
-    std::cout<<'!ldc2_w\n';
-    
+void Jvm::ldc2_w(){    
     // Cat2Value value{};
     u2 index = GetIndex2();
 
@@ -595,19 +517,14 @@ void Jvm::ldc2_w(){
 
 }
 
-void Jvm::iload(){
-    std::cout<<'!iload\n';
-    
-
+void Jvm::iload(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 value = (*CurrentFrame->localVariables)[index];
     CurrentFrame->OperandStack->push(value);
 
 }
 
-void Jvm::lload(){
-    std::cout<<'!lload\n';
-    
+void Jvm::lload(){    
     u1 index = (*CurrentCode->code)[pc++];
     Cat2Value value{};
 
@@ -618,9 +535,7 @@ void Jvm::lload(){
 }
 
 // todo test
-void Jvm::fload(){
-    std::cout<<'!fload\n';
-    
+void Jvm::fload(){    
     u1 index = (*CurrentCode->code)[pc++];
     float value = (*CurrentFrame->localVariables)[index];
 
@@ -628,33 +543,23 @@ void Jvm::fload(){
 
 }
 
-void Jvm::dload(){
-    std::cout<<'!dload\n';
-    
+void Jvm::dload(){    
     u1 index = (*CurrentCode->code)[pc++];
     Cat2Value value{};
 
     value.AsDouble = getU8FromLocalVars(index);
-    value.AsDouble = getU8FromLocalVars(index);
-
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
 // todo test aload, fix
 // deve ta errado n sei objectref arrayref
-void Jvm::aload(){
-    std::cout<<'!aload\n';
-    
+
+void Jvm::aload(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 objectref = (*CurrentFrame->localVariables)[index];
     CurrentFrame->OperandStack->push(objectref);
-
-
 }
 
-void Jvm::iload_0(){
-    std::cout<<'!iload_0\n';
-    
+void Jvm::iload_0(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value);
@@ -663,9 +568,7 @@ void Jvm::iload_0(){
 
 
 
-void Jvm::iload_1(){
-    std::cout<<'!iload_1\n';
-    
+void Jvm::iload_1(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value);
@@ -674,9 +577,7 @@ void Jvm::iload_1(){
 
 
 
-void Jvm::iload_2(){
-    std::cout<<'!iload_2\n';
-    
+void Jvm::iload_2(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value);
@@ -685,18 +586,14 @@ void Jvm::iload_2(){
 
 
 
-void Jvm::iload_3(){
-    std::cout<<'!iload_3\n';
-    
+void Jvm::iload_3(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value);
 }
 
 
-void Jvm::lload_0(){
-    std::cout<<'!lload_0\n';
-    
+void Jvm::lload_0(){    
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(0);
@@ -707,9 +604,7 @@ void Jvm::lload_0(){
 
 
 // Both <n> and <n>+1 must be indices into the local variable array
-void Jvm::lload_1(){
-    std::cout<<'!lload_1\n';
-    
+void Jvm::lload_1(){    
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(1);
@@ -721,9 +616,7 @@ void Jvm::lload_1(){
 
 
 
-void Jvm::lload_2(){
-    std::cout<<'!lload_2\n';
-    
+void Jvm::lload_2(){    
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(2);
@@ -735,9 +628,7 @@ void Jvm::lload_2(){
 
 
 
-void Jvm::lload_3(){
-    std::cout<<'!lload_3\n';
-    
+void Jvm::lload_3(){    
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(3);
@@ -749,9 +640,7 @@ void Jvm::lload_3(){
 
 
 
-void Jvm::fload_0(){
-    std::cout<<'!fload_0\n';
-    
+void Jvm::fload_0(){    
     IntToFloat value{};
     value.AsFloat = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -761,9 +650,7 @@ void Jvm::fload_0(){
 
 
 
-void Jvm::fload_1(){
-    std::cout<<'!fload_1\n';
-    
+void Jvm::fload_1(){    
     IntToFloat value{};
     value.AsFloat = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -773,9 +660,7 @@ void Jvm::fload_1(){
 
 
 
-void Jvm::fload_2(){
-    std::cout<<'!fload_2\n';
-    
+void Jvm::fload_2(){    
     IntToFloat value{};
     value.AsFloat = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -785,77 +670,51 @@ void Jvm::fload_2(){
 
 
 
-void Jvm::fload_3(){
-    std::cout<<'!fload_3\n';
-    
+void Jvm::fload_3(){    
     IntToFloat value{};
     value.AsFloat = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value.Bytes);
 
 }
 
+// pra dload_<n>
+void Jvm::dload(uint index){   
+    Cat2Value value{};
 
+    value.AsDouble = getU8FromLocalVars(index);
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
+}
 
 // todo test
-void Jvm::dload_0(){
-    std::cout<<'!dload_0\n';
-    
-    Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(0);
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+void Jvm::dload_0(){    
+    dload(0);
 }
 
 
 
 
-void Jvm::dload_1(){
-    std::cout<<'!dload_1\n';
-    
-    Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(1);
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+void Jvm::dload_1(){    
+    dload(1);
 }
 
 
 
 
-void Jvm::dload_2(){
-    std::cout<<'!dload_2\n';
-    
-    Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(2);
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+void Jvm::dload_2(){    
+    dload(2);
 }
 
 
 
 
-void Jvm::dload_3(){
-    std::cout<<'!dload_3\n';
-    
-    Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(3);
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+void Jvm::dload_3(){    
+    dload(3);
 }
 
 
 
 // tested, works
-void Jvm::aload_0(){
-    std::cout<<'!aload_0\n';
-    
+void Jvm::aload_0(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value);
@@ -864,9 +723,7 @@ void Jvm::aload_0(){
 
 
 
-void Jvm::aload_1(){
-    std::cout<<'!aload_1\n';
-    
+void Jvm::aload_1(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value);
@@ -875,9 +732,7 @@ void Jvm::aload_1(){
 
 
 
-void Jvm::aload_2(){
-    std::cout<<'!aload_2\n';
-    
+void Jvm::aload_2(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value);
@@ -886,9 +741,7 @@ void Jvm::aload_2(){
 
 
 
-void Jvm::aload_3(){
-    std::cout<<'!aload_3\n';
-    
+void Jvm::aload_3(){    
     u4 value;
     value = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value);
@@ -896,9 +749,7 @@ void Jvm::aload_3(){
 
 
 
-void Jvm::iaload(){
-    std::cout<<'!iaload\n';
-    
+void Jvm::iaload(){    
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -917,10 +768,10 @@ void Jvm::iaload(){
 
     // Reference* arrayRef = CurrentFrame->OperandStack->PopRef<Reference>();
 
-    if(pointer == nullptr || pointer == NULL){
-        //throw std::runtime_error("NullPointerException"
-        return;
-    }
+    // if(pointer == nullptr || pointer == NULL){
+    //     //throw std::runtime_error("NullPointerException"
+    //     return;
+    // }
 
     // u4 smt = static_cast<int*>(arrayRef.Value)[index];
     // todo exception If arrayref is null, iaload throws a NullPointerException
@@ -932,36 +783,28 @@ void Jvm::iaload(){
 
 
 // todo implement
-void Jvm::laload(){
-    std::cout<<'!laload\n';
-    
+void Jvm::laload(){    
 
 }
 
 
 
 // todo implement
-void Jvm::faload(){
-    std::cout<<'!faload\n';
-    
+void Jvm::faload(){    
 
 }
 
 
 
 // todo implement
-void Jvm::daload(){
-    std::cout<<'!daload\n';
-    
+void Jvm::daload(){    
 
 }
 
 
 
-// todo implement
-void Jvm::aaload(){
-    std::cout<<'!aaload\n';
-    
+// todo implement. done??
+void Jvm::aaload(){    
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -982,53 +825,29 @@ void Jvm::aaload(){
 
 // todo implement
 // todo fix ctz errado erradasso
-void Jvm::baload(){
-    std::cout<<'!baload\n';
-    
+void Jvm::baload(){    
     // ..., arrayref, index → ..., value: index ta empilhado em cima de arrayref pela documentacao
     u4 index = CurrentFrame->OperandStack->Pop();
-   // int* arrayRef = CurrentFrame->OperandStack->PopRef<int*>();
+}
 
 
 
 
-    // both boolean and byte arrays are treated the same way
-    // boolean and byte are both treated as u4 to push into op stack
-    // u4 value = arrayRef[index];
-    // todo acho q ta errado
-    // CurrentFrame->OperandStack->push(value);
-
-
-    // u4 arrayref = CurrentFrame->OperandStack->PopRef<u4>()->AsArrayRef();
-
-    //todo If arrayref is null, baload throws a NullPointerException.
+void Jvm::caload(){    
 
 }
 
 
 
 
-void Jvm::caload(){
-    std::cout<<'!caload\n';
-    
+void Jvm::saload(){    
 
 }
 
 
 
 
-void Jvm::saload(){
-    std::cout<<'!saload\n';
-    
-
-}
-
-
-
-
-void Jvm::istore(){
-    std::cout<<'!istore\n';
-    
+void Jvm::istore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[index] = value;
@@ -1038,9 +857,7 @@ void Jvm::istore(){
 
 
 
-void Jvm::lstore(){
-    std::cout<<'!lstore\n';
-    
+void Jvm::lstore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
@@ -1054,9 +871,7 @@ void Jvm::lstore(){
 
 
 
-void Jvm::fstore(){
-    std::cout<<'!fstore\n';
-    
+void Jvm::fstore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[index] = value;
@@ -1066,9 +881,7 @@ void Jvm::fstore(){
 
 
 //todo test, not casting to double here
-void Jvm::dstore(){
-    std::cout<<'!dstore\n';
-    
+void Jvm::dstore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
@@ -1081,9 +894,7 @@ void Jvm::dstore(){
 
 
 // todo check
-void Jvm::astore(){
-    std::cout<<'!astore\n';
-    
+void Jvm::astore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 objectref = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[index] = objectref;
@@ -1093,9 +904,7 @@ void Jvm::astore(){
 
 
 
-void Jvm::istore_0(){
-    std::cout<<'!istore_0\n';
-    
+void Jvm::istore_0(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
@@ -1104,9 +913,7 @@ void Jvm::istore_0(){
 
 
 
-void Jvm::istore_1(){
-    std::cout<<'!istore_1\n';
-    
+void Jvm::istore_1(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
@@ -1115,9 +922,7 @@ void Jvm::istore_1(){
 
 
 
-void Jvm::istore_2(){
-    std::cout<<'!istore_2\n';
-    
+void Jvm::istore_2(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
@@ -1126,9 +931,7 @@ void Jvm::istore_2(){
 
 
 
-void Jvm::istore_3(){
-    std::cout<<'!istore_3\n';
-    
+void Jvm::istore_3(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
@@ -1137,9 +940,7 @@ void Jvm::istore_3(){
 
 
 // todo do these after next mb ez
-void Jvm::lstore_0(){
-    std::cout<<'!lstore_0\n';
-    
+void Jvm::lstore_0(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1152,9 +953,7 @@ void Jvm::lstore_0(){
 
 
 
-void Jvm::lstore_1(){
-    std::cout<<'!lstore_1\n';
-    
+void Jvm::lstore_1(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1167,9 +966,7 @@ void Jvm::lstore_1(){
 
 
 
-void Jvm::lstore_2(){
-    std::cout<<'!lstore_2\n';
-    
+void Jvm::lstore_2(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1181,9 +978,7 @@ void Jvm::lstore_2(){
 
 
 
-void Jvm::lstore_3(){
-    std::cout<<'!lstore_3\n';
-    
+void Jvm::lstore_3(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1195,9 +990,7 @@ void Jvm::lstore_3(){
 
 
 
-void Jvm::fstore_0(){
-    std::cout<<'!fstore_0\n';
-    
+void Jvm::fstore_0(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
 
@@ -1206,9 +999,7 @@ void Jvm::fstore_0(){
 
 
 
-void Jvm::fstore_1(){
-    std::cout<<'!fstore_1\n';
-    
+void Jvm::fstore_1(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
 
@@ -1217,9 +1008,7 @@ void Jvm::fstore_1(){
 
 
 
-void Jvm::fstore_2(){
-    std::cout<<'!fstore_2\n';
-    
+void Jvm::fstore_2(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
 
@@ -1228,9 +1017,7 @@ void Jvm::fstore_2(){
 
 
 
-void Jvm::fstore_3(){
-    std::cout<<'!fstore_3\n';
-    
+void Jvm::fstore_3(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
 
@@ -1239,9 +1026,7 @@ void Jvm::fstore_3(){
 
 
 
-void Jvm::dstore_0(){
-    std::cout<<'!dstore_0\n';
-    
+void Jvm::dstore_0(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1253,9 +1038,7 @@ void Jvm::dstore_0(){
 
 
 // tested, works
-void Jvm::dstore_1(){
-    std::cout<<'!dstore_1\n';
-    
+void Jvm::dstore_1(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1270,9 +1053,7 @@ void Jvm::dstore_1(){
 
 
 
-void Jvm::dstore_2(){
-    std::cout<<'!dstore_2\n';
-    
+void Jvm::dstore_2(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1284,9 +1065,7 @@ void Jvm::dstore_2(){
 
 
 
-void Jvm::dstore_3(){
-    std::cout<<'!dstore_3\n';
-    
+void Jvm::dstore_3(){    
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1298,9 +1077,7 @@ void Jvm::dstore_3(){
 
 
 
-void Jvm::astore_0(){
-    std::cout<<'!astore_0\n';
-    
+void Jvm::astore_0(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
@@ -1309,9 +1086,7 @@ void Jvm::astore_0(){
 
 
 
-void Jvm::astore_1(){
-    std::cout<<'!astore_1\n';
-    
+void Jvm::astore_1(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
@@ -1320,9 +1095,7 @@ void Jvm::astore_1(){
 
 
 
-void Jvm::astore_2(){
-    std::cout<<'!astore_2\n';
-    
+void Jvm::astore_2(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
@@ -1331,9 +1104,7 @@ void Jvm::astore_2(){
 
 
 
-void Jvm::astore_3(){
-    std::cout<<'!astore_3\n';
-    
+void Jvm::astore_3(){    
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
@@ -1342,9 +1113,7 @@ void Jvm::astore_3(){
 
 
 // todo how to arrayref
-void Jvm::iastore(){
-    std::cout<<'!iastore\n';
-    
+void Jvm::iastore(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1362,36 +1131,28 @@ void Jvm::iastore(){
 
 
 // todo implement
-void Jvm::lastore(){
-    std::cout<<'!lastore\n';
-    
+void Jvm::lastore(){    
 
 }
 
 
 
 // todo implement
-void Jvm::fastore(){
-    std::cout<<'!fastore\n';
-    
+void Jvm::fastore(){    
 
 }
 
 
 
 // todo implement
-void Jvm::dastore(){
-    std::cout<<'!dastore\n';
-    
+void Jvm::dastore(){    
 
 }
 
 
 
 // todo implement
-void Jvm::aastore(){
-    std::cout<<'!aastore\n';
-    
+void Jvm::aastore(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1410,45 +1171,35 @@ void Jvm::aastore(){
 
 
 // todo implement
-void Jvm::bastore(){
-    std::cout<<'!bastore\n';
-    
+void Jvm::bastore(){    
 
 }
 
 
 
 // todo implement
-void Jvm::castore(){
-    std::cout<<'!castore\n';
-    
+void Jvm::castore(){    
 
 }
 
 
 
 // todo implement
-void Jvm::sastore(){
-    std::cout<<'!sastore\n';
-    
+void Jvm::sastore(){    
 
 }
 
 
 
 
-void Jvm::pop(){
-    std::cout<<'!pop\n';
-    
+void Jvm::pop(){    
     CurrentFrame->OperandStack->pop();
 }
 
 
 
 
-void Jvm::pop2(){
-    std::cout<<'!pop2\n';
-    
+void Jvm::pop2(){    
     CurrentFrame->OperandStack->pop();
     CurrentFrame->OperandStack->pop();
 }
@@ -1456,9 +1207,7 @@ void Jvm::pop2(){
 
 
 // tested, works
-void Jvm::dup(){
-    std::cout<<'!dup\n';
-    
+void Jvm::dup(){    
 
     u4 value = CurrentFrame->OperandStack->Pop();
 
@@ -1470,9 +1219,7 @@ void Jvm::dup(){
 
 
 
-void Jvm::dup_x1(){
-    std::cout<<'!dup_x1\n';
-    
+void Jvm::dup_x1(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value1);
@@ -1485,9 +1232,7 @@ void Jvm::dup_x1(){
 
 
 // Form1 only
-void Jvm::dup_x2(){
-    std::cout<<'!dup_x2\n';
-    
+void Jvm::dup_x2(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1500,9 +1245,7 @@ void Jvm::dup_x2(){
 
 // vals ok
 // Form1 escolhida: both value1 and value2 are values of a category 1 computational type
-void Jvm::dup2(){
-    std::cout<<'!dup2\n';
-    
+void Jvm::dup2(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value2);
@@ -1515,9 +1258,7 @@ void Jvm::dup2(){
 
 
 //Form1 escolhida: all values are category 1 computational type
-void Jvm::dup2_x1(){
-    std::cout<<'!dup2_x1\n';
-    
+void Jvm::dup2_x1(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1533,9 +1274,7 @@ void Jvm::dup2_x1(){
 
 
 //Form1 escolhida: all values are category 1 computational type
-void Jvm::dup2_x2(){
-    std::cout<<'!dup2_x2\n';
-    
+void Jvm::dup2_x2(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1552,9 +1291,7 @@ void Jvm::dup2_x2(){
 
 
 
-void Jvm::swap(){
-    std::cout<<'!swap\n';
-    
+void Jvm::swap(){    
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value1);
@@ -1566,9 +1303,7 @@ void Jvm::swap(){
 
 
 
-void Jvm::iadd(){
-    std::cout<<'!iadd\n';
-    
+void Jvm::iadd(){    
     int32_t value1;
     int32_t value2;
     value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
@@ -1580,9 +1315,7 @@ void Jvm::iadd(){
 
 
 // Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
-void Jvm::ladd(){
-    std::cout<<'!ladd\n';
-    
+void Jvm::ladd(){    
     Cat2Value value{};
     long value2 = static_cast<long>(popU8FromOpStack());
     long value1 = static_cast<long>(popU8FromOpStack());
@@ -1597,9 +1330,7 @@ void Jvm::ladd(){
 
 
 // Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
-void Jvm::fadd(){
-    std::cout<<'!fadd\n';
-    
+void Jvm::fadd(){    
 
     float value1;
     float value2;
@@ -1615,9 +1346,7 @@ void Jvm::fadd(){
 
 
 // !todo: fix, erradasso
-void Jvm::dadd(){
-    std::cout<<'!dadd\n';
-    
+void Jvm::dadd(){    
     Cat2Value value{};
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
@@ -1633,9 +1362,7 @@ void Jvm::dadd(){
 
 
 
-void Jvm::isub(){
-    std::cout<<'!isub\n';
-    
+void Jvm::isub(){    
     int32_t value1;
     int32_t value2;
     value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
@@ -1647,9 +1374,7 @@ void Jvm::isub(){
 
 
 
-void Jvm::lsub(){
-    std::cout<<'!lsub\n';
-    
+void Jvm::lsub(){    
     Cat2Value value1, value2, aux;
     long result;
 
@@ -1666,10 +1391,8 @@ void Jvm::lsub(){
 
 
 
-void Jvm::fsub(){
-    std::cout<<'!fsub\n';
-    
-    Cat2Value value1, value2;
+void Jvm::fsub(){    
+    IntToFloat value1, value2;
     float result;
 
     value2.AsFloat = CurrentFrame->OperandStack->Pop();
@@ -1683,9 +1406,7 @@ void Jvm::fsub(){
 
 
 
-void Jvm::dsub(){
-    std::cout<<'!dsub\n';
-    
+void Jvm::dsub(){    
     Cat2Value value1, value2, aux;
     double result;
 
@@ -1703,9 +1424,7 @@ void Jvm::dsub(){
 
 
 
-void Jvm::imul(){
-    std::cout<<'!imul\n';
-    
+void Jvm::imul(){    
     int32_t value1;
     int32_t value2;
     value2 = static_cast<int>(CurrentFrame->OperandStack->Pop());
@@ -1718,9 +1437,7 @@ void Jvm::imul(){
 
 
 
-void Jvm::lmul(){
-    std::cout<<'!lmul\n';
-    
+void Jvm::lmul(){    
 
     Cat2Value value1, value2, aux;
     long result;
@@ -1738,9 +1455,7 @@ void Jvm::lmul(){
 
 
 
-void Jvm::fmul(){
-    std::cout<<'!fmul\n';
-    
+void Jvm::fmul(){    
 
     float value1;
     float value2;
@@ -1755,9 +1470,7 @@ void Jvm::fmul(){
 
 
 
-void Jvm::dmul(){
-    std::cout<<'!dmul\n';
-    
+void Jvm::dmul(){    
 
     Cat2Value value1, value2, aux;
     double result;
@@ -1776,9 +1489,7 @@ void Jvm::dmul(){
 
 
 
-void Jvm::idiv(){
-    std::cout<<'!idiv\n';
-    
+void Jvm::idiv(){    
     int value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     if (value2 == 0)
@@ -1790,9 +1501,7 @@ void Jvm::idiv(){
 
 
 
-void Jvm::ldiv(){
-    std::cout<<'!ldiv\n';
-    
+void Jvm::ldiv(){    
 
     Cat2Value value1, value2, aux;
     long result;
@@ -1810,28 +1519,21 @@ void Jvm::ldiv(){
 
 
 
-void Jvm::fdiv(){
-    std::cout<<'!fdiv\n';
-    
-    Cat2Value value1, value2, aux;
-    float result;
+void Jvm::fdiv(){    
+    float value1, value2, result;
 
-    value2.HighBytes = CurrentFrame->OperandStack->Pop();
-    value1.HighBytes = CurrentFrame->OperandStack->Pop();
+    value2 = CurrentFrame->OperandStack->Pop();
+    value1 = CurrentFrame->OperandStack->Pop();
 // entendendo que cpp já segue  rules of IEEE arithmetic:
-    result = value1.AsFloat / value2.AsFloat;
+// otherwise todo implement all those rules
+    result = value1 / value2;
     CurrentFrame->OperandStack->push(result);
-
-
 }
 
 
 
 
-void Jvm::ddiv(){
-    std::cout<<'!ddiv\n';
-    
-
+void Jvm::ddiv(){    
     Cat2Value value1, value2, aux;
     double result;
 
@@ -1847,9 +1549,7 @@ void Jvm::ddiv(){
 
 
 
-void Jvm::irem(){
-    std::cout<<'!irem\n';
-    
+void Jvm::irem(){    
     int value2 = CurrentFrame->OperandStack->Pop();
     int value1 = CurrentFrame->OperandStack->Pop();
     int result;
@@ -1864,9 +1564,7 @@ void Jvm::irem(){
 
 
 
-void Jvm::lrem(){
-    std::cout<<'!lrem\n';
-    
+void Jvm::lrem(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -1884,9 +1582,7 @@ void Jvm::lrem(){
 
 
 
-void Jvm::frem(){
-    std::cout<<'!frem\n';
-    
+void Jvm::frem(){    
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     float result;
@@ -1902,9 +1598,7 @@ void Jvm::frem(){
 
 
 
-void Jvm::drem(){
-    std::cout<<'!drem\n';
-    
+void Jvm::drem(){    
     Cat2Value value{};
     double value2 = popU8FromOpStack();
     double value1 = popU8FromOpStack();
@@ -1920,9 +1614,7 @@ void Jvm::drem(){
 
 
 
-void Jvm::ineg(){
-    std::cout<<'!ineg\n';
-    
+void Jvm::ineg(){    
     int32_t value;
     value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t result = - value;
@@ -1932,9 +1624,7 @@ void Jvm::ineg(){
 
 
 
-void Jvm::lneg(){
-    std::cout<<'!lneg\n';
-    
+void Jvm::lneg(){    
     Cat2Value value{};
     long result = -1* popU8FromOpStack();
     value.AsLong = result;
@@ -1945,9 +1635,7 @@ void Jvm::lneg(){
 
 
 
-void Jvm::fneg(){
-    std::cout<<'!fneg\n';
-    
+void Jvm::fneg(){    
     float value = -1 * static_cast<float>(CurrentFrame->OperandStack->Pop());
     CurrentFrame->OperandStack->push(value);
 
@@ -1956,9 +1644,7 @@ void Jvm::fneg(){
 
 
 
-void Jvm::dneg(){
-    std::cout<<'!dneg\n';
-    
+void Jvm::dneg(){    
     Cat2Value value{};
     double result = -1* popU8FromOpStack();
     value.AsDouble = result;
@@ -1971,9 +1657,7 @@ void Jvm::dneg(){
 
 
 
-void Jvm::ishl(){
-    std::cout<<'!ishl\n';
-    
+void Jvm::ishl(){    
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
@@ -1985,9 +1669,7 @@ void Jvm::ishl(){
 
 
 
-void Jvm::lshl(){
-    std::cout<<'!lshl\n';
-    
+void Jvm::lshl(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2002,9 +1684,7 @@ void Jvm::lshl(){
 
 
 
-void Jvm::ishr(){
-    std::cout<<'!ishr\n';
-    
+void Jvm::ishr(){    
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
@@ -2014,9 +1694,7 @@ void Jvm::ishr(){
 
 
 
-void Jvm::lshr(){
-    std::cout<<'!lshr\n';
-    
+void Jvm::lshr(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2029,9 +1707,7 @@ void Jvm::lshr(){
 }
 
 
-void Jvm::iushr(){
-    std::cout<<'!iushr\n';
-    
+void Jvm::iushr(){    
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
 
@@ -2045,9 +1721,7 @@ void Jvm::iushr(){
 
 
 
-void Jvm::lushr(){
-    std::cout<<'!lushr\n';
-    
+void Jvm::lushr(){    
     Cat2Value value{};
     int value2 = CurrentFrame->OperandStack->Pop();
     long value1 = popU8FromOpStack();
@@ -2061,9 +1735,7 @@ void Jvm::lushr(){
 
 
 
-void Jvm::iand(){
-    std::cout<<'!iand\n';
-    
+void Jvm::iand(){    
 
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2076,9 +1748,7 @@ void Jvm::iand(){
 
 
 
-void Jvm::land(){
-    std::cout<<'!land\n';
-    
+void Jvm::land(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2093,9 +1763,7 @@ void Jvm::land(){
 
 
 
-void Jvm::ior(){
-    std::cout<<'!ior\n';
-    
+void Jvm::ior(){    
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
@@ -2109,9 +1777,7 @@ void Jvm::ior(){
 
 
 
-void Jvm::lor(){
-    std::cout<<'!lor\n';
-    
+void Jvm::lor(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2127,9 +1793,7 @@ void Jvm::lor(){
 
 
 
-void Jvm::ixor(){
-    std::cout<<'!ixor\n';
-    
+void Jvm::ixor(){    
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
@@ -2142,9 +1806,7 @@ void Jvm::ixor(){
 
 
 
-void Jvm::lxor(){
-    std::cout<<'!lxor\n';
-    
+void Jvm::lxor(){    
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2160,8 +1822,7 @@ void Jvm::lxor(){
 
 
 
-void Jvm::iinc(){ //todo pode ser alterado por wide, ver --pc
-std::cout<<'!iinc\n';
+void Jvm::iinc(){ //todo pode ser alterado por wide, ver --p
 
 std::cout<<"iinc\n";
     u1 index = (*CurrentCode->code)[pc++];
@@ -2173,9 +1834,7 @@ std::cout<<"iinc\n";
 
 
 // idk todo test
-void Jvm::i2l(){
-    std::cout<<'!i2l\n';
-    
+void Jvm::i2l(){    
     Cat2Value value{};
     value.AsLong = (CurrentFrame->OperandStack->Pop());
 
@@ -2186,9 +1845,7 @@ void Jvm::i2l(){
 
 
 
-void Jvm::i2f(){
-    std::cout<<'!i2f\n';
-    
+void Jvm::i2f(){    
     int value = static_cast<int>(CurrentFrame->OperandStack->Pop());
     float result = static_cast<float>(value);
     CurrentFrame->OperandStack->push(result);
@@ -2196,9 +1853,7 @@ void Jvm::i2f(){
 
 
 //Converte int pra double
-void Jvm::i2d(){
-    std::cout<<'!i2d\n';
-    
+void Jvm::i2d(){    
     Cat2Value value{};
 
     value.AsDouble = CurrentFrame->OperandStack->Pop();
@@ -2213,9 +1868,7 @@ void Jvm::i2d(){
 
 
 
-void Jvm::l2i(){
-    std::cout<<'!l2i\n';
-    
+void Jvm::l2i(){    
     Cat2Value value{};
 
     value.AsLong = popU8FromOpStack();
@@ -2226,25 +1879,17 @@ void Jvm::l2i(){
 
 
 
+// todo test
+void Jvm::l2f(){    
+    float value = popU8FromOpStack();
 
-void Jvm::l2f(){
-    std::cout<<'!l2f\n';
-    
-    Cat2Value value{};
-
-    value.AsLong = popU8FromOpStack();
-    // todo test
-    value.AsFloat = value.AsLong;
-    CurrentFrame->OperandStack->push(value.AsFloat);
-
+    CurrentFrame->OperandStack->push(value);
 }
 
 
 
 
-void Jvm::l2d(){
-    std::cout<<'!l2d\n';
-    
+void Jvm::l2d(){    
     Cat2Value value{};
 
     value.AsLong = popU8FromOpStack();
@@ -2260,9 +1905,7 @@ void Jvm::l2d(){
 
 
 
-void Jvm::f2i(){
-    std::cout<<'!f2i\n';
-    
+void Jvm::f2i(){    
     //converte u4 pra float, float pra int
     float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
     u4 intValue = static_cast<u4>(value);
@@ -2287,9 +1930,7 @@ void Jvm::f2i(){
 
 
 // testado (hardcode, n cm file) ok
-void Jvm::f2l(){
-    std::cout<<'!f2l\n';
-    
+void Jvm::f2l(){    
     //converte u4 pra float, float pra long
     Cat2Value value{};
     float valueFloat = (CurrentFrame->OperandStack->Pop());
@@ -2320,24 +1961,16 @@ void Jvm::f2l(){
 
 
 // todo test
-void Jvm::f2d(){
-    std::cout<<'!f2d\n';
-    
-    //converte u4 pra float, float pra double
+void Jvm::f2d(){    
     Cat2Value value{};
-    value.AsFloat = (CurrentFrame->OperandStack->Pop());
-    // todo check if static cast da problema e se sem ele ta ok
-    value.AsDouble = value.AsFloat ;
 
+    value.AsDouble = (CurrentFrame->OperandStack->Pop());
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
 
 
 // todo fix ez
-void Jvm::d2i(){
-    std::cout<<'!d2i\n';
-    
+void Jvm::d2i(){    
     //big endian: highbytes first
     double value;
     u4 result;
@@ -2366,9 +1999,7 @@ void Jvm::d2i(){
 
 
 // todo tesg
-void Jvm::d2l(){
-    std::cout<<'!d2l\n';
-    
+void Jvm::d2l(){    
     Cat2Value value{};
 
     value.AsDouble = popU8FromOpStack();
@@ -2396,33 +2027,30 @@ void Jvm::d2l(){
 
 
 // todo test
-void Jvm::d2f(){
-    std::cout<<'!d2f\n';
-    
-    Cat2Value value{};
+void Jvm::d2f(){    
+    Cat2Value valDouble{};
+    float valueFloat;
 
-    value.AsDouble = popU8FromOpStack();
+    valDouble.AsDouble = popU8FromOpStack();
 
     // converte Long pra double
-    if(std::isnan(value.AsDouble)){
+    if(std::isnan(valDouble.AsDouble)){
         // float nan
-        value.AsFloat = std::nanf("");
-    } else if( value.AsDouble >= __FLT_MAX__ || value.AsDouble == std::numeric_limits<float>::infinity()){ // todo test these infinities
-        value.AsFloat = std::numeric_limits<float>::max();
-    } else if( value.AsDouble <=  __FLT_MIN__ || value.AsDouble == -1 * std::numeric_limits<float>::infinity()) { // n achei min pra long long em cpp (que funcionasse) mas como vai virar unsigned p min tá 0. long specs: In Java SE 8 and later, you can use the long data type to represent an unsigned 64-bit long, which has a minimum value of 0 and a maximum value of 264-1
-        value.AsFloat = std::numeric_limits<float>::min();
+        valueFloat = std::nanf("");
+    } else if( valDouble.AsDouble >= __FLT_MAX__ || valDouble.AsDouble == std::numeric_limits<float>::infinity()){ // todo test these infinities
+        valueFloat = std::numeric_limits<float>::max();
+    } else if( valDouble.AsDouble <=  __FLT_MIN__ || valDouble.AsDouble == -1 * std::numeric_limits<float>::infinity()) { // n achei min pra long long em cpp (que funcionasse) mas como vai virar unsigned p min tá 0. long specs: In Java SE 8 and later, you can use the long data type to represent an unsigned 64-bit long, which has a minimum valDouble of 0 and a maximum valDouble of 264-1
+        valueFloat = std::numeric_limits<float>::min();
     } else {
-        value.AsFloat = value.AsDouble;
+        valueFloat = valDouble.AsDouble;
     }
 
-    CurrentFrame->OperandStack->push(value.AsFloat);
+    CurrentFrame->OperandStack->push(valueFloat);
 
 }
 
 // todo implement these
-void Jvm::i2b(){
-    std::cout<<'!i2b\n';
-    
+void Jvm::i2b(){    
     //Cat2Value value{};
     // trunca int (u4, 4 bytes) pra byte (u1)
     //value.AsByte = CurrentFrame->OperandStack->Pop();
@@ -2432,9 +2060,7 @@ void Jvm::i2b(){
 
 
 
-void Jvm::i2c(){
-    std::cout<<'!i2c\n';
-    
+void Jvm::i2c(){    
     Cat2Value value{};
     //value.AsChar = CurrentFrame->OperandStack->Pop();
     //CurrentFrame->OperandStack->push(value.AsChar);
@@ -2444,20 +2070,16 @@ void Jvm::i2c(){
 
 
 // short is signed int16_t (s2)
-void Jvm::i2s(){
-    std::cout<<'!i2s\n';
-    
+void Jvm::i2s(){    
 
-    Cat2Value value{};
+    IdkValue value{};
     // trunca e faz sign extension
     value.AsShort = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value.AsShort);
 }
 
 // todo test all 3 cases
-void Jvm::lcmp(){
-    std::cout<<'!lcmp\n';
-    
+void Jvm::lcmp(){    
     long long value2 = popU8FromOpStack();
     long long value1 = popU8FromOpStack();
     int intValue = 9;
@@ -2475,9 +2097,7 @@ void Jvm::lcmp(){
 
 
 
-void Jvm::fcmpl(){
-    std::cout<<'!fcmpl\n';
-    
+void Jvm::fcmpl(){    
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     int intValue = 9;
@@ -2497,9 +2117,7 @@ void Jvm::fcmpl(){
 
 
 
-void Jvm::fcmpg(){
-    std::cout<<'!fcmpg\n';
-    
+void Jvm::fcmpg(){    
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     int intValue = 9;
@@ -2518,9 +2136,7 @@ void Jvm::fcmpg(){
 
 
 // todo mb delete these static casts
-void Jvm::dcmpl(){
-    std::cout<<'!dcmpl\n';
-    
+void Jvm::dcmpl(){    
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
     int intValue = 9;
@@ -2538,9 +2154,7 @@ void Jvm::dcmpl(){
 
 
 
-void Jvm::dcmpg(){
-    std::cout<<'!dcmpg\n';
-    
+void Jvm::dcmpg(){    
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
     int intValue = 9;
@@ -2558,9 +2172,7 @@ void Jvm::dcmpg(){
 
 
 
-void Jvm::ifeq(){
-    std::cout<<'!ifeq\n';
-    
+void Jvm::ifeq(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value == 0){
@@ -2572,9 +2184,7 @@ void Jvm::ifeq(){
 
 
 
-void Jvm::ifne(){
-    std::cout<<'!ifne\n';
-    
+void Jvm::ifne(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value != 0){
@@ -2587,9 +2197,7 @@ void Jvm::ifne(){
 
 
 
-void Jvm::iflt(){
-    std::cout<<'!iflt\n';
-    
+void Jvm::iflt(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value < 0){
@@ -2602,9 +2210,7 @@ void Jvm::iflt(){
 
 
 
-void Jvm::ifge(){
-    std::cout<<'!ifge\n';
-    
+void Jvm::ifge(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value >= 0){
@@ -2617,9 +2223,7 @@ void Jvm::ifge(){
 
 
 
-void Jvm::ifgt(){
-    std::cout<<'!ifgt\n';
-    
+void Jvm::ifgt(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value > 0){
@@ -2632,9 +2236,7 @@ void Jvm::ifgt(){
 
 
 
-void Jvm::ifle(){
-    std::cout<<'!ifle\n';
-    
+void Jvm::ifle(){    
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value <= 0){
@@ -2647,9 +2249,7 @@ void Jvm::ifle(){
 
 
 
-void Jvm::if_icmpeq(){
-    std::cout<<'!if_icmpeq\n';
-    
+void Jvm::if_icmpeq(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2663,9 +2263,7 @@ void Jvm::if_icmpeq(){
 
 
 
-void Jvm::if_icmpne(){
-    std::cout<<'!if_icmpne\n';
-    
+void Jvm::if_icmpne(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2679,9 +2277,7 @@ void Jvm::if_icmpne(){
 
 
 
-void Jvm::if_icmplt(){
-    std::cout<<'!if_icmplt\n';
-    
+void Jvm::if_icmplt(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2695,9 +2291,7 @@ void Jvm::if_icmplt(){
 
 
 
-void Jvm::if_icmpge(){
-    std::cout<<'!if_icmpge\n';
-    
+void Jvm::if_icmpge(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2711,9 +2305,7 @@ void Jvm::if_icmpge(){
 
 
 
-void Jvm::if_icmpgt(){
-    std::cout<<'!if_icmpgt\n';
-    
+void Jvm::if_icmpgt(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2727,9 +2319,7 @@ void Jvm::if_icmpgt(){
 
 
 
-void Jvm::if_icmple(){
-    std::cout<<'!if_icmple\n';
-    
+void Jvm::if_icmple(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2743,9 +2333,7 @@ void Jvm::if_icmple(){
 
 
 
-void Jvm::if_acmpeq(){
-    std::cout<<'!if_acmpeq\n';
-    
+void Jvm::if_acmpeq(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2759,9 +2347,7 @@ void Jvm::if_acmpeq(){
 
 
 
-void Jvm::if_acmpne(){
-    std::cout<<'!if_acmpne\n';
-    
+void Jvm::if_acmpne(){    
     u2 offset = GetIndex2();
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2775,9 +2361,7 @@ void Jvm::if_acmpne(){
 
 
 
-void Jvm::goto_(){
-    std::cout<<'!goto_\n';
-    
+void Jvm::goto_(){    
     u2 branchoffset = GetIndex2();
     pc += branchoffset ;
 }
@@ -2789,9 +2373,7 @@ void Jvm::goto_(){
 //     The address of the opcode of the instruction immediately
 // following this jsr instruction is pushed onto the operand stack as
 // a value of type returnAddress.
-void Jvm::jsr(){
-    std::cout<<'!jsr\n';
-    
+void Jvm::jsr(){    
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
     //nota: devia ter dado push como type returnAddress? n aconteceu
@@ -2802,9 +2384,7 @@ void Jvm::jsr(){
 
 
 
-void Jvm::ret(){
-    std::cout<<'!ret\n';
-    
+void Jvm::ret(){    
     u1 index = (*CurrentCode->code)[pc++];
     uint32_t NewPc = (*CurrentFrame->localVariables)[index];
     pc = NewPc;
@@ -2823,22 +2403,17 @@ void Jvm::ret(){
 
     // The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
 void Jvm::tableswitch() {
-    std::cout<<'!tableswitch\n';
     
 }
 
 // todo implement
-void Jvm::lookupswitch(){
-    std::cout<<'!lookupswitch\n';
-    
+void Jvm::lookupswitch(){    
 }
 
 
 
 
-void Jvm::ireturn(){
-    std::cout<<'!ireturn\n';
-    
+void Jvm::ireturn(){    
 //check return == int
     return_u4();
 }
@@ -2846,9 +2421,7 @@ void Jvm::ireturn(){
 
 
 
-void Jvm::lreturn(){
-    std::cout<<'!lreturn\n';
-    
+void Jvm::lreturn(){    
 //check return == long
     return_u8();
 }
@@ -2857,9 +2430,7 @@ void Jvm::lreturn(){
 
 
 
-void Jvm::freturn(){
-    std::cout<<'!freturn\n';
-    
+void Jvm::freturn(){    
 
 //check return == float
     return_u4();
@@ -2868,9 +2439,7 @@ void Jvm::freturn(){
 
 
 
-void Jvm::dreturn(){
-    std::cout<<'!dreturn\n';
-    
+void Jvm::dreturn(){    
 //check return == double
     return_u8();
 }
@@ -2879,26 +2448,20 @@ void Jvm::dreturn(){
 
  
 
-void Jvm::areturn(){
-    std::cout<<'!areturn\n';
-    
+void Jvm::areturn(){    
 //check return == ref
     return_u4();
 }
 
 // tested, works (prolly)
-void Jvm::return_(){
-    std::cout<<'!return_\n';
-    
+void Jvm::return_(){    
 //check return == void
 if(FrameStack.size() != 1) // caso seja 1, ta no final da main ou clinit da main
 	PopFrameStack();
 }
 // tested, works
 
-void Jvm::getstatic(){
-    std::cout<<'!getstatic\n';
-    
+void Jvm::getstatic(){    
     u2 index = GetIndex2();
     cp_info* Fieldref     = GetConstantPoolEntryAt(index);
     cp_info* NameAndType  = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -2918,9 +2481,7 @@ void Jvm::getstatic(){
 }
 //TODO:  so pra int para testar
 
-void Jvm::putstatic(){
-    std::cout<<'!putstatic\n';
-    
+void Jvm::putstatic(){    
     u2 index = GetIndex2();
     u4 value = PopOpStack();
     cp_info* Fieldref    = GetConstantPoolEntryAt(index);
@@ -2937,9 +2498,10 @@ void Jvm::putstatic(){
     StaticFields[Name] = Entry;
 
 }
+
 // todo implement
 void Jvm::getfield(){
-    u2 index       = GetIndex2();
+u2 index       = GetIndex2();
 
     auto Fieldref    = GetConstantPoolEntryAt(index);
     auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -2969,9 +2531,7 @@ void Jvm::getfield(){
 
 
 // todo implement, fix erradasso
-void Jvm::new_(){
-    std::cout<<'!new_\n';
-    
+void Jvm::new_(){    
     //todo exceptions linking e run time
     u2 index = GetIndex2();
     cp_info* ref = GetConstantPoolEntryAt(index);
@@ -2984,7 +2544,8 @@ void Jvm::new_(){
 
 
         //TODO: reboco pra achar o path, temos que estipular as regras pro path dps
-        std::string ClassPath = "/home/matheus/prog/JVM/exemplos/";
+        // std::string ClassPath = "/home/matheus/prog/JVM/exemplos/";
+        std::string ClassPath = "/home/aelk/unb/24.1/sb/JVM/src/exemplos/";
         ClassPath.append(ClassName);
 
 
@@ -3003,8 +2564,8 @@ void Jvm::new_(){
         auto ObjectRef = new Reference;
         ObjectRef->Type = ReferenceType::ClassType;
         ObjectRef->ClassRef = Object;
-
-        CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
+// todo implement/fix
+        // CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
     }
     else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
         cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
@@ -3021,7 +2582,7 @@ void Jvm::new_(){
 }
 
 void Jvm::putfield(){
-    u2 index       = GetIndex2();
+u2 index       = GetIndex2();
 
     auto Fieldref    = GetConstantPoolEntryAt(index);
     auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -3043,9 +2604,7 @@ void Jvm::putfield(){
 } // tested, works
 //TODO: to fazendo so pro hello world por enquanto
 
-void Jvm::invokevirtual(){
-    std::cout<<'!invokevirtual\n';
-    
+void Jvm::invokevirtual(){    
     u2 index = GetIndex2();
 
     cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
@@ -3082,9 +2641,7 @@ void Jvm::invokevirtual(){
  */
 // TODO: parse do descriptor pra ler os tipos e pegar na constant pool
 // TODO: lidar com new frame, to focando so em instanciar a classe da main pra teste
-void Jvm::invokespecial(){
-    std::cout<<'!invokespecial\n';
-    
+void Jvm::invokespecial(){    
     u2 index = GetIndex2();
     auto MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
 
@@ -3114,23 +2671,17 @@ void Jvm::invokespecial(){
 
 }
 // todo implement
-void Jvm::invokestatic(){
-    std::cout<<'!invokestatic\n';
-    
+void Jvm::invokestatic(){    
     auto a= reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
 
 }
 // todo implement
-void Jvm::invokeinterface(){
-    std::cout<<'!invokeinterface\n';
-    
+void Jvm::invokeinterface(){    
 
 }
 
 // todo implement
-void Jvm::invokedynamic(){
-    std::cout<<'!invokedynamic\n';
-    
+void Jvm::invokedynamic(){    
 
 }
 
@@ -3138,9 +2689,7 @@ void Jvm::invokedynamic(){
 
 // }
 
-void Jvm::newarray(){
-    std::cout<<'!newarray\n';
-    
+void Jvm::newarray(){    
 
     auto Count = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
@@ -3182,59 +2731,43 @@ void Jvm::newarray(){
 
     }
     JVM::stack<int> Counts;
-    std::cout<<'!stack\n';
     Counts.push(Count);
 
     CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Type, Counts, 1)));
 
 }
 // todo implement
-void Jvm::anewarray(){
-    std::cout<<'!anewarray\n';
-    
+void Jvm::anewarray(){    
 
 }
 // todo implement
-void Jvm::arraylength(){
-    std::cout<<'!arraylength\n';
-    
+void Jvm::arraylength(){    
 
 }
 // todo implement
-void Jvm::athrow(){
-    std::cout<<'!athrow\n';
-    
+void Jvm::athrow(){    
 
 
 }
 // todo  implement
-void Jvm::checkcast(){
-    std::cout<<'!checkcast\n';
-    
+void Jvm::checkcast(){    
 
 }
 // todo  implement
 void Jvm::instanceof() {
-    std::cout<<'!instanceof\n';
     
 
 }
 // todo wdf implement
-void Jvm::monitorenter(){
-    std::cout<<'!monitorenter\n';
-    
+void Jvm::monitorenter(){    
 
 }
 // todo implement
-void Jvm::monitorexit(){
-    std::cout<<'!monitorexit\n';
-    
+void Jvm::monitorexit(){    
 
 }
 // todo implement
-void Jvm::wide(){
-    std::cout<<'!wide\n';
-    
+void Jvm::wide(){    
 
 }
 
@@ -3242,9 +2775,7 @@ void Jvm::wide(){
 
  //TODO: vou usar 1 byte pra testar por enquanto, dps fazer pros outros; -> switch case do tipo
 
-void Jvm::multianewarray(){
-    std::cout<<'!multianewarray\n';
-    
+void Jvm::multianewarray(){    
     u2          index           = GetIndex2();
     u1          dimensions      = NextCodeByte();
     cp_info*    ArrayInfo       = GetConstantPoolEntryAt(index);
@@ -3256,7 +2787,6 @@ void Jvm::multianewarray(){
 
     
     JVM::stack<int> sizes;
-    std::cout<<'!stack\n';
 
     // pega o tamanho de cada dimensao
     for (int i = 0; i < dimensions; ++i) {
@@ -3267,21 +2797,15 @@ void Jvm::multianewarray(){
     CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
   }
 
-void Jvm::ifnull(){
-    std::cout<<'!ifnull\n';
-    
+void Jvm::ifnull(){    
 
 }
 // todo implement
-void Jvm::ifnonnull(){
-    std::cout<<'!ifnonnull\n';
-    
+void Jvm::ifnonnull(){    
 
 }
 
-void Jvm::goto_w(){
-    std::cout<<'!goto_w\n';
-    
+void Jvm::goto_w(){    
     u1 branchbyte1 = (*CurrentCode->code)[pc++];
     u1 branchbyte2 = (*CurrentCode->code)[pc++];
     u1 branchbyte3 = (*CurrentCode->code)[pc++];
@@ -3291,9 +2815,7 @@ void Jvm::goto_w(){
     pc += branchoffset;
 }
 // todo implement
-void Jvm::jsr_w(){
-    std::cout<<'!jsr_w\n';
-    
+void Jvm::jsr_w(){    
 
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);

@@ -37,9 +37,10 @@ struct Frame{
 };
 
 
-struct Reference{
-    ReferenceType Type;
-    void* Value;
+// struct Reference{
+//     ReferenceType Type;
+//     void* Value;
+// };
 
 // definicao pra resolver definicao circular
 struct ClassInstance;
@@ -114,10 +115,6 @@ union Cat2Value{
     };
     uint64_t  AsLong;
     double    AsDouble;
-
-    float     AsFloat;
-    s2        AsShort;
-
 };
 
 union IntToFloat{
@@ -126,6 +123,10 @@ union IntToFloat{
 };
 
 
+union IdkValue{
+
+    s2 AsShort;
+};
 
 
 #endif //JVM_JVMSTRUCTS_H
