@@ -5,19 +5,71 @@
 #include "../include/ClassLoader.h"
 #include <ClassLoader.h>
 #include <AttributeStructs.h>
+#include <iostream>
+#include <string>
+#include <algorithm> // Necessário para std::replace
+#include <sstream>
+#include <vector>
 
-
-class_file* ClassLoader::GetClass(const std::string class_file_path) {
-	if (!((*class_files).count(class_file_path))) {
-		LoadClass(class_file_path);
-	}
-	return (*class_files)[class_file_path];
+// Função para dividir a string usando um delimitador
+// Esta função divide uma string em várias partes usando um delimitador específico (no nosso caso, '/'). Ela retorna um vetor com as partes divididas da string.
+std::vector<std::string> SplitString(const std::string &str, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
 }
 
+// Função para transformar um caminho de arquivo em NomedoPacote/Classe
+std::string TransformPathToClassName(const std::string &path)
+{
+    std::string className = path;
 
+    // Substitui '\' por '/' (para Windows) ou mantém '/' (para Unix/Linux)
+    std::replace(className.begin(), className.end(), '\\', '/');
 
-void ClassLoader::LoadClass(const std::string nomeArquivo) {
-	if ((*class_files).count(nomeArquivo)) return;
+    // Remove a extensão .class, se existir
+    size_t pos = className.find(".class");
+    if (pos != std::string::npos)
+    {
+        className = className.substr(0, pos);
+    }
+
+    // Dividir a string em partes usando '/' como delimitador
+    std::vector<std::string> parts = SplitString(className, '/');
+
+    // Aqui, verifica se o vetor parts tem pelo menos dois elementos. Se sim, ele concatena os dois últimos elementos do vetor para formar o nome do pacote/classe. Se houver apenas um elemento (caminho sem subdiretórios), ele utiliza esse único elemento como o nome da classe.
+    if (parts.size() >= 2)
+    {
+        className = parts[parts.size() - 2] + "/" + parts.back();
+    }
+    else if (parts.size() == 1)
+    {
+        className = parts.back();
+    }
+
+    return className;
+}
+
+class_file *ClassLoader::GetClass(const std::string class_file_path)
+{
+    std::string className = TransformPathToClassName(class_file_path);
+    if (!((*class_files).count(className)))
+    {
+        LoadClass(className);
+    }
+    return (*class_files)[className];
+}
+
+void ClassLoader::LoadClass(const std::string nomeArquivo)
+{
+    if ((*class_files).count(nomeArquivo))
+        return;
 
     current_file = new class_file;
 
@@ -26,8 +78,8 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
     CheckVersion();
     BuildConstantPoolTable();
     current_file->access_flags = read_u2();
-    current_file->this_class   = read_u2();
-    current_file->super_class  = read_u2();
+    current_file->this_class = read_u2();
+    current_file->super_class = read_u2();
     BuildInterfaces();
     BuildFields();
     BuildMethods();
@@ -39,29 +91,28 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     delete file_buffer;
 
-
-
-	// Caso Nao seja a classe Object, carrega superclasse de forma recursiva
+    // Caso Nao seja a classe Object, carrega superclasse de forma recursiva
     if (current_file->super_class == 0)
         return;
 
-	const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
-	const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
+    const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
+    const auto SuperName = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
     LoadClass(SuperName);
 }
 
-void ClassLoader::LoadFile(const std::string& nomeArquivo) {
+void ClassLoader::LoadFile(const std::string &nomeArquivo)
+{
     // garante que arquivo fornecido e .class
     auto classPath = nomeArquivo;
-    std::regex ClassFIleTermination (".*\\.class$");
+    std::regex ClassFIleTermination(".*\\.class$");
 
     if (!std::regex_search(nomeArquivo, ClassFIleTermination))
         classPath = nomeArquivo + ".class";
 
-
     std::ifstream arquivo(classPath, std::ios::binary);
 
-    if (!arquivo) {
+    if (!arquivo)
+    {
         std::cerr << "Não foi possível abrir o arquivo: " << classPath << std::endl;
         exit(1);
     }
@@ -73,54 +124,63 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
 
     // Ler o arquivo byte a byte e armazená-lo no vetor buffer
     file_buffer = new std::vector<uint8_t>(tamanhoArquivo);
-    arquivo.read(reinterpret_cast<char*>(file_buffer->data()), tamanhoArquivo);
+    arquivo.read(reinterpret_cast<char *>(file_buffer->data()), tamanhoArquivo);
 
     iter = file_buffer->begin();
     arquivo.close();
 }
 
-u1 ClassLoader::read_u1() {
+u1 ClassLoader::read_u1()
+{
     u1 temp;
-    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
-    iter+= sizeof(temp);
+    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t *>(&temp));
+    iter += sizeof(temp);
     return temp;
 }
 
-u2 ClassLoader::read_u2() {
+u2 ClassLoader::read_u2()
+{
     u2 temp;
-    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
-    iter+= sizeof(temp);
+    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t *>(&temp));
+    iter += sizeof(temp);
     temp = __builtin_bswap16(temp);
     return temp;
 }
 
-u4 ClassLoader::read_u4() {
+u4 ClassLoader::read_u4()
+{
     u4 temp;
-    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t*>(&temp));
-    iter+= sizeof(temp);
+    std::copy(iter, iter + sizeof(temp), reinterpret_cast<uint8_t *>(&temp));
+    iter += sizeof(temp);
     temp = __builtin_bswap32(temp);
     return temp;
 }
 
-template<typename T>
-std::vector<T> *ClassLoader::read_vec(int length) {
+template <typename T>
+std::vector<T> *ClassLoader::read_vec(int length)
+{
     auto temp = new std::vector<T>();
     temp->reserve(length);
 
-    std::copy(iter, iter + (length* sizeof(T)), std::back_inserter(*temp));
-    iter += (length* sizeof(T));
+    std::copy(iter, iter + (length * sizeof(T)), std::back_inserter(*temp));
+    iter += (length * sizeof(T));
 
     return temp;
 }
 
-std::vector<verification_type_info> ReadVerificationTypeInfoList(int count) {
+std::vector<verification_type_info> ReadVerificationTypeInfoList(int count)
+{
     std::vector<verification_type_info> list;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count; ++i)
+    {
         verification_type_info info;
         info.tag = read_u1();
-        if (info.tag == ITEM_Object || info.tag == ITEM_Uninitialized) {
+        if (info.tag == ITEM_Object || info.tag == ITEM_Uninitialized)
+        {
             info.cpool_index = read_u2();
-        } else if (info.tag == ITEM_Long || info.tag == ITEM_Double) {
+        }
+        else if (info.tag == ITEM_Long || info.tag == ITEM_Double)
+        {
             info.offset = 0;
         }
         list.push_back(info);
@@ -128,94 +188,104 @@ std::vector<verification_type_info> ReadVerificationTypeInfoList(int count) {
     return list;
 }
 
-void ClassLoader::BuildConstantPoolInfo() {
+void ClassLoader::BuildConstantPoolInfo()
+{
     auto Entry = new cp_info{};
 
-    switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1())) {
-        case ConstantPoolTag::CONSTANT_Utf8: {
+    switch (Entry->tag = static_cast<ConstantPoolTag>(read_u1()))
+    {
+    case ConstantPoolTag::CONSTANT_Utf8:
+    {
 
-            Entry->length    = read_u2();
-            Entry->bytes_vec = read_vec<u1>(Entry->length);
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Integer:
-        case ConstantPoolTag::CONSTANT_Float: {
+        Entry->length = read_u2();
+        Entry->bytes_vec = read_vec<u1>(Entry->length);
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_Integer:
+    case ConstantPoolTag::CONSTANT_Float:
+    {
 
-            Entry->bytes = read_u4();
+        Entry->bytes = read_u4();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Long:
-        case ConstantPoolTag::CONSTANT_Double: {
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_Long:
+    case ConstantPoolTag::CONSTANT_Double:
+    {
 
-            Entry->high_bytes = read_u4();
-            Entry->low_bytes  = read_u4();
+        Entry->high_bytes = read_u4();
+        Entry->low_bytes = read_u4();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Class: {
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_Class:
+    {
 
-            Entry->name_index = read_u2();
+        Entry->name_index = read_u2();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_String: {
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_String:
+    {
 
-            Entry->string_index = read_u2();
+        Entry->string_index = read_u2();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_Fieldref:
-        case ConstantPoolTag::CONSTANT_Methodref:
-        case ConstantPoolTag::CONSTANT_InterfaceMethodref: {
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_Fieldref:
+    case ConstantPoolTag::CONSTANT_Methodref:
+    case ConstantPoolTag::CONSTANT_InterfaceMethodref:
+    {
 
-            Entry->class_index         = read_u2();
-            Entry->name_and_type_index = read_u2();
+        Entry->class_index = read_u2();
+        Entry->name_and_type_index = read_u2();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_NameAndType: {
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_NameAndType:
+    {
 
-            Entry->name_index       = read_u2();
-            Entry->descriptor_index = read_u2();
+        Entry->name_index = read_u2();
+        Entry->descriptor_index = read_u2();
 
-            break;
-        }
-        case ConstantPoolTag::CONSTANT_MethodHandle:
+        break;
+    }
+    case ConstantPoolTag::CONSTANT_MethodHandle:
 
-            Entry->reference_kind  = read_u1();
-            Entry->reference_index = read_u2();
+        Entry->reference_kind = read_u1();
+        Entry->reference_index = read_u2();
 
-            break;
-        case ConstantPoolTag::CONSTANT_MethodType:
+        break;
+    case ConstantPoolTag::CONSTANT_MethodType:
 
-            Entry->descriptor_index = read_u2();
+        Entry->descriptor_index = read_u2();
 
-            break;
-        case ConstantPoolTag::CONSTANT_InvokeDynamic:
+        break;
+    case ConstantPoolTag::CONSTANT_InvokeDynamic:
 
-            Entry->bootstrap_method_attr_index = read_u2();
-            Entry->name_and_type_index = read_u2();
+        Entry->bootstrap_method_attr_index = read_u2();
+        Entry->name_and_type_index = read_u2();
 
-            break;
-        default:
-            throw std::runtime_error("entrada da constant_pool nao existe amigao\n");
+        break;
+    default:
+        throw std::runtime_error("entrada da constant_pool nao existe amigao\n");
     }
     current_file->constant_pool->push_back(Entry);
 
     // entrada seguinte de Long ou Double nao e um indice valido
-    if(Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
+    if (Entry->tag == ConstantPoolTag::CONSTANT_Long || Entry->tag == ConstantPoolTag::CONSTANT_Double)
         current_file->constant_pool->push_back(new cp_info{});
 }
 
-attribute_info* ClassLoader::BuildAttributeInfo() {
+attribute_info *ClassLoader::BuildAttributeInfo()
+{
     auto Entry = new attribute_info{};
 
     Entry->attribute_name_index = read_u2();
     Entry->attribute_length = read_u4();
 
     // pega o nome da constant pool
-    cp_info* AttributeNameEntry = (*current_file->constant_pool)[Entry->attribute_name_index];
+    cp_info *AttributeNameEntry = (*current_file->constant_pool)[Entry->attribute_name_index];
     std::string AttributeName = AttributeNameEntry->AsString();
 
     static std::unordered_map<std::string, int> cases = {
@@ -232,253 +302,289 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
     };
 
     AttributeType AttributeTypeName;
-    if (cases.find(AttributeName) != cases.end()) {
+    if (cases.find(AttributeName) != cases.end())
+    {
         AttributeTypeName = static_cast<AttributeType>(cases[AttributeName]);
-    } else {
+    }
+    else
+    {
         AttributeTypeName = AttributeType::NotImplemented;
     }
 
-    switch (AttributeTypeName) {
-        case AttributeType::ConstantValue: {
-            Entry->constantvalue_index = read_u2();
-            break;
-        }
-        case AttributeType::Code: {
-            Entry->max_stack = read_u2();
-            Entry->max_locals = read_u2();
-            Entry->code_length = read_u4();
-            Entry->code = read_vec<u1>(Entry->code_length);
+    switch (AttributeTypeName)
+    {
+    case AttributeType::ConstantValue:
+    {
+        Entry->constantvalue_index = read_u2();
+        break;
+    }
+    case AttributeType::Code:
+    {
+        Entry->max_stack = read_u2();
+        Entry->max_locals = read_u2();
+        Entry->code_length = read_u4();
+        Entry->code = read_vec<u1>(Entry->code_length);
 
-            Entry->exception_table_length = read_u2();
-            Entry->exception_table = new std::vector<Exception_tableEntry*>;
-            for (int i = 0; i < Entry->exception_table_length; ++i) {
-                auto TableEntry = new Exception_tableEntry{};
-                TableEntry->start_pc = read_u2();
-                TableEntry->end_pc = read_u2();
-                TableEntry->handler_pc = read_u2();
-                TableEntry->catch_type = read_u2();
-                Entry->exception_table->push_back(TableEntry);
-            }
-            Entry->attributes_count = read_u2();
-            Entry->attributes = new std::vector<attribute_info*>;
-            BuildAttributes(Entry->attributes_count, *Entry->attributes);
-            break;
+        Entry->exception_table_length = read_u2();
+        Entry->exception_table = new std::vector<Exception_tableEntry *>;
+        for (int i = 0; i < Entry->exception_table_length; ++i)
+        {
+            auto TableEntry = new Exception_tableEntry{};
+            TableEntry->start_pc = read_u2();
+            TableEntry->end_pc = read_u2();
+            TableEntry->handler_pc = read_u2();
+            TableEntry->catch_type = read_u2();
+            Entry->exception_table->push_back(TableEntry);
         }
-        case AttributeType::Exceptions: {
-            Entry->number_of_exceptions = read_u2();
-            Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
-            break;
+        Entry->attributes_count = read_u2();
+        Entry->attributes = new std::vector<attribute_info *>;
+        BuildAttributes(Entry->attributes_count, *Entry->attributes);
+        break;
+    }
+    case AttributeType::Exceptions:
+    {
+        Entry->number_of_exceptions = read_u2();
+        Entry->exception_index_table = read_vec<u2>(Entry->number_of_exceptions);
+        break;
+    }
+    case AttributeType::InnerClasses:
+    {
+        Entry->number_of_classes = read_u2();
+        Entry->classes = new std::vector<InnerClasses *>;
+        for (int i = 0; i < Entry->number_of_classes; ++i)
+        {
+            auto ClassEntry = new InnerClasses{};
+            ClassEntry->inner_class_info_index = read_u2();
+            ClassEntry->outer_class_info_index = read_u2();
+            ClassEntry->inner_name_index = read_u2();
+            ClassEntry->inner_class_access_flags = read_u2();
+            Entry->classes->push_back(ClassEntry);
         }
-        case AttributeType::InnerClasses: {
-            Entry->number_of_classes = read_u2();
-            Entry->classes = new std::vector<InnerClasses*>;
-            for (int i = 0; i < Entry->number_of_classes; ++i) {
-                auto ClassEntry = new InnerClasses{};
-                ClassEntry->inner_class_info_index = read_u2();
-                ClassEntry->outer_class_info_index = read_u2();
-                ClassEntry->inner_name_index = read_u2();
-                ClassEntry->inner_class_access_flags = read_u2();
-                Entry->classes->push_back(ClassEntry);
-            }
-            break;
+        break;
+    }
+    case AttributeType::Signature:
+    {
+        Entry->signature_index = read_u2();
+        break;
+    }
+    case AttributeType::SourceFile:
+    {
+        Entry->sourcefile_index = read_u2();
+        break;
+    }
+    case AttributeType::LineNumberTable:
+    {
+        Entry->line_number_table_length = read_u2();
+        Entry->line_number_table = new std::vector<line_number_table *>;
+        Entry->line_number_table->reserve(Entry->line_number_table_length);
+        for (int i = 0; i < Entry->line_number_table_length; ++i)
+        {
+            auto TableEntry = new line_number_table{};
+            TableEntry->start_pc = read_u2();
+            TableEntry->line_number = read_u2();
+            Entry->line_number_table->push_back(TableEntry);
         }
-        case AttributeType::Signature: {
-            Entry->signature_index = read_u2();
-            break;
+        break;
+    }
+    case AttributeType::LocalVariableTable:
+    {
+        Entry->local_variable_table_length = read_u2();
+        Entry->local_variable_table = new std::vector<LocalVariableTableEntry *>;
+        for (int i = 0; i < Entry->local_variable_table_length; ++i)
+        {
+            auto local_aux = new LocalVariableTableEntry{};
+            local_aux->start_pc = read_u2();
+            local_aux->length = read_u2();
+            local_aux->name_index = read_u2();
+            local_aux->descriptor_index = read_u2();
+            local_aux->index = read_u2();
+            Entry->local_variable_table->push_back(local_aux);
         }
-        case AttributeType::SourceFile: {
-            Entry->sourcefile_index = read_u2();
-            break;
+        break;
+    }
+    case AttributeType::LocalVariableTypeTable:
+    {
+        Entry->local_variable_type_table_length = read_u2();
+        Entry->local_variable_type_table = new std::vector<LocalVariableTypeTable *>;
+        for (int i = 0; i < Entry->local_variable_type_table_length; ++i)
+        {
+            auto local_aux = new LocalVariableTypeTable{};
+            local_aux->start_pc = read_u2();
+            local_aux->length = read_u2();
+            local_aux->name_index = read_u2();
+            local_aux->signature_index = read_u2();
+            local_aux->index = read_u2();
+            Entry->local_variable_type_table->push_back(local_aux);
         }
-        case AttributeType::LineNumberTable: {
-            Entry->line_number_table_length = read_u2();
-            Entry->line_number_table = new std::vector<line_number_table*>;
-            Entry->line_number_table->reserve(Entry->line_number_table_length);
-            for (int i = 0; i < Entry->line_number_table_length; ++i) {
-                auto TableEntry = new line_number_table{};
-                TableEntry->start_pc = read_u2();
-                TableEntry->line_number = read_u2();
-                Entry->line_number_table->push_back(TableEntry);
-            }
-            break;
-        }
-        case AttributeType::LocalVariableTable: {
-            Entry->local_variable_table_length = read_u2();
-            Entry->local_variable_table = new std::vector<LocalVariableTableEntry*>;
-            for (int i = 0; i < Entry->local_variable_table_length; ++i) {
-                auto local_aux = new LocalVariableTableEntry{};
-                local_aux->start_pc = read_u2();
-                local_aux->length = read_u2();
-                local_aux->name_index = read_u2();
-                local_aux->descriptor_index = read_u2();
-                local_aux->index = read_u2();
-                Entry->local_variable_table->push_back(local_aux);
-            }
-            break;
-        }
-        case AttributeType::LocalVariableTypeTable: {
-            Entry->local_variable_type_table_length = read_u2();
-            Entry->local_variable_type_table = new std::vector<LocalVariableTypeTable*>;
-            for (int i = 0; i < Entry->local_variable_type_table_length; ++i) {
-                auto local_aux = new LocalVariableTypeTable{};
-                local_aux->start_pc = read_u2();
-                local_aux->length = read_u2();
-                local_aux->name_index = read_u2();
-                local_aux->signature_index = read_u2();
-                local_aux->index = read_u2();
-                Entry->local_variable_type_table->push_back(local_aux);
-            }
-            break;
-        }
-        case AttributeType::StackMapTable: {
-            Entry->number_of_entries = read_u2();
-            Entry->entries = new std::vector<stack_map_frame*>;
-            for (int i = 0; i < Entry->number_of_entries; ++i) {
-                auto entry = new stack_map_frame{};
-                entry->frame_type = read_u1();
+        break;
+    }
+    case AttributeType::StackMapTable:
+    {
+        Entry->number_of_entries = read_u2();
+        Entry->entries = new std::vector<stack_map_frame *>;
+        for (int i = 0; i < Entry->number_of_entries; ++i)
+        {
+            auto entry = new stack_map_frame{};
+            entry->frame_type = read_u1();
 
-                switch (entry->frame_type) {
-                    case 0 ... 63: // same_frame
-                        // Nenhum campo adicional
-                        break;
-                    case 64 ... 127: // same_locals_1_stack_item_frame
-                    case 247: // same_locals_1_stack_item_frame_extended
-                        entry->same_locals_1_stack_item_frame.stack.tag = read_u1();
-                        if (entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Object ||
-                            entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Uninitialized) {
-                            entry->same_locals_1_stack_item_frame.stack.cpool_index = read_u2();
-                        }
-                        break;
-                    case 248 ... 250: // chop_frame
-                        entry->chop_frame.offset_delta = read_u2();
-                        break;
-                    case 251: // same_frame_extended
-                        entry->same_frame_extended.offset_delta = read_u2();
-                        break;
-                    case 252 ... 254: // append_frame
-                        entry->append_frame.offset_delta = read_u2();
-                        entry->append_frame.locals = ReadVerificationTypeInfoList(entry->frame_type - 251);
-                        break;
-                    case 255: // full_frame
-                        entry->full_frame.offset_delta = read_u2();
-                        entry->full_frame.number_of_locals = read_u2();
-                        entry->full_frame.locals = ReadVerificationTypeInfoList(entry->full_frame.number_of_locals);
-                        entry->full_frame.number_of_stack_items = read_u2();
-                        entry->full_frame.stack = ReadVerificationTypeInfoList(entry->full_frame.number_of_stack_items);
-                        break;
-                    default:
-                        throw std::runtime_error("Invalid frame_type in StackMapTable_attribute");
+            switch (entry->frame_type)
+            {
+            case 0 ... 63: // same_frame
+                // Nenhum campo adicional
+                break;
+            case 64 ... 127: // same_locals_1_stack_item_frame
+            case 247:        // same_locals_1_stack_item_frame_extended
+                entry->same_locals_1_stack_item_frame.stack.tag = read_u1();
+                if (entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Object ||
+                    entry->same_locals_1_stack_item_frame.stack.tag == ITEM_Uninitialized)
+                {
+                    entry->same_locals_1_stack_item_frame.stack.cpool_index = read_u2();
                 }
-
-                Entry->entries->push_back(entry);
+                break;
+            case 248 ... 250: // chop_frame
+                entry->chop_frame.offset_delta = read_u2();
+                break;
+            case 251: // same_frame_extended
+                entry->same_frame_extended.offset_delta = read_u2();
+                break;
+            case 252 ... 254: // append_frame
+                entry->append_frame.offset_delta = read_u2();
+                entry->append_frame.locals = ReadVerificationTypeInfoList(entry->frame_type - 251);
+                break;
+            case 255: // full_frame
+                entry->full_frame.offset_delta = read_u2();
+                entry->full_frame.number_of_locals = read_u2();
+                entry->full_frame.locals = ReadVerificationTypeInfoList(entry->full_frame.number_of_locals);
+                entry->full_frame.number_of_stack_items = read_u2();
+                entry->full_frame.stack = ReadVerificationTypeInfoList(entry->full_frame.number_of_stack_items);
+                break;
+            default:
+                throw std::runtime_error("Invalid frame_type in StackMapTable_attribute");
             }
-            break;
+
+            Entry->entries->push_back(entry);
         }
-        default:
-            throw std::runtime_error("Unhandled attribute type");
+        break;
+    }
+    default:
+        throw std::runtime_error("Unhandled attribute type");
     }
 
     return Entry;
 }
 
-void ClassLoader::BuildFieldInfo(){
+void ClassLoader::BuildFieldInfo()
+{
     auto Entry = new field_info{};
 
-    Entry->access_flags     = read_u2();
-    Entry->name_index       = read_u2();
+    Entry->access_flags = read_u2();
+    Entry->name_index = read_u2();
     Entry->descriptor_index = read_u2();
     Entry->attributes_count = read_u2();
-    Entry->attributes       = new std::vector<attribute_info*>;
+    Entry->attributes = new std::vector<attribute_info *>;
 
     BuildAttributes(Entry->attributes_count, *Entry->attributes);
     current_file->fields->push_back(Entry);
 }
 
-void ClassLoader::BuildMethodInfo() {
+void ClassLoader::BuildMethodInfo()
+{
     auto Entry = new method_info{};
 
-    Entry->access_flags     = read_u2();
-    Entry->name_index       = read_u2();
+    Entry->access_flags = read_u2();
+    Entry->name_index = read_u2();
     Entry->descriptor_index = read_u2();
     Entry->attributes_count = read_u2();
-    Entry->attributes       = new std::vector<attribute_info*>;
+    Entry->attributes = new std::vector<attribute_info *>;
     BuildAttributes(Entry->attributes_count, *Entry->attributes);
 
     current_file->methods->push_back(Entry);
-
 }
 
-void ClassLoader::BuildConstantPoolTable() {
+void ClassLoader::BuildConstantPoolTable()
+{
     current_file->constant_pool_count = read_u2();
-    current_file->constant_pool = new std::vector<cp_info*>;
+    current_file->constant_pool = new std::vector<cp_info *>;
     current_file->constant_pool->reserve(current_file->constant_pool_count);
     current_file->constant_pool->push_back(new cp_info{}); // id 0 n conta
 
-    for(int i = 0; i< current_file->constant_pool_count-1; i++){
+    for (int i = 0; i < current_file->constant_pool_count - 1; i++)
+    {
         BuildConstantPoolInfo();
     }
-
 }
-void ClassLoader::BuildInterfaces(){
+void ClassLoader::BuildInterfaces()
+{
     current_file->interfaces_count = read_u2();
     current_file->interfaces = new std::vector<u2>;
     current_file->interfaces = read_vec<u2>(current_file->interfaces_count);
 }
 
-void ClassLoader::BuildFields() {
+void ClassLoader::BuildFields()
+{
     current_file->fields_count = read_u2();
-    current_file->fields = new std::vector<field_info*>;
+    current_file->fields = new std::vector<field_info *>;
     current_file->fields->reserve(current_file->fields_count);
-    for (int i = 0; i < current_file->fields_count; ++i) {
+    for (int i = 0; i < current_file->fields_count; ++i)
+    {
         BuildFieldInfo();
     }
 }
 
-void ClassLoader::BuildMethods() {
+void ClassLoader::BuildMethods()
+{
     current_file->methods_count = read_u2();
-    current_file->methods = new std::vector<method_info*>;
+    current_file->methods = new std::vector<method_info *>;
     current_file->methods->reserve(current_file->methods_count);
-    for (int i = 0; i < current_file->methods_count; ++i) {
+    for (int i = 0; i < current_file->methods_count; ++i)
+    {
         BuildMethodInfo();
     }
 }
 
-void ClassLoader::BuildAttributes() {
+void ClassLoader::BuildAttributes()
+{
     current_file->attributes_count = read_u2();
-    current_file->attributes = new std::vector<attribute_info*>;
+    current_file->attributes = new std::vector<attribute_info *>;
     current_file->attributes->reserve(current_file->attributes_count);
-    for (int i = 0; i < current_file->attributes_count; ++i) {
+    for (int i = 0; i < current_file->attributes_count; ++i)
+    {
         current_file->attributes->push_back(BuildAttributeInfo());
     }
 }
 
-void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_info *> &_attributes) {
+void ClassLoader::BuildAttributes(int _attributes_count, std::vector<attribute_info *> &_attributes)
+{
     _attributes.reserve(_attributes_count);
-    for (int i = 0; i < _attributes_count; ++i) {
+    for (int i = 0; i < _attributes_count; ++i)
+    {
         _attributes.push_back(BuildAttributeInfo());
     }
 }
-void ClassLoader::CheckMagic() {
+void ClassLoader::CheckMagic()
+{
     current_file->magic = read_u4();
 
     if (current_file->magic != 0xCAFEBABE)
         throw ClassFormatError("first four bytes must contain the right magic number");
 }
 
-
-void ClassLoader::CheckVersion() {
+void ClassLoader::CheckVersion()
+{
     current_file->minor_version = read_u2();
     current_file->major_version = read_u2();
 
-    if(current_file->major_version > 52){
+    if (current_file->major_version > 52)
+    {
         // throw UnsupportedClassVersionError(current_file->major_version);
     }
 }
 
-void ClassLoader::FormatCheck() {
+void ClassLoader::FormatCheck()
+{
     // magic e checado no comeco
 
-    if(!(iter == file_buffer->end()))
+    if (!(iter == file_buffer->end()))
         throw ClassFormatError("The class file must not be truncated or have extra bytes at the end.");
 
     /*

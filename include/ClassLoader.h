@@ -36,15 +36,15 @@ public:
 
     void LoadClass(const std::string nomeArquivo);
 
+    std::string TransformPathToClassName(const std::string &path);
+
+    std::vector<std::string> SplitString(const std::string &str, char delimiter);
+
 private:
     //carrega arquivo em buffer
 
     void LoadFile(const std::string& nomeArquivo);
-
-
-
-
-
+    
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador
     u1 read_u1();
