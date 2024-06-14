@@ -111,15 +111,12 @@ union Cat2Value{
     };
     uint64_t  AsLong;
     double    AsDouble;
-
-    float     AsFloat;
-    s2        AsShort;
-
 };
 
-union IntToFloat{
+union IntToType{
     u4    Bytes;
     float AsFloat;
+    s2 AsShort;
 };
 
 

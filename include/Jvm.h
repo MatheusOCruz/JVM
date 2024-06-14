@@ -115,6 +115,7 @@ private:
     void fload_1();
     void fload_2();
     void fload_3();
+    void dload(uint index);
     void dload_0();
     void dload_1();
     void dload_2();

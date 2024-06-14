@@ -480,6 +480,7 @@ void OpcodePrinter::iinc() {
 
 }
 void OpcodePrinter::i2l() {
+
     StringBuffer.append(" i2l\n");
 }
 void OpcodePrinter::i2f() {
