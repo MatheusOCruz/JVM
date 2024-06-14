@@ -219,7 +219,7 @@ attribute_info* ClassLoader::BuildAttributeInfo() {
             {"Code", 1},
             //
             {"Exceptions", 3},
-            {"InnerClasse", 4},
+            {"InnerClasses", 4},
             //
             {"SourceFile", 8}
     };

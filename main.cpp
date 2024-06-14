@@ -33,7 +33,7 @@ const char* shift_args(int & argc, char **argv[]) {
 
 // ESSA E A MAIN FUNCIONAL
 
-int mai1n(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 
 	const auto program_name = shift_args(argc, &argv);
 	if (!argc) {
@@ -79,7 +79,7 @@ int mai1n(int argc, char* argv[]) {
 
 // MAIN PRA TESTE JVM
 
-int main(){
+int mai2n(){
 
     int mode = JVM_MODE;
 

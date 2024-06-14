@@ -37,10 +37,6 @@ struct Frame{
 };
 
 
-// struct Reference{
-//     ReferenceType Type;
-//     void* Value;
-// };
 
 // definicao pra resolver definicao circular
 struct ClassInstance;
@@ -117,16 +113,13 @@ union Cat2Value{
     double    AsDouble;
 };
 
-union IntToFloat{
+union IntToType{
     u4    Bytes;
     float AsFloat;
-};
-
-
-union IdkValue{
-
     s2 AsShort;
 };
+
+
 
 
 #endif //JVM_JVMSTRUCTS_H

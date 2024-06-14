@@ -305,7 +305,8 @@ void Jvm::JavaPrint(std::string MethodDescriptor) {
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
-        auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString();
+        auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
+
         std::cout<<Output<<"\n";
     }
     if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
@@ -641,7 +642,7 @@ void Jvm::lload_3(){
 
 
 void Jvm::fload_0(){    
-    IntToFloat value{};
+    IntToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -651,7 +652,7 @@ void Jvm::fload_0(){
 
 
 void Jvm::fload_1(){    
-    IntToFloat value{};
+    IntToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -661,7 +662,7 @@ void Jvm::fload_1(){
 
 
 void Jvm::fload_2(){    
-    IntToFloat value{};
+    IntToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -671,7 +672,7 @@ void Jvm::fload_2(){
 
 
 void Jvm::fload_3(){    
-    IntToFloat value{};
+    IntToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -1392,7 +1393,7 @@ void Jvm::lsub(){
 
 
 void Jvm::fsub(){    
-    IntToFloat value1, value2;
+    IntToType value1, value2;
     float result;
 
     value2.AsFloat = CurrentFrame->OperandStack->Pop();
@@ -2072,7 +2073,7 @@ void Jvm::i2c(){
 // short is signed int16_t (s2)
 void Jvm::i2s(){    
 
-    IdkValue value{};
+    IntToType value{};
     // trunca e faz sign extension
     value.AsShort = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value.AsShort);

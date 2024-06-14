@@ -27,5 +27,4 @@ enum class ReferenceType{
 };
 
 
-
 #endif //JVM_JVMENUMS_H
