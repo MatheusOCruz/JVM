@@ -13,11 +13,10 @@ void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
 
-    std::string MainClass = main_file.substr(0, main_file.size()-6);
     Loader->LoadClass(main_file);
-    CurrentClass = GetClass(MainClass);
+    auto ClassName = Loader->GetClassFromPath(main_file);
+    CurrentClass = GetClass(ClassName);
 
-    std::cout<<main_file<<"\n";
 
 
     std::string MethodName = "<clinit>";
@@ -191,8 +190,9 @@ void Jvm::GetCurrentMethodCode(){
 }
 
 
-
+//TODO: concat cwd before calling class loader
 class_file* Jvm::GetClass(std::string class_name){
+
     if(MethodArea->find(class_name) == MethodArea->end()) {
 
         Loader->LoadClass(class_name);
@@ -299,25 +299,33 @@ void Jvm::return_u8(){
 
 
 
-//todo quebrada pra console log hello world, print de string: cp_info* aponta p endereço inválido
-void Jvm::JavaPrint(std::string MethodDescriptor) {
+
+void Jvm::JavaPrint(std::string& MethodDescriptor) {
     
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
 }
 
 
 
 
+void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOperandStack) {
+    int count = 0;
+    if(!Descriptor.empty())
+        count = numberOfEntriesFromString(Descriptor);
+    do{
+        u4 value = CallerOperandStack->Pop();
+        (*CurrentFrame->localVariables)[count] = value;
+    }while(count--);
+}
 
 
 
@@ -2500,9 +2508,8 @@ void Jvm::putstatic(){
 
 }
 
-// todo implement
 void Jvm::getfield(){
-u2 index       = GetIndex2();
+    u2 index = GetIndex2();
 
     auto Fieldref    = GetConstantPoolEntryAt(index);
     auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -2542,18 +2549,10 @@ void Jvm::new_(){
         auto ClassName = GetConstantPoolEntryAt(ref->name_index)->AsString();
         //allocate memory to class by name
 
+        if(MethodArea->find(ClassName) == MethodArea->end())
+            std::cerr<<"new: classe nao foi inicializada:"<<ClassName;
 
-
-        //TODO: reboco pra achar o path, temos que estipular as regras pro path dps
-        // std::string ClassPath = "/home/matheus/prog/JVM/exemplos/";
-        std::string ClassPath = "/home/aelk/unb/24.1/sb/JVM/src/exemplos/";
-        ClassPath.append(ClassName);
-
-
-        if(MethodArea->find(ClassPath) == MethodArea->end())
-            std::cerr<<"new: classe nao foi inicializada:"<<ClassPath;
-
-        auto ClassFile = GetClass(ClassPath);
+        auto ClassFile = GetClass(ClassName);
         auto ClassHandle = new Handle;
         ClassHandle->ClassObject = ClassFile;
         ClassHandle->MethodTable = ClassFile->methods;
@@ -2565,8 +2564,8 @@ void Jvm::new_(){
         auto ObjectRef = new Reference;
         ObjectRef->Type = ReferenceType::ClassType;
         ObjectRef->ClassRef = Object;
-// todo implement/fix
-        // CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
+
+        CurrentFrame->OperandStack->push(reinterpret_cast<u4>(ObjectRef));
     }
     else if(ref->tag == ConstantPoolTag::CONSTANT_InterfaceMethodref){
         cp_info* InterfaceNameAndType = (*CurrentClass->constant_pool)[ref->name_and_type_index];
@@ -2583,7 +2582,7 @@ void Jvm::new_(){
 }
 
 void Jvm::putfield(){
-u2 index       = GetIndex2();
+    u2 index       = GetIndex2();
 
     auto Fieldref    = GetConstantPoolEntryAt(index);
     auto NameAndType = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -2617,11 +2616,11 @@ void Jvm::invokevirtual(){
     auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
     if(Name == "println"){
         JavaPrint(MethodDescriptor);
-
     }
 
-
-    std::cout<<"erro?\n";
+    else{
+        std::cerr<<"unico metodo virtual implementado e o println\n";
+    }
 
 
 }
@@ -2640,8 +2639,8 @@ void Jvm::invokevirtual(){
  *   long / double _> le 2 entradas
  *   while(count--)
  */
-// TODO: parse do descriptor pra ler os tipos e pegar na constant pool
-// TODO: lidar com new frame, to focando so em instanciar a classe da main pra teste
+// TODO: INSTANCIAS DE OUTRAS CLASSES (ta carregando o init da main)
+
 void Jvm::invokespecial(){    
     u2 index = GetIndex2();
     auto MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
@@ -2654,21 +2653,18 @@ void Jvm::invokespecial(){
         return;
 
     auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
+    //faz uma copia da pilha de operandos do frame atual pra carregar as variaveis locais na pilha nova
     auto CallerOperandStack = CurrentFrame->OperandStack;
 
-    Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
+
     SaveFrameState();
     NewFrame();
     GetMethod("<init>");
     GetCurrentMethodCode();
     SaveFrameState();
-    int count = 0;
-    if(!Descriptor.empty())
-        count = numberOfEntriesFromString(Descriptor);
-    do{
-        u4 value = CallerOperandStack->Pop();
-        (*CurrentFrame->localVariables)[count] = value;
-    }while(count--);
+
+    Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
+    LoadLocalVariables(Descriptor, CallerOperandStack);
 
 }
 // todo implement
@@ -2823,5 +2819,6 @@ void Jvm::jsr_w(){
     //nota: devia ter dado push como type returnAddress? n aconteceu
 
 }
+
 
 

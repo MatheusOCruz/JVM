@@ -33,5 +33,7 @@ add_executable(
         include/JvmEnums.h
         src/RunTimeExceptions.cpp
         include/RunTimeExceptions.h
+        utils.cpp
+        utils.h
 
 )

@@ -4,11 +4,14 @@
 
 #include "../include/ClassLoader.h"
 
-class_file* ClassLoader::GetClass(const std::string class_file_path) {
+#include "../utils.h"
+
+class_file* ClassLoader::GetClass( std::string class_file_path) {
     if (!((*class_files).count(class_file_path))) {
         LoadClass(class_file_path);
     }
-    return (*class_files)[class_file_path.substr(0, class_file_path.size() - 6)];
+    std::string class_name = GetClassFromPath(class_file_path);
+    return (*class_files)[class_name];
 }
 
 void ClassLoader::LoadClass(const std::string nomeArquivo) {
@@ -30,7 +33,7 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     FormatCheck();
 
-    std::string NomeDaClasse = nomeArquivo.substr(0, nomeArquivo.size()-6);
+    std::string NomeDaClasse = GetClassFromPath(nomeArquivo);
     (*class_files)[NomeDaClasse] = current_file;
 
     delete file_buffer;
@@ -43,7 +46,9 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
     const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-    LoadClass(SuperName);
+    auto cwd = utils::GetCWD();
+    auto SuperPath = cwd+"/"+SuperName+".class";
+    LoadClass(SuperPath);
 }
 
 void ClassLoader::LoadFile(const std::string& nomeArquivo) {
@@ -54,12 +59,13 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
     if (!std::regex_search(nomeArquivo, ClassFIleTermination))
         classPath = nomeArquivo + ".class";
 
-    if(classPath == std::string("java/lang/Object.class")){
-        classPath = "./Object.class";
-        //classPath = "/home/matheus/prog/JVM/Object.class";
+    std::regex ObjectClass (".*\\java/lang/Object.class$");
+    if(std::regex_search(nomeArquivo, ObjectClass)){
+        auto cwd = utils::GetCWD();
+        classPath = cwd+"/Object.class";
     }
     #ifdef _WIN32
-    std::replace(classPath.begin(),classPath.end(),'/','\\');
+        std::replace(classPath.begin(),classPath.end(),'/','\\');
     #endif
     std::ifstream arquivo(classPath, std::ios::binary);
 
@@ -411,3 +417,19 @@ void ClassLoader::FormatCheck() {
          names, valid classes, and valid descriptors (§4.3).
      */
 }
+
+
+std::string ClassLoader::GetClassFromPath(std::string class_path){
+
+    class_path = class_path.substr(0,class_path.size()-6);
+    auto cwd = utils::GetCWD();
+    if(class_path.find(cwd) == 0)
+        return class_path.substr(cwd.size()+1);
+    else if(class_path.find("./") == 0)
+        return class_path.substr(2);
+
+    return class_path;
+
+
+}
+

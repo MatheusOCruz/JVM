@@ -31,6 +31,7 @@ public:
 
 
     class_file* GetClass(const std::string class_file_path);
+    std::string GetClassFromPath(std::string class_path);
 
     void LoadClass(const std::string nomeArquivo);
 
@@ -38,8 +39,6 @@ private:
     //carrega arquivo em buffer
 
     void LoadFile(const std::string& nomeArquivo);
-
-
 
 
 
@@ -74,6 +73,8 @@ private:
     buffer_iterator             iter; // ler bytes sem ter q recalcular o offset
     class_file*                 current_file{};
     std::unordered_map<std::string ,class_file*>* class_files;
+
+
 };
 
 

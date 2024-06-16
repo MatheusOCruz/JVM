@@ -33,7 +33,7 @@ private:
     u1   NextCodeByte();
     void ExecBytecode();
 
-    void NewClassInstance(std::string class_name);
+    void LoadLocalVariables(std::string &Descriptor, JVM::stack<u4> *CallerOperandStack);
 
     class_file* GetClass(std::string class_name);
     cp_info*    GetConstantPoolEntryAt(u2 index);
@@ -57,7 +57,7 @@ private:
     ClassLoader*    Loader;
 
 
-    void JavaPrint(std::string MethodDescriptor);
+    void JavaPrint(std::string& MethodDescriptor);
 
     //funcoes auxiliares pro bytecode
     void return_u4();
