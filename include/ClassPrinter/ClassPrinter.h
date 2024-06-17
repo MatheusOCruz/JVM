@@ -8,10 +8,10 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "ClassFileStructs.h"
-#include "ClassLoader.h"
+#include "../ClassLoader/ClassFileStructs.h"
+#include "../ClassLoader/ClassLoader.h"
 #include "OpcodePrinter.h"
-#include "Jvm.h"
+#include "../Jvm/Jvm.h"
 #include <unordered_map>
 
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader

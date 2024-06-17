@@ -16,7 +16,7 @@
 #include <unordered_map>
 #include "ClassFileEnums.h"
 #include "ClassFileStructs.h"
-#include "typedefs.h"
+#include "../typedefs.h"
 #include "ClassLoaderErrors.h"
 
 // ainda n sei como que tem q retornar essas info, ent por enquanto so vai dar load

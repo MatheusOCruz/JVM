@@ -2,7 +2,7 @@
 // Created by matheus on 4/9/24.
 //
 
-#include "../include/ClassPrinter.h"
+#include "../../include/ClassPrinter/ClassPrinter.h"
 
 std::string ClassPrinter::ClassName(const cp_info *Entry) {
 

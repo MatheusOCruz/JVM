@@ -1,8 +1,9 @@
-//jvmjvm.cjvm.c
+//jvm.c
 // Created by matheus on 4/11/24.
 //
-// !todo: excluir prints , ctr f 
-#include "../include/Jvm.h"
+// !todo: excluir prints , ctr f
+
+#include "../../include/Jvm/Jvm.h"
 #include <cmath>
 #include <limits>
 #include <unordered_set>
@@ -194,9 +195,15 @@ void Jvm::GetCurrentMethodCode(){
 class_file* Jvm::GetClass(std::string class_name){
 
     if(MethodArea->find(class_name) == MethodArea->end()) {
-
         Loader->LoadClass(class_name);
-    //TODO: EXECUTAR METODO ESTATICO DESSA CLASSE
+        std::string MethodName = "<clinit>";
+        if(GetMethod(MethodName)){
+            GetCurrentMethodCode();
+            NewFrame();
+            CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
+            SaveFrameState();
+            ExecBytecode();
+        }
     }
 
     return (*MethodArea)[class_name];
@@ -308,10 +315,12 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
         std::cout<<Output;
     }
-    if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
+    else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
         std::cout<<Output;
     }
+
+
 }
 
 
@@ -2549,9 +2558,6 @@ void Jvm::new_(){
         auto ClassName = GetConstantPoolEntryAt(ref->name_index)->AsString();
         //allocate memory to class by name
 
-        if(MethodArea->find(ClassName) == MethodArea->end())
-            std::cerr<<"new: classe nao foi inicializada:"<<ClassName;
-
         auto ClassFile = GetClass(ClassName);
         auto ClassHandle = new Handle;
         ClassHandle->ClassObject = ClassFile;
@@ -2624,21 +2630,7 @@ void Jvm::invokevirtual(){
 
 
 }
-/*
- *
- *
- *
- *
- */
-// tested, works
 
-/*
- *   copia do frame atual
- *   novo frame, metodo
- *   array de variaveis
- *   long / double _> le 2 entradas
- *   while(count--)
- */
 // TODO: INSTANCIAS DE OUTRAS CLASSES (ta carregando o init da main)
 
 void Jvm::invokespecial(){    

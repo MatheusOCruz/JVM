@@ -8,7 +8,7 @@
 #include <stack>
 #include <utility>
 
-#include "ClassLoader.h"
+#include "../ClassLoader/ClassLoader.h"
 #include "JvmStructs.h"
 #include "JvmEnums.h"
 #include "RunTimeExceptions.h"
@@ -46,7 +46,6 @@ private:
 
     JVM::stack<Frame*>                            FrameStack;
     std::unordered_map<std::string, class_file*>* MethodArea;
-    std::vector<Reference>                        Heap;
 
 
     Frame*          CurrentFrame;

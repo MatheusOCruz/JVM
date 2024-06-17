@@ -6,7 +6,7 @@
 #define JVM_JVMSTRUCTS_H
 #include <stack>
 #include "JvmEnums.h"
-#include "typedefs.h"
+#include "../typedefs.h"
 
 namespace JVM{
 
