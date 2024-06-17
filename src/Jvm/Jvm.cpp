@@ -41,7 +41,7 @@ void Jvm::Run(){
 
 // big endian
 u8 Jvm::popU8FromOpStack(){
-u4 LowBytes = CurrentFrame->OperandStack->Pop();
+    u4 LowBytes = CurrentFrame->OperandStack->Pop();
     u4 HighBytes = CurrentFrame->OperandStack->Pop();
     return (static_cast<u8>(HighBytes) << 32) | LowBytes;
 }
@@ -472,7 +472,7 @@ void Jvm::bipush(){
 }
 
 void Jvm::sipush(){    
-    u2 value = GetIndex2();
+    u4 value = GetIndex2();
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
 }
 
@@ -683,7 +683,7 @@ void Jvm::lload_3(){
 
 
 void Jvm::fload_0(){    
-    IntToType value{};
+    U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -693,7 +693,7 @@ void Jvm::fload_0(){
 
 
 void Jvm::fload_1(){    
-    IntToType value{};
+    U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -703,7 +703,7 @@ void Jvm::fload_1(){
 
 
 void Jvm::fload_2(){    
-    IntToType value{};
+    U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -713,7 +713,7 @@ void Jvm::fload_2(){
 
 
 void Jvm::fload_3(){    
-    IntToType value{};
+    U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value.Bytes);
 
@@ -795,61 +795,106 @@ void Jvm::iaload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"iaload: referencia nao é acessível\n";
     if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"iaload: referencia nao e para um array\n";
 
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
-    if(Array->ComponentType != ArrayTypeCode::T_INT)
+    if(Array->ComponentType != ArrayTypeCode::T_INT) // todo runtime exception
         std::cerr<<"iaload: Array nao e de int\n";
+
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
+    CurrentFrame->OperandStack->push(value);
+}
+
+
+
+// todo test
+void Jvm::laload(){    
+    Cat2Value value;
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"laload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"laload: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_LONG)
+        std::cerr<<"laload: Array nao e de long\n";
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    value.AsLong = reinterpret_cast<long*>(Array->ArrayVec)[index];
+
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
+
+
+}
+
+
+
+// todo test
+void Jvm::faload(){    
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"faload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"faload: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_FLOAT) // todo runtime exception
+        std::cerr<<"faload: Array nao e de float\n";
 
     u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 
-
-    // Reference* arrayRef = CurrentFrame->OperandStack->PopRef<Reference>();
-
-    // if(pointer == nullptr || pointer == NULL){
-    //     //throw std::runtime_error("NullPointerException"
-    //     return;
-    // }
-
-    // u4 smt = static_cast<int*>(arrayRef.Value)[index];
-    // todo exception If arrayref is null, iaload throws a NullPointerException
-
-    // u4 value = static_cast<int*>(arrayRef->Value)[index];
-    // CurrentFrame->OperandStack->push(value);
 }
 
 
 
-// todo implement
-void Jvm::laload(){    
+// todo test
+void Jvm::daload(){   
+    Cat2Value value;
+    u4 index = CurrentFrame->OperandStack->Pop();
 
-}
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"laload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"laload: referencia nao e para um array\n";
 
+    ArrayInstance* Array = ArrayRef->ArrayRef;
 
+    if(Array->ComponentType != ArrayTypeCode::T_DOUBLE)
+        std::cerr<<"laload: Array nao e de double\n";
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-// todo implement
-void Jvm::faload(){    
+    value.AsDouble = reinterpret_cast<double*>(Array->ArrayVec)[index];
 
-}
-
-
-
-// todo implement
-void Jvm::daload(){    
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
 
 }
 
 
 
-// todo implement. done??
+// todo test
 void Jvm::aaload(){    
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"aaload: referencia nao é acessível\n";
     if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"aaload: referencia nao e para um array\n";
 
@@ -865,24 +910,66 @@ void Jvm::aaload(){
 }
 
 
-// todo implement
-// todo fix ctz errado erradasso
+// todo test
 void Jvm::baload(){    
-    // ..., arrayref, index → ..., value: index ta empilhado em cima de arrayref pela documentacao
     u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"baload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"baload: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_BYTE) // todo runtime exception
+        std::cerr<<"baload: Array nao e de byte\n";
+
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    CurrentFrame->OperandStack->push(value);
 }
 
 
 
-
+// todo test
 void Jvm::caload(){    
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"caload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"caload: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_CHAR) // todo runtime exception
+        std::cerr<<"caload: Array nao e de char\n";
+
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    CurrentFrame->OperandStack->push(value);
 
 }
 
 
 
-
+// todo test
 void Jvm::saload(){    
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"saload: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"saload: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_SHORT) // todo runtime exception
+        std::cerr<<"saload: Array nao e de short\n";
+
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    CurrentFrame->OperandStack->push(value);
 
 }
 
@@ -935,7 +1022,7 @@ void Jvm::dstore(){
 
 
 
-// todo check
+// todo ctest
 void Jvm::astore(){    
     u1 index = (*CurrentCode->code)[pc++];
     u4 objectref = CurrentFrame->OperandStack->Pop();
@@ -1154,51 +1241,106 @@ void Jvm::astore_3(){
 
 
 
-// todo how to arrayref
+
 void Jvm::iastore(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"iastore: referencia nao é acessível\n";
     if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"iastore: referencia nao e para um array\n";
 
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_INT)
-        std::cerr<<"iastore: Array nao e de int\n";
+        std::cerr<<"iastore: Array nao e de int\n"; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
     reinterpret_cast<int*>(Array->DataVec)[index] = static_cast<int>(value);
 }
 
 
-// todo implement
+// todo test
 void Jvm::lastore(){    
+    long long value = popU8FromOpStack();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"lastore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"lastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    if(Array->ComponentType != ArrayTypeCode::T_LONG)
+        std::cerr<<"lastore: Array nao e de long\n";
+
+    reinterpret_cast<long long*>(Array->DataVec)[index] = (value);
 
 }
 
 
 
-// todo implement
+// todo test
 void Jvm::fastore(){    
+    u4 value = CurrentFrame->OperandStack->Pop();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"fastore: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"fastore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_FLOAT)
+        std::cerr<<"fastore: Array nao e de float\n"; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"fastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    reinterpret_cast<float*>(Array->DataVec)[index] = static_cast<float>(value);
 
 }
 
 
 
-// todo implement
+// todo test
 void Jvm::dastore(){    
+    double value = popU8FromOpStack();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"dastore: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"dastore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"dastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    if(Array->ComponentType != ArrayTypeCode::T_DOUBLE)
+        std::cerr<<"dastore: Array nao e de double\n";
+
+    reinterpret_cast<double*>(Array->DataVec)[index] = (value);
 
 }
 
 
 
-// todo implement
+// todo test
 void Jvm::aastore(){    
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"aastore: referencia nao é acessível\n";
     if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"aastore: referencia nao e para um array\n";
 
@@ -1212,22 +1354,73 @@ void Jvm::aastore(){
 
 
 
-// todo implement
+// todo test
 void Jvm::bastore(){    
+    u4 value = CurrentFrame->OperandStack->Pop();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"bastore: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"bastore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_BYTE)
+        std::cerr<<"bastore: Array nao e de byte\n"; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"bastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    reinterpret_cast<u1*>(Array->DataVec)[index] = static_cast<u1>(value);
 
 }
 
 
 
-// todo implement
+// todo test
 void Jvm::castore(){    
+    u4 value = CurrentFrame->OperandStack->Pop();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"castore: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"castore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_CHAR)
+        std::cerr<<"castore: Array nao e de char\n"; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"castore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    reinterpret_cast<char*>(Array->DataVec)[index] = static_cast<char>(value); //todo use u1 or s1
 
 }
 
 
 
-// todo implement
+// todo test
 void Jvm::sastore(){    
+    u4 value = CurrentFrame->OperandStack->Pop();
+    u4 index = CurrentFrame->OperandStack->Pop();
+
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    if(ArrayRef == NULL ) // todo runtime exception
+        std::cerr<<"sastore: referencia nao é acessível\n";
+    if(ArrayRef->Type != ReferenceType::ArrayType)
+        std::cerr<<"sastore: referencia nao e para um array\n";
+
+    ArrayInstance* Array = ArrayRef->ArrayRef;
+
+    if(Array->ComponentType != ArrayTypeCode::T_SHORT)
+        std::cerr<<"sastore: Array nao e de short\n"; 
+    if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
+        std::cerr<<"sastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
+
+    reinterpret_cast<short*>(Array->DataVec)[index] = static_cast<short>(value); //todo use u1 or s1
 
 }
 
@@ -1434,7 +1627,7 @@ void Jvm::lsub(){
 
 
 void Jvm::fsub(){    
-    IntToType value1, value2;
+    U4ToType value1, value2;
     float result;
 
     value2.AsFloat = CurrentFrame->OperandStack->Pop();
@@ -1864,7 +2057,7 @@ void Jvm::lxor(){
 
 
 
-void Jvm::iinc(){ //todo pode ser alterado por wide, ver --p
+void Jvm::iinc(){ //todo pode ser alterado por wide, ver --
 
 std::cout<<"iinc\n";
     u1 index = (*CurrentCode->code)[pc++];
@@ -2114,7 +2307,7 @@ void Jvm::i2c(){
 // short is signed int16_t (s2)
 void Jvm::i2s(){    
 
-    IntToType value{};
+    U4ToType value{};
     // trunca e faz sign extension
     value.AsShort = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value.AsShort);
@@ -2682,7 +2875,7 @@ void Jvm::invokespecial(){
 
 
 
-// todo implement
+
 void Jvm::invokestatic(){    
     auto a= reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
 

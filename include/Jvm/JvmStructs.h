@@ -113,7 +113,7 @@ union Cat2Value{
     double    AsDouble;
 };
 
-union IntToType{
+union U4ToType{
     u4    Bytes;
     float AsFloat;
     s2 AsShort;
