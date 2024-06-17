@@ -58,13 +58,13 @@ void ClassLoader::LoadFile(const std::string& nomeArquivo) {
     std::regex ClassFIleTermination (".*\\.class$");
 
     if (!std::regex_search(nomeArquivo, ClassFIleTermination))
-        classPath ="/home/matheus/prog/JVM/"+nomeArquivo + ".class";
+        classPath ="/home/matheus/CLionProjects/JVM2/"+nomeArquivo + ".class";
 
     std::regex ObjectClass (".*\\java/lang/Object.class$");
     if(std::regex_search(nomeArquivo, ObjectClass)){
 
         classPath = "/Object.class";
-        classPath = "/home/matheus/prog/JVM/" + classPath;
+        classPath = "/home/matheus/CLionProjects/JVM2/" + classPath;
     }
     #ifdef _WIN32
         std::replace(classPath.begin(),classPath.end(),'/','\\');

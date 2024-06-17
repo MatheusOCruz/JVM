@@ -191,24 +191,31 @@ void Jvm::GetCurrentMethodCode(){
 }
 
 
-//TODO: concat cwd before calling class loader
 class_file* Jvm::GetClass(std::string class_name){
 
     if(MethodArea->find(class_name) == MethodArea->end()) {
         Loader->LoadClass(class_name);
-        std::string MethodName = "<clinit>";
-        if(GetMethod(MethodName)){
-            GetCurrentMethodCode();
-            NewFrame();
-            CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
-            SaveFrameState();
-            ExecBytecode();
-        }
+        CheckStaticInit(class_name);
     }
 
     return (*MethodArea)[class_name];
 }
 
+void Jvm::CheckStaticInit(std::string class_name) {
+    SaveFrameState();
+    NewFrame();
+    CurrentClass = GetClass(class_name);
+    CurrentFrame->frameClass = CurrentClass;
+
+    std::string MethodName = "<clinit>";
+    if (GetMethod(MethodName)) {
+        GetCurrentMethodCode();
+        SaveFrameState();
+    }
+    else{
+        PopFrameStack(); // retorna ao frame antigo
+    }
+}
 // Create intance of class based on class file
 
 
@@ -303,7 +310,19 @@ void Jvm::return_u8(){
 
 }
 
+void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Descriptor){
+    auto CallerOperandStack = CurrentFrame->OperandStack;
+    SaveFrameState();
+    NewFrame();
+    CurrentClass = GetClass(ClassName);
+    CurrentFrame->frameClass = CurrentClass;
+    GetMethod(MethodName);
+    GetCurrentMethodCode();
+    SaveFrameState();
 
+    Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
+    LoadLocalVariables(Descriptor, CallerOperandStack);
+}
 
 
 
@@ -2614,19 +2633,22 @@ void Jvm::invokevirtual(){
     u2 index = GetIndex2();
 
     cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
-
+    auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
+    auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
     cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
 
     // formato <valor>
-    auto Name = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
     auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
-    if(Name == "println"){
+    if(MethodName == "println"){
         JavaPrint(MethodDescriptor);
+        return;
     }
 
-    else{
-        std::cerr<<"unico metodo virtual implementado e o println\n";
-    }
+    invoke(ClassName, MethodName, MethodDescriptor);
+
+
+
 
 
 }
@@ -2638,6 +2660,7 @@ void Jvm::invokespecial(){
     auto MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
 
     auto Class = GetConstantPoolEntryAt(MethodOrInterfaceMethod->class_index);
+
     auto NameAndType = GetConstantPoolEntryAt(MethodOrInterfaceMethod->name_and_type_index);
 
     auto ClassName = GetConstantPoolEntryAt(Class->name_index)->AsString();
@@ -2646,19 +2669,14 @@ void Jvm::invokespecial(){
 
     auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
     //faz uma copia da pilha de operandos do frame atual pra carregar as variaveis locais na pilha nova
-    auto CallerOperandStack = CurrentFrame->OperandStack;
 
 
-    SaveFrameState();
-    NewFrame();
-    GetMethod("<init>");
-    GetCurrentMethodCode();
-    SaveFrameState();
-
-    Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
-    LoadLocalVariables(Descriptor, CallerOperandStack);
+    invoke(ClassName, {"<init>"}, Descriptor);
 
 }
+
+
+
 // todo implement
 void Jvm::invokestatic(){    
     auto a= reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
