@@ -119,7 +119,7 @@ inline cp_info* Jvm::GetConstantPoolEntryAt(u2 index){
 }
 
 void Jvm::ExecBytecode(){    
-    while(pc < CurrentCode->code_length){ //todo fix?
+    while(pc < CurrentCode->code_length){
         u1 bytecode =  NextCodeByte();
         (this->*bytecodeFuncs[bytecode])();
     }
@@ -202,15 +202,20 @@ class_file* Jvm::GetClass(std::string class_name){
 }
 
 void Jvm::CheckStaticInit(std::string class_name) {
+    // apos o static, o new vai ser executado novamente
+    // ent voltamos o pc pra antes dele (opcode + u2 index)
+    pc-=3;
+
     SaveFrameState();
     NewFrame();
     CurrentClass = GetClass(class_name);
+    CurrentClass->StaticFields = new std::unordered_map<std::string, FieldEntry*>;
     CurrentFrame->frameClass = CurrentClass;
-
     std::string MethodName = "<clinit>";
     if (GetMethod(MethodName)) {
         GetCurrentMethodCode();
         SaveFrameState();
+
     }
     else{
         PopFrameStack(); // retorna ao frame antigo
