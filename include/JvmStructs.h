@@ -117,6 +117,7 @@ union IntToType{
     u4    Bytes;
     float AsFloat;
     s2 AsShort;
+    char AsChar;
 };
 
 
