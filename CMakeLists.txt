@@ -14,26 +14,26 @@ endif()
 add_executable(
         JVM main.cpp
 
-        include/ClassLoader.h
-        include/ClassFileStructs.h
-        include/ClassFileEnums.h
+        include/ClassLoader/ClassLoader.h
+        include/ClassLoader/ClassFileStructs.h
+        include/ClassLoader/ClassFileEnums.h
         include/typedefs.h
-        include/AttributeStructs.h
-        include/ClassPrinter.h
-        include/ClassLoaderErrors.h
-        include/JvmStructs.h
-        include/Jvm.h
+        include/ClassLoader/AttributeStructs.h
+        include/ClassPrinter/ClassPrinter.h
+        include/ClassLoader/ClassLoaderErrors.h
+        include/Jvm/JvmStructs.h
+        include/Jvm/Jvm.h
 
-        src/ClassLoader.cpp
-        src/ClassPrinter.cpp
-        src/ClassLoaderErrors.cpp
-        src/Jvm.cpp
-        src/OpcodePrinter.cpp
-        include/OpcodePrinter.h
-        include/JvmEnums.h
-        src/RunTimeExceptions.cpp
-        include/RunTimeExceptions.h
-        utils.cpp
-        utils.h
+        src/ClassLoader/ClassLoader.cpp
+        src/ClassPrinter/ClassPrinter.cpp
+        src/ClassLoader/ClassLoaderErrors.cpp
+        src/Jvm/Jvm.cpp
+        src/ClassPrinter/OpcodePrinter.cpp
+        include/ClassPrinter/OpcodePrinter.h
+        include/Jvm/JvmEnums.h
+        src/Jvm/RunTimeExceptions.cpp
+        include/Jvm/RunTimeExceptions.h
+        src/utils.cpp
+        include/utils.h
 
 )

@@ -7,7 +7,7 @@
 
 #include <exception>
 #include <string>
-#include "typedefs.h"
+#include "../typedefs.h"
 class ClassLoaderError : public std::exception {
 
 };

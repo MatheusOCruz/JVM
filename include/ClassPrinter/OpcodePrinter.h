@@ -6,7 +6,7 @@
 #define JVM_OPCODEPRINTER_H
 
 #include <string>
-#include "typedefs.h"
+#include "../typedefs.h"
 #include <iostream>
 class OpcodePrinter {
 public:

@@ -1,11 +1,10 @@
 #include <iostream>
 #include <iterator>
-#include <regex>
 #include <cstring>
 #include <cassert>
 
-#include "include/Jvm.h"
-#include "include/ClassPrinter.h"
+#include "include/Jvm/Jvm.h"
+#include "include/ClassPrinter/ClassPrinter.h"
 
 
 #define JVM_MODE 0
@@ -33,7 +32,7 @@ const char* shift_args(int & argc, char **argv[]) {
 
 // ESSA E A MAIN FUNCIONAL
 
-int main(int argc, char* argv[]) {
+int dmain(int argc, char* argv[]) {
 
 	const auto program_name = shift_args(argc, &argv);
 	if (!argc) {
@@ -79,11 +78,11 @@ int main(int argc, char* argv[]) {
 
 // MAIN PRA TESTE JVM
 
-int mai2n(){
+int main(){
 
     int mode = JVM_MODE;
 
-    std::string file = "/home/matheus/prog/JVM/exemplos/TestFunctionCall.class";
+    std::string file = "UsaPessoa";
     switch (mode) {
         case JVM_MODE:
             Jvm(file).Run();

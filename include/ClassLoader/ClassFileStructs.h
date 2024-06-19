@@ -18,9 +18,9 @@ struct class_file;
 union FieldEntry;
 
 #include "ClassFileEnums.h"
-#include "typedefs.h"
+#include "../typedefs.h"
 #include "AttributeStructs.h"
-#include "JvmStructs.h"
+#include "../Jvm/JvmStructs.h"
 
 
 struct cp_info{

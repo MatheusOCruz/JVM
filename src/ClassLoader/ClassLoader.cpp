@@ -2,9 +2,9 @@
 // Created by matheus on 4/2/24.
 //
 
-#include "../include/ClassLoader.h"
+#include "../../include/ClassLoader/ClassLoader.h"
 
-#include "../utils.h"
+#include "../../include/utils.h"
 
 class_file* ClassLoader::GetClass( std::string class_file_path) {
     if (!((*class_files).count(class_file_path))) {
@@ -54,15 +54,17 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 void ClassLoader::LoadFile(const std::string& nomeArquivo) {
     // garante que arquivo fornecido e .class
     auto classPath = nomeArquivo;
+    auto cwd = utils::GetCWD();
     std::regex ClassFIleTermination (".*\\.class$");
 
     if (!std::regex_search(nomeArquivo, ClassFIleTermination))
-        classPath = nomeArquivo + ".class";
+        classPath = cwd + "/"+ nomeArquivo + ".class";
 
     std::regex ObjectClass (".*\\java/lang/Object.class$");
     if(std::regex_search(nomeArquivo, ObjectClass)){
-        auto cwd = utils::GetCWD();
-        classPath = cwd+"/Object.class";
+
+        classPath = "Object.class";
+        classPath = cwd+"/" + classPath;
     }
     #ifdef _WIN32
         std::replace(classPath.begin(),classPath.end(),'/','\\');
@@ -421,7 +423,7 @@ void ClassLoader::FormatCheck() {
 
 std::string ClassLoader::GetClassFromPath(std::string class_path){
 
-    class_path = class_path.substr(0,class_path.size()-6);
+
     auto cwd = utils::GetCWD();
     if(class_path.find(cwd) == 0)
         return class_path.substr(cwd.size()+1);

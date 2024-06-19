@@ -2,7 +2,7 @@
 // Created by matheus on 4/20/24.
 //
 
-#include "../include/ClassLoaderErrors.h"
+#include "../../include/ClassLoader/ClassLoaderErrors.h"
 
 
 //TODO: formatar msg de retorno

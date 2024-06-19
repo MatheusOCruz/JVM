@@ -6,7 +6,7 @@
 #define JVM_JVMSTRUCTS_H
 #include <stack>
 #include "JvmEnums.h"
-#include "typedefs.h"
+#include "../typedefs.h"
 
 namespace JVM{
 
@@ -113,7 +113,7 @@ union Cat2Value{
     double    AsDouble;
 };
 
-union IntToType{
+union U4ToType{
     u4    Bytes;
     float AsFloat;
     s2 AsShort;

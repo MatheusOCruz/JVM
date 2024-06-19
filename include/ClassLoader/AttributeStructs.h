@@ -4,7 +4,7 @@
 
 #ifndef JVM_ATTRIBUTESTRUCTS_H
 #define JVM_ATTRIBUTESTRUCTS_H
-#include "typedefs.h"
+#include "../typedefs.h"
 #include "ClassFileStructs.h"
 
 //TODO: falta um bocado

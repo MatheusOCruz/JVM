@@ -16,6 +16,6 @@ Comandos:
     leitor_exibidor
     jvm
 Exemplos:
-    ./JVM leitor_exibidor ./testes/Belote.class
-    ./JVM jvm ./testes/Belote.class
+    ./JVM leitor_exibidor Main
+    ./JVM jvm Main
 ```

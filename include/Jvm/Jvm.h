@@ -8,7 +8,7 @@
 #include <stack>
 #include <utility>
 
-#include "ClassLoader.h"
+#include "../ClassLoader/ClassLoader.h"
 #include "JvmStructs.h"
 #include "JvmEnums.h"
 #include "RunTimeExceptions.h"
@@ -46,7 +46,6 @@ private:
 
     JVM::stack<Frame*>                            FrameStack;
     std::unordered_map<std::string, class_file*>* MethodArea;
-    std::vector<Reference>                        Heap;
 
 
     Frame*          CurrentFrame;
@@ -70,7 +69,9 @@ private:
     void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
-	
+    void invoke(std::string ClassName,
+                std::string MethodName,
+                std::string Descriptor);
 
 
     void fconst(float value);
@@ -358,9 +359,10 @@ private:
         
     };
 
-
-
+    void CheckStaticInit(std::string class_name);
 };
+
+
 
 
 #endif //JVM_JVM_H

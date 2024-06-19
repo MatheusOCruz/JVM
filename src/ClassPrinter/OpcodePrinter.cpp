@@ -4,7 +4,7 @@
 
 #include <iomanip>
 #include <sstream>
-#include "../include/OpcodePrinter.h"
+#include "../../include/ClassPrinter/OpcodePrinter.h"
 
 std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
     StringBuffer = "";
