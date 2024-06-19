@@ -15,7 +15,7 @@
 
 class Jvm {
 public:
-     explicit Jvm(std::string _main_file) : main_file(std::move(_main_file)) {}
+     explicit Jvm(std::string _main_file) : MainClass(std::move(_main_file)) {}
      void Run();
 
 	static int numberOfEntriesFromString(const std::string & args);
@@ -40,7 +40,7 @@ private:
 
     u4 PopOpStack();
     //vars jvm
-    std::string main_file;
+    std::string MainClass;
     uint16_t pc = 0;
 
 

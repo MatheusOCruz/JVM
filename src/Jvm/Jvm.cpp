@@ -13,10 +13,8 @@
 void Jvm::Run(){    
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
-
-    Loader->LoadClass(main_file);
-    auto ClassName = Loader->GetClassFromPath(main_file);
-    CurrentClass = GetClass(ClassName);
+    Loader->LoadClass(MainClass);
+    CurrentClass = GetClass(MainClass);
 
 
 
