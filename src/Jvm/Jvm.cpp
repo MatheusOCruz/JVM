@@ -200,8 +200,10 @@ class_file* Jvm::GetClass(std::string class_name){
 
     return (*MethodArea)[class_name];
 }
-
-void Jvm::CheckStaticInit(std::string class_name) {
+/*
+ TODO: verificar se reboco magico do -3 funciona pra outros casos de init como chamar funcao estatica
+*/
+ void Jvm::CheckStaticInit(std::string class_name) {
     // apos o static, o new vai ser executado novamente
     // ent voltamos o pc pra antes dele (opcode + u2 index)
     pc-=3;
