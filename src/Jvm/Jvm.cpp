@@ -2575,13 +2575,11 @@ void Jvm::d2f(){
 
 }
 
-// todo implement these
+// todo check if this is fine w teacher
 void Jvm::i2b(){    
     std::cout<<"!i2b\n";
-    //Cat2Value value{};
-    // trunca int (u4, 4 bytes) pra byte (u1)
-    //value.AsByte = CurrentFrame->OperandStack->Pop();
-    //CurrentFrame->OperandStack->push(value.AsByte);
+   // transforma int pra byte mas pilha de operandos já está em byte
+   return;
 }
 
 
@@ -2589,9 +2587,9 @@ void Jvm::i2b(){
 
 void Jvm::i2c(){    
     std::cout<<"!i2c\n";
-    Cat2Value value{};
-    //value.AsChar = CurrentFrame->OperandStack->Pop();
-    //CurrentFrame->OperandStack->push(value.AsChar);
+    U4ToType value{};
+    value.AsInt = CurrentFrame->OperandStack->Pop();
+    CurrentFrame->OperandStack->push(value.AsChar);
 
 }
 
@@ -3325,13 +3323,15 @@ void Jvm::instanceof() {
 
 void Jvm::monitorenter(){    
     std::cout<<"!monitorenter\n";
-    // thread n é implementado
+    // região crítica, thread n é implementado
     return;
 
 }
-// todo implement
+
 void Jvm::monitorexit(){    
     std::cout<<"!monitorexit\n";
+    // região crítica, thread n é implementado
+    return;
 
 }
 // todo implement
@@ -3367,6 +3367,7 @@ void Jvm::multianewarray(){
     CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
   }
 
+// todo implement
 void Jvm::ifnull(){    
     std::cout<<"!ifnull\n";
 
@@ -3387,13 +3388,14 @@ void Jvm::goto_w(){
 
     pc += branchoffset;
 }
-// todo implement
+
+// todo implement fix
 void Jvm::jsr_w(){    
     std::cout<<"!jsr_w\n";
 
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
-    //nota: devia ter dado push como type returnAddress? n aconteceu
+    //todo: push como type returnAddress? n aconteceu
 
 }
 

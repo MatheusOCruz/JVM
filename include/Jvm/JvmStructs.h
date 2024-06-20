@@ -104,6 +104,10 @@ struct Reference{
 
 
 
+/**
+ * @union U4ToType
+ * @brief Union auxiliar para representar valores cat2 (32 bits)
+ */
 union Cat2Value{
     struct{
         u4 HighBytes;
@@ -114,11 +118,16 @@ union Cat2Value{
 };
 
 /**
- * @brief Union auxiliar para converter e truncar tipos para u4 (uint32_t)
- *
- * TODO CONTINUE
- *
- * @
+ * @union U4ToType
+ * @brief Union auxiliar para converter e truncar valores de/para u4 (uint32_t)
+ * 
+ * @var 
+ * effv
+ * sfvfdv
+ *  
+ * @def Bytes lkmlkm
+ * todo explain each member
+ * 
  */
 union U4ToType{
     u4    Bytes;

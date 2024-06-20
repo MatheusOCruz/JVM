@@ -74,7 +74,7 @@ private:
                 std::string Descriptor);
 
 
-    void fconst(float value);
+    // void fconst(float vealue);
     void dconst(double value);
 
     //funcoes do bytecode
