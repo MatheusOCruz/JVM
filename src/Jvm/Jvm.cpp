@@ -398,7 +398,7 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
     return ArrayRef;
 }
 
-
+// todo comment
 u4 Jvm::PopOpStack(){
 return CurrentFrame->OperandStack->Pop();
 }
@@ -494,7 +494,7 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
 
 
 
-
+// todo doxygen?
 void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOperandStack) {
     std::cout<<"!LoadLocalVariables\n";
     int count = 0;
@@ -516,9 +516,9 @@ void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOper
 // Do nothing
 void Jvm::nop() {
     std::cout<<"!nop\n";
-    
-
+    return;
 }
+// todo implement
 // An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
 void Jvm::aconst_null(){    
     std::cout<<"!aconst_null\n";
@@ -630,6 +630,7 @@ void Jvm::dconst_1(){
     dconst(1.0);
 }
 
+// todo fix check if wrong
 // The immediate byte is sign-extended to an int value. That value
 // is pushed onto the operand stac
 void Jvm::bipush(){    
@@ -638,7 +639,7 @@ void Jvm::bipush(){
 
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
 }
-
+// todo fix check if wrong
 void Jvm::sipush(){    
     std::cout<<"!sipush\n";
     u4 value = GetIndex2();
@@ -762,9 +763,8 @@ void Jvm::dload(){
     value.AsDouble = getU8FromLocalVars(index);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
-// todo test aload, fix
-// deve ta errado n sei objectref arrayref
 
+// todo test
 void Jvm::aload(){    
     std::cout<<"!aload\n";
     u1 index = (*CurrentCode->code)[pc++];
@@ -1659,7 +1659,7 @@ void Jvm::sastore(){
 
 
 
-
+// todo check if these pop require doxygen
 void Jvm::pop(){    
     std::cout<<"!pop\n";
     CurrentFrame->OperandStack->pop();
@@ -1766,7 +1766,7 @@ void Jvm::dup2_x2(){
 
 
 
-
+// todo test
 void Jvm::swap(){    
     std::cout<<"!swap\n";
     u4 value1 = CurrentFrame->OperandStack->Pop();
@@ -2939,18 +2939,7 @@ void Jvm::ret(){
     pc = NewPc;
 }
 
-
-// Description
-
-//     A tableswitch is a variable-length instruction. Immediately after the tableswitch opcode, between 0 and 3 null bytes (zeroed bytes, not the null object) are inserted as padding. The number of null bytes is chosen so that the following byte begins at an address that is a multiple of 4 bytes from the start of the current method (the opcode of its first instruction). Immediately after the padding follow bytes constituting three signed 32-bit values: default, low, and high. Immediately following those bytes are bytes constituting a series of high - low + 1 signed 32-bit offsets. The value low must be less than or equal to high. The high - low + 1 signed 32-bit offsets are treated as a 0-based jump table. Each of these signed 32-bit values is constructed as (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4.
-
-//     The index must be of type int and is popped from the operand stack. If index is less than low or index is greater than high, then a target address is calculated by adding default to the address of the opcode of this tableswitch instruction. Otherwise, the offset at position index - low of the jump table is extracted. The target address is calculated by adding that offset to the address of the opcode of this tableswitch instruction. Execution then continues at the target address.
-
-//     The target address that can be calculated from each jump table offset, as well as the ones that can be calculated from default, must be the address of an opcode of an instruction within the method that contains this tableswitch instruction.
-
-// Notes
-
-    // The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
+// todo implement
 void Jvm::tableswitch() {
     std::cout<<"!tableswitch\n";
     
@@ -3009,7 +2998,7 @@ void Jvm::areturn(){
     return_u4();
 }
 
-// tested, works (prolly)
+// todo doxygen
 void Jvm::return_(){    
     std::cout<<"!return_\n";
 //check return == void
@@ -3304,6 +3293,7 @@ void Jvm::arraylength(){
 
 }
 // todo implement
+// provalvelmente n precisa implementar
 void Jvm::athrow(){    
     std::cout<<"!athrow\n";
 
@@ -3367,14 +3357,28 @@ void Jvm::multianewarray(){
     CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
   }
 
-// todo implement
+// todo implement fix
 void Jvm::ifnull(){    
     std::cout<<"!ifnull\n";
+    auto value = reinterpret_cast<Reference*>(PopOpStack());
+    if ( value == NULL){
+        u2 offset = GetIndex2();
+        // Execution then proceeds at that offset from the address of the opcode of this ifnonnull instruction
+        // todo fix check if wrong 
+        pc += offset;
+    }
 
 }
-// todo implement
+// todo implement fix
 void Jvm::ifnonnull(){    
     std::cout<<"!ifnonnull\n";
+    auto value = reinterpret_cast<Reference*>(PopOpStack());
+    if ( value != NULL){
+        u2 offset = GetIndex2();
+        // Execution then proceeds at that offset from the address of the opcode of this ifnonnull instruction
+        // todo fix check if wrong 
+        pc += offset;
+    }
 
 }
 
