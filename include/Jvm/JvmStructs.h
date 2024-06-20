@@ -113,6 +113,13 @@ union Cat2Value{
     double    AsDouble;
 };
 
+/**
+ * @brief Union auxiliar para converter e truncar tipos para u4 (uint32_t)
+ *
+ * TODO CONTINUE
+ *
+ * @
+ */
 union U4ToType{
     u4    Bytes;
     float AsFloat;
