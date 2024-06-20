@@ -7,7 +7,7 @@
 #include "../typedefs.h"
 #include "ClassFileStructs.h"
 
-//TODO: falta um bocado
+
 
 struct Exception_tableEntry{
     u2 start_pc;
@@ -24,19 +24,13 @@ struct InnerClasse {
     u2 inner_class_access_flags;
 };
 
-//TODO: esse aqui parece q e do cao
+/* nao vamos usar
 struct StackMapTable_attribute {
     u2 attribute_name_index;  // utf-8 com "StackMapTable"
     u4 attribute_length;
     u2 number_of_entries;
-    //stack_map_frame entries[number_of_entries]; aindda n sei cole desse stack_map_frame
+    //stack_map_frame entries[number_of_entries];
 };
-
-
-
-
-
-
 
 struct EnclosingMethod_attribute {
     u2 attribute_name_index;
@@ -88,7 +82,8 @@ struct LocalVariableTable_attribute {
     u2 attribute_name_index;
     u4 attribute_length;
     u2 local_variable_table_length;
-    std::vector<a>* local_variable_table; // duvido adivinhar
+    std::vector<a>* local_variable_table; //
 };
+*/
 
 #endif //JVM_ATTRIBUTESTRUCTS_H

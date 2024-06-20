@@ -6,20 +6,20 @@
 
 #include "../../include/utils.h"
 
-class_file* ClassLoader::GetClass( std::string class_file_path) {
-    if (!((*class_files).count(class_file_path))) {
-        LoadClass(class_file_path);
+class_file* ClassLoader::GetClass( std::string ClassName) {
+    if (!((*class_files).count(ClassName))) {
+        LoadClass(ClassName);
     }
-    std::string class_name = GetClassFromPath(class_file_path);
-    return (*class_files)[class_name];
+    return (*class_files)[ClassName];
 }
 
-void ClassLoader::LoadClass(const std::string nomeArquivo) {
-    if ((*class_files).count(nomeArquivo)) return;
+void ClassLoader::LoadClass(const std::string ClassName) {
+    if ((*class_files).count(ClassName)) return;
 
     current_file = new class_file;
 
-    LoadFile(nomeArquivo);
+    LoadFile(ClassName);
+
     CheckMagic();
     CheckVersion();
     BuildConstantPoolTable();
@@ -33,8 +33,7 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     FormatCheck();
 
-    std::string NomeDaClasse = GetClassFromPath(nomeArquivo);
-    (*class_files)[NomeDaClasse] = current_file;
+    (*class_files)[ClassName] = current_file;
 
     delete file_buffer;
 
@@ -46,25 +45,23 @@ void ClassLoader::LoadClass(const std::string nomeArquivo) {
 
     const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
     const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-    auto cwd = utils::GetCWD();
-    auto SuperPath = cwd+"/"+SuperName+".class";
-    LoadClass(SuperPath);
+    LoadClass(SuperName);
 }
 
-void ClassLoader::LoadFile(const std::string& nomeArquivo) {
-    // garante que arquivo fornecido e .class
-    auto classPath = nomeArquivo;
+void ClassLoader::LoadFile(const std::string& ClassName) {
+
+
+    std::string classPath;
     auto cwd = utils::GetCWD();
-    std::regex ClassFIleTermination (".*\\.class$");
 
-    if (!std::regex_search(nomeArquivo, ClassFIleTermination))
-        classPath = cwd + "/"+ nomeArquivo + ".class";
 
-    std::regex ObjectClass (".*\\java/lang/Object.class$");
-    if(std::regex_search(nomeArquivo, ObjectClass)){
-
+    std::regex ObjectClass (".*\\java/lang/Object$");
+    if(std::regex_search(ClassName, ObjectClass)){
         classPath = "Object.class";
         classPath = cwd+"/" + classPath;
+    }
+    else{
+        classPath = cwd + "/" + ClassName + ".class";
     }
     #ifdef _WIN32
         std::replace(classPath.begin(),classPath.end(),'/','\\');
@@ -421,17 +418,4 @@ void ClassLoader::FormatCheck() {
 }
 
 
-std::string ClassLoader::GetClassFromPath(std::string class_path){
-
-
-    auto cwd = utils::GetCWD();
-    if(class_path.find(cwd) == 0)
-        return class_path.substr(cwd.size()+1);
-    else if(class_path.find("./") == 0)
-        return class_path.substr(2);
-
-    return class_path;
-
-
-}
 

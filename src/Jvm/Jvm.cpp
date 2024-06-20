@@ -13,10 +13,8 @@
 void Jvm::Run(){    
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
-
-    Loader->LoadClass(main_file);
-    auto ClassName = Loader->GetClassFromPath(main_file);
-    CurrentClass = GetClass(ClassName);
+    Loader->LoadClass(MainClass);
+    CurrentClass = GetClass(MainClass);
 
 
 
@@ -59,14 +57,22 @@ u8 Jvm::getU8FromLocalVars(u4 startingIndex){
     return (static_cast<u8>(HighBytes) << 32) | LowBytes;
 }
 
-
-int Jvm::numberOfEntriesFromString(const std::string & args) {
-    if(args.empty())
+/**
+ * @brief Realiza o parse do descritor de um método e retorna quantidade de elementos
+ *
+ * Itera pela string Descriptor para determinar quantos u4 devem ser transferidos da pilha de operandos
+ * para o vetor de variáveis do método a ser chamado
+ *
+ * @param Descriptor String que descreve parametros de um método
+ * @return quantidade de entradas que devem ser "popadas" da pilha
+ */
+int Jvm::numberOfEntriesFromString(const std::string & Descriptor) {
+    if(Descriptor.empty())
         return 0;
 
 
     int number_of_attr = 0;
-    const char* iter = args.c_str();
+    const char* iter = Descriptor.c_str();
     do {
         char c = *iter++ ;
         switch (c) {
@@ -114,10 +120,21 @@ inline u1 Jvm::NextCodeByte(){
 return (*CurrentCode->code)[pc++];
 }
 
+/**
+ *
+ * @brief  Retorna entrada da constant pool no index em questão
+ * @param  Index indice da constant pool
+ * @return Entrada da constant pool no indice index
+ */
 inline cp_info* Jvm::GetConstantPoolEntryAt(u2 index){
     return (*CurrentClass->constant_pool)[index];
 }
 
+/**
+ * Itera pelo atributo code e usa vetor de de funções para chamar
+ * função responsável pelo bytecode em questão
+ *
+ */
 void Jvm::ExecBytecode(){    
     while(pc < CurrentCode->code_length){
         u1 bytecode =  NextCodeByte();
@@ -127,12 +144,18 @@ void Jvm::ExecBytecode(){
 }
 
 //salva valores atuais pro retorno ao frame
+/**
+ * Salva estado do frame atual
+ */
 void Jvm::SaveFrameState(){    
     CurrentFrame->nextPC      = pc;
     CurrentFrame->frameClass  = CurrentClass;
     CurrentFrame->frameMethod = CurrentMethod;
 }
 
+/**
+ * Cria um novo Frame, o torna o frame atual e o empilha no FrameStack
+ */
 void Jvm::NewFrame(){    
 
     //instancia novo frame
@@ -149,7 +172,13 @@ void Jvm::NewFrame(){
     pc = 0;
 
 }
-
+/**
+ * @brief Desempilha frame e atualiza estado
+ *
+ * Desempilha o Frame no fim de sua execução, e atualiza o estado da
+ * jvm para onde estava antes de chamar tal método, ou seja,
+ * classe, método e pc
+ */
 void Jvm::PopFrameStack(){    
 
     Frame* OldFrame = FrameStack.Pop();
@@ -165,7 +194,15 @@ void Jvm::PopFrameStack(){
 }
 
 
-
+/**
+ *  @brief Atualiza o método atual
+ *
+ *  Busca o método com o nome fornecido na classe atual, como o método pode não existir,
+ *  no caso do método <clinit> retorna uma flag de confirmação caso tenha sido encontrado o método
+ *
+ * @param MethodName Nome do método que deve ser executado
+ * @return caso o método existe, retorna 1, caso contrario 0
+ */
 
 
 int Jvm::GetMethod(const std::string& MethodName){
@@ -177,7 +214,10 @@ int Jvm::GetMethod(const std::string& MethodName){
         }
     return 0;
 }
-//TODO: ter um jeito de manter o current class do frame antigo( num sei se precisa ainda )
+
+/**
+ * Atualiza o CurrentCode para o Code do CurrentMethod após mudança de frame
+ */
 void Jvm::GetCurrentMethodCode(){    
 
     for(auto Attribute : *CurrentMethod->attributes){
@@ -190,7 +230,15 @@ void Jvm::GetCurrentMethodCode(){
     }
 }
 
-
+/**
+ * @brief Garante que o class_file requerido será retornado.
+ *
+ * Verifica se a classe em questão já foi carregada. Se sim, retorna seu class_file. Caso contrário,
+ * invoca o loader com a classe em questão e garante a inicialização estática por meio da função CheckStaticInit.
+ *
+ * @param class_name Nome da classe que será carregada ou retornada se já estiver carregada.
+ * @return Ponteiro para o class_file referente à classe requerida.
+ */
 class_file* Jvm::GetClass(std::string class_name){
 
     if(MethodArea->find(class_name) == MethodArea->end()) {
@@ -200,8 +248,19 @@ class_file* Jvm::GetClass(std::string class_name){
 
     return (*MethodArea)[class_name];
 }
+/*
+ TODO: verificar se reboco magico do -3 funciona pra outros casos de init como chamar funcao estatica
+*/
 
-void Jvm::CheckStaticInit(std::string class_name) {
+/**
+ * @brief Garante execuçaõ do método <clinit> das classes carregadas
+ *
+ * Método chamado após uma classe ser carregada durante execução, realiza método
+ * <clinit> e retorna ao fluxo de execução
+ *
+ * @param class_name Nome da classe inicializada
+ */
+ void Jvm::CheckStaticInit(std::string class_name) {
     // apos o static, o new vai ser executado novamente
     // ent voltamos o pc pra antes dele (opcode + u2 index)
     pc-=3;
@@ -219,9 +278,10 @@ void Jvm::CheckStaticInit(std::string class_name) {
     }
     else{
         PopFrameStack(); // retorna ao frame antigo
+        pc+=3;
     }
 }
-// Create intance of class based on class file
+
 
 
 
@@ -229,6 +289,16 @@ void Jvm::CheckStaticInit(std::string class_name) {
 // dimension_counts contem tamanho de cada array
 // de forma recusiva
 
+/**
+ * @brief retorna caso base do array
+ *
+ * Usa o tipo do array pra determinar a quantidade de bytes por elemento, então aloca
+ * memória para o mesmo de acordo com a quantidade de elementos
+ *
+ * @param Type tipo final do array
+ * @param count quantidade de elementos
+ * @return ponteiro para memoria alocada para novo vetor
+ */
 void* NewBaseArray(ArrayTypeCode Type, int count){
     int byteSize = 0;
     switch (Type) {
@@ -255,10 +325,19 @@ void* NewBaseArray(ArrayTypeCode Type, int count){
             break;
         }
     }
-    return new char[count * byteSize];
+    return new char[count * byteSize]() ;
 }
 
 //TODO: quando uma dimensao qualquer for 0, retorna o array ate la(ta na spec)
+/**
+ *
+ * @brief Cria instância de Arrayref encapsulado em uma Reference
+ *
+ * @param Type    código do tipo final a ser guardado no array
+ * @param counts  pilha quantidade de elementos em cada dimensão
+ * @param dims    quantidade de dimensões do array
+ * @return        instância de Arrayref encapsulado em uma Reference
+ */
 
 Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
     auto Array = new ArrayInstance;
@@ -291,20 +370,27 @@ return CurrentFrame->OperandStack->Pop();
 
 // funcoes auxiliares pros bytecode
 
-
+/**
+ * le 2 bytes do code atual e forma um index u2
+ * @return index u2 formado a partir do code
+ */
 u2 Jvm::GetIndex2() {
     // std::cout<<"GetIndex2\n";
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
     u1 indexbyte2 = (*CurrentCode->code)[pc++];
     return (indexbyte1 << 8) | indexbyte2;
 }
-
+/**
+ * Função genérica para return de cat1
+ */
 void Jvm::return_u4(){    
     u4 ReturnValue = CurrentFrame->OperandStack->Pop();
     PopFrameStack();
     CurrentFrame->OperandStack->push(ReturnValue);
 }
-
+/**
+ * Função genérica para return de cat2
+ */
 void Jvm::return_u8(){    
 
     u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
@@ -314,7 +400,17 @@ void Jvm::return_u8(){
     CurrentFrame->OperandStack->push(ReturnValue1);
 
 }
-
+/**
+ * @brief Função genérica para instruções de invoke
+ *
+ * Guarda um ponteiro pra pilha de operandos do frame atual, então cria um novo frame
+ * pro método a ser chamado (GetClass lida com classe não carregada), e carrega os argumentos (caso existam)
+ * no vetor de variáveis locais do novo frame
+ *
+ * @param ClassName nome da classe "dona" do método invocado
+ * @param MethodName nome do
+ * @param Descriptor descritor dos argumentos recebidos pela função
+ */
 void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Descriptor){
     auto CallerOperandStack = CurrentFrame->OperandStack;
     SaveFrameState();
@@ -330,7 +426,11 @@ void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Desc
 }
 
 
-
+/**
+ * @brief Implementação do Println do Java
+ * @param MethodDescriptor usado para determinar o tipo de print a ser usado,
+ * string, int, etc
+ */
 void Jvm::JavaPrint(std::string& MethodDescriptor) {
     
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
