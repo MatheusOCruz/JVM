@@ -13,8 +13,10 @@ public:
     OpcodePrinter() = default;
 
     std::string CodeToString(u1 code[],const u4 code_lenght);
+    // Declaração do metodo set code <tableswitch>
+    void setCode(u1* code, size_t code_size); // Novo metodo para configurar o código e o tamanho
 private:
-
+    size_t code_size; // Adicione isso
     void nop();
     void aconst_null();
     void iconst_m1();
