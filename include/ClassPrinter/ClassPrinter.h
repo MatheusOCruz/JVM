@@ -40,6 +40,7 @@ private:
 	std::string ClassAccessFlagToString(u2 flag);
 	std::string MethodAccessFlagToString(u2 flag);
 	std::string FieldAccessFlagToString(u2 flag);
+	std::string GetJavaVersion(u2 major_version, u2 minor_version);
 
     const std::string main_file;
     class_file* ClassFile;
