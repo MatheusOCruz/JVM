@@ -990,8 +990,82 @@ void OpcodePrinter::monitorexit() {
     StringBuffer.append(" monitorexit\n");
 }
 void OpcodePrinter::wide() {
- // vai entrar algo aqui -> bloco de notas
+	u1 instruction = code[code_iterator++];
+	u1 indexbyte1 = code[code_iterator++];
+	u1 indexbyte2 = code[code_iterator++];
+	u2 index = (indexbyte1 << 8) | indexbyte2;
+
+	StringBuffer.append(" wide");
+	switch((WideOp) instruction) {
+	case(WideOp::WIDE_iload):
+		StringBuffer.append(" iload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_fload):
+		StringBuffer.append(" fload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_lload):
+		StringBuffer.append(" lload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_aload):
+		StringBuffer.append(" aload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_dload):
+		StringBuffer.append(" dload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_istore):
+		StringBuffer.append(" istore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_fstore):
+		StringBuffer.append(" fstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_astore):
+		StringBuffer.append(" astore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_lstore):
+		StringBuffer.append(" lstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_dstore):
+		StringBuffer.append(" dstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_ret):
+		StringBuffer.append(" ret ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_iinc):
+		u1 constbyte1 = code[code_iterator++];
+		u1 constbyte2 = code[code_iterator++];
+		u2 _const = (constbyte1 << 8) | constbyte2;
+
+		StringBuffer.append(" iinc ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append(" by ");
+		StringBuffer.append(std::to_string(_const));
+		StringBuffer.append("\n");
+		break;
+	}
 }
+
 void OpcodePrinter::multianewarray() {
 
 

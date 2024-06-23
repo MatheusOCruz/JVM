@@ -2166,7 +2166,6 @@ void Jvm::lxor(){
 
 void Jvm::iinc(){ //todo pode ser alterado por wide, ver --
 
-    std::cout<<"iinc\n";
     u1 index = (*CurrentCode->code)[pc++];
     int32_t const_ = static_cast<int32_t>((*CurrentCode->code)[pc++]);
     (*CurrentFrame->localVariables)[index] += const_;
@@ -3108,7 +3107,82 @@ void Jvm::monitorexit(){
 }
 // todo implement
 void Jvm::wide(){
+	u1 instruction = (*CurrentCode->code)[pc++];
+	u1 indexbyte1 = (*CurrentCode->code)[pc++];
+	u1 indexbyte2 = (*CurrentCode->code)[pc++];
+	u2 index = (indexbyte1 << 8) | indexbyte2;
 
+	switch((WideOp) instruction) {
+	case(WideOp::WIDE_iload): {
+		u4 value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_fload): {
+		float value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_lload): {
+		Cat2Value value{};
+		value.AsLong = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_aload): {
+		u4 objectref = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(objectref);
+		break;
+	}
+	case(WideOp::WIDE_dload): {
+		Cat2Value value{};
+		value.AsDouble = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_istore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_fstore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_astore): {
+		u4 objectref = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = objectref;
+		break;
+	}
+	case(WideOp::WIDE_lstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_dstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_ret): {
+		uint32_t NewPc = (*CurrentFrame->localVariables)[index];
+		pc = NewPc;
+		break;
+	}
+	case(WideOp::WIDE_iinc): {
+		int32_t const_ = static_cast<int32_t>(
+		    ((*CurrentCode->code)[pc++] << 8) |
+			(*CurrentCode->code)[pc++]);
+
+		(*CurrentFrame->localVariables)[index] += const_;
+		break;
+	}
+	}
 }
 
 
@@ -3162,6 +3236,3 @@ void Jvm::jsr_w(){
 
 
 }
-
-
-
