@@ -993,7 +993,7 @@ void OpcodePrinter::wide() {
 	u1 instruction = code[code_iterator++];
 	u1 indexbyte1 = code[code_iterator++];
 	u1 indexbyte2 = code[code_iterator++];
-	u2 index = (indexbyte1 << 8) | indexbyte2;
+	u2 index = (((u2) indexbyte1) << 8) | indexbyte2;
 
 	StringBuffer.append(" wide");
 	switch((WideOp) instruction) {
@@ -1055,7 +1055,7 @@ void OpcodePrinter::wide() {
 	case(WideOp::WIDE_iinc):
 		u1 constbyte1 = code[code_iterator++];
 		u1 constbyte2 = code[code_iterator++];
-		u2 _const = (constbyte1 << 8) | constbyte2;
+		u2 _const = (((u2)constbyte1) << 8) | constbyte2;
 
 		StringBuffer.append(" iinc ");
 		StringBuffer.append(std::to_string(index));

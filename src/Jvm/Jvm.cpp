@@ -379,10 +379,9 @@ u4 Jvm::PopOpStack(){
  * @return index u2 formado a partir do code
  */
 u2 Jvm::GetIndex2() {
-    // std::cout<<"GetIndex2\n";
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
     u1 indexbyte2 = (*CurrentCode->code)[pc++];
-    return (indexbyte1 << 8) | indexbyte2;
+    return (((u2) indexbyte1) << 8) | indexbyte2;
 }
 /**
  * Função genérica para return de cat1
@@ -3108,9 +3107,7 @@ void Jvm::monitorexit(){
 // todo implement
 void Jvm::wide(){
 	u1 instruction = (*CurrentCode->code)[pc++];
-	u1 indexbyte1 = (*CurrentCode->code)[pc++];
-	u1 indexbyte2 = (*CurrentCode->code)[pc++];
-	u2 index = (indexbyte1 << 8) | indexbyte2;
+	u2 index = GetIndex2();
 
 	switch((WideOp) instruction) {
 	case(WideOp::WIDE_iload): {
@@ -3175,10 +3172,7 @@ void Jvm::wide(){
 		break;
 	}
 	case(WideOp::WIDE_iinc): {
-		int32_t const_ = static_cast<int32_t>(
-		    ((*CurrentCode->code)[pc++] << 8) |
-			(*CurrentCode->code)[pc++]);
-
+		int32_t const_ = static_cast<int32_t>(GetIndex2());
 		(*CurrentFrame->localVariables)[index] += const_;
 		break;
 	}
@@ -3233,6 +3227,4 @@ void Jvm::jsr_w(){
 
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
-
-
 }
