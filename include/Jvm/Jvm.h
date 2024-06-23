@@ -16,9 +16,11 @@
 class Jvm {
 public:
      explicit Jvm(std::string _main_file) : MainClass(std::move(_main_file)) {}
-     void Run();
+     ~Jvm() = default;
 
-	static int numberOfEntriesFromString(const std::string & args);
+     void     Run();
+
+	static int numberOfEntriesFromString(const std::string & Descriptor);
 
 
 private:
@@ -27,18 +29,18 @@ private:
     void NewFrame();
     void PopFrameStack();
 
-    int GetMethod(const std::string& MethodName);
+    int  GetMethod(const std::string& MethodName);
     void GetCurrentMethodCode();
 
     u1   NextCodeByte();
     void ExecBytecode();
+    u4   PopOpStack();
 
-    void LoadLocalVariables(std::string &Descriptor, JVM::stack<u4> *CallerOperandStack);
 
     class_file* GetClass(std::string class_name);
     cp_info*    GetConstantPoolEntryAt(u2 index);
+    void        CheckStaticInit(std::string class_name);
 
-    u4 PopOpStack();
     //vars jvm
     std::string MainClass;
     uint16_t pc = 0;
@@ -68,10 +70,12 @@ private:
     void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
     
     u8 getU8FromLocalVars(u4 startingIndex); //pega um u8 das variaveis locais em big endian
+
     void invoke(std::string ClassName,
                 std::string MethodName,
-                std::string Descriptor);
-
+                std::string Descriptor,
+                bool isStatic = false);
+    void LoadLocalVariables(std::string &Descriptor, JVM::stack<u4> *CallerOperandStack, bool isStatic = false);
 
     void fconst(float value);
     void dconst(double value);
@@ -358,7 +362,8 @@ private:
         
     };
 
-    void CheckStaticInit(std::string class_name);
+
+    int IsLoaded(std::string class_name);
 };
 
 
