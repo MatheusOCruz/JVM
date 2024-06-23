@@ -212,12 +212,20 @@ int Jvm::GetMethod(const std::string& MethodName){
         }
     if(MethodName == "<clinit>")
         return 0;
-    /*
+
     auto Class = CurrentClass;
     while(Class->super_class) {
-
+        auto SuperEntry = (*Class->constant_pool)[Class->super_class];
+        auto Name = (*Class->constant_pool)[SuperEntry->name_index]->AsString();
+        auto Class = GetClass(Name);
+        for(auto Method: *Class->methods)
+            if((*Class->constant_pool)[Method->name_index]->AsString() == MethodName){
+                CurrentClass  = Class;
+                CurrentMethod = Method;
+                return 1;
+            }
     }
-     */
+
     return 0;
 }
 
@@ -317,14 +325,15 @@ void* NewBaseArray(ArrayTypeCode Type, int count){
             break;
         }
         case ArrayTypeCode::T_INT:
-        case ArrayTypeCode::T_FLOAT:{
+        case ArrayTypeCode::T_FLOAT:
+        case ArrayTypeCode::T_REF:
+        case ArrayTypeCode::T_ARRAY:
+        {
             byteSize = 4;
             break;
         }
         case ArrayTypeCode::T_DOUBLE:
-        case ArrayTypeCode::T_LONG:
-        case ArrayTypeCode::T_REF:
-        case ArrayTypeCode::T_ARRAY:{
+        case ArrayTypeCode::T_LONG:{
             byteSize = 8;
             break;
         }
@@ -354,7 +363,6 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
     else{
         Array->ComponentType = ArrayTypeCode::T_ARRAY;
         Array->ArrayVec      = new void*[count];
-
         for (int i = 0; i < count; ++i)
             Array->ArrayVec[i] = NewArray(Type, counts, dims - 1);
     }
@@ -362,6 +370,7 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
 
     ArrayRef->Type     = ReferenceType::ArrayType;
     ArrayRef->ArrayRef = Array;
+
 
     return ArrayRef;
 }
@@ -2164,11 +2173,9 @@ void Jvm::lxor(){
 
 
 
-void Jvm::iinc(){ //todo pode ser alterado por wide, ver --
-
-    std::cout<<"iinc\n";
+ void Jvm::iinc(){ //todo pode ser alterado por wide, ver --
     u1 index = (*CurrentCode->code)[pc++];
-    int32_t const_ = static_cast<int32_t>((*CurrentCode->code)[pc++]);
+    auto const_ = static_cast<int8_t>((*CurrentCode->code)[pc++]);
     (*CurrentFrame->localVariables)[index] += const_;
 
 }
@@ -2607,8 +2614,8 @@ void Jvm::if_icmpeq(){
 
 void Jvm::if_icmpne(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 != value2){
         pc += offset;
@@ -2621,8 +2628,8 @@ void Jvm::if_icmpne(){
 
 void Jvm::if_icmplt(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 < value2){
         pc += offset;
@@ -2635,8 +2642,8 @@ void Jvm::if_icmplt(){
 
 void Jvm::if_icmpge(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 >= value2){
         pc += offset;
@@ -2649,8 +2656,8 @@ void Jvm::if_icmpge(){
 
 void Jvm::if_icmpgt(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 > value2){
         pc += offset;
@@ -2663,8 +2670,8 @@ void Jvm::if_icmpgt(){
 
 void Jvm::if_icmple(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 <= value2){
         pc += offset;
@@ -2677,8 +2684,8 @@ void Jvm::if_icmple(){
 
 void Jvm::if_acmpeq(){
     u2 offset = GetIndex2();
-    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
-    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 == value2){
         pc += offset;
@@ -2704,7 +2711,7 @@ void Jvm::if_acmpne(){
 
 
 void Jvm::goto_(){
-    u2 branchoffset = GetIndex2();
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     pc += branchoffset ;
 }
 
@@ -2942,7 +2949,6 @@ void Jvm::putfield(){
 
 void Jvm::invokevirtual(){
     u2 index = GetIndex2();
-
     cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
     auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
     auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
@@ -2957,10 +2963,6 @@ void Jvm::invokevirtual(){
     }
 
     invoke(ClassName, MethodName, MethodDescriptor);
-
-
-
-
 
 }
 
@@ -3017,6 +3019,23 @@ void Jvm::invokestatic(){
 }
 // todo implement
 void Jvm::invokeinterface(){
+    u2 index = GetIndex2();
+    u1 Count = NextCodeByte();
+    NextCodeByte();
+    cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
+    auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
+    auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
+
+    // formato <valor>
+    auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+    if(MethodName == "println"){
+        JavaPrint(MethodDescriptor);
+        return;
+    }
+
+    invoke(ClassName, MethodName, MethodDescriptor);
 
 }
 
@@ -3082,7 +3101,9 @@ void Jvm::anewarray(){
 }
 // todo implement
 void Jvm::arraylength(){
-
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    auto* Array = ArrayRef->ArrayRef;
+    CurrentFrame->OperandStack->push(Array->size);
 }
 // todo implement
 void Jvm::athrow(){
@@ -3095,6 +3116,18 @@ void Jvm::checkcast(){
 }
 // todo  implement
 void Jvm::instanceof() {
+    auto ObjectRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    auto index = GetIndex2();
+    int result = 0;
+    if(ObjectRef->Nullref != nullptr) {
+        auto entry = GetConstantPoolEntryAt(index);
+        auto Name = GetConstantPoolEntryAt(entry->name_index)->AsString();
+        auto Class = GetClass(Name);
+        auto InstanceClass = ObjectRef->ClassRef->ClassHandle->ClassObject;
+        if (InstanceClass == Class)
+            result = 1;
+    }
+    CurrentFrame->OperandStack->push(result);
 
 
 }
