@@ -2741,13 +2741,73 @@ void Jvm::ret(){
 
 // Notes
 
-// The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
-void Jvm::tableswitch() {
 
+uint32_t Jvm::read_u4(const std::vector<uint8_t>& code, size_t& index) {
+    uint32_t value = (code[index] << 24) |
+                     (code[index + 1] << 16) |
+                     (code[index + 2] << 8) |
+                     code[index + 3];
+    index += 4;
+    return value;
 }
+
+void Jvm::tableswitch() {
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    // Lê os valores do bytecode
+    int32_t default_offset = read_u4(code, pc);
+    int32_t low = read_u4(code, pc);
+    int32_t high = read_u4(code, pc);
+
+    // Calcula o número de jump offsets
+    int32_t num_offsets = high - low + 1;
+
+    // Lê os jump offsets
+    std::vector<int32_t> jump_offsets(num_offsets);
+    for (int32_t i = 0; i < num_offsets; ++i) {
+        jump_offsets[i] = read_u4(code, pc);
+    }
+
+    // Obtém a key do topo da pilha de operandos
+    int32_t index = PopOpStack();
+
+    // Verifica se o índice está dentro do intervalo
+    if (index < low || index > high) {
+        pc += default_offset;  // Ajusta pc para o offset padrão
+    } else {
+        int32_t offset = jump_offsets[index - low];
+        pc += offset;  // Ajusta pc para o offset correspondente ao índice
+    }
+}
+
 
 // todo implement
 void Jvm::lookupswitch(){
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    int32_t default_offset = read_u4();
+    int32_t npairs = read_u4();
+
+    std::map<int32_t, int32_t> matchOffsetPairs;
+    for (int32_t i = 0; i < npairs; ++i) {
+        int32_t match = read_u4();
+        int32_t offset = read_u4();
+        matchOffsetPairs[match] = offset;
+    }
+
+    int32_t key = PopOpStack();
+
+    auto it = matchOffsetPairs.find(key);
+    if (it != matchOffsetPairs.end()) {
+        pc += it->second;
+    } else {
+        pc += default_offset;
+    }
+
 }
 
 
@@ -3228,3 +3288,10 @@ void Jvm::jsr_w(){
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
 }
+
+
+void OpcodePrinter::printInstruction(const std::string& instr) {
+    StringBuffer.append(std::to_string(code_iterator) + " " + instr + "\n");
+    code_iterator++;
+}
+

@@ -12,6 +12,7 @@
 #include "JvmStructs.h"
 #include "JvmEnums.h"
 #include "RunTimeExceptions.h"
+#include "../ClassPrinter/OpcodePrinter.h"
 
 class Jvm {
 public:
@@ -22,8 +23,17 @@ public:
 
 	static int numberOfEntriesFromString(const std::string & Descriptor);
 
+    // tableswich
+    uint32_t read_u4(const std::vector<uint8_t>& code, size_t& index);
 
 private:
+    // tbleswitch
+    std::vector<u1> code;
+    void printInstruction(const std::string& instr);
+    //
+
+    int readInt(size_t& index);
+
     //funcoes da jvm
     void SaveFrameState();
     void NewFrame();
@@ -43,7 +53,9 @@ private:
 
     //vars jvm
     std::string MainClass;
-    uint16_t pc = 0;
+     //int pc = 0;
+     //size_t &pc = 0;
+    size_t pc = 0;
 
 
     JVM::stack<Frame*>                            FrameStack;
@@ -253,7 +265,11 @@ private:
     void goto_();
     void jsr();
     void ret();
+
     void tableswitch();
+
+     uint32_t read_u4();
+
     void lookupswitch();
     void ireturn();
     void lreturn();
