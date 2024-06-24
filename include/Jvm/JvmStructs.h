@@ -134,6 +134,7 @@ union U4ToType{
     float AsFloat;
     s2 AsShort;
     char AsChar;
+    int16_t AsInt;
 };
 
 
