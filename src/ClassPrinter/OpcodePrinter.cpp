@@ -675,22 +675,29 @@ void OpcodePrinter::ret_() {
     StringBuffer.append("\n");
 } // Usando ret para evitar conflito com a palavra reservada ret
 
+// metodo setCode para configurar o array code e seu tamanho.
+// o metodo será chamado antes de qualquer operação
+// vai em nome de jeje
+void OpcodePrinter::setCode(u1* code, size_t code_size) {
+    this->code = code;
+    this->code_size = code_size;
+    this->code_iterator = 0; // Inicializa code_iterator
+}
+
 void OpcodePrinter::tableswitch() {
     std::string buffer;
     size_t start_index = code_iterator;
-    size_t code_size;
     u1 index = code[code_iterator++];  // Índice do opcode
 
-    // Verifica se há padding
-    while (code_iterator % 4 != 0) {
-        code_iterator++;
-    }
-
-    // Verifica se há bytes suficientes para ler default, low e high (12 bytes no total)
-    if (code_iterator + 12 > code_size) {
-        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.A" << std::endl;
+    // Verifica se há bytes suficientes para ajustar o padding e ler default, low e high (12 bytes no total)
+    size_t padding_end = (code_iterator + 3) & ~3;
+    if (padding_end + 12 > code_size) {
+        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.A tester aguento nada" << std::endl;
         return;
     }
+
+    // Ajusta o padding
+    code_iterator = padding_end;
 
     // Lendo default (4 bytes)
     int defaultoffset = (code[code_iterator] << 24) |
@@ -726,7 +733,7 @@ void OpcodePrinter::tableswitch() {
 
     // Verifica se há bytes suficientes para ler os jump offsets
     if (code_iterator + 4 * num_offsets > code_size) {
-        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.B" << std::endl;
+        std::cerr << "Erro: Acesso fora dos limites do array 'code' em table.B vai em nome de jesus" << std::endl;
         return;
     }
 
@@ -983,8 +990,82 @@ void OpcodePrinter::monitorexit() {
     StringBuffer.append(" monitorexit\n");
 }
 void OpcodePrinter::wide() {
- // vai entrar algo aqui -> bloco de notas
+	u1 instruction = code[code_iterator++];
+	u1 indexbyte1 = code[code_iterator++];
+	u1 indexbyte2 = code[code_iterator++];
+	u2 index = (((u2) indexbyte1) << 8) | indexbyte2;
+
+	StringBuffer.append(" wide");
+	switch((WideOp) instruction) {
+	case(WideOp::WIDE_iload):
+		StringBuffer.append(" iload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_fload):
+		StringBuffer.append(" fload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_lload):
+		StringBuffer.append(" lload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_aload):
+		StringBuffer.append(" aload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_dload):
+		StringBuffer.append(" dload ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_istore):
+		StringBuffer.append(" istore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_fstore):
+		StringBuffer.append(" fstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_astore):
+		StringBuffer.append(" astore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_lstore):
+		StringBuffer.append(" lstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_dstore):
+		StringBuffer.append(" dstore ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_ret):
+		StringBuffer.append(" ret ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append("\n");
+		break;
+	case(WideOp::WIDE_iinc):
+		u1 constbyte1 = code[code_iterator++];
+		u1 constbyte2 = code[code_iterator++];
+		u2 _const = (((u2)constbyte1) << 8) | constbyte2;
+
+		StringBuffer.append(" iinc ");
+		StringBuffer.append(std::to_string(index));
+		StringBuffer.append(" by ");
+		StringBuffer.append(std::to_string(_const));
+		StringBuffer.append("\n");
+		break;
+	}
 }
+
 void OpcodePrinter::multianewarray() {
 
 

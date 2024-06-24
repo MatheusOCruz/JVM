@@ -45,7 +45,7 @@ void ClassLoader::LoadClass(const std::string ClassName) {
 
     const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
     const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-    LoadClass(SuperName);
+    //LoadClass(SuperName);
 }
 
 void ClassLoader::LoadFile(const std::string& ClassName) {

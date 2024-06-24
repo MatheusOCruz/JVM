@@ -10,7 +10,7 @@
 
 
 
-void Jvm::Run(){    
+void Jvm::Run(){
     MethodArea = new std::unordered_map<std::string,class_file*>;
     Loader     = new ClassLoader(MethodArea);
     Loader->LoadClass(MainClass);
@@ -64,7 +64,7 @@ u8 Jvm::popU8FromOpStack(){
  * @return void
  */
 void Jvm::pushU8ToOpStack(u4 HighBytes, u4 LowBytes){
-    
+
     CurrentFrame->OperandStack->push(HighBytes);
     CurrentFrame->OperandStack->push(LowBytes);
 }
@@ -145,7 +145,7 @@ int Jvm::numberOfEntriesFromString(const std::string & Descriptor) {
 
 
 inline u1 Jvm::NextCodeByte(){
-return (*CurrentCode->code)[pc++];
+    return (*CurrentCode->code)[pc++];
 }
 
 /**
@@ -163,7 +163,7 @@ inline cp_info* Jvm::GetConstantPoolEntryAt(u2 index){
  * função responsável pelo bytecode em questão
  *
  */
-void Jvm::ExecBytecode(){    
+void Jvm::ExecBytecode(){
     while(pc < CurrentCode->code_length){
         u1 bytecode =  NextCodeByte();
         (this->*bytecodeFuncs[bytecode])();
@@ -175,7 +175,7 @@ void Jvm::ExecBytecode(){
 /**
  * Salva estado do frame atual
  */
-void Jvm::SaveFrameState(){    
+void Jvm::SaveFrameState(){
     CurrentFrame->nextPC      = pc;
     CurrentFrame->frameClass  = CurrentClass;
     CurrentFrame->frameMethod = CurrentMethod;
@@ -184,7 +184,7 @@ void Jvm::SaveFrameState(){
 /**
  * Cria um novo Frame, o torna o frame atual e o empilha no FrameStack
  */
-void Jvm::NewFrame(){    
+void Jvm::NewFrame(){
 
     //instancia novo frame
     auto NewFrame = new Frame;
@@ -207,7 +207,7 @@ void Jvm::NewFrame(){
  * jvm para onde estava antes de chamar tal método, ou seja,
  * classe, método e pc
  */
-void Jvm::PopFrameStack(){    
+void Jvm::PopFrameStack(){
 
     Frame* OldFrame = FrameStack.Pop();
     delete OldFrame;
@@ -231,8 +231,6 @@ void Jvm::PopFrameStack(){
  * @param MethodName Nome do método que deve ser executado
  * @return caso o método existe, retorna 1, caso contrario 0
  */
-
-
 int Jvm::GetMethod(const std::string& MethodName){
 
     for(auto Method: *CurrentClass->methods)
@@ -240,13 +238,29 @@ int Jvm::GetMethod(const std::string& MethodName){
             CurrentMethod = Method;
             return 1;
         }
+    if(MethodName == "<clinit>")
+        return 0;
+
+    auto Class = CurrentClass;
+    while(Class->super_class) {
+        auto SuperEntry = (*Class->constant_pool)[Class->super_class];
+        auto Name = (*Class->constant_pool)[SuperEntry->name_index]->AsString();
+        auto Class = GetClass(Name);
+        for(auto Method: *Class->methods)
+            if((*Class->constant_pool)[Method->name_index]->AsString() == MethodName){
+                CurrentClass  = Class;
+                CurrentMethod = Method;
+                return 1;
+            }
+    }
+
     return 0;
 }
 
 /**
  * Atualiza o CurrentCode para o Code do CurrentMethod após mudança de frame
  */
-void Jvm::GetCurrentMethodCode(){    
+void Jvm::GetCurrentMethodCode(){
 
     for(auto Attribute : *CurrentMethod->attributes){
         u2 NameIndex = Attribute->attribute_name_index;
@@ -288,11 +302,7 @@ class_file* Jvm::GetClass(std::string class_name){
  *
  * @param class_name Nome da classe inicializada
  */
- void Jvm::CheckStaticInit(std::string class_name) {
-    // apos o static, o new vai ser executado novamente
-    // ent voltamos o pc pra antes dele (opcode + u2 index)
-    pc-=3;
-
+void Jvm::CheckStaticInit(std::string class_name) {
     SaveFrameState();
     NewFrame();
     CurrentClass = GetClass(class_name);
@@ -306,12 +316,14 @@ class_file* Jvm::GetClass(std::string class_name){
     }
     else{
         PopFrameStack(); // retorna ao frame antigo
-        pc+=3;
+
     }
 }
 
 
-
+inline int Jvm::IsLoaded(std::string class_name) {
+    return MethodArea->find(class_name) != MethodArea->end();
+}
 
 // create n dimensional array
 // dimension_counts contem tamanho de cada array
@@ -341,14 +353,15 @@ void* NewBaseArray(ArrayTypeCode Type, int count){
             break;
         }
         case ArrayTypeCode::T_INT:
-        case ArrayTypeCode::T_FLOAT:{
+        case ArrayTypeCode::T_FLOAT:
+        case ArrayTypeCode::T_REF:
+        case ArrayTypeCode::T_ARRAY:
+        {
             byteSize = 4;
             break;
         }
         case ArrayTypeCode::T_DOUBLE:
-        case ArrayTypeCode::T_LONG:
-        case ArrayTypeCode::T_REF:
-        case ArrayTypeCode::T_ARRAY:{
+        case ArrayTypeCode::T_LONG:{
             byteSize = 8;
             break;
         }
@@ -387,12 +400,13 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
     ArrayRef->Type     = ReferenceType::ArrayType;
     ArrayRef->ArrayRef = Array;
 
+
     return ArrayRef;
 }
 
 // todo comment
 u4 Jvm::PopOpStack(){
-return CurrentFrame->OperandStack->Pop();
+    return CurrentFrame->OperandStack->Pop();
 }
 
 
@@ -403,15 +417,14 @@ return CurrentFrame->OperandStack->Pop();
  * @return index u2 formado a partir do code
  */
 u2 Jvm::GetIndex2() {
-    // std::cout<<"GetIndex2\n";
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
     u1 indexbyte2 = (*CurrentCode->code)[pc++];
-    return (indexbyte1 << 8) | indexbyte2;
+    return (((u2) indexbyte1) << 8) | indexbyte2;
 }
 /**
  * Função genérica para return de cat1
  */
-void Jvm::return_u4(){    
+void Jvm::return_u4(){
     u4 ReturnValue = CurrentFrame->OperandStack->Pop();
     PopFrameStack();
     CurrentFrame->OperandStack->push(ReturnValue);
@@ -419,7 +432,7 @@ void Jvm::return_u4(){
 /**
  * Função genérica para return de cat2
  */
-void Jvm::return_u8(){    
+void Jvm::return_u8(){
 
     u4 ReturnValue1 = CurrentFrame->OperandStack->Pop();
     u4 ReturnValue2 = CurrentFrame->OperandStack->Pop();
@@ -439,7 +452,7 @@ void Jvm::return_u8(){
  * @param MethodName nome do
  * @param Descriptor descritor dos argumentos recebidos pela função
  */
-void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Descriptor){
+void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Descriptor, bool isStatic){
     auto CallerOperandStack = CurrentFrame->OperandStack;
     SaveFrameState();
     NewFrame();
@@ -450,7 +463,19 @@ void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Desc
     SaveFrameState();
 
     Descriptor = Descriptor.substr(1, Descriptor.find(')')-1);
-    LoadLocalVariables(Descriptor, CallerOperandStack);
+    LoadLocalVariables(Descriptor, CallerOperandStack,isStatic);
+}
+
+void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOperandStack, bool isStatic) {
+    int count = 0;
+    if(!Descriptor.empty())
+        count = numberOfEntriesFromString(Descriptor);
+    if(!isStatic)
+        count++; // objectref
+    while(count--){
+        u4 value = CallerOperandStack->Pop();
+        (*CurrentFrame->localVariables)[count] = value;
+    }
 }
 
 
@@ -460,7 +485,7 @@ void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Desc
  * string, int, etc
  */
 void Jvm::JavaPrint(std::string& MethodDescriptor) {
-    
+
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType.substr(0, 16) == "Ljava/lang/String;"){
@@ -506,7 +531,7 @@ void Jvm::nop() {
 }
 // todo implement
 // An aconst_null instruction is type safe if one can validly push the type null onto the incoming operand stack yielding the outgoing type state.
-void Jvm::aconst_null(){    
+void Jvm::aconst_null(){
 
 }
 
@@ -514,31 +539,31 @@ void Jvm::aconst_null(){
 // stack.
 // Notes Each of this family of instructions is equivalent to bipush <i> for
 // the respective value of <i>, except that the operand <i> is implicit.
-void Jvm::iconst_m1(){    
+void Jvm::iconst_m1(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(-1));
 }
 
-void Jvm::iconst_0(){    
+void Jvm::iconst_0(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(0));
 }
 
-void Jvm::iconst_1(){    
+void Jvm::iconst_1(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(1));
 }
 
-void Jvm::iconst_2(){    
+void Jvm::iconst_2(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(2));
 }
 
-void Jvm::iconst_3(){    
+void Jvm::iconst_3(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(3));
 }
 
-void Jvm::iconst_4(){    
+void Jvm::iconst_4(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(4));
 }
 
-void Jvm::iconst_5(){    
+void Jvm::iconst_5(){
     CurrentFrame->OperandStack->push(static_cast<const u4>(5));
 }
 
@@ -591,24 +616,25 @@ void Jvm::fconst_2(){
  * @param value constante a ser empilhada
  */
 void Jvm::dconst(double value) {
-    
+
     Cat2Value Value{};
     Value.AsDouble = value;
     pushU8ToOpStack(Value.HighBytes, Value.LowBytes);
 }
 
-void Jvm::dconst_0(){    
+void Jvm::dconst_0(){
     dconst(0.0);
 }
 
-void Jvm::dconst_1(){    
+void Jvm::dconst_1(){
     dconst(1.0);
 }
 
 // todo fix check if wrong
 // The immediate byte is sign-extended to an int value. That value
 // is pushed onto the operand stac
-void Jvm::bipush(){    
+// !TODO: checar se implmentacao ta certa
+void Jvm::bipush(){
     u1 value = (*CurrentCode->code)[pc++];
 
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
@@ -620,7 +646,7 @@ void Jvm::sipush(){
 }
 //!k
 // tested, works
-void Jvm::ldc(){    
+void Jvm::ldc(){
     u1 index = (*CurrentCode->code)[pc++];
     cp_info* RunTimeConstant = (*CurrentClass->constant_pool)[index];
     switch (RunTimeConstant->tag) {
@@ -642,7 +668,7 @@ void Jvm::ldc(){
 
 // todo fix implement erradasso
 // todo test
-void Jvm::ldc_w(){    
+void Jvm::ldc_w(){
     u4 value;
     u2 index = GetIndex2();
     cp_info* cpEntry = (*CurrentClass->constant_pool)[index];
@@ -678,7 +704,7 @@ void Jvm::ldc_w(){
 
 //!k
 // tested, works
-void Jvm::ldc2_w(){    
+void Jvm::ldc2_w(){
     // Cat2Value value{};
     u2 index = GetIndex2();
 
@@ -717,7 +743,7 @@ void Jvm::lload(){
 }
 
 // todo test
-void Jvm::fload(){    
+void Jvm::fload(){
     u1 index = (*CurrentCode->code)[pc++];
     float value = (*CurrentFrame->localVariables)[index];
 
@@ -725,7 +751,7 @@ void Jvm::fload(){
 
 }
 
-void Jvm::dload(){    
+void Jvm::dload(){
     u1 index = (*CurrentCode->code)[pc++];
     Cat2Value value{};
 
@@ -770,18 +796,18 @@ void Jvm::iload_3(){
 }
 
 
-void Jvm::lload_0(){    
+void Jvm::lload_0(){
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(0);
-    
+
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
 
 
 
 // Both <n> and <n>+1 must be indices into the local variable array
-void Jvm::lload_1(){    
+void Jvm::lload_1(){
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(1);
@@ -793,7 +819,7 @@ void Jvm::lload_1(){
 
 
 
-void Jvm::lload_2(){    
+void Jvm::lload_2(){
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(2);
@@ -805,7 +831,7 @@ void Jvm::lload_2(){
 
 
 
-void Jvm::lload_3(){    
+void Jvm::lload_3(){
     Cat2Value value{};
 
     value.AsLong = getU8FromLocalVars(3);
@@ -817,7 +843,7 @@ void Jvm::lload_3(){
 
 
 
-void Jvm::fload_0(){    
+void Jvm::fload_0(){
     U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -827,7 +853,7 @@ void Jvm::fload_0(){
 
 
 
-void Jvm::fload_1(){    
+void Jvm::fload_1(){
     U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -837,7 +863,7 @@ void Jvm::fload_1(){
 
 
 
-void Jvm::fload_2(){    
+void Jvm::fload_2(){
     U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -847,7 +873,7 @@ void Jvm::fload_2(){
 
 
 
-void Jvm::fload_3(){    
+void Jvm::fload_3(){
     U4ToType value{};
     value.AsFloat = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value.Bytes);
@@ -855,7 +881,7 @@ void Jvm::fload_3(){
 }
 
 // pra dload_<n>
-void Jvm::dload(uint index){   
+void Jvm::dload(uint index){
     Cat2Value value{};
 
     value.AsDouble = getU8FromLocalVars(index);
@@ -863,35 +889,35 @@ void Jvm::dload(uint index){
 }
 
 // todo test
-void Jvm::dload_0(){    
+void Jvm::dload_0(){
     dload(0);
 }
 
 
 
 
-void Jvm::dload_1(){    
+void Jvm::dload_1(){
     dload(1);
 }
 
 
 
 
-void Jvm::dload_2(){    
+void Jvm::dload_2(){
     dload(2);
 }
 
 
 
 
-void Jvm::dload_3(){    
+void Jvm::dload_3(){
     dload(3);
 }
 
 
 
 // tested, works
-void Jvm::aload_0(){    
+void Jvm::aload_0(){
     u4 value;
     value = (*CurrentFrame->localVariables)[0];
     CurrentFrame->OperandStack->push(value);
@@ -900,7 +926,7 @@ void Jvm::aload_0(){
 
 
 
-void Jvm::aload_1(){    
+void Jvm::aload_1(){
     u4 value;
     value = (*CurrentFrame->localVariables)[1];
     CurrentFrame->OperandStack->push(value);
@@ -909,7 +935,7 @@ void Jvm::aload_1(){
 
 
 
-void Jvm::aload_2(){    
+void Jvm::aload_2(){
     u4 value;
     value = (*CurrentFrame->localVariables)[2];
     CurrentFrame->OperandStack->push(value);
@@ -918,7 +944,7 @@ void Jvm::aload_2(){
 
 
 
-void Jvm::aload_3(){    
+void Jvm::aload_3(){
     u4 value;
     value = (*CurrentFrame->localVariables)[3];
     CurrentFrame->OperandStack->push(value);
@@ -926,7 +952,7 @@ void Jvm::aload_3(){
 
 
 
-void Jvm::iaload(){    
+void Jvm::iaload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -947,7 +973,7 @@ void Jvm::iaload(){
 
 
 // todo test
-void Jvm::laload(){    
+void Jvm::laload(){
     Cat2Value value;
     s4 index = CurrentFrame->OperandStack->Pop();
 
@@ -974,7 +1000,7 @@ void Jvm::laload(){
 
 
 // todo test
-void Jvm::faload(){    
+void Jvm::faload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -997,7 +1023,7 @@ void Jvm::faload(){
 
 
 // todo test
-void Jvm::daload(){   
+void Jvm::daload(){
     Cat2Value value;
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1023,11 +1049,11 @@ void Jvm::daload(){
 
 // todo implement fix erradasso Array->DataVec?
 // todo test
-void Jvm::aaload(){    
+void Jvm::aaload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
-    
+
     if(ArrayRef == NULL ) // todo runtime exception
         std::cerr<<"aaload: referencia nao é acessível\n";
     if(ArrayRef->Type != ReferenceType::ArrayType)
@@ -1046,7 +1072,7 @@ void Jvm::aaload(){
 
 
 // todo test
-void Jvm::baload(){    
+void Jvm::baload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1060,14 +1086,14 @@ void Jvm::baload(){
     if(Array->ComponentType != ArrayTypeCode::T_BYTE) // todo runtime exception
         std::cerr<<"baload: Array nao e de byte\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 }
 
 
 
 // todo test
-void Jvm::caload(){    
+void Jvm::caload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1081,7 +1107,7 @@ void Jvm::caload(){
     if(Array->ComponentType != ArrayTypeCode::T_CHAR) // todo runtime exception
         std::cerr<<"caload: Array nao e de char\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 }
@@ -1089,7 +1115,7 @@ void Jvm::caload(){
 
 
 // todo test
-void Jvm::saload(){    
+void Jvm::saload(){
     u4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1103,7 +1129,7 @@ void Jvm::saload(){
     if(Array->ComponentType != ArrayTypeCode::T_SHORT) // todo runtime exception
         std::cerr<<"saload: Array nao e de short\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index]; 
+    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 }
@@ -1140,7 +1166,7 @@ void Jvm::lstore(){
 
 
 
-void Jvm::fstore(){    
+void Jvm::fstore(){
     u1 index = (*CurrentCode->code)[pc++];
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[index] = value;
@@ -1150,7 +1176,7 @@ void Jvm::fstore(){
 
 
 //todo test, not casting to double here
-void Jvm::dstore(){    
+void Jvm::dstore(){
     u1 index = (*CurrentCode->code)[pc++];
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
@@ -1163,7 +1189,7 @@ void Jvm::dstore(){
 
 
 // todo ctest
-void Jvm::astore(){    
+void Jvm::astore(){
     u1 index = (*CurrentCode->code)[pc++];
     u4 objectref = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[index] = objectref;
@@ -1263,7 +1289,7 @@ void Jvm::lstore_3(){
 
 
 
-void Jvm::fstore_0(){    
+void Jvm::fstore_0(){
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
 
@@ -1272,7 +1298,7 @@ void Jvm::fstore_0(){
 
 
 
-void Jvm::fstore_1(){    
+void Jvm::fstore_1(){
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
 
@@ -1281,7 +1307,7 @@ void Jvm::fstore_1(){
 
 
 
-void Jvm::fstore_2(){    
+void Jvm::fstore_2(){
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
 
@@ -1290,7 +1316,7 @@ void Jvm::fstore_2(){
 
 
 
-void Jvm::fstore_3(){    
+void Jvm::fstore_3(){
     u4 value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
 
@@ -1299,7 +1325,7 @@ void Jvm::fstore_3(){
 
 
 
-void Jvm::dstore_0(){    
+void Jvm::dstore_0(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1311,7 +1337,7 @@ void Jvm::dstore_0(){
 
 
 // tested, works
-void Jvm::dstore_1(){    
+void Jvm::dstore_1(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1320,13 +1346,13 @@ void Jvm::dstore_1(){
 
     (*CurrentFrame->localVariables)[1] = highBytes;
     (*CurrentFrame->localVariables)[1 + 1] = lowBytes;
-    
+
 }
 
 
 
 
-void Jvm::dstore_2(){    
+void Jvm::dstore_2(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1338,7 +1364,7 @@ void Jvm::dstore_2(){
 
 
 
-void Jvm::dstore_3(){    
+void Jvm::dstore_3(){
     u4 lowBytes = CurrentFrame->OperandStack->Pop();
     u4 highBytes = CurrentFrame->OperandStack->Pop();
 
@@ -1350,7 +1376,7 @@ void Jvm::dstore_3(){
 
 
 
-void Jvm::astore_0(){    
+void Jvm::astore_0(){
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[0] = value;
@@ -1359,7 +1385,7 @@ void Jvm::astore_0(){
 
 
 
-void Jvm::astore_1(){    
+void Jvm::astore_1(){
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[1] = value;
@@ -1368,7 +1394,7 @@ void Jvm::astore_1(){
 
 
 
-void Jvm::astore_2(){    
+void Jvm::astore_2(){
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[2] = value;
@@ -1377,7 +1403,7 @@ void Jvm::astore_2(){
 
 
 
-void Jvm::astore_3(){    
+void Jvm::astore_3(){
     u4 value;
     value = CurrentFrame->OperandStack->Pop();
     (*CurrentFrame->localVariables)[3] = value;
@@ -1399,7 +1425,7 @@ void Jvm::iastore(){
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_INT)
-        std::cerr<<"iastore: Array nao e de int\n"; 
+        std::cerr<<"iastore: Array nao e de int\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1408,7 +1434,7 @@ void Jvm::iastore(){
 
 
 // todo test
-void Jvm::lastore(){    
+void Jvm::lastore(){
     long long value = popU8FromOpStack();
     s4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1430,7 +1456,7 @@ void Jvm::lastore(){
 
 
 // todo test
-void Jvm::fastore(){    
+void Jvm::fastore(){
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1443,7 +1469,7 @@ void Jvm::fastore(){
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_FLOAT)
-        std::cerr<<"fastore: Array nao e de float\n"; 
+        std::cerr<<"fastore: Array nao e de float\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"fastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1454,7 +1480,7 @@ void Jvm::fastore(){
 
 
 // todo test
-void Jvm::dastore(){    
+void Jvm::dastore(){
     double value = popU8FromOpStack();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1464,7 +1490,7 @@ void Jvm::dastore(){
     if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"dastore: referencia nao e para um array\n";
 
-    ArrayInstance* Array = ArrayRef->ArrayRef; 
+    ArrayInstance* Array = ArrayRef->ArrayRef;
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"dastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1478,7 +1504,7 @@ void Jvm::dastore(){
 
 
 // todo test
-void Jvm::aastore(){    
+void Jvm::aastore(){
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1499,7 +1525,7 @@ void Jvm::aastore(){
 
 
 // todo test
-void Jvm::bastore(){    
+void Jvm::bastore(){
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1512,7 +1538,7 @@ void Jvm::bastore(){
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_BYTE)
-        std::cerr<<"bastore: Array nao e de byte\n"; 
+        std::cerr<<"bastore: Array nao e de byte\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"bastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1523,7 +1549,7 @@ void Jvm::bastore(){
 
 
 // todo test
-void Jvm::castore(){    
+void Jvm::castore(){
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1536,7 +1562,7 @@ void Jvm::castore(){
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_CHAR)
-        std::cerr<<"castore: Array nao e de char\n"; 
+        std::cerr<<"castore: Array nao e de char\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"castore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1547,7 +1573,7 @@ void Jvm::castore(){
 
 
 // todo test
-void Jvm::sastore(){    
+void Jvm::sastore(){
     u4 value = CurrentFrame->OperandStack->Pop();
     u4 index = CurrentFrame->OperandStack->Pop();
 
@@ -1560,7 +1586,7 @@ void Jvm::sastore(){
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
     if(Array->ComponentType != ArrayTypeCode::T_SHORT)
-        std::cerr<<"sastore: Array nao e de short\n"; 
+        std::cerr<<"sastore: Array nao e de short\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"sastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
@@ -1578,7 +1604,7 @@ void Jvm::pop(){
 
 
 
-void Jvm::pop2(){    
+void Jvm::pop2(){
     CurrentFrame->OperandStack->pop();
     CurrentFrame->OperandStack->pop();
 }
@@ -1586,7 +1612,7 @@ void Jvm::pop2(){
 
 
 // tested, works
-void Jvm::dup(){    
+void Jvm::dup(){
 
     u4 value = CurrentFrame->OperandStack->Pop();
 
@@ -1598,7 +1624,7 @@ void Jvm::dup(){
 
 
 
-void Jvm::dup_x1(){    
+void Jvm::dup_x1(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value1);
@@ -1611,7 +1637,7 @@ void Jvm::dup_x1(){
 
 
 // Form1 only
-void Jvm::dup_x2(){    
+void Jvm::dup_x2(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1624,7 +1650,7 @@ void Jvm::dup_x2(){
 
 // vals ok
 // Form1 escolhida: both value1 and value2 are values of a category 1 computational type
-void Jvm::dup2(){    
+void Jvm::dup2(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     CurrentFrame->OperandStack->push(value2);
@@ -1637,7 +1663,7 @@ void Jvm::dup2(){
 
 
 //Form1 escolhida: all values are category 1 computational type
-void Jvm::dup2_x1(){    
+void Jvm::dup2_x1(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1653,7 +1679,7 @@ void Jvm::dup2_x1(){
 
 
 //Form1 escolhida: all values are category 1 computational type
-void Jvm::dup2_x2(){    
+void Jvm::dup2_x2(){
     u4 value1 = CurrentFrame->OperandStack->Pop();
     u4 value2 = CurrentFrame->OperandStack->Pop();
     u4 value3 = CurrentFrame->OperandStack->Pop();
@@ -1709,7 +1735,7 @@ void Jvm::ladd(){
 
 
 // Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
-void Jvm::fadd(){    
+void Jvm::fadd(){
 
     float value1;
     float value2;
@@ -1725,7 +1751,7 @@ void Jvm::fadd(){
 
 
 // !todo: fix, erradasso
-void Jvm::dadd(){    
+void Jvm::dadd(){
     Cat2Value value{};
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
@@ -1754,7 +1780,7 @@ void Jvm::isub(){
 
 
 
-void Jvm::lsub(){    
+void Jvm::lsub(){
     Cat2Value value1, value2, aux;
     long result;
 
@@ -1771,7 +1797,7 @@ void Jvm::lsub(){
 
 
 
-void Jvm::fsub(){    
+void Jvm::fsub(){
     U4ToType value1, value2;
     float result;
 
@@ -1786,7 +1812,7 @@ void Jvm::fsub(){
 
 
 
-void Jvm::dsub(){    
+void Jvm::dsub(){
     Cat2Value value1, value2, aux;
     double result;
 
@@ -1833,7 +1859,7 @@ void Jvm::lmul(){
 
 
 
-void Jvm::fmul(){    
+void Jvm::fmul(){
 
     float value1;
     float value2;
@@ -1848,7 +1874,7 @@ void Jvm::fmul(){
 
 
 
-void Jvm::dmul(){    
+void Jvm::dmul(){
 
     Cat2Value value1, value2, aux;
     double result;
@@ -1879,7 +1905,7 @@ void Jvm::idiv(){
 
 
 
-void Jvm::ldiv(){    
+void Jvm::ldiv(){
 
     Cat2Value value1, value2, result;
 
@@ -1898,7 +1924,7 @@ void Jvm::ldiv(){
 
 
 
-void Jvm::fdiv(){    
+void Jvm::fdiv(){
     float value1, value2, result;
 
     value2 = CurrentFrame->OperandStack->Pop();
@@ -1912,7 +1938,7 @@ void Jvm::fdiv(){
 
 
 
-void Jvm::ddiv(){    
+void Jvm::ddiv(){
     Cat2Value value1, value2, aux;
     double result;
 
@@ -1963,7 +1989,7 @@ void Jvm::lrem(){
 
 
 
-void Jvm::frem(){    
+void Jvm::frem(){
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     float result;
@@ -1979,7 +2005,7 @@ void Jvm::frem(){
 
 
 
-void Jvm::drem(){    
+void Jvm::drem(){
     Cat2Value value{};
     double value2 = popU8FromOpStack();
     double value1 = popU8FromOpStack();
@@ -2025,7 +2051,7 @@ void Jvm::fneg(){
 
 
 
-void Jvm::dneg(){    
+void Jvm::dneg(){
     Cat2Value value{};
     double result = -1* popU8FromOpStack();
     value.AsDouble = result;
@@ -2102,7 +2128,7 @@ void Jvm::iushr(){
 
 
 
-void Jvm::lushr(){    
+void Jvm::lushr(){
     Cat2Value value{};
     int value2 = CurrentFrame->OperandStack->Pop();
     long value1 = popU8FromOpStack();
@@ -2116,7 +2142,7 @@ void Jvm::lushr(){
 
 
 
-void Jvm::iand(){    
+void Jvm::iand(){
 
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -2187,7 +2213,7 @@ void Jvm::ixor(){
 
 
 
-void Jvm::lxor(){    
+void Jvm::lxor(){
     Cat2Value value{};
     long value2 = popU8FromOpStack();
     long value1 = popU8FromOpStack();
@@ -2206,15 +2232,18 @@ void Jvm::lxor(){
 void Jvm::iinc(){ //todo pode ser alterado por wide, ver -
 
     u1 index = (*CurrentCode->code)[pc++];
-    s1 const_ = static_cast<s1>((*CurrentCode->code)[pc++]);
-    (*CurrentFrame->localVariables)[index] += static_cast<int>(const_);
+    auto const_ = static_cast<int8_t>((*CurrentCode->code)[pc++]);
+    (*CurrentFrame->localVariables)[index] += const_;
+    //   s1 const_ = static_cast<s1>((*CurrentCode->code)[pc++]);
+    // (*CurrentFrame->localVariables)[index] += static_cast<int>(const_);
+
 
 }
 
 
 
 // idk todo test
-void Jvm::i2l(){    
+void Jvm::i2l(){
     Cat2Value value{};
     value.AsLong = (CurrentFrame->OperandStack->Pop());
 
@@ -2225,7 +2254,7 @@ void Jvm::i2l(){
 
 
 
-void Jvm::i2f(){    
+void Jvm::i2f(){
     int value = static_cast<int>(CurrentFrame->OperandStack->Pop());
     float result = static_cast<float>(value);
     CurrentFrame->OperandStack->push(result);
@@ -2233,7 +2262,7 @@ void Jvm::i2f(){
 
 
 //Converte int pra double
-void Jvm::i2d(){    
+void Jvm::i2d(){
     Cat2Value value{};
 
     value.AsDouble = CurrentFrame->OperandStack->Pop();
@@ -2260,7 +2289,7 @@ void Jvm::l2i(){
 
 //!k
 // todo test
-void Jvm::l2f(){    
+void Jvm::l2f(){
     float value = popU8FromOpStack();
 
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
@@ -2269,7 +2298,7 @@ void Jvm::l2f(){
 
 
 
-void Jvm::l2d(){    
+void Jvm::l2d(){
     Cat2Value value{};
 
     value.AsLong = popU8FromOpStack();
@@ -2285,7 +2314,7 @@ void Jvm::l2d(){
 
 
 
-void Jvm::f2i(){    
+void Jvm::f2i(){
     //converte u4 pra float, float pra int
     float value = static_cast<float>(CurrentFrame->OperandStack->Pop());
     u4 intValue = static_cast<u4>(value);
@@ -2310,7 +2339,7 @@ void Jvm::f2i(){
 
 
 // testado (hardcode, n cm file) ok
-void Jvm::f2l(){    
+void Jvm::f2l(){
     //converte u4 pra float, float pra long
     Cat2Value value{};
     float valueFloat = (CurrentFrame->OperandStack->Pop());
@@ -2331,7 +2360,7 @@ void Jvm::f2l(){
         value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
 
     } else {
-    
+
     }
 
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
@@ -2341,7 +2370,7 @@ void Jvm::f2l(){
 
 
 // todo test
-void Jvm::f2d(){    
+void Jvm::f2d(){
     Cat2Value value{};
 
     value.AsDouble = (CurrentFrame->OperandStack->Pop());
@@ -2350,7 +2379,7 @@ void Jvm::f2d(){
 
 
 // todo fix ez
-void Jvm::d2i(){    
+void Jvm::d2i(){
     //big endian: highbytes first
     double value;
     u4 result;
@@ -2368,7 +2397,7 @@ void Jvm::d2i(){
     } else if( value <= INT32_MIN || value == -1 * std::numeric_limits<double>::infinity()) {
         result = INT32_MIN;
     } else { // IEEE 754 round towards zero mode: check if rounded to zero
-    // !todo testa parece errado
+        // !todo testa parece errado
         result = static_cast<u4>(value);
     }
     // push pro stack de operandos
@@ -2379,7 +2408,7 @@ void Jvm::d2i(){
 
 
 // todo tesg
-void Jvm::d2l(){    
+void Jvm::d2l(){
     Cat2Value value{};
 
     value.AsDouble = popU8FromOpStack();
@@ -2398,7 +2427,7 @@ void Jvm::d2l(){
         value.HighBytes = static_cast<u4>(std::numeric_limits<long long>::min() & 0x00000000ffffffff);
 
     } else { // IEEE 754 round towards zero mode: check if rounded to zero todo delete this comment
-    
+
     }
 
 
@@ -2407,7 +2436,7 @@ void Jvm::d2l(){
 
 
 // todo test
-void Jvm::d2f(){    
+void Jvm::d2f(){
     Cat2Value valDouble{};
     float valueFloat;
 
@@ -2448,7 +2477,7 @@ void Jvm::i2c(){
 
 
 // short is signed int16_t (s2)
-void Jvm::i2s(){    
+void Jvm::i2s(){
 
     U4ToType value{};
     // trunca e faz sign extension
@@ -2458,7 +2487,7 @@ void Jvm::i2s(){
 
 //!k
 // todo test all 3 cases
-void Jvm::lcmp(){    
+void Jvm::lcmp(){
     long long value2 = popU8FromOpStack();
     long long value1 = popU8FromOpStack();
     s4 intValue = 9;
@@ -2476,7 +2505,7 @@ void Jvm::lcmp(){
 
 
 
-void Jvm::fcmpl(){    
+void Jvm::fcmpl(){
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     int intValue = 9;
@@ -2496,7 +2525,7 @@ void Jvm::fcmpl(){
 
 
 
-void Jvm::fcmpg(){    
+void Jvm::fcmpg(){
     float value2 = CurrentFrame->OperandStack->Pop();
     float value1 = CurrentFrame->OperandStack->Pop();
     int intValue = 9;
@@ -2515,7 +2544,7 @@ void Jvm::fcmpg(){
 
 
 // todo mb delete these static casts
-void Jvm::dcmpl(){    
+void Jvm::dcmpl(){
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
     int intValue = 9;
@@ -2533,7 +2562,7 @@ void Jvm::dcmpl(){
 
 
 
-void Jvm::dcmpg(){    
+void Jvm::dcmpg(){
     double value2 = static_cast<double>(popU8FromOpStack());
     double value1 = static_cast<double>(popU8FromOpStack());
     int intValue = 9;
@@ -2628,7 +2657,7 @@ void Jvm::ifle(){
 
 
 
-void Jvm::if_icmpeq(){    
+void Jvm::if_icmpeq(){
     u2 offset = GetIndex2();
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -2642,7 +2671,7 @@ void Jvm::if_icmpeq(){
 
 
 
-void Jvm::if_icmpne(){    
+void Jvm::if_icmpne(){
     u2 offset = GetIndex2();
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -2656,10 +2685,10 @@ void Jvm::if_icmpne(){
 
 
 
-void Jvm::if_icmplt(){    
+void Jvm::if_icmplt(){
     u2 offset = GetIndex2();
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 < value2){
         pc += offset;
@@ -2670,10 +2699,10 @@ void Jvm::if_icmplt(){
 
 
 
-void Jvm::if_icmpge(){    
+void Jvm::if_icmpge(){
     u2 offset = GetIndex2();
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 >= value2){
         pc += offset;
@@ -2684,10 +2713,10 @@ void Jvm::if_icmpge(){
 
 
 
-void Jvm::if_icmpgt(){    
+void Jvm::if_icmpgt(){
     u2 offset = GetIndex2();
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 > value2){
         pc += offset;
@@ -2698,10 +2727,10 @@ void Jvm::if_icmpgt(){
 
 
 
-void Jvm::if_icmple(){    
+void Jvm::if_icmple(){
     u2 offset = GetIndex2();
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 <= value2){
         pc += offset;
@@ -2712,10 +2741,10 @@ void Jvm::if_icmple(){
 
 
 
-void Jvm::if_acmpeq(){    
+void Jvm::if_acmpeq(){
     u2 offset = GetIndex2();
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 == value2){
         pc += offset;
@@ -2726,7 +2755,7 @@ void Jvm::if_acmpeq(){
 
 
 
-void Jvm::if_acmpne(){    
+void Jvm::if_acmpne(){
     u2 offset = GetIndex2();
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -2740,8 +2769,8 @@ void Jvm::if_acmpne(){
 
 
 
-void Jvm::goto_(){    
-    s2 branchoffset = GetIndex2();
+void Jvm::goto_(){
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     pc += branchoffset ;
 }
 
@@ -2750,7 +2779,7 @@ void Jvm::goto_(){
 //     The address of the opcode of the instruction immediately
 // following this jsr instruction is pushed onto the operand stack as
 // a value of type returnAddress.
-void Jvm::jsr(){    
+void Jvm::jsr(){
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
     //nota: devia ter dado push como type returnAddress? n aconteceu
@@ -2761,25 +2790,96 @@ void Jvm::jsr(){
 
 
 
-void Jvm::ret(){    
+void Jvm::ret(){
     u1 index = (*CurrentCode->code)[pc++];
     u4 NewPc = (*CurrentFrame->localVariables)[index];
     pc = NewPc;
 }
 
-// todo implement
+
+// Description
+
+//     A tableswitch is a variable-length instruction. Immediately after the tableswitch opcode, between 0 and 3 null bytes (zeroed bytes, not the null object) are inserted as padding. The number of null bytes is chosen so that the following byte begins at an address that is a multiple of 4 bytes from the start of the current method (the opcode of its first instruction). Immediately after the padding follow bytes constituting three signed 32-bit values: default, low, and high. Immediately following those bytes are bytes constituting a series of high - low + 1 signed 32-bit offsets. The value low must be less than or equal to high. The high - low + 1 signed 32-bit offsets are treated as a 0-based jump table. Each of these signed 32-bit values is constructed as (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4.
+
+//     The index must be of type int and is popped from the operand stack. If index is less than low or index is greater than high, then a target address is calculated by adding default to the address of the opcode of this tableswitch instruction. Otherwise, the offset at position index - low of the jump table is extracted. The target address is calculated by adding that offset to the address of the opcode of this tableswitch instruction. Execution then continues at the target address.
+
+//     The target address that can be calculated from each jump table offset, as well as the ones that can be calculated from default, must be the address of an opcode of an instruction within the method that contains this tableswitch instruction.
+
+// Notes
+
+
+uint32_t Jvm::read_u4(const std::vector<uint8_t>& code, size_t& index) {
+    uint32_t value = (code[index] << 24) |
+                     (code[index + 1] << 16) |
+                     (code[index + 2] << 8) |
+                     code[index + 3];
+    index += 4;
+    return value;
+}
+
 void Jvm::tableswitch() {
-    
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    // Lê os valores do bytecode
+    int32_t default_offset = read_u4(code, pc);
+    int32_t low = read_u4(code, pc);
+    int32_t high = read_u4(code, pc);
+
+    // Calcula o número de jump offsets
+    int32_t num_offsets = high - low + 1;
+
+    // Lê os jump offsets
+    std::vector<int32_t> jump_offsets(num_offsets);
+    for (int32_t i = 0; i < num_offsets; ++i) {
+        jump_offsets[i] = read_u4(code, pc);
+    }
+
+    // Obtém a key do topo da pilha de operandos
+    int32_t index = PopOpStack();
+
+    // Verifica se o índice está dentro do intervalo
+    if (index < low || index > high) {
+        pc += default_offset;  // Ajusta pc para o offset padrão
+    } else {
+        int32_t offset = jump_offsets[index - low];
+        pc += offset;  // Ajusta pc para o offset correspondente ao índice
+    }
 }
+
 
 // todo implement
-void Jvm::lookupswitch(){    
+void Jvm::lookupswitch(){
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    int32_t default_offset = read_u4();
+    int32_t npairs = read_u4();
+
+    std::map<int32_t, int32_t> matchOffsetPairs;
+    for (int32_t i = 0; i < npairs; ++i) {
+        int32_t match = read_u4();
+        int32_t offset = read_u4();
+        matchOffsetPairs[match] = offset;
+    }
+
+    int32_t key = PopOpStack();
+
+    auto it = matchOffsetPairs.find(key);
+    if (it != matchOffsetPairs.end()) {
+        pc += it->second;
+    } else {
+        pc += default_offset;
+    }
+
 }
 
 
 
 
-void Jvm::ireturn(){    
+void Jvm::ireturn(){
 //check return == int
     return_u4();
 }
@@ -2796,7 +2896,7 @@ void Jvm::lreturn(){
 
 
 
-void Jvm::freturn(){    
+void Jvm::freturn(){
 
 //check return == float
     return_u4();
@@ -2805,16 +2905,16 @@ void Jvm::freturn(){
 
 
 
-void Jvm::dreturn(){    
+void Jvm::dreturn(){
 //check return == double
     return_u8();
 }
 
 
 
- 
 
-void Jvm::areturn(){    
+
+void Jvm::areturn(){
 //check return == ref
     return_u4();
 }
@@ -2822,12 +2922,12 @@ void Jvm::areturn(){
 // todo doxygen
 void Jvm::return_(){    
 //check return == void
-if(FrameStack.size() != 1) // caso seja 1, ta no final da main ou clinit da main
-	PopFrameStack();
+    if(FrameStack.size() != 1) // caso seja 1, ta no final da main ou clinit da main
+        PopFrameStack();
 }
 // tested, works
 
-void Jvm::getstatic(){    
+void Jvm::getstatic(){
     u2 index = GetIndex2();
     cp_info* Fieldref     = GetConstantPoolEntryAt(index);
     cp_info* NameAndType  = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
@@ -2847,7 +2947,7 @@ void Jvm::getstatic(){
 }
 //TODO:  so pra int para testar
 
-void Jvm::putstatic(){    
+void Jvm::putstatic(){
     u2 index = GetIndex2();
     u4 value = PopOpStack();
     cp_info* Fieldref    = GetConstantPoolEntryAt(index);
@@ -2896,7 +2996,7 @@ void Jvm::getfield(){
 
 
 // todo implement, fix erradasso
-void Jvm::new_(){    
+void Jvm::new_(){
     //todo exceptions linking e run time
     u2 index = GetIndex2();
     cp_info* ref = GetConstantPoolEntryAt(index);
@@ -2905,8 +3005,14 @@ void Jvm::new_(){
     if(ref->tag == ConstantPoolTag::CONSTANT_Class){
         auto ClassName = GetConstantPoolEntryAt(ref->name_index)->AsString();
         //allocate memory to class by name
-
-        auto ClassFile = GetClass(ClassName);
+        class_file* ClassFile;
+        if(IsLoaded(ClassName))
+            ClassFile = GetClass(ClassName);
+        else{
+            pc-=3;
+            GetClass(ClassName);
+            return;
+        }
         auto ClassHandle = new Handle;
         ClassHandle->ClassObject = ClassFile;
         ClassHandle->MethodTable = ClassFile->methods;
@@ -2948,7 +3054,7 @@ void Jvm::putfield(){
     if(FieldDescriptor == "D" or FieldDescriptor == "L")
         Value.AsLong = popU8FromOpStack();
     else
-    	Value.AsInt = PopOpStack();
+        Value.AsInt = PopOpStack();
 
     auto ObjectRef = reinterpret_cast<Reference*>(PopOpStack());
     (*ObjectRef->ClassRef->ObjectData)[Name] = Value;
@@ -2958,9 +3064,8 @@ void Jvm::putfield(){
 } // tested, works
 //TODO: to fazendo so pro hello world por enquanto
 
-void Jvm::invokevirtual(){    
+void Jvm::invokevirtual(){
     u2 index = GetIndex2();
-
     cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
     auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
     auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
@@ -2976,15 +3081,11 @@ void Jvm::invokevirtual(){
 
     invoke(ClassName, MethodName, MethodDescriptor);
 
-
-
-
-
 }
 
 // TODO: INSTANCIAS DE OUTRAS CLASSES (ta carregando o init da main)
 
-void Jvm::invokespecial(){    
+void Jvm::invokespecial(){
     u2 index = GetIndex2();
     auto MethodOrInterfaceMethod = GetConstantPoolEntryAt(index);
 
@@ -2998,52 +3099,69 @@ void Jvm::invokespecial(){
 
     auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
     //faz uma copia da pilha de operandos do frame atual pra carregar as variaveis locais na pilha nova
-
-
-    invoke(ClassName, {"<init>"}, Descriptor);
-
-}
-
-
-
-
-void Jvm::invokestatic(){    
-    auto a= reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
-
-}
-// todo implement
-void Jvm::invokeinterface(){    
-    u2 index = GetIndex2();
-    auto InterfaceMethod = GetConstantPoolEntryAt(index);
-
-    auto Class = GetConstantPoolEntryAt(InterfaceMethod->class_index);
-
-    auto NameAndType = GetConstantPoolEntryAt(InterfaceMethod->name_and_type_index);
-
-    auto ClassName = GetConstantPoolEntryAt(Class->name_index)->AsString();
-    if(ClassName == "java/lang/Object"){
+    if(!IsLoaded(ClassName)){
+        pc-=3;
+        GetClass(ClassName);
         return;
-        }
-        
-
-    auto Descriptor = GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
-    //faz uma copia da pilha de operandos do frame atual pra carregar as variaveis locais na pilha nova
-
+    }
 
     invoke(ClassName, {"<init>"}, Descriptor);
 
 }
 
-// todo implement
-void Jvm::invokedynamic(){    
 
+
+
+void Jvm::invokestatic(){
+
+    u2 index = GetIndex2();
+
+    cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
+    auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
+    auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
+
+    // formato <valor>
+    auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+
+    auto isStatic = true;
+    if(!IsLoaded(ClassName)){
+        pc-=3;
+        GetClass(ClassName);
+        return;
+    }
+    invoke(ClassName, MethodName, MethodDescriptor, isStatic);
+
+}
+// todo implement
+void Jvm::invokeinterface(){
+    u2 index = GetIndex2();
+    u1 Count = NextCodeByte();
+    NextCodeByte();
+    cp_info* MethodRef = (*CurrentClass->constant_pool)[index];
+    auto ClassEntry = (GetConstantPoolEntryAt(MethodRef->class_index));
+    auto ClassName = GetConstantPoolEntryAt(ClassEntry->name_index)->AsString();
+    cp_info* NameAndType = (*CurrentClass->constant_pool)[MethodRef->name_and_type_index];
+
+    // formato <valor>
+    auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
+    auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
+
+    invoke(ClassName, MethodName, MethodDescriptor);
+
+}
+
+// todo implement
+void Jvm::invokedynamic(){
+    throw std::runtime_error("nao temos invokeDynamic\n");
 }
 
 
 
 // }
 
-void Jvm::newarray(){    
+void Jvm::newarray(){
 
     auto Count = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
@@ -3091,12 +3209,14 @@ void Jvm::newarray(){
 
 }
 // todo implement
-void Jvm::anewarray(){    
+void Jvm::anewarray(){
 
 }
 // todo implement
-void Jvm::arraylength(){    
-
+void Jvm::arraylength(){
+    auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    auto* Array = ArrayRef->ArrayRef;
+    CurrentFrame->OperandStack->push(Array->size);
 }
 // todo implement
 // provalvelmente n precisa implementar
@@ -3105,12 +3225,24 @@ void Jvm::athrow(){
 
 }
 // todo  implement
-void Jvm::checkcast(){    
+void Jvm::checkcast(){
 
 }
 // todo  implement
 void Jvm::instanceof() {
-    
+    auto ObjectRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+    auto index = GetIndex2();
+    int result = 0;
+    if(ObjectRef->Nullref != nullptr) {
+        auto entry = GetConstantPoolEntryAt(index);
+        auto Name = GetConstantPoolEntryAt(entry->name_index)->AsString();
+        auto Class = GetClass(Name);
+        auto InstanceClass = ObjectRef->ClassRef->ClassHandle->ClassObject;
+        if (InstanceClass == Class)
+            result = 1;
+    }
+    CurrentFrame->OperandStack->push(result);
+
 
 }
 
@@ -3126,15 +3258,85 @@ void Jvm::monitorexit(){
 
 }
 // todo implement
-void Jvm::wide(){    
+void Jvm::wide(){
+	u1 instruction = (*CurrentCode->code)[pc++];
+	u2 index = GetIndex2();
 
+	switch((WideOp) instruction) {
+	case(WideOp::WIDE_iload): {
+		u4 value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_fload): {
+		float value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_lload): {
+		Cat2Value value{};
+		value.AsLong = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_aload): {
+		u4 objectref = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(objectref);
+		break;
+	}
+	case(WideOp::WIDE_dload): {
+		Cat2Value value{};
+		value.AsDouble = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_istore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_fstore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_astore): {
+		u4 objectref = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = objectref;
+		break;
+	}
+	case(WideOp::WIDE_lstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_dstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_ret): {
+		uint32_t NewPc = (*CurrentFrame->localVariables)[index];
+		pc = NewPc;
+		break;
+	}
+	case(WideOp::WIDE_iinc): {
+		int32_t const_ = static_cast<int32_t>(GetIndex2());
+		(*CurrentFrame->localVariables)[index] += const_;
+		break;
+	}
+	}
 }
 
 
 
- //TODO: vou usar 1 byte pra testar por enquanto, dps fazer pros outros; -> switch case do tipo
+//TODO: vou usar 1 byte pra testar por enquanto, dps fazer pros outros; -> switch case do tipo
 
-void Jvm::multianewarray(){    
+void Jvm::multianewarray(){
     u2          index           = GetIndex2();
     u1          dimensions      = NextCodeByte();
     cp_info*    ArrayInfo       = GetConstantPoolEntryAt(index);
@@ -3144,7 +3346,7 @@ void Jvm::multianewarray(){
     ArrayTypeCode Temp = ArrayTypeCode::T_INT;
 
 
-    
+
     JVM::stack<int> sizes;
 
     // pega o tamanho de cada dimensao
@@ -3154,7 +3356,7 @@ void Jvm::multianewarray(){
     }
 
     CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
-  }
+}
 
 // todo implement fix
 void Jvm::ifnull(){    
@@ -3194,9 +3396,9 @@ void Jvm::jsr_w(){
 
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
-    //todo: push como type returnAddress? n aconteceu
-
 }
 
-
-
+void OpcodePrinter::printInstruction(const std::string& instr) {
+    StringBuffer.append(std::to_string(code_iterator) + " " + instr + "\n");
+    code_iterator++;
+}

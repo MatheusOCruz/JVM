@@ -32,7 +32,8 @@ void ClassPrinter::PrintClassFile(){
 			  << "super_class:  #" << ClassFile->super_class
 			  << "       // " << super_class_name << std::endl
 			  << "minor version:    " << ClassFile->minor_version << std::endl
-			  << "major version:    " << ClassFile->major_version << std::endl;
+			  << "major version:    " << ClassFile->major_version << std::endl
+			  << "java version:     " << GetJavaVersion(ClassFile->major_version, ClassFile->minor_version) << std::endl;
 
 	std::cout << "Flags: (0x"<< std::setw(5) << std::right << std::setfill('0')
 			  << std::setbase(16) << ClassFile->access_flags
@@ -56,6 +57,20 @@ void ClassPrinter::PrintClassFile(){
     PrintInterfaces();
 }
 
+std::string ClassPrinter::GetJavaVersion(u2 major_version, u2 minor_version) {
+	switch(major_version) {
+	case 45: return "1.1";
+	case 46: return "1.2";
+	case 47: return "1.3";
+	case 48: return "1.4";
+	case 49: return "5";
+	case 50: return "6";
+	case 51: return "7";
+	case 52: return "8";
+	case 53: return "9";
+	default: return "Unknown Java Version";
+	}
+}
 
 
 void ClassPrinter::PrintConstantPoolTable() {

@@ -3,6 +3,7 @@ project(JVM)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXXFLAGS "-Wall -Wextra -g")
+set(CMAKE_CXXFLAGS "fsanitize=address,undefined")
 
 # configuração pra usar ponteiro de 32 bits
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
