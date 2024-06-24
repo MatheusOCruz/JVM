@@ -21,6 +21,7 @@ std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
     }
     return StringBuffer;
 }
+
 void OpcodePrinter::nop() {
     StringBuffer.append(" aconst_null\n");
 }
