@@ -94,7 +94,7 @@ struct Reference{
 
 /*
  *   pilha -> u4
- *   value.Bytes
+ *   value.UBytes
  *   value.float
  *
  *
@@ -113,7 +113,7 @@ union Cat2Value{
         u4 HighBytes;
         u4 LowBytes;
     };
-    uint64_t  AsLong;
+    u8  AsLong;
     double    AsDouble;
 };
 
@@ -130,11 +130,12 @@ union Cat2Value{
  * 
  */
 union U4ToType{
-    u4    Bytes;
+    u4    UBytes;
     float AsFloat;
     s2 AsShort;
     char AsChar;
     int16_t AsInt;
+    s1 AsByte;
 };
 
 

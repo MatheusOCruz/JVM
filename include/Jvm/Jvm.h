@@ -77,7 +77,6 @@ private:
     void return_u8();
 
     u2 GetIndex2();
-    u4 GetIndex4();
     
     u8 popU8FromOpStack(); //pop 2 u4 em big endian e retorna um u8
     void pushU8ToOpStack(u4 HighBytes, u4 LowBytes); //push um u8 em big endian
@@ -90,7 +89,7 @@ private:
                 bool isStatic = false);
     void LoadLocalVariables(std::string &Descriptor, JVM::stack<u4> *CallerOperandStack, bool isStatic = false);
 
-    // void fconst(float vealue);
+    void fconst(float value);
     void dconst(double value);
 
     //funcoes do bytecode
@@ -269,7 +268,7 @@ private:
 
     void tableswitch();
 
-     uint32_t read_u4();
+    uint32_t read_u4();
 
     void lookupswitch();
     void ireturn();
