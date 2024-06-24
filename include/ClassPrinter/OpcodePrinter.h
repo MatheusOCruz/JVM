@@ -7,6 +7,7 @@
 
 #include <string>
 #include "../typedefs.h"
+#include "../ClassLoader/ClassFileEnums.h"
 #include <iostream>
 class OpcodePrinter {
 public:
@@ -303,6 +304,7 @@ private:
     u4 code_iterator;
     u1* code;
 };
+
 
 
 #endif //JVM_OPCODEPRINTER_H
