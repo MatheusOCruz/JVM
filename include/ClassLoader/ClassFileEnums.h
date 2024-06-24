@@ -35,7 +35,6 @@ enum class FieldAccessFlag: uint16_t {
     ACC_ANNOTATION = 0x2000,     // Declarado como um tipo de anotação.
     ACC_ENUM = 0x4000            // Declarado como um tipo enum.
 };
-
 enum class MethodAccessFlag: uint16_t {
 	ACC_PUBLIC = 0x0001,
 	ACC_PRIVATE = 0x0002,
@@ -67,6 +66,21 @@ enum class ConstantPoolTag : uint8_t {
     CONSTANT_MethodHandle = 15,
     CONSTANT_MethodType = 16,
     CONSTANT_InvokeDynamic = 18
+};
+
+enum class WideOp: uint8_t {
+	WIDE_iload = 0x15,
+	WIDE_lload = 0x16,
+	WIDE_fload = 0x17,
+	WIDE_dload = 0x18,
+	WIDE_aload = 0x19,
+	WIDE_istore = 0x36,
+	WIDE_lstore = 0x37,
+	WIDE_fstore = 0x38,
+	WIDE_dstore = 0x39,
+	WIDE_astore = 0x3a,
+	WIDE_ret = 0xa9,
+	WIDE_iinc = 0x84
 };
 
 enum class AttributeType {

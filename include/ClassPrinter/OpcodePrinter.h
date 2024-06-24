@@ -7,14 +7,21 @@
 
 #include <string>
 #include "../typedefs.h"
+#include "../ClassLoader/ClassFileEnums.h"
 #include <iostream>
 class OpcodePrinter {
 public:
     OpcodePrinter() = default;
 
     std::string CodeToString(u1 code[],const u4 code_lenght);
-private:
+    // Declaração do metodo set code <tableswitch>
+    void setCode(u1* code, size_t code_size); // Novo metodo para configurar o código e o tamanho
+    u4 readU4();
 
+    void printInstruction(const std::string &instr);
+
+private:
+    size_t code_size; // Adicione isso
     void nop();
     void aconst_null();
     void iconst_m1();
@@ -297,6 +304,7 @@ private:
     u4 code_iterator;
     u1* code;
 };
+
 
 
 #endif //JVM_OPCODEPRINTER_H

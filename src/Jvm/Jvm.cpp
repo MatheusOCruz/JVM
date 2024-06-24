@@ -363,6 +363,7 @@ Reference* NewArray(ArrayTypeCode Type, JVM::stack<int> counts, int dims){
     else{
         Array->ComponentType = ArrayTypeCode::T_ARRAY;
         Array->ArrayVec      = new void*[count];
+
         for (int i = 0; i < count; ++i)
             Array->ArrayVec[i] = NewArray(Type, counts, dims - 1);
     }
@@ -388,10 +389,9 @@ u4 Jvm::PopOpStack(){
  * @return index u2 formado a partir do code
  */
 u2 Jvm::GetIndex2() {
-    // std::cout<<"GetIndex2\n";
     u1 indexbyte1 = (*CurrentCode->code)[pc++];
     u1 indexbyte2 = (*CurrentCode->code)[pc++];
-    return (indexbyte1 << 8) | indexbyte2;
+    return (((u2) indexbyte1) << 8) | indexbyte2;
 }
 /**
  * Função genérica para return de cat1
@@ -2173,7 +2173,7 @@ void Jvm::lxor(){
 
 
 
- void Jvm::iinc(){ //todo pode ser alterado por wide, ver --
+ void Jvm::iinc(){
     u1 index = (*CurrentCode->code)[pc++];
     auto const_ = static_cast<int8_t>((*CurrentCode->code)[pc++]);
     (*CurrentFrame->localVariables)[index] += const_;
@@ -2750,13 +2750,73 @@ void Jvm::ret(){
 
 // Notes
 
-// The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if and only if the method that contains the tableswitch starts on a 4-byte boundary.
-void Jvm::tableswitch() {
 
+uint32_t Jvm::read_u4(const std::vector<uint8_t>& code, size_t& index) {
+    uint32_t value = (code[index] << 24) |
+                     (code[index + 1] << 16) |
+                     (code[index + 2] << 8) |
+                     code[index + 3];
+    index += 4;
+    return value;
 }
+
+void Jvm::tableswitch() {
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    // Lê os valores do bytecode
+    int32_t default_offset = read_u4(code, pc);
+    int32_t low = read_u4(code, pc);
+    int32_t high = read_u4(code, pc);
+
+    // Calcula o número de jump offsets
+    int32_t num_offsets = high - low + 1;
+
+    // Lê os jump offsets
+    std::vector<int32_t> jump_offsets(num_offsets);
+    for (int32_t i = 0; i < num_offsets; ++i) {
+        jump_offsets[i] = read_u4(code, pc);
+    }
+
+    // Obtém a key do topo da pilha de operandos
+    int32_t index = PopOpStack();
+
+    // Verifica se o índice está dentro do intervalo
+    if (index < low || index > high) {
+        pc += default_offset;  // Ajusta pc para o offset padrão
+    } else {
+        int32_t offset = jump_offsets[index - low];
+        pc += offset;  // Ajusta pc para o offset correspondente ao índice
+    }
+}
+
 
 // todo implement
 void Jvm::lookupswitch(){
+    while (pc % 4 != 0) {
+        pc++;
+    }
+
+    int32_t default_offset = read_u4();
+    int32_t npairs = read_u4();
+
+    std::map<int32_t, int32_t> matchOffsetPairs;
+    for (int32_t i = 0; i < npairs; ++i) {
+        int32_t match = read_u4();
+        int32_t offset = read_u4();
+        matchOffsetPairs[match] = offset;
+    }
+
+    int32_t key = PopOpStack();
+
+    auto it = matchOffsetPairs.find(key);
+    if (it != matchOffsetPairs.end()) {
+        pc += it->second;
+    } else {
+        pc += default_offset;
+    }
+
 }
 
 
@@ -3030,10 +3090,6 @@ void Jvm::invokeinterface(){
     // formato <valor>
     auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
     auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
-    if(MethodName == "println"){
-        JavaPrint(MethodDescriptor);
-        return;
-    }
 
     invoke(ClassName, MethodName, MethodDescriptor);
 
@@ -3141,7 +3197,77 @@ void Jvm::monitorexit(){
 }
 // todo implement
 void Jvm::wide(){
+	u1 instruction = (*CurrentCode->code)[pc++];
+	u2 index = GetIndex2();
 
+	switch((WideOp) instruction) {
+	case(WideOp::WIDE_iload): {
+		u4 value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_fload): {
+		float value = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(value);
+		break;
+	}
+	case(WideOp::WIDE_lload): {
+		Cat2Value value{};
+		value.AsLong = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_aload): {
+		u4 objectref = (*CurrentFrame->localVariables)[index];
+		CurrentFrame->OperandStack->push(objectref);
+		break;
+	}
+	case(WideOp::WIDE_dload): {
+		Cat2Value value{};
+		value.AsDouble = getU8FromLocalVars(index);
+		pushU8ToOpStack(value.HighBytes, value.LowBytes);
+		break;
+	}
+	case(WideOp::WIDE_istore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_fstore): {
+		u4 value = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = value;
+		break;
+	}
+	case(WideOp::WIDE_astore): {
+		u4 objectref = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = objectref;
+		break;
+	}
+	case(WideOp::WIDE_lstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_dstore): {
+		u4 lowBytes = CurrentFrame->OperandStack->Pop();
+		u4 highBytes = CurrentFrame->OperandStack->Pop();
+		(*CurrentFrame->localVariables)[index] = highBytes;
+		(*CurrentFrame->localVariables)[index + 1] = lowBytes;
+		break;
+	}
+	case(WideOp::WIDE_ret): {
+		uint32_t NewPc = (*CurrentFrame->localVariables)[index];
+		pc = NewPc;
+		break;
+	}
+	case(WideOp::WIDE_iinc): {
+		int32_t const_ = static_cast<int32_t>(GetIndex2());
+		(*CurrentFrame->localVariables)[index] += const_;
+		break;
+	}
+	}
 }
 
 
@@ -3192,9 +3318,9 @@ void Jvm::jsr_w(){
 
     u2 offset = GetIndex2();
     CurrentFrame->OperandStack->push(pc + offset);
-
-
 }
 
-
-
+void OpcodePrinter::printInstruction(const std::string& instr) {
+    StringBuffer.append(std::to_string(code_iterator) + " " + instr + "\n");
+    code_iterator++;
+}
