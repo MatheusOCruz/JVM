@@ -452,6 +452,16 @@ void Jvm::return_u8(){
     CurrentFrame->OperandStack->push(ReturnValue1);
 
 }
+
+u4 Jvm::read_u4() {
+    u4 value = ((*CurrentCode->code)[pc] << 24) |
+                     ((*CurrentCode->code)[pc + 1] << 16) |
+                     ((*CurrentCode->code)[pc + 2] << 8) |
+            (*CurrentCode->code)[pc + 3];
+    pc += 4;
+    return value;
+}
+
 /**
  * @brief Função genérica para instruções de invoke
  *
@@ -3049,14 +3059,7 @@ void Jvm::ret(){
 // Notes
 
 
-uint32_t Jvm::read_u4(const std::vector<uint8_t>& code, size_t& index) {
-    uint32_t value = (code[index] << 24) |
-                     (code[index + 1] << 16) |
-                     (code[index + 2] << 8) |
-                     code[index + 3];
-    index += 4;
-    return value;
-}
+
 
 void Jvm::tableswitch() {
     std::cout<<"!tableswitch\n";
@@ -3065,9 +3068,9 @@ void Jvm::tableswitch() {
     }
 
     // Lê os valores do bytecode
-    int32_t default_offset = read_u4(code, pc);
-    int32_t low = read_u4(code, pc);
-    int32_t high = read_u4(code, pc);
+    int32_t default_offset = read_u4();
+    int32_t low = read_u4();
+    int32_t high = read_u4();
 
     // Calcula o número de jump offsets
     int32_t num_offsets = high - low + 1;
@@ -3075,7 +3078,7 @@ void Jvm::tableswitch() {
     // Lê os jump offsets
     std::vector<int32_t> jump_offsets(num_offsets);
     for (int32_t i = 0; i < num_offsets; ++i) {
-        jump_offsets[i] = read_u4(code, pc);
+        jump_offsets[i] = read_u4();
     }
 
     // Obtém a key do topo da pilha de operandos
@@ -3673,7 +3676,3 @@ void Jvm::jsr_w(){
     CurrentFrame->OperandStack->push(pc + offset);
 }
 
-void OpcodePrinter::printInstruction(const std::string& instr) {
-    StringBuffer.append(std::to_string(code_iterator) + " " + instr + "\n");
-    code_iterator++;
-}
