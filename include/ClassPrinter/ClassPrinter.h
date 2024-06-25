@@ -12,16 +12,19 @@
 #include "../ClassLoader/ClassLoader.h"
 #include "OpcodePrinter.h"
 #include "../Jvm/Jvm.h"
+#include "ConstantPoolPrinter.h"
 #include <unordered_map>
 
 //TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader
 class ClassPrinter {
 public:
-    ClassPrinter(const std::string _main_file) : main_file(_main_file) {Loader = new ClassLoader;}
+    ClassPrinter(const std::string _main_file) : main_file(_main_file) {
+        Loader = new ClassLoader;
+    }
+
     void Run();
 
 private:
-    void SaveInFile();
 
 	std::string ClassName(const cp_info *Entry);
 
@@ -42,9 +45,12 @@ private:
 	std::string FieldAccessFlagToString(u2 flag);
 	std::string GetJavaVersion(u2 major_version, u2 minor_version);
 
+
+
     const std::string main_file;
     class_file* ClassFile;
-    OpcodePrinter CodePrinter;
+    OpcodePrinter* CodePrinter;
+    ConstantPoolPrinter* PoolPrinter;
 	ClassLoader* Loader;
 };
 

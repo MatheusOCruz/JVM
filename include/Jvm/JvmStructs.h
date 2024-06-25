@@ -7,6 +7,7 @@
 #include <stack>
 #include "JvmEnums.h"
 #include "../typedefs.h"
+#include <stdexcept>
 
 namespace JVM{
 
