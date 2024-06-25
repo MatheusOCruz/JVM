@@ -29,7 +29,7 @@ public:
 private:
     // tbleswitch
     std::vector<u1> code;
-    void printInstruction(const std::string& instr);
+
     //
 
     int readInt(size_t& index);
@@ -38,8 +38,8 @@ private:
     void SaveFrameState();
     void NewFrame();
     void PopFrameStack();
-
-    int  GetMethod(const std::string& MethodName);
+    int GetInterfaceMethod(class_file* Class, const std::string& MethodName, const std::string& Descriptor = "");
+    int  GetMethod(const std::string& MethodName,const std::string& Descriptor = "");
     void GetCurrentMethodCode();
 
     u1   NextCodeByte();
@@ -380,6 +380,7 @@ private:
     int IsLoaded(std::string class_name);
 
     void LoadInterfaces(std::string class_name);
+
 };
 
 
