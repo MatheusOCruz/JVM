@@ -36,5 +36,7 @@ add_executable(
         include/Jvm/RunTimeExceptions.h
         src/utils.cpp
         include/utils.h
+        src/ClassPrinter/ConstantPoolPrinter.cpp
+        include/ClassPrinter/ConstantPoolPrinter.h
 
 )

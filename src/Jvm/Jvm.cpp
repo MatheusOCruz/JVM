@@ -528,11 +528,16 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output;
+        std::cout<<Output<<"\n";
     }
     else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output;
+        std::cout<<Output<<"\n";
+    }
+    else if(PrintType == "F"){
+        FieldEntry Output{};
+        Output.AsInt = CurrentFrame->OperandStack->Pop();
+        std::cout << Output.AsFloat << "\n";
     }
     else if (PrintType == "F")
     {
@@ -1124,7 +1129,6 @@ void Jvm::laload(){
 
 }
 
-
 //todo 24 most all indexes?
 // todo test
 void Jvm::faload(){
@@ -1645,8 +1649,9 @@ void Jvm::fastore(){
         std::cerr<<"fastore: Array nao e de float\n";
     if( index > Array->size - 1) // todo ArrayIndexOutOfBoundsException
         std::cerr<<"fastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
-
-    reinterpret_cast<float*>(Array->DataVec)[index] = static_cast<float>(value);
+    FieldEntry f{};
+    f.AsInt = value;
+    reinterpret_cast<float*>(Array->DataVec)[index] = f.AsFloat;
 
 }
 
@@ -2476,10 +2481,14 @@ void Jvm::i2l(){
 
 
 void Jvm::i2f(){
-    std::cout<<"!i2f\n";
-    int value = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    float result = static_cast<float>(value);
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+
+    int Value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    float AsFloat = Value;
+    FieldEntry Converter{};
+    Converter.AsFloat = AsFloat;
+    CurrentFrame->OperandStack->push(Converter.AsInt);
+ 
+  
 }
 
 
@@ -2866,57 +2875,57 @@ void Jvm::iflt(){
 
 
 
-//!k
-void Jvm::ifge(){    
-    std::cout<<"!ifge\n";
-    s4 value = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+void Jvm::ifge(){
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value >= 0){
-        pc += offset; 
+        pc += branchoffset;
     }
 
 }
 
 
 
-//!k
-void Jvm::ifgt(){    
-    std::cout<<"!ifgt\n";
-    s4 value = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+
+void Jvm::ifgt(){
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value > 0){
-        pc += offset; 
+        pc += branchoffset;
     }
 
 }
 
 
 
-//!k
-void Jvm::ifle(){    
-    std::cout<<"!ifle\n";
-    s4 value = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+
+void Jvm::ifle(){
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value <= 0){
-        pc += offset; 
+        pc += branchoffset;
+
     }
 
 }
 
 
 
-//!k
-void Jvm::if_icmpeq(){
-    std::cout<<"!if_icmpeq\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
-    s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+
+void Jv//!km::if_icmpeq(){
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 == value2){
-        pc += offset; 
+        pc += branchoffset;
+
     }
 
 }
@@ -2925,13 +2934,12 @@ void Jvm::if_icmpeq(){
 
 //!k
 void Jvm::if_icmpne(){
-    std::cout<<"!if_icmpne\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
-    auto value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    auto value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 != value2){
-        pc += offset; 
+        pc += branchoffset;
     }
 
 }
@@ -2940,13 +2948,13 @@ void Jvm::if_icmpne(){
 
 //!k
 void Jvm::if_icmplt(){
-    std::cout<<"!if_icmplt\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 < value2){
-        pc += offset; 
+        pc += branchoffset ;
     }
 
 }
@@ -2955,13 +2963,16 @@ void Jvm::if_icmplt(){
 
 //!k
 void Jvm::if_icmpge(){
-    std::cout<<"!if_icmpge\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 >= value2){
-        pc += offset; 
+
+        pc += branchoffset;
+
     }
 
 }
@@ -2970,13 +2981,16 @@ void Jvm::if_icmpge(){
 
 //!k
 void Jvm::if_icmpgt(){
-    std::cout<<"!if_icmpgt\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 > value2){
-        pc += offset; 
+
+        pc += branchoffset ;
+
     }
 
 }
@@ -2985,13 +2999,16 @@ void Jvm::if_icmpgt(){
 
 //!k
 void Jvm::if_icmple(){
-    std::cout<<"!if_icmple\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 <= value2){
-        pc += offset; 
+
+        pc += branchoffset ;
+
     }
 
 }
@@ -3000,13 +3017,14 @@ void Jvm::if_icmple(){
 //!k
 // todo check
 void Jvm::if_acmpeq(){
-    std::cout<<"!if_acmpeq\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; 
-    auto* value2 = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
-    auto* value1 = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 == value2){
-        pc += offset ; 
+        pc += branchoffset ;
+
     }
 
 }
@@ -3015,13 +3033,14 @@ void Jvm::if_acmpeq(){
 
 //!k
 void Jvm::if_acmpne(){
-    std::cout<<"!if_acmpeq\n";
-    s2 offset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
-    auto* value2 = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
-    auto* value1 = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
+
+    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
+    int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
+    int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value1 != value2){
-        pc += offset; 
+        pc += branchoffset ;
+
     }
 
 }
