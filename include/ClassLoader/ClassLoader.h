@@ -6,6 +6,7 @@
 #define JVM_CLASSLOADER_H
 #include <iostream>
 #include <fstream>
+#include <dirent.h>
 #include <vector>
 #include <stack>
 #include <map>
@@ -50,13 +51,17 @@ public:
 private:
 
     /**
-     * @brief Transforma o nome da classe no path para carregada a partir do
-     * diretorio do executável, ex: Main -> ./Main.cpp
+     * @brief Carrega o arquivo da classe no iterator
      * @param ClassName Nome da classe a ser carregada
      */
-    void LoadFile(const std::string& ClassName);
+    void LoadFile(std::string ClassName);
 
-
+    /**
+     * @brief Procura o path da classe recursivamente no diretorio  Main -> ./Main.class, se nao encontar re
+     * @param ClassName Nome da classe a ser carregada
+     * @param Path atual para a recursao
+     */
+	std::string FindClass(const std::string ClassName, const std::string Path = ".");
 
     // funcoes que leem o iterador do buffer  retoram a proxima entrada
     // convertida pra little endian e incrementam iterador

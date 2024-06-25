@@ -45,27 +45,57 @@ void ClassLoader::LoadClass(const std::string ClassName) {
 
     const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
     const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-    //LoadClass(SuperName);
+    // LoadClass(SuperName);
 }
 
-void ClassLoader::LoadFile(const std::string& ClassName) {
+#ifdef _WIN32
+	const auto SEP = '\\';
+#else
+	const auto SEP = '/';
+#endif
 
+std::string ClassLoader::FindClass(const std::string ClassName, const std::string Directory) {
+	// Looking for class in this directory
+	if (auto dir = opendir(Directory.c_str())) {
+        while (auto f = readdir(dir)) {
+            if (!f->d_name || f->d_name[0] == '.') continue;
+            if (f->d_type == DT_REG) {
+				// Checking if suffix of file matches ClassName
+				std::string target = SEP + ClassName + ".class";
+				std::string file_path = Directory + SEP + f->d_name;
+				if (target.size() > file_path.size()) continue;
 
-    std::string classPath;
-    auto cwd = utils::GetCWD();
-
-
-    std::regex ObjectClass (".*\\java/lang/Object$");
-    if(std::regex_search(ClassName, ObjectClass)){
-        classPath = "Object.class";
-        classPath = cwd+"/" + classPath;
+				std::string suffix = file_path.substr((int)file_path.size() - (int)target.size(), target.size());
+				if (suffix == target) return file_path;
+			}
+        }
+        closedir(dir);
     }
-    else{
-        classPath = cwd + "/" + ClassName + ".class";
+	// Recursive looking in sub directories
+	if (auto dir = opendir(Directory.c_str())) {
+        while (auto f = readdir(dir)) {
+            if (!f->d_name || f->d_name[0] == '.') continue;
+            if (f->d_type == DT_DIR) {
+                const auto class_path = FindClass(ClassName, Directory + SEP + f->d_name);
+				if (class_path.size() > 0) return class_path;
+			}
+        }
+        closedir(dir);
     }
-    #ifdef _WIN32
-        std::replace(classPath.begin(),classPath.end(),'/','\\');
-    #endif
+	return "";
+}
+
+void ClassLoader::LoadFile(std::string ClassName) {
+#ifdef _WIN32
+    std::replace(ClassName.begin(),ClassName.end(),'/','\\');
+#endif
+	std::string classPath = FindClass(ClassName, ".");
+
+    if (classPath.size() == 0) {
+        std::cerr << "Não foi possível encontrar o arquivo da classe: " << ClassName << std::endl;
+        exit(1);
+    }
+
     std::ifstream arquivo(classPath, std::ios::binary);
 
     if (!arquivo) {

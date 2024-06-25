@@ -486,16 +486,16 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintType == "F"){
         FieldEntry Output{};
         Output.AsInt = CurrentFrame->OperandStack->Pop();
-        std::cout << Output.AsFloat << "\n";
+        std::cout << Output.AsFloat;
     }
 
 
@@ -611,14 +611,14 @@ void Jvm::dconst_1(){
 // is pushed onto the operand stac
 // !TODO: checar se implmentacao ta certa
 void Jvm::bipush(){
-    u1 value = (*CurrentCode->code)[pc++];
+    s1 value = (*CurrentCode->code)[pc++];
 
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
+    CurrentFrame->OperandStack->push(static_cast<s4>(value));
 }
 
 void Jvm::sipush(){
-    u4 value = GetIndex2();
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
+    s2 value = GetIndex2();
+    CurrentFrame->OperandStack->push(static_cast<s4>(value));
 }
 
 // tested, works
@@ -2554,51 +2554,43 @@ void Jvm::dcmpg(){
 
 
 void Jvm::ifeq(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value == 0){
-        pc += GetIndex2();
-    }
-
+	s2 offset = GetIndex2();
+    if(value == 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
 
 
 void Jvm::ifne(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value != 0){
-        pc += GetIndex2();
-    }
-
-
+	s2 offset = GetIndex2();
+    if(value != 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
 
 
 void Jvm::iflt(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value < 0){
-        pc += GetIndex2();
-    }
-
-
+	s2 offset = GetIndex2();
+    if(value < 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
 
 
 void Jvm::ifge(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    auto value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value >= 0){
         pc += branchoffset;
     }
-
 
 }
 
@@ -2606,13 +2598,12 @@ void Jvm::ifge(){
 
 
 void Jvm::ifgt(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value > 0){
         pc += branchoffset;
-    }
-
 
 }
 
@@ -2627,13 +2618,13 @@ void Jvm::ifle(){
         pc += branchoffset;
     }
 
-
 }
 
 
 
 
 void Jvm::if_icmpeq(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2648,6 +2639,7 @@ void Jvm::if_icmpeq(){
 
 
 void Jvm::if_icmpne(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2662,6 +2654,7 @@ void Jvm::if_icmpne(){
 
 
 void Jvm::if_icmplt(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2676,6 +2669,7 @@ void Jvm::if_icmplt(){
 
 
 void Jvm::if_icmpge(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2686,10 +2680,8 @@ void Jvm::if_icmpge(){
 
 }
 
-
-
-
 void Jvm::if_icmpgt(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2700,10 +2692,8 @@ void Jvm::if_icmpgt(){
 
 }
 
-
-
-
 void Jvm::if_icmple(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2714,10 +2704,8 @@ void Jvm::if_icmple(){
 
 }
 
-
-
-
 void Jvm::if_acmpeq(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2728,10 +2716,8 @@ void Jvm::if_acmpeq(){
 
 }
 
-
-
-
 void Jvm::if_acmpne(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2742,16 +2728,10 @@ void Jvm::if_acmpne(){
 
 }
 
-
-
-
 void Jvm::goto_(){
-    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
-    pc += branchoffset ;
+    auto branchoffset = static_cast<int16_t>(GetIndex2()); 
+    pc += branchoffset -3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
-
-
-
 
 // todo testa, potencial de ta errado
 //     The address of the opcode of the instruction immediately
