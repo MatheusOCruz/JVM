@@ -13,6 +13,7 @@ typedef uint64_t u8;
 
 typedef uintptr_t u4p;
 
+typedef int8_t s1;
 typedef int16_t s2;
 typedef int32_t s4;
 typedef int64_t s8; 

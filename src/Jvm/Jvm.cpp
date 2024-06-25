@@ -611,14 +611,14 @@ void Jvm::dconst_1(){
 // is pushed onto the operand stac
 // !TODO: checar se implmentacao ta certa
 void Jvm::bipush(){
-    u1 value = (*CurrentCode->code)[pc++];
+    s1 value = (*CurrentCode->code)[pc++];
 
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
+    CurrentFrame->OperandStack->push(static_cast<s4>(value));
 }
 
 void Jvm::sipush(){
-    u4 value = GetIndex2();
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
+    s2 value = GetIndex2();
+    CurrentFrame->OperandStack->push(static_cast<s4>(value));
 }
 
 // tested, works
@@ -2554,38 +2554,30 @@ void Jvm::dcmpg(){
 
 
 void Jvm::ifeq(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value == 0){
-        pc += GetIndex2();
-    }
-
+	s2 offset = GetIndex2();
+    if(value == 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
 
 
 void Jvm::ifne(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value != 0){
-        pc += GetIndex2();
-    }
-
-
+	s2 offset = GetIndex2();
+    if(value != 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
 
 
 void Jvm::iflt(){
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
-    if(value < 0){
-        pc += GetIndex2();
-    }
-
-
+	s2 offset = GetIndex2();
+    if(value < 0) pc += offset - 3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
 
 
@@ -2598,8 +2590,6 @@ void Jvm::ifge(){
     if(value >= 0){
         pc += branchoffset;
     }
-
-
 }
 
 
@@ -2612,8 +2602,6 @@ void Jvm::ifgt(){
     if(value > 0){
         pc += branchoffset;
     }
-
-
 }
 
 
@@ -2626,8 +2614,6 @@ void Jvm::ifle(){
     if(value <= 0){
         pc += branchoffset;
     }
-
-
 }
 
 
@@ -2641,7 +2627,6 @@ void Jvm::if_icmpeq(){
     if(value1 == value2){
         pc += branchoffset;
     }
-
 }
 
 
@@ -2655,7 +2640,6 @@ void Jvm::if_icmpne(){
     if(value1 != value2){
         pc += branchoffset;
     }
-
 }
 
 
@@ -2669,7 +2653,6 @@ void Jvm::if_icmplt(){
     if(value1 < value2){
         pc += branchoffset ;
     }
-
 }
 
 
@@ -2683,11 +2666,7 @@ void Jvm::if_icmpge(){
     if(value1 >= value2){
         pc += branchoffset;
     }
-
 }
-
-
-
 
 void Jvm::if_icmpgt(){
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
@@ -2697,11 +2676,7 @@ void Jvm::if_icmpgt(){
     if(value1 > value2){
         pc += branchoffset ;
     }
-
 }
-
-
-
 
 void Jvm::if_icmple(){
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
@@ -2714,9 +2689,6 @@ void Jvm::if_icmple(){
 
 }
 
-
-
-
 void Jvm::if_acmpeq(){
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2725,11 +2697,7 @@ void Jvm::if_acmpeq(){
     if(value1 == value2){
         pc += branchoffset ;
     }
-
 }
-
-
-
 
 void Jvm::if_acmpne(){
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
@@ -2739,19 +2707,12 @@ void Jvm::if_acmpne(){
     if(value1 != value2){
         pc += branchoffset ;
     }
-
 }
-
-
-
 
 void Jvm::goto_(){
-    auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
-    pc += branchoffset ;
+    auto branchoffset = static_cast<int16_t>(GetIndex2()); 
+    pc += branchoffset -3; // Por que o PC ja andou 1 + 2 bytes branchs
 }
-
-
-
 
 // todo testa, potencial de ta errado
 //     The address of the opcode of the instruction immediately
