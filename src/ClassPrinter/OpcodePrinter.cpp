@@ -81,8 +81,7 @@ void OpcodePrinter::bipush() {
 void OpcodePrinter::sipush() {
     u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
 
-    StringBuffer.append(" sipush #"); StringBuffer.append(std::to_string(index));
-    StringBuffer.append("  // "+ Printer->CpEntryAsString(index));
+    StringBuffer.append(" sipush "); StringBuffer.append(std::to_string(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ldc() {
