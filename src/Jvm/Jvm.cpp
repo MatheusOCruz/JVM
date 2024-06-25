@@ -2660,9 +2660,8 @@ void Jvm::ret(){
 
 
 void Jvm::tableswitch() {
-    while (pc % 4 != 0) {
-        pc++;
-    }
+	int inst_pc = pc - 1;
+    while (pc % 4 != 0) pc++;
 
     // Lê os valores do bytecode
     int32_t default_offset = read_u4();
@@ -2683,10 +2682,10 @@ void Jvm::tableswitch() {
 
     // Verifica se o índice está dentro do intervalo
     if (index < low || index > high) {
-        pc += default_offset;  // Ajusta pc para o offset padrão
+		pc = inst_pc + default_offset;
     } else {
         int32_t offset = jump_offsets[index - low];
-        pc += offset;  // Ajusta pc para o offset correspondente ao índice
+        pc = inst_pc + offset;  // Ajusta pc para o offset correspondente ao índice
     }
 }
 
