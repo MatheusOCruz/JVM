@@ -521,30 +521,20 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
         int Output = CurrentFrame->OperandStack->Pop();
         std::cout<<Output;
     }
-    else if (PrintType == "F")
-    {
-        float Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output;
-    }
-    else if (PrintType == "D")
-    {
-        double Output = popU8FromOpStack();
-        std::cout<<Output;
-    }
-    else if (PrintType == "J")
-    {
-        long long Output = popU8FromOpStack();
-        std::cout<<Output;
+    else if(PrintType == "F"){
+        FieldEntry Output{};
+        Output.AsInt = CurrentFrame->OperandStack->Pop();
+        std::cout << Output.AsFloat;
     }
     else if(PrintType == "D"){
         Cat2Value Output;
         Output.Bytes = popU8FromOpStack();
-        std::cout << Output.AsDouble << "\n";
+        std::cout << Output.AsDouble;
     }
     else if(PrintType == "J"){
         Cat2Value Output;
         Output.Bytes = popU8FromOpStack();
-        std::cout << Output.AsLong << "\n";
+        std::cout << Output.AsLong;
     }
 }
 
@@ -1935,37 +1925,27 @@ void Jvm::lrem(){
 
 }
 
-
-
-
 void Jvm::frem(){
 	U4ToType value1, value2, result;
 	value2.UBytes = CurrentFrame->OperandStack->Pop();
 	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
-	long q = (value1.AsFloat / value2.AsFloat);
+	long q = floor(value1.AsFloat / value2.AsFloat);
 
 	result.AsFloat = value1.AsFloat - q * value2.AsFloat;
     CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
-
-
-
 void Jvm::drem(){
-    Cat2Value value{};
-    double value2 = popU8FromOpStack();
-    double value1 = popU8FromOpStack();
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    double result = value1 - (value1 / value2) * value2;
+	long q = floor(value1.AsDouble / value2.AsDouble);
 
-    value.AsDouble = result;
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+	result.AsDouble = value1.AsDouble - q * value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
-
-
 
 
 void Jvm::ineg(){    
@@ -2943,6 +2923,11 @@ void Jvm::invokevirtual(){
     auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
     auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
     if(MethodName == "println"){
+        JavaPrint(MethodDescriptor);
+		std::cout << std::endl;
+        return;
+    }
+    else if(MethodName == "print"){
         JavaPrint(MethodDescriptor);
         return;
     }
