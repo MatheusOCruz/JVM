@@ -7,9 +7,9 @@
 std::string  ConstantPoolPrinter::CpEntryAsString(u2 index) {
     auto Entry = ConstantPool[index];
     switch (Entry->tag) {
-
         case ConstantPoolTag::CONSTANT_Utf8:
             return Entry->AsString();
+
         case ConstantPoolTag::CONSTANT_Integer:
             break;
         case ConstantPoolTag::CONSTANT_Float:
@@ -18,34 +18,30 @@ std::string  ConstantPoolPrinter::CpEntryAsString(u2 index) {
             break;
         case ConstantPoolTag::CONSTANT_Double:
             break;
-        case ConstantPoolTag::CONSTANT_Class:
-            break;
-        case ConstantPoolTag::CONSTANT_String: {
-            auto str = ConstantPool[Entry->string_index]->AsString();
-            str = " <"+str+">";
-            return str;
-        }
-        case ConstantPoolTag::CONSTANT_Fieldref:
-        case ConstantPoolTag::CONSTANT_Methodref:{
-            auto Class = ConstantPool[Entry->class_index];
-            auto NameAndType = ConstantPool[Entry->name_and_type_index];
-            auto ClassName = ConstantPool[Class->name_index]->AsString();
-            auto Name = ConstantPool[NameAndType->name_index]->AsString();
-            auto Descriptor = ConstantPool[NameAndType->descriptor_index]->AsString();
-            auto str = " <"+ClassName+"."+Name+" : "+Descriptor+">";
-            return str;
-        }
 
+        case ConstantPoolTag::CONSTANT_Class:
+			return CpEntryAsString(Entry->name_index);
+
+        case ConstantPoolTag::CONSTANT_String: 
+            return CpEntryAsString(Entry->string_index);
+
+        case ConstantPoolTag::CONSTANT_Fieldref:
         case ConstantPoolTag::CONSTANT_InterfaceMethodref:
-            break;
+        case ConstantPoolTag::CONSTANT_Methodref:
+            return CpEntryAsString(Entry->class_index) + "." + CpEntryAsString(Entry->name_and_type_index);
+
         case ConstantPoolTag::CONSTANT_NameAndType:
-            break;
+			return CpEntryAsString(Entry->name_index) + ":" + CpEntryAsString(Entry->descriptor_index);
+
         case ConstantPoolTag::CONSTANT_MethodHandle:
-            break;
+			return CpEntryAsString(Entry->reference_kind) + ":" + CpEntryAsString(Entry->reference_index);
+
         case ConstantPoolTag::CONSTANT_MethodType:
-            break;
+			return CpEntryAsString(Entry->descriptor_index);
+
         case ConstantPoolTag::CONSTANT_InvokeDynamic:
-            break;
+			return CpEntryAsString(Entry->bootstrap_method_attr_index) + ":" + CpEntryAsString(Entry->name_and_type_index);
+
     }
     return std::string();
 }
