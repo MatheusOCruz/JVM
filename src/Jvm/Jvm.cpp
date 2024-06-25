@@ -521,11 +521,6 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
         int Output = CurrentFrame->OperandStack->Pop();
         std::cout<<Output;
     }
-    else if(PrintType == "F"){
-        FieldEntry Output{};
-        Output.AsInt = CurrentFrame->OperandStack->Pop();
-        std::cout << Output.AsFloat;
-    }
     else if (PrintType == "F")
     {
         float Output = CurrentFrame->OperandStack->Pop();
