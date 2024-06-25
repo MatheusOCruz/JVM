@@ -1882,37 +1882,27 @@ void Jvm::lrem(){
 
 }
 
-
-
-
 void Jvm::frem(){
 	U4ToType value1, value2, result;
 	value2.Bytes = CurrentFrame->OperandStack->Pop();
 	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-	long q = (value1.AsFloat / value2.AsFloat);
+	long q = floor(value1.AsFloat / value2.AsFloat);
 
 	result.AsFloat = value1.AsFloat - q * value2.AsFloat;
     CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
-
-
-
 void Jvm::drem(){
-    Cat2Value value{};
-    double value2 = popU8FromOpStack();
-    double value1 = popU8FromOpStack();
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    double result = value1 - (value1 / value2) * value2;
+	long q = floor(value1.AsDouble / value2.AsDouble);
 
-    value.AsDouble = result;
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+	result.AsDouble = value1.AsDouble - q * value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
-
-
 
 
 void Jvm::ineg(){
