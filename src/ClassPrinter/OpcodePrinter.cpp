@@ -79,16 +79,18 @@ void OpcodePrinter::bipush() {
 }
 
 void OpcodePrinter::sipush() {
-    u2 short_ = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
+    u2 index = static_cast<short>(code[code_iterator++])<<8 | code[code_iterator++] ;
 
     StringBuffer.append(" sipush #");
-    StringBuffer.append(std::to_string(short_));
+    StringBuffer.append(std::to_string(index));
+    StringBuffer.append(Printer->CpEntryAsString(index));
     StringBuffer.append("\n");
 }
 void OpcodePrinter::ldc() {
     u1 index = code[code_iterator++];
     StringBuffer.append(" ldc #");
     StringBuffer.append(std::to_string(index));
+    StringBuffer.append(Printer->CpEntryAsString(index));
     StringBuffer.append("\n");
 }
 //TODO: incluir constant_pool como argumento da classe pra pegar valor no indice

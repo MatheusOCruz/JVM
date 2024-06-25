@@ -378,6 +378,8 @@ private:
 
 
     int IsLoaded(std::string class_name);
+
+    void LoadInterfaces(std::string class_name);
 };
 
 

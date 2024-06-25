@@ -15,6 +15,8 @@ std::string ClassPrinter::ClassName(const cp_info *Entry) {
 
 void ClassPrinter::Run() {
     ClassFile = Loader->GetClass(main_file);
+    PoolPrinter = new ConstantPoolPrinter(ClassFile->constant_pool);
+    CodePrinter = new OpcodePrinter(PoolPrinter);
     PrintClassFile();
 }
 
@@ -368,7 +370,7 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
     }
 }
 
-void ClassPrinter::SaveInFile() {}
+
 
 void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_width) {
 
@@ -378,7 +380,7 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 	if (attr_name == "Code") {
 		std::cout << std::setw(indent_width) <<  ""
 				  << "Code: " << std::endl;
-		std::cout << CodePrinter.CodeToString(
+		std::cout << CodePrinter->CodeToString(
 											  attr->code->data(),
 											  attr->code_length)
 				  << std::endl;
@@ -643,3 +645,5 @@ std::string ClassPrinter::MethodAccessFlagToString(u2 flag) {
 	}
 	return flag_string;
 }
+
+

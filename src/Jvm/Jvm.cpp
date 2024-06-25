@@ -228,7 +228,7 @@ void Jvm::PopFrameStack(){
     GetCurrentMethodCode();
 }
 
-
+//TODO: procurar nas interfaces da superclasse
 /**
  *  @brief Atualiza o método atual
  *
@@ -247,12 +247,12 @@ int Jvm::GetMethod(const std::string& MethodName){
         }
     if(MethodName == "<clinit>")
         return 0;
-
-    auto Class = CurrentClass;
+    // procura nas superclasses
+    auto* Class = CurrentClass;
     while(Class->super_class) {
         auto SuperEntry = (*Class->constant_pool)[Class->super_class];
         auto Name = (*Class->constant_pool)[SuperEntry->name_index]->AsString();
-        auto Class = GetClass(Name);
+        auto* Class = GetClass(Name);
         for(auto Method: *Class->methods)
             if((*Class->constant_pool)[Method->name_index]->AsString() == MethodName){
                 CurrentClass  = Class;
@@ -260,6 +260,9 @@ int Jvm::GetMethod(const std::string& MethodName){
                 return 1;
             }
     }
+    Class = CurrentClass;
+    //bora procurar nas interfaces
+
 
     return 0;
 }
@@ -280,6 +283,16 @@ void Jvm::GetCurrentMethodCode(){
     }
 }
 
+void Jvm::LoadInterfaces(std::string class_name) {
+    auto Class = GetClass(class_name);
+    auto Interfaces = Class->interfaces;
+    for(auto Interface: *Interfaces){
+        auto ClassEntry = (*Class->constant_pool)[Interface];
+        auto Name = (*Class->constant_pool)[ClassEntry->name_index]->AsString();
+        GetClass(Name);
+    }
+}
+
 /**
  * @brief Garante que o class_file requerido será retornado.
  *
@@ -294,6 +307,7 @@ class_file* Jvm::GetClass(std::string class_name){
     if(MethodArea->find(class_name) == MethodArea->end()) {
         Loader->LoadClass(class_name);
         CheckStaticInit(class_name);
+        LoadInterfaces(class_name);
     }
 
     return (*MethodArea)[class_name];
@@ -3181,6 +3195,8 @@ void Jvm::getstatic(){
     std::cout<<"!getstatic\n";
     u2 index = GetIndex2();
     cp_info* Fieldref     = GetConstantPoolEntryAt(index);
+    auto ClassInfo = GetConstantPoolEntryAt(Fieldref->class_index);
+    auto ClassName           =GetConstantPoolEntryAt(ClassInfo->name_index)->AsString();
     cp_info* NameAndType  = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
     auto Name      = GetConstantPoolEntryAt(NameAndType->name_index)->AsString();
     auto Descriptor= GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
@@ -3188,10 +3204,9 @@ void Jvm::getstatic(){
     if(Descriptor == "Ljava/io/PrintStream;")
         return;
 
-    class_file* Class = CurrentFrame->frameClass;
-    auto StaticFields = *(Class->StaticFields);
+    class_file* Class = GetClass(ClassName);
+    auto& StaticFields = *(Class->StaticFields);
     auto Entry  = StaticFields[Name];
-
 
     CurrentFrame->OperandStack->push(Entry->AsInt);
 
@@ -3202,12 +3217,15 @@ void Jvm::putstatic(){
     std::cout<<"!putstatic\n";
     u2 index = GetIndex2();
     u4 value = PopOpStack();
-    cp_info* Fieldref    = GetConstantPoolEntryAt(index);
-    cp_info* NameAndType = (*CurrentClass->constant_pool)[Fieldref->name_and_type_index];
-    auto Name     = GetConstantPoolEntryAt(NameAndType->name_index)->AsString();
+
+    cp_info* Fieldref        = GetConstantPoolEntryAt(index);
+    auto ClassInfo = GetConstantPoolEntryAt(Fieldref->class_index);
+    auto ClassName = GetConstantPoolEntryAt(ClassInfo->name_index)->AsString();
+    cp_info* NameAndType  = GetConstantPoolEntryAt(Fieldref->name_and_type_index);
+    auto Name      = GetConstantPoolEntryAt(NameAndType->name_index)->AsString();
     auto Descriptor= GetConstantPoolEntryAt(NameAndType->descriptor_index)->AsString();
 
-    class_file* Class = CurrentFrame->frameClass;
+    class_file* Class = GetClass(ClassName);
     auto& StaticFields = *(Class->StaticFields);
 
 
