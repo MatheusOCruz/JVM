@@ -135,7 +135,9 @@ union U4ToType{
     u4    UBytes;
     float AsFloat;
     s4 AsInt;
-    s4 AsShort;
+    s2 AsShort;
+    s1 AsByte;
+    char AsChar;
 };
 
 

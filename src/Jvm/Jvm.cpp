@@ -1750,11 +1750,11 @@ void Jvm::ladd(){
 // Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
 void Jvm::fadd(){
 	U4ToType value1, value2, result;
-	value2.Bytes = CurrentFrame->OperandStack->Pop();
-	value1.Bytes = CurrentFrame->OperandStack->Pop();
+	value2.UBytes = CurrentFrame->OperandStack->Pop();
+	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
 	result.AsFloat = value1.AsFloat + value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
 
@@ -1791,11 +1791,11 @@ void Jvm::lsub(){
 
 void Jvm::fsub(){
 	U4ToType value1, value2, result;
-	value2.Bytes = CurrentFrame->OperandStack->Pop();
-	value1.Bytes = CurrentFrame->OperandStack->Pop();
+	value2.UBytes = CurrentFrame->OperandStack->Pop();
+	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
 	result.AsFloat = value1.AsFloat - value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
 
@@ -1839,11 +1839,11 @@ void Jvm::lmul(){
 
 void Jvm::fmul(){
 	U4ToType value1, value2, result;
-	value2.Bytes = CurrentFrame->OperandStack->Pop();
-	value1.Bytes = CurrentFrame->OperandStack->Pop();
+	value2.UBytes = CurrentFrame->OperandStack->Pop();
+	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
 	result.AsFloat = value1.AsFloat * value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
 
@@ -1887,11 +1887,11 @@ void Jvm::ldiv(){
 
 void Jvm::fdiv(){
 	U4ToType value1, value2, result;
-	value2.Bytes = CurrentFrame->OperandStack->Pop();
-	value1.Bytes = CurrentFrame->OperandStack->Pop();
+	value2.UBytes = CurrentFrame->OperandStack->Pop();
+	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
 	result.AsFloat = value1.AsFloat / value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
 
@@ -1945,13 +1945,13 @@ void Jvm::lrem(){
 
 void Jvm::frem(){
 	U4ToType value1, value2, result;
-	value2.Bytes = CurrentFrame->OperandStack->Pop();
-	value1.Bytes = CurrentFrame->OperandStack->Pop();
+	value2.UBytes = CurrentFrame->OperandStack->Pop();
+	value1.UBytes = CurrentFrame->OperandStack->Pop();
 
 	long q = (value1.AsFloat / value2.AsFloat);
 
 	result.AsFloat = value1.AsFloat - q * value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
 }
 
 
@@ -2312,7 +2312,6 @@ void Jvm::f2d(){
     AsFloat.AsFloat = CurrentFrame->OperandStack->Pop();
     value.AsDouble = AsFloat.AsFloat;
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-    std::cout<<value.HighBytes<<" "<<value.LowBytes<<"\n";
 }
 
 
@@ -2527,7 +2526,7 @@ void Jvm::ifgt(){
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
-    if(value > 0){
+    if(value > 0)
         pc += branchoffset;
 
 }
