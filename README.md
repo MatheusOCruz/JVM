@@ -11,7 +11,7 @@ make
 
 ```sh
 Como usar:
-    ./build/jvm <command> <package/class>
+    ./JVM <command> <package/class>
 Comandos:
     leitor_exibidor
     jvm
