@@ -51,10 +51,10 @@ public:
 private:
 
     /**
-     * @brief Carrega a classe no iterator
+     * @brief Carrega o arquivo da classe no iterator
      * @param ClassName Nome da classe a ser carregada
      */
-    void LoadFile(const std::string& ClassName);
+    void LoadFile(std::string ClassName);
 
     /**
      * @brief Procura o path da classe recursivamente no diretorio  Main -> ./Main.class, se nao encontar re

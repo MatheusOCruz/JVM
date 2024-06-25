@@ -45,7 +45,7 @@ void ClassLoader::LoadClass(const std::string ClassName) {
 
     const auto SuperEntry = (*current_file->constant_pool)[current_file->super_class];
     const auto SuperName  = (*current_file->constant_pool)[SuperEntry->name_index]->AsString();
-    //LoadClass(SuperName);
+    // LoadClass(SuperName);
 }
 
 #ifdef _WIN32
@@ -59,9 +59,15 @@ std::string ClassLoader::FindClass(const std::string ClassName, const std::strin
 	if (auto dir = opendir(Directory.c_str())) {
         while (auto f = readdir(dir)) {
             if (!f->d_name || f->d_name[0] == '.') continue;
-            if (f->d_type == DT_REG)
-				if (ClassName + ".class" == f->d_name)
-					return Directory + SEP + f->d_name;
+            if (f->d_type == DT_REG) {
+				// Checking if suffix of file matches ClassName
+				std::string target = SEP + ClassName + ".class";
+				std::string file_path = Directory + SEP + f->d_name;
+				if (target.size() > file_path.size()) continue;
+
+				std::string suffix = file_path.substr((int)file_path.size() - (int)target.size(), target.size());
+				if (suffix == target) return file_path;
+			}
         }
         closedir(dir);
     }
@@ -79,13 +85,11 @@ std::string ClassLoader::FindClass(const std::string ClassName, const std::strin
 	return "";
 }
 
-void ClassLoader::LoadFile(const std::string& ClassName) {
-	std::string classPath = utils::GetCWD() + SEP;
-
-    std::regex ObjectClass (".*\\java/lang/Object$");
-    if(std::regex_search(ClassName, ObjectClass)) classPath += "Object.class";
-    else classPath += ClassName + ".class";
-    // else classPath = FindClass(ClassName, ".");
+void ClassLoader::LoadFile(std::string ClassName) {
+#ifdef _WIN32
+    std::replace(ClassName.begin(),ClassName.end(),'/','\\');
+#endif
+	std::string classPath = FindClass(ClassName, ".");
 
     if (classPath.size() == 0) {
         std::cerr << "Não foi possível encontrar o arquivo da classe: " << ClassName << std::endl;
