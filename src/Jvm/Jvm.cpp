@@ -2693,9 +2693,8 @@ void Jvm::tableswitch() {
 
 // todo implement
 void Jvm::lookupswitch(){
-    while (pc % 4 != 0) {
-        pc++;
-    }
+	int inst_pc = pc - 1;
+    while (pc % 4 != 0) pc++;
 
     int32_t default_offset = read_u4();
     int32_t npairs = read_u4();
@@ -2711,9 +2710,9 @@ void Jvm::lookupswitch(){
 
     auto it = matchOffsetPairs.find(key);
     if (it != matchOffsetPairs.end()) {
-        pc += it->second;
+        pc = inst_pc + it->second;
     } else {
-        pc += default_offset;
+		pc = inst_pc + default_offset;
     }
 
 }
