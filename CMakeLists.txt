@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.0)
 project(JVM)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -7,8 +7,8 @@ set(CMAKE_CXXFLAGS "fsanitize=address,undefined")
 
 # configuração pra usar ponteiro de 32 bits
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -g")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -g")
 endif()
 
 
@@ -26,10 +26,15 @@ add_executable(
         include/ClassPrinter/OpcodePrinter.h
         include/Jvm/JvmStructs.h
         include/Jvm/Jvm.h
+
+        include/ClassPrinter/OpcodePrinter.h
         include/Jvm/JvmEnums.h
         include/Jvm/RunTimeExceptions.h
         include/utils.h
+  
+        include/ClassPrinter/ConstantPoolPrinter.h
 
+        src/ClassPrinter/ConstantPoolPrinter.cpp
         src/ClassLoader/ClassLoader.cpp
         src/ClassLoader/ClassLoaderErrors.cpp
         src/ClassPrinter/ClassPrinter.cpp
