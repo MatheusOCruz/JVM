@@ -486,26 +486,26 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintType == "F"){
         FieldEntry Output{};
         Output.AsInt = CurrentFrame->OperandStack->Pop();
-        std::cout << Output.AsFloat << "\n";
+        std::cout << Output.AsFloat;
     }
     else if(PrintType == "D"){
         Cat2Value Output;
         Output.Bytes = popU8FromOpStack();
-        std::cout << Output.AsDouble << "\n";
+        std::cout << Output.AsDouble;
     }
     else if(PrintType == "J"){
         Cat2Value Output;
         Output.Bytes = popU8FromOpStack();
-        std::cout << Output.AsLong << "\n";
+        std::cout << Output.AsLong;
     }
 }
 
@@ -2921,6 +2921,11 @@ void Jvm::invokevirtual(){
     auto MethodName = (*CurrentClass->constant_pool)[NameAndType->name_index]->AsString();
     auto MethodDescriptor = (*CurrentClass->constant_pool)[NameAndType->descriptor_index]->AsString();
     if(MethodName == "println"){
+        JavaPrint(MethodDescriptor);
+		std::cout << std::endl;
+        return;
+    }
+    else if(MethodName == "print"){
         JavaPrint(MethodDescriptor);
         return;
     }
