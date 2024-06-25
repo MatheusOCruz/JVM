@@ -370,8 +370,6 @@ void ClassPrinter::PrintFieldEntry(const field_info *field) {
 			  << std::setbase(10) << std::setfill(' ')
 			  << ") " << FieldAccessFlagToString(flags) << std::endl;
 
-	// TODO(ruan): Adicionar uma função para criar uma string dizendo
-	// quais flags sao
 	if (field->attributes_count) {
 		std::cout << std::setw(2) <<  ""
 				<< "Attributes:" << std::endl;
@@ -439,6 +437,7 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 						  << std::setw(8) << std::left << e->handler_pc
 						  << std::setw(1) << std::left << "#"
 						  << std::setw(5) << std::left << e->catch_type
+						  << "//  " << PoolPrinter->CpEntryAsString(e->catch_type)
 						  << std::endl;
 			}
 		}
@@ -455,6 +454,7 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 	else if (attr_name == "ConstantValue") {
 		std::cout << std::setw(indent_width) <<  ""
 			      << "ConstantValue: #" << attr->constantvalue_index
+				  << "//  " << PoolPrinter->CpEntryAsString(attr->constantvalue_index)
 				  << std::endl;
 	}
 	else if (attr_name == "Exceptions") {
@@ -469,6 +469,7 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 	else if (attr_name == "SourceFile") {
 		std::cout << std::setw(indent_width) <<  ""
 			      << "SourceFile: #" << attr->sourcefile_index
+				  << "//  " << PoolPrinter->CpEntryAsString(attr->sourcefile_index)
 				  << std::endl;
 	}
 	else if (attr_name == "InnerClasses") {
@@ -485,6 +486,9 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 			 		  << std::setw(4) << std::left << " of "
 			 		  << std::setw(1) << std::left << "#"
 			 		  << std::setw(5) << std::left << c->outer_class_info_index
+					  << " //  " << PoolPrinter->CpEntryAsString(c->inner_name_index)
+				      << " = "   << PoolPrinter->CpEntryAsString(c->inner_class_info_index)
+				      << " of "   << PoolPrinter->CpEntryAsString(c->outer_class_info_index)
 			 		  << std::endl;
 		}
 	}

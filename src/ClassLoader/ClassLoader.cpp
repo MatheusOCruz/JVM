@@ -80,11 +80,12 @@ std::string ClassLoader::FindClass(const std::string ClassName, const std::strin
 }
 
 void ClassLoader::LoadFile(const std::string& ClassName) {
-	std::string classPath;
+	std::string classPath = utils::GetCWD() + SEP;
 
     std::regex ObjectClass (".*\\java/lang/Object$");
-    if(std::regex_search(ClassName, ObjectClass)) classPath = "Object.class";
-    else classPath = FindClass(ClassName, ".");
+    if(std::regex_search(ClassName, ObjectClass)) classPath += "Object.class";
+    else classPath += ClassName + ".class";
+    // else classPath = FindClass(ClassName, ".");
 
     if (classPath.size() == 0) {
         std::cerr << "Não foi possível encontrar o arquivo da classe: " << ClassName << std::endl;
