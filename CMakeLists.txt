@@ -28,6 +28,8 @@ add_executable(
         include/Jvm/JvmEnums.h
         include/Jvm/RunTimeExceptions.h
         include/utils.h
+        src/ClassPrinter/ConstantPoolPrinter.cpp
+        include/ClassPrinter/ConstantPoolPrinter.h
 
         src/ClassLoader/ClassLoader.cpp
         src/ClassLoader/ClassLoaderErrors.cpp
