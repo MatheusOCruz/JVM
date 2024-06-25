@@ -198,11 +198,14 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 		std::string info =
 			"#"  + std::to_string(Entry->name_index);
 
+		std::string info_string = PoolPrinter->CpEntryAsString(Entry->name_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "Class"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 
 		break;
@@ -210,11 +213,14 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 	case ConstantPoolTag::CONSTANT_String: {
 		std::string info =
 			"#"  + std::to_string(Entry->string_index);
+		std::string info_string = PoolPrinter->CpEntryAsString(Entry->string_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "String"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -223,11 +229,16 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->class_index) +
 			".#" + std::to_string(Entry->name_and_type_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->class_index) +
+			"." + PoolPrinter->CpEntryAsString(Entry->name_and_type_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "Fieldref"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -236,11 +247,16 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->class_index) +
 			".#" + std::to_string(Entry->name_and_type_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->class_index) +
+			"." + PoolPrinter->CpEntryAsString(Entry->name_and_type_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "Methodref"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -249,11 +265,16 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->class_index) +
 			".#" + std::to_string(Entry->name_and_type_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->class_index) +
+			"." + PoolPrinter->CpEntryAsString(Entry->name_and_type_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "InterfaceMethodref"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -262,11 +283,16 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->name_index) +
 			":#" + std::to_string(Entry->descriptor_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->name_index) +
+			":" + PoolPrinter->CpEntryAsString(Entry->descriptor_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "NameAndType"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -275,22 +301,30 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->reference_kind) +
 			":#" + std::to_string(Entry->reference_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->reference_kind) +
+			":" + PoolPrinter->CpEntryAsString(Entry->reference_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "MethodHandle"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
 	case ConstantPoolTag::CONSTANT_MethodType: {
 		std::string info =
 			"#"  + std::to_string(Entry->descriptor_index);
+
+		std::string info_string = PoolPrinter->CpEntryAsString(Entry->descriptor_index);
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "MethodType"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}
@@ -299,11 +333,16 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 			"#"  + std::to_string(Entry->bootstrap_method_attr_index) +
 			":#" + std::to_string(Entry->name_and_type_index);
 
+		std::string info_string =
+			PoolPrinter->CpEntryAsString(Entry->bootstrap_method_attr_index) +
+			":" + PoolPrinter->CpEntryAsString(Entry->name_and_type_index);
+
 		std::cout << std::setw(FIRST_SEP)  << std::right <<  "#"
 				  << std::setw(NUM_SEP)  << std::left << idx
 				  << std::setw(3)  << " = "
 				  << std::setw(TYPE_SEP) << std::left << "InvokeDynamic"
 				  << std::setw(INFO_SEP) << std::left << info
+				  << std::left << "// " << info_string
 				  << std::endl;
 		break;
 	}

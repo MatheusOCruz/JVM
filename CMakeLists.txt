@@ -24,17 +24,18 @@ add_executable(
         include/ClassLoader/ClassLoaderErrors.h
         include/Jvm/JvmStructs.h
         include/Jvm/Jvm.h
-
-        src/ClassLoader/ClassLoader.cpp
-        src/ClassPrinter/ClassPrinter.cpp
-        src/ClassLoader/ClassLoaderErrors.cpp
-        src/Jvm/Jvm.cpp
-        src/ClassPrinter/OpcodePrinter.cpp
         include/ClassPrinter/OpcodePrinter.h
         include/Jvm/JvmEnums.h
-        src/Jvm/RunTimeExceptions.cpp
         include/Jvm/RunTimeExceptions.h
-        src/utils.cpp
         include/utils.h
+
+        src/ClassLoader/ClassLoader.cpp
+        src/ClassLoader/ClassLoaderErrors.cpp
+        src/ClassPrinter/ClassPrinter.cpp
+        src/ClassPrinter/ConstantPoolPrinter.cpp
+        src/ClassPrinter/OpcodePrinter.cpp
+        src/Jvm/Jvm.cpp
+        src/Jvm/RunTimeExceptions.cpp
+        src/utils.cpp
 
 )
