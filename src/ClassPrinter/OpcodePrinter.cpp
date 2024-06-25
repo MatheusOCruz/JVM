@@ -72,7 +72,7 @@ void OpcodePrinter::dconst_1() {
 }
 
 void OpcodePrinter::bipush() {
-    u1 byte = code[code_iterator++];
+    s1 byte = code[code_iterator++];
     StringBuffer.append(" bipush ");
     StringBuffer.append(std::to_string(byte));
     StringBuffer.append("\n");
