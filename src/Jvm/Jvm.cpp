@@ -528,16 +528,16 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
     std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
         int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output<<"\n";
+        std::cout<<Output;
     }
     else if(PrintType == "F"){
         FieldEntry Output{};
         Output.AsInt = CurrentFrame->OperandStack->Pop();
-        std::cout << Output.AsFloat << "\n";
+        std::cout << Output.AsFloat;
     }
     else if (PrintType == "F")
     {
@@ -704,24 +704,26 @@ void Jvm::dconst_1(){
 
 
 void Jvm::bipush(){
-    std::cout<<"!bipush\n";
+
     s1 immediate = (*CurrentCode->code)[pc++];
     s4 value = immediate;
+
 
     CurrentFrame->OperandStack->push(static_cast<s4>(value));
 }
 
 void Jvm::sipush(){    
-    std::cout<<"!sipush\n";
+
     s2 intermediate = GetIndex2();
     s4 value = intermediate;
     CurrentFrame->OperandStack->push(static_cast<u4>(value));
+
 }
 
 
 
 void Jvm::ldc(){
-    std::cout<<"!ldc\n";
+
     u1 index = (*CurrentCode->code)[pc++];
     cp_info* RunTimeConstant = (*CurrentClass->constant_pool)[index];
 
@@ -2796,12 +2798,14 @@ void Jvm::iflt(){
 
 
 void Jvm::ifge(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
-    int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
+    auto value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
 
     if(value >= 0){
         pc += branchoffset;
     }
+
 }
 
 
@@ -2809,12 +2813,13 @@ void Jvm::ifge(){
 
 
 void Jvm::ifgt(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value = static_cast<int>(CurrentFrame->OperandStack->Pop());
 
     if(value > 0){
         pc += branchoffset;
-    }
+
 }
 
 
@@ -2830,13 +2835,13 @@ void Jvm::ifle(){
 
     }
 
-
 }
 
 
 
 
 void Jvm::if_icmpeq(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     int32_t value2 = static_cast<uint32_t>(CurrentFrame->OperandStack->Pop());
     int32_t value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
@@ -2851,6 +2856,7 @@ void Jvm::if_icmpeq(){
 
 
 void Jvm::if_icmpne(){
+
     auto branchoffset = static_cast<int16_t>(GetIndex2()) -3; // em relacao ao $
     auto value2 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
     auto value1 = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());

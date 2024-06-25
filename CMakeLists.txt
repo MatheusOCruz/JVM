@@ -26,10 +26,15 @@ add_executable(
         include/ClassPrinter/OpcodePrinter.h
         include/Jvm/JvmStructs.h
         include/Jvm/Jvm.h
+
+        include/ClassPrinter/OpcodePrinter.h
         include/Jvm/JvmEnums.h
         include/Jvm/RunTimeExceptions.h
         include/utils.h
+  
+        include/ClassPrinter/ConstantPoolPrinter.h
 
+        src/ClassPrinter/ConstantPoolPrinter.cpp
         src/ClassLoader/ClassLoader.cpp
         src/ClassLoader/ClassLoaderErrors.cpp
         src/ClassPrinter/ClassPrinter.cpp
