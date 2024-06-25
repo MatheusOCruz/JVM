@@ -95,7 +95,7 @@ struct Reference{
 
 /*
  *   pilha -> u4
- *   value.Bytes
+ *   value.UBytes
  *   value.float
  *
  *
@@ -105,19 +105,38 @@ struct Reference{
 
 
 
+/**
+ * @union U4ToType
+ * @brief Union auxiliar para representar valores cat2 (32 bits)
+ */
 union Cat2Value{
     struct{
         u4 HighBytes;
         u4 LowBytes;
     };
-    uint64_t  AsLong;
+    u8  AsLong;
     double    AsDouble;
 };
 
+/**
+ * @union U4ToType
+ * @brief Union auxiliar para converter e truncar valores de/para u4 (uint32_t)
+ * 
+ * @var 
+ * effv
+ * sfvfdv
+ *  
+ * @def Bytes lkmlkm
+ * todo explain each member
+ * 
+ */
 union U4ToType{
-    u4    Bytes;
+    u4    UBytes;
     float AsFloat;
     s2 AsShort;
+    char AsChar;
+    int16_t AsInt;
+    s1 AsByte;
 };
 
 
