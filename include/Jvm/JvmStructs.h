@@ -114,7 +114,8 @@ union Cat2Value{
         u4 HighBytes;
         u4 LowBytes;
     };
-    u8  AsLong;
+    u8    Bytes;
+    int64_t  AsLong;
     double    AsDouble;
 };
 
@@ -133,10 +134,8 @@ union Cat2Value{
 union U4ToType{
     u4    UBytes;
     float AsFloat;
-    s2 AsShort;
-    char AsChar;
-    int16_t AsInt;
-    s1 AsByte;
+    s4 AsInt;
+    s4 AsShort;
 };
 
 

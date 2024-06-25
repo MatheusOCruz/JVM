@@ -541,26 +541,21 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
         long long Output = popU8FromOpStack();
         std::cout<<Output;
     }
-    else{
-        auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output;
+    else if(PrintType == "D"){
+        Cat2Value Output;
+        Output.Bytes = popU8FromOpStack();
+        std::cout << Output.AsDouble << "\n";
     }
-
-
+    else if(PrintType == "J"){
+        Cat2Value Output;
+        Output.Bytes = popU8FromOpStack();
+        std::cout << Output.AsLong << "\n";
+    }
 }
 
 
 
 
-// void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOperandStack) {
-//     int count = 0;
-//     if(!Descriptor.empty())
-//         count = numberOfEntriesFromString(Descriptor);
-//     do{
-//         u4 value = CallerOperandStack->Pop();
-//         (*CurrentFrame->localVariables)[count] = value;
-//     }while(count--);
-// }
 
 
 
@@ -698,13 +693,12 @@ void Jvm::ldc(){
         case ConstantPoolTag::CONSTANT_Float:{
             u4 value = RunTimeConstant->bytes;
             CurrentFrame->OperandStack->push(value);
-            std::cout<<value<<std::endl;
-            break;
+			break;
         }
         case ConstantPoolTag::CONSTANT_String:{
             void* StringRef = (*CurrentClass->constant_pool)[RunTimeConstant->string_index];
             CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(StringRef));
-            break;
+			break;
         }
         default:{
             //deu ruim
@@ -791,9 +785,8 @@ void Jvm::lload(){
 
 void Jvm::fload(){
     u1 index = (*CurrentCode->code)[pc++];
-    float value = (*CurrentFrame->localVariables)[index];
-
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
+    u4 value = (*CurrentFrame->localVariables)[index];
+    CurrentFrame->OperandStack->push(value);
 
 }
 
@@ -801,8 +794,7 @@ void Jvm::fload(){
 void Jvm::dload(){
     u1 index = (*CurrentCode->code)[pc++];
     Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(index);
+    value.AsLong = getU8FromLocalVars(index);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
 
@@ -889,44 +881,30 @@ void Jvm::lload_3(){
 
 }
 
-
-
-
 void Jvm::fload_0(){
-    U4ToType value{};
-    value.AsFloat = (*CurrentFrame->localVariables)[0];
-    CurrentFrame->OperandStack->push(value.UBytes);
-
+    u4 value = (*CurrentFrame->localVariables)[0];
+    CurrentFrame->OperandStack->push(value);
 }
 
-
-
-
 void Jvm::fload_1(){
-    U4ToType value{};
-    value.AsFloat = (*CurrentFrame->localVariables)[1];
-    CurrentFrame->OperandStack->push(value.UBytes);
-
+    u4 value = (*CurrentFrame->localVariables)[1];
+    CurrentFrame->OperandStack->push(value);
 }
 
 
 
 
 void Jvm::fload_2(){
-    U4ToType value{};
-    value.AsFloat = (*CurrentFrame->localVariables)[2];
-    CurrentFrame->OperandStack->push(value.UBytes);
-
+    u4 value = (*CurrentFrame->localVariables)[2];
+    CurrentFrame->OperandStack->push(value);
 }
 
 
 
 
 void Jvm::fload_3(){
-    U4ToType value{};
-    value.AsFloat = (*CurrentFrame->localVariables)[3];
-    CurrentFrame->OperandStack->push(value.UBytes);
-
+    u4 value = (*CurrentFrame->localVariables)[3];
+    CurrentFrame->OperandStack->push(value);
 }
 
 /**
@@ -938,8 +916,7 @@ void Jvm::fload_3(){
  */
 void Jvm::dload(uint index){
     Cat2Value value{};
-
-    value.AsDouble = getU8FromLocalVars(index);
+    value.AsLong = getU8FromLocalVars(index);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
 
@@ -1214,11 +1191,8 @@ void Jvm::lstore(){
 
 void Jvm::fstore(){
     u1 index = (*CurrentCode->code)[pc++];
-    U4ToType value;
-    value.AsFloat = CurrentFrame->OperandStack->Pop();
-    (*CurrentFrame->localVariables)[index] = value.UBytes;
-    std::cout<<value.AsFloat<<" "<<value.UBytes<<std::endl;
-
+    u4 value = CurrentFrame->OperandStack->Pop();
+    (*CurrentFrame->localVariables)[index] = value;
 }
 
 
@@ -1350,36 +1324,24 @@ void Jvm::fstore_0(){
 
 
 void Jvm::fstore_1(){
-    U4ToType value;
-    
-    value.AsFloat = CurrentFrame->OperandStack->Pop();
-    (*CurrentFrame->localVariables)[1] = value.UBytes;
-    std::cout<<value.AsFloat<<" "<<value.UBytes<<std::endl;
-
-
+    u4 value = CurrentFrame->OperandStack->Pop();
+    (*CurrentFrame->localVariables)[1] = value;
 }
 
 
 
 
 void Jvm::fstore_2(){
-    U4ToType value;
-    
-    value.AsFloat = CurrentFrame->OperandStack->Pop();
-    (*CurrentFrame->localVariables)[2] = value.UBytes;
-    std::cout<<value.AsFloat<<" "<<value.UBytes<<std::endl;
+    u4 value = CurrentFrame->OperandStack->Pop();
+    (*CurrentFrame->localVariables)[2] = value;
 }
 
 
 
 
 void Jvm::fstore_3(){
-    U4ToType value;
-    
-    value.AsFloat = CurrentFrame->OperandStack->Pop();
-    (*CurrentFrame->localVariables)[3] = value.UBytes;
-    std::cout<<value.AsFloat<<" "<<value.UBytes<<std::endl;
-
+    u4 value = CurrentFrame->OperandStack->Pop();
+    (*CurrentFrame->localVariables)[3] = value;
 }
 
 
@@ -1773,53 +1735,37 @@ void Jvm::iadd(){
 
 
 
+// Both value1 and value2 must be of type long. The values are popped from the operand stack. The long result is value1 + value2. The result is pushed onto the operand stack. The result is the 64 low-order bits of the true mathematical result in a sufficiently wide two's-complement format, represented as a value of type long. If overflow occurs, the sign of the result may not be the same as the sign of the mathematical sum of the two values. Despite the fact that overflow may occur, execution of an ladd instruction never throws a run-time exception.
+void Jvm::ladd(){
+	Cat2Value value1, value2, result;
+	value1.Bytes = popU8FromOpStack();
+    value2.Bytes = popU8FromOpStack();
 
-void Jvm::ladd(){    
-    Cat2Value value{};
-    long value2 = popU8FromOpStack();
-    long value1 = popU8FromOpStack();
-
-    value.AsLong = value1 + value2;
-
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+	result.AsLong = value1.AsLong + value2.AsLong;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
 
-
+// Both value1 and value2 must be of type float. The values are popped from the operand stack and undergo value set conversion (§2.8.3), resulting in value1' and value2'. The float result is value1' + value2'. The result is pushed onto the operand stack. The result of an fadd instruction is governed by the rules of IEEE arithmetic: • If either value1' or value2' is NaN, the result is NaN. • The sum of two infinities of opposite sign is NaN. • The sum of two infinities of the same sign is the infinity of that sign. • The sum of an infinity and any finite value is equal to the infinity. • The sum of two zeroes of opposite sign is positive zero. • The sum of two zeroes of the same sign is the zero of that sign. • The sum of a zero and a nonzero finite value is equal to the nonzero value. • The sum of two nonzero finite values of the same magnitude and opposite sign is positive zero. • In the remaining cases, where neither operand is an infinity, a zero, or NaN and the values have the same sign or have different magnitudes, the sum is computed and rounded to the nearest representable value using IEEE 754 round to nearest mode. If THE JAVA VIRTUAL MACHINE INSTRUCTION SET Instructions 6.5 421 the magnitude is too large to represent as a float, we say the operation overflows; the result is then an infinity of appropriate sign. If the magnitude is too small to represent as a float, we say the operation underflows; the result is then a zero of appropriate sign. The Java Virtual Machine requires support of gradual underflow as defined by IEEE 754. Despite the fact that overflow, underflow, or loss of precision may occur, execution of an fadd instruction never throws a run-time ex
 void Jvm::fadd(){
-    
-    FieldEntry value1, value2, result;
-    
-    value2.AsInt = CurrentFrame->OperandStack->Pop();
-    value1.AsInt = CurrentFrame->OperandStack->Pop();
+	U4ToType value1, value2, result;
+	value2.Bytes = CurrentFrame->OperandStack->Pop();
+	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-    result.AsFloat = value1.AsFloat + value2.AsFloat;
-
-    CurrentFrame->OperandStack->push(result.AsInt);
-
+	result.AsFloat = value1.AsFloat + value2.AsFloat;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
 
+void Jvm::dadd() {
+	Cat2Value value1, value2, result;
+	value1.Bytes = popU8FromOpStack();
+    value2.Bytes = popU8FromOpStack();
 
-
-void Jvm::dadd(){
-    Cat2Value value{};
-    double value2 = static_cast<double>(popU8FromOpStack());
-    double value1 = static_cast<double>(popU8FromOpStack());
-
-    value.AsDouble = value1 + value2;
-
-
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
+	result.AsDouble = value1.AsDouble + value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
-
-
-
 
 void Jvm::isub(){    
     s4 value1;
@@ -1831,57 +1777,38 @@ void Jvm::isub(){
 //Despite the fact that overflow may occur, execution of an isub instruction never throws a run-time exception.
 }
 
-
-
-
 void Jvm::lsub(){
-    Cat2Value value1, value2, aux;
-    long result;
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    value2.AsLong = popU8FromOpStack();
-    value1.AsLong = popU8FromOpStack();
-
-    result = value1.AsLong - value2.AsLong;
-    aux.HighBytes = result;
-    aux.LowBytes = result;
-    pushU8ToOpStack(aux.HighBytes, aux.LowBytes);
-
+	result.AsLong = value1.AsLong - value2.AsLong;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
 
 
 void Jvm::fsub(){
-    U4ToType value1, value2;
-    float result;
+	U4ToType value1, value2, result;
+	value2.Bytes = CurrentFrame->OperandStack->Pop();
+	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-    value2.AsFloat = CurrentFrame->OperandStack->Pop();
-    value1.AsFloat = CurrentFrame->OperandStack->Pop();
-
-    result = value1.AsFloat - value2.AsFloat;
-    CurrentFrame->OperandStack->push(result);
-
+	result.AsFloat = value1.AsFloat - value2.AsFloat;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
 
 
 
 void Jvm::dsub(){
-    Cat2Value value1, value2, aux;
-    double result;
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    value2.AsDouble = static_cast<double>(popU8FromOpStack());
-    value1.AsDouble = static_cast<double>(popU8FromOpStack());
-
-    result = value1.AsDouble - value2.AsDouble;
-    aux.HighBytes = result;
-    aux.LowBytes = result;
-    pushU8ToOpStack(aux.HighBytes, aux.LowBytes);
-
-
+	result.AsDouble = value1.AsDouble - value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
-
-
 
 
 void Jvm::imul(){    
@@ -1898,51 +1825,35 @@ void Jvm::imul(){
 
 
 
-void Jvm::lmul(){    
+void Jvm::lmul(){
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    Cat2Value value1, value2, result;
-
-    value2.AsLong = (popU8FromOpStack());
-    value1.AsLong = (popU8FromOpStack());
-//  cpp já segue  rules of IEEE arithmetic:
-    result.AsLong = value1.AsLong * value2.AsLong;
-
-    pushU8ToOpStack(result.HighBytes, result.LowBytes);
+	result.AsLong = value1.AsLong * value2.AsLong;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
 
 
 void Jvm::fmul(){
-    U4ToType value1{}; 
-    U4ToType value2{};
-    U4ToType result{};
+	U4ToType value1, value2, result;
+	value2.Bytes = CurrentFrame->OperandStack->Pop();
+	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-    value2.AsFloat = CurrentFrame->OperandStack->Pop();
-    value1.AsFloat = CurrentFrame->OperandStack->Pop();
-
-    result.AsFloat = value1.AsFloat * value2.AsFloat;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result.UBytes));
-
+	result.AsFloat = value1.AsFloat * value2.AsFloat;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
 
-
-
 void Jvm::dmul(){
+	Cat2Value value1, value2, result;
+	value1.Bytes = popU8FromOpStack();
+    value2.Bytes = popU8FromOpStack();
 
-    Cat2Value value1, value2, aux;
-    double result;
-
-    value2.AsDouble = static_cast<double>(popU8FromOpStack());
-    value1.AsDouble = static_cast<double>(popU8FromOpStack());
-//  cpp já segue  rules of IEEE arithmetic:
-    result = value1.AsDouble * value2.AsDouble;
-
-    aux.HighBytes = result;
-    aux.LowBytes = result;
-    pushU8ToOpStack(aux.HighBytes, aux.LowBytes);
-
+	result.AsDouble = value1.AsDouble * value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
@@ -1963,68 +1874,50 @@ void Jvm::idiv(){
 
 
 void Jvm::ldiv(){
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    Cat2Value value1, value2, result;
-
-    value2.AsLong = popU8FromOpStack();
-    value1.AsLong = popU8FromOpStack();
-
-    if(value2.AsLong == 0)
-        throw ArithmeticException();
-
-//  cpp já segue  rules of IEEE arithmetic:
-    result.AsLong = value1.AsLong / value2.AsLong;
-    pushU8ToOpStack(result.HighBytes, result.LowBytes);
-
+	result.AsLong = value1.AsLong / value2.AsLong;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
 
 
 void Jvm::fdiv(){
-    float value1, value2, result;
+	U4ToType value1, value2, result;
+	value2.Bytes = CurrentFrame->OperandStack->Pop();
+	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-    value2 = CurrentFrame->OperandStack->Pop();
-    value1 = CurrentFrame->OperandStack->Pop();
-
-// cpp já segue  rules of IEEE arithmetic:
-    result = value1 / value2;
-    CurrentFrame->OperandStack->push(result);
+	result.AsFloat = value1.AsFloat / value2.AsFloat;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
 
 
 
 void Jvm::ddiv(){
-    Cat2Value value1, value2, aux;
-    double result;
+	Cat2Value value1, value2, result;
+    value2.Bytes = popU8FromOpStack();
+	value1.Bytes = popU8FromOpStack();
 
-    value2.AsLong = popU8FromOpStack();
-    value1.AsLong = popU8FromOpStack();
-        
-    value1.AsDouble = value1.AsDouble / value2.AsDouble;
-
-    pushU8ToOpStack(value1.HighBytes, value1.LowBytes);
-
+	result.AsDouble = value1.AsDouble / value2.AsDouble;
+    pushU8ToOpStack(result.LowBytes, result.HighBytes);
 }
 
 
 
 
-void Jvm::irem(){    
-    s4 value2 = CurrentFrame->OperandStack->Pop();
-    s4 value1 = CurrentFrame->OperandStack->Pop();
-    s4 result;
+void Jvm::irem(){
+    int value2 = CurrentFrame->OperandStack->Pop();
+    int value1 = CurrentFrame->OperandStack->Pop();
+    int result;
 
+    value1 - (value1 / value2) * value2;
+    // todo throw Run-time Exception
 
-    if (value2 == 0)
-        throw ArithmeticException();
-
-    result = value1 - (value1 / value2) * value2;
-
-
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
-
+    CurrentFrame->OperandStack->push(result);
 }
 
 
@@ -2051,14 +1944,14 @@ void Jvm::lrem(){
 
 
 void Jvm::frem(){
-    float value2 = CurrentFrame->OperandStack->Pop();
-    float value1 = CurrentFrame->OperandStack->Pop();
-    float result;
+	U4ToType value1, value2, result;
+	value2.Bytes = CurrentFrame->OperandStack->Pop();
+	value1.Bytes = CurrentFrame->OperandStack->Pop();
 
-    value1 - (value1 / value2) * value2;
+	long q = (value1.AsFloat / value2.AsFloat);
 
-    CurrentFrame->OperandStack->push(result);
-
+	result.AsFloat = value1.AsFloat - q * value2.AsFloat;
+    CurrentFrame->OperandStack->push(static_cast<u4>(result.Bytes));
 }
 
 
