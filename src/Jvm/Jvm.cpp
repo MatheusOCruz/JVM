@@ -1518,7 +1518,7 @@ void Jvm::aastore(){
 
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
-    if(Array->ComponentType != ArrayTypeCode::T_ARRAY or Array->ComponentType != ArrayTypeCode::T_REF)
+    if(Array->ComponentType != ArrayTypeCode::T_ARRAY and Array->ComponentType != ArrayTypeCode::T_REF)
         std::cerr<<"aastore: Array nao e de ref\n";
 
     reinterpret_cast<u4*>(Array->DataVec)[index] = static_cast<int>(value);
@@ -3192,9 +3192,43 @@ void Jvm::multianewarray(){
     u1          dimensions      = NextCodeByte();
     cp_info*    ArrayInfo       = GetConstantPoolEntryAt(index);
     std::string ArrayDiscriptor = GetConstantPoolEntryAt(ArrayInfo->name_index)->AsString();
-    std::string ArrayType       = ArrayDiscriptor.substr(dimensions, ArrayDiscriptor.size());
 
-    ArrayTypeCode Temp = ArrayTypeCode::T_INT;
+    auto c  = ArrayDiscriptor.c_str();
+    ArrayTypeCode Type{};
+    c+=dimensions;
+    switch (*c) {
+        case 'L':
+            Type = ArrayTypeCode::T_REF;
+            break;
+        case 'B':
+            Type = ArrayTypeCode::T_BYTE;
+            break;
+        case 'C':
+            Type = ArrayTypeCode::T_CHAR;
+            break;
+        case 'D':
+            Type = ArrayTypeCode::T_DOUBLE;
+            break;
+        case 'F':
+            Type = ArrayTypeCode::T_FLOAT;
+            break;
+        case 'I':
+            Type = ArrayTypeCode::T_INT;
+            break;
+        case 'J':
+            Type = ArrayTypeCode::T_LONG;
+            break;
+        case 'S':
+            Type = ArrayTypeCode::T_SHORT;
+            break;
+        case 'Z':
+            Type = ArrayTypeCode::T_BOOLEAN;
+            break;
+        default:
+            Type = ArrayTypeCode::T_INT;
+            break;
+
+    }
 
 
 
@@ -3206,7 +3240,7 @@ void Jvm::multianewarray(){
         sizes.push(count);
     }
 
-    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
+    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Type, sizes, dimensions)));
 }
 
 
