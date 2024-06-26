@@ -32,7 +32,7 @@ const char* shift_args(int & argc, char **argv[]) {
 
 // ESSA E A MAIN FUNCIONAL
 
-int main(int argc, char* argv[]) {
+int maidn(int argc, char* argv[]) {
 
 	const auto program_name = shift_args(argc, &argv);
 	if (!argc) {
@@ -78,11 +78,11 @@ int main(int argc, char* argv[]) {
 
 // MAIN PRA TESTE JVM
 
-int dmain(){
+int main(){
 
     int mode = JVM_MODE;
 
-    std::string file = "UsaPessoa";
+    std::string file = "multi";
     switch (mode) {
         case JVM_MODE:
             Jvm(file).Run();

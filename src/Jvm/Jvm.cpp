@@ -1349,7 +1349,7 @@ void Jvm::dstore_1(){
     value.Bytes = popU8FromOpStack();
 
     (*CurrentFrame->localVariables)[1] = value.HighBytes;
-    (*CurrentFrame->localVariables)[1 + 1] = value.LowBytes;
+    (*CurrentFrame->localVariables)[2] = value.LowBytes;
 
 }
 
@@ -1514,12 +1514,12 @@ void Jvm::aastore(){
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
     if(ArrayRef == NULL ) 
         std::cerr<<"aastore: referencia nao é acessível\n";
-    if(ArrayRef->Type != ReferenceType::ArrayType)
+    if(ArrayRef->Type != ReferenceType::ArrayType )
         std::cerr<<"aastore: referencia nao e para um array\n";
 
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
-    if(Array->ComponentType != ArrayTypeCode::T_ARRAY or Array->ComponentType != ArrayTypeCode::T_REF)
+    if(Array->ComponentType != ArrayTypeCode::T_ARRAY and Array->ComponentType != ArrayTypeCode::T_REF)
         std::cerr<<"aastore: Array nao e de ref\n";
 
     reinterpret_cast<u4*>(Array->DataVec)[index] = static_cast<int>(value);
@@ -2320,7 +2320,7 @@ void Jvm::d2f(){
     Cat2Value valDouble{};
     U4ToType converter {};
     
-    valDouble.AsDouble = popU8FromOpStack();
+    valDouble.AsLong = popU8FromOpStack();
     converter.AsFloat = valDouble.AsDouble;
     
     CurrentFrame->OperandStack->push(converter.UBytes);
@@ -3195,7 +3195,45 @@ void Jvm::multianewarray(){
     std::string ArrayDiscriptor = GetConstantPoolEntryAt(ArrayInfo->name_index)->AsString();
     std::string ArrayType       = ArrayDiscriptor.substr(dimensions, ArrayDiscriptor.size());
 
-    ArrayTypeCode Temp = ArrayTypeCode::T_INT;
+    ArrayTypeCode Typecode;
+
+    const char* iter = ArrayDiscriptor.c_str();
+
+    iter+=dimensions;
+    switch (*iter) {
+        case 'L':
+            Typecode = ArrayTypeCode::T_REF;
+            break;
+        case 'I':
+            Typecode = ArrayTypeCode::T_INT;
+            break;
+        case 'B':
+            Typecode = ArrayTypeCode::T_BYTE;
+            break;
+        case 'S':
+            Typecode = ArrayTypeCode::T_SHORT;
+            break;
+        case 'Z':
+            Typecode = ArrayTypeCode::T_BOOLEAN;
+            break;
+        case 'C':
+            Typecode = ArrayTypeCode::T_CHAR;
+            break;
+        case 'J':
+            Typecode = ArrayTypeCode::T_LONG;
+            break;
+        case'F':
+            Typecode = ArrayTypeCode::T_FLOAT;
+            break;
+        case 'D':
+            Typecode = ArrayTypeCode::T_DOUBLE;
+            break;
+        default:
+            Typecode = ArrayTypeCode::T_INT;
+            break;
+    }
+
+
 
 
 
@@ -3207,7 +3245,7 @@ void Jvm::multianewarray(){
         sizes.push(count);
     }
 
-    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
+    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Typecode, sizes, dimensions)));
 }
 
 
