@@ -602,31 +602,30 @@ void Jvm::lconst_0(){
 
 void Jvm::lconst_1(){    
     Cat2Value Value{};
-    Value.AsLong = 1.0;
+    Value.AsLong = 1;
     pushU8ToOpStack(Value.HighBytes, Value.LowBytes);
 }
 
 
 
 void Jvm::fconst_0(){    
-    const float value = 0.0;
-
-    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
+	U4ToType value{};
+	value.AsFloat = 0.0;
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value.UBytes));
 }
 
 
 void Jvm::fconst_1(){    
-    const float value = 1.0;
-
-    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
+	U4ToType value{};
+	value.AsFloat = 1.0;
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value.UBytes));
 }
 
 
 void Jvm::fconst_2(){    
-    const float value = 2.0;
-
-    CurrentFrame->OperandStack->push(static_cast<const u4>(value));
-
+	U4ToType value{};
+	value.AsFloat = 2.0;
+    CurrentFrame->OperandStack->push(static_cast<const u4>(value.UBytes));
 }
 
 
@@ -1349,7 +1348,7 @@ void Jvm::dstore_1(){
     value.Bytes = popU8FromOpStack();
 
     (*CurrentFrame->localVariables)[1] = value.HighBytes;
-    (*CurrentFrame->localVariables)[2] = value.LowBytes;
+    (*CurrentFrame->localVariables)[1 + 1] = value.LowBytes;
 
 }
 
@@ -1514,12 +1513,12 @@ void Jvm::aastore(){
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
     if(ArrayRef == NULL ) 
         std::cerr<<"aastore: referencia nao é acessível\n";
-    if(ArrayRef->Type != ReferenceType::ArrayType )
+    if(ArrayRef->Type != ReferenceType::ArrayType)
         std::cerr<<"aastore: referencia nao e para um array\n";
 
     ArrayInstance* Array = ArrayRef->ArrayRef;
 
-    if(Array->ComponentType != ArrayTypeCode::T_ARRAY and Array->ComponentType != ArrayTypeCode::T_REF)
+    if(Array->ComponentType != ArrayTypeCode::T_ARRAY or Array->ComponentType != ArrayTypeCode::T_REF)
         std::cerr<<"aastore: Array nao e de ref\n";
 
     reinterpret_cast<u4*>(Array->DataVec)[index] = static_cast<int>(value);
@@ -2320,7 +2319,7 @@ void Jvm::d2f(){
     Cat2Value valDouble{};
     U4ToType converter {};
     
-    valDouble.AsLong = popU8FromOpStack();
+    valDouble.AsDouble = popU8FromOpStack();
     converter.AsFloat = valDouble.AsDouble;
     
     CurrentFrame->OperandStack->push(converter.UBytes);
@@ -3195,45 +3194,7 @@ void Jvm::multianewarray(){
     std::string ArrayDiscriptor = GetConstantPoolEntryAt(ArrayInfo->name_index)->AsString();
     std::string ArrayType       = ArrayDiscriptor.substr(dimensions, ArrayDiscriptor.size());
 
-    ArrayTypeCode Typecode;
-
-    const char* iter = ArrayDiscriptor.c_str();
-
-    iter+=dimensions;
-    switch (*iter) {
-        case 'L':
-            Typecode = ArrayTypeCode::T_REF;
-            break;
-        case 'I':
-            Typecode = ArrayTypeCode::T_INT;
-            break;
-        case 'B':
-            Typecode = ArrayTypeCode::T_BYTE;
-            break;
-        case 'S':
-            Typecode = ArrayTypeCode::T_SHORT;
-            break;
-        case 'Z':
-            Typecode = ArrayTypeCode::T_BOOLEAN;
-            break;
-        case 'C':
-            Typecode = ArrayTypeCode::T_CHAR;
-            break;
-        case 'J':
-            Typecode = ArrayTypeCode::T_LONG;
-            break;
-        case'F':
-            Typecode = ArrayTypeCode::T_FLOAT;
-            break;
-        case 'D':
-            Typecode = ArrayTypeCode::T_DOUBLE;
-            break;
-        default:
-            Typecode = ArrayTypeCode::T_INT;
-            break;
-    }
-
-
+    ArrayTypeCode Temp = ArrayTypeCode::T_INT;
 
 
 
@@ -3245,7 +3206,7 @@ void Jvm::multianewarray(){
         sizes.push(count);
     }
 
-    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Typecode, sizes, dimensions)));
+    CurrentFrame->OperandStack->push(reinterpret_cast<u4p>(NewArray(Temp, sizes, dimensions)));
 }
 
 
