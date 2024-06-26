@@ -1,0 +1,93 @@
+\doxysection{Referência à classe Opcode\+Printer}
+\hypertarget{classOpcodePrinter}{}\label{classOpcodePrinter}\index{OpcodePrinter@{OpcodePrinter}}
+\doxysubsubsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classOpcodePrinter_a6a0b970c576431d621db1d1c5011ba72}{Opcode\+Printer}} (\mbox{\hyperlink{classConstantPoolPrinter}{Constant\+Pool\+Printer}} \texorpdfstring{$\ast$}{*}printer)
+\item 
+std\+::string \mbox{\hyperlink{classOpcodePrinter_a3274d9a68d8cd22c82c6e8eb5bc5cf54}{Code\+To\+String}} (u1 code\mbox{[}$\,$\mbox{]}, const u4 code\+\_\+lenght)
+\item 
+void \mbox{\hyperlink{classOpcodePrinter_aad300070531ba2105b9cfbd989f0fd0f}{set\+Code}} (u1 \texorpdfstring{$\ast$}{*}code, size\+\_\+t code\+\_\+size)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+
+
+Definido na linha \mbox{\hyperlink{OpcodePrinter_8h_source_l00014}{14}} do ficheiro \mbox{\hyperlink{OpcodePrinter_8h_source}{Opcode\+Printer.\+h}}.
+
+
+
+\doxysubsection{Documentação dos Construtores \& Destrutor}
+\Hypertarget{classOpcodePrinter_a6a0b970c576431d621db1d1c5011ba72}\label{classOpcodePrinter_a6a0b970c576431d621db1d1c5011ba72} 
+\index{OpcodePrinter@{OpcodePrinter}!OpcodePrinter@{OpcodePrinter}}
+\index{OpcodePrinter@{OpcodePrinter}!OpcodePrinter@{OpcodePrinter}}
+\doxysubsubsection{\texorpdfstring{OpcodePrinter()}{OpcodePrinter()}}
+{\footnotesize\ttfamily Opcode\+Printer\+::\+Opcode\+Printer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classConstantPoolPrinter}{Constant\+Pool\+Printer}} \texorpdfstring{$\ast$}{*}}]{printer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definido na linha \mbox{\hyperlink{OpcodePrinter_8h_source_l00016}{16}} do ficheiro \mbox{\hyperlink{OpcodePrinter_8h_source}{Opcode\+Printer.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00016\ :\ Printer(printer)\ \{\};}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Documentação das funções}
+\Hypertarget{classOpcodePrinter_a3274d9a68d8cd22c82c6e8eb5bc5cf54}\label{classOpcodePrinter_a3274d9a68d8cd22c82c6e8eb5bc5cf54} 
+\index{OpcodePrinter@{OpcodePrinter}!CodeToString@{CodeToString}}
+\index{CodeToString@{CodeToString}!OpcodePrinter@{OpcodePrinter}}
+\doxysubsubsection{\texorpdfstring{CodeToString()}{CodeToString()}}
+{\footnotesize\ttfamily std\+::string Opcode\+Printer\+::\+Code\+To\+String (\begin{DoxyParamCaption}\item[{u1}]{code\mbox{[}$\,$\mbox{]},  }\item[{const u4}]{code\+\_\+lenght }\end{DoxyParamCaption})}
+
+
+
+Definido na linha \mbox{\hyperlink{OpcodePrinter_8cpp_source_l00009}{9}} do ficheiro \mbox{\hyperlink{OpcodePrinter_8cpp_source}{Opcode\+Printer.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00010\ \ \ \ \ StringBuffer\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00011\ \ \ \ \ code\_iterator\ =\ 0;}
+\DoxyCodeLine{00012\ \ \ \ \ code\ =\ \_code;}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordflow}{while}(code\_iterator\ !=\ code\_lenght)\{}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ \ \ \ \ "{}});}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ std::ostringstream\ oss;}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ oss\ <<\ std::setw(3)\ <<\ code\_iterator\ <<\ \textcolor{stringliteral}{"{}:"{}};}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ std::string\ formatedIndex\ =\ oss.str();}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ StringBuffer.append(formatedIndex);}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ u1\ bytecode\ =\ code[code\_iterator++];}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ (this-\/>*bytecodeFuncs[bytecode])();}
+\DoxyCodeLine{00021\ \ \ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ StringBuffer;}
+\DoxyCodeLine{00023\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classOpcodePrinter_aad300070531ba2105b9cfbd989f0fd0f}\label{classOpcodePrinter_aad300070531ba2105b9cfbd989f0fd0f} 
+\index{OpcodePrinter@{OpcodePrinter}!setCode@{setCode}}
+\index{setCode@{setCode}!OpcodePrinter@{OpcodePrinter}}
+\doxysubsubsection{\texorpdfstring{setCode()}{setCode()}}
+{\footnotesize\ttfamily void Opcode\+Printer\+::set\+Code (\begin{DoxyParamCaption}\item[{u1 \texorpdfstring{$\ast$}{*}}]{code,  }\item[{size\+\_\+t}]{code\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Definido na linha \mbox{\hyperlink{OpcodePrinter_8cpp_source_l00671}{671}} do ficheiro \mbox{\hyperlink{OpcodePrinter_8cpp_source}{Opcode\+Printer.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00672\ \ \ \ \ this-\/>code\ =\ code;}
+\DoxyCodeLine{00673\ \ \ \ \ this-\/>code\_size\ =\ code\_size;}
+\DoxyCodeLine{00674\ \ \ \ \ this-\/>code\_iterator\ =\ 0;\ \textcolor{comment}{//\ Inicializa\ code\_iterator}}
+\DoxyCodeLine{00675\ \}}
+
+\end{DoxyCode}
+
+
+A documentação para esta classe foi gerada a partir dos seguintes ficheiros\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Class\+Printer/Opcode\+Printer.\+h\item 
+src/\+Class\+Printer/Opcode\+Printer.\+cpp\end{DoxyCompactItemize}

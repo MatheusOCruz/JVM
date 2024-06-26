@@ -265,7 +265,7 @@ int Jvm::GetMethod(const std::string& MethodName, const std::string& Descriptor)
     if(GetInterfaceMethod(CurrentClass,MethodName,Descriptor))
         return 1;
     // procura nas superclasses
-    auto* Class = CurrentClass;
+    auto Class = CurrentClass;
     while(Class->super_class) {
         auto SuperEntry = (*Class->constant_pool)[Class->super_class];
         auto Name = (*Class->constant_pool)[SuperEntry->name_index]->AsString();

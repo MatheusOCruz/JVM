@@ -1,0 +1,235 @@
+\doxysection{Referência à estrutura cp\+\_\+info}
+\hypertarget{structcp__info}{}\label{structcp__info}\index{cp\_info@{cp\_info}}
+\doxysubsubsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{structcp__info_ab7bbb0443f7f4d4c568ca73657600a7b}{As\+String}} () const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Atributos Públicos}
+\begin{DoxyCompactItemize}
+\item 
+Constant\+Pool\+Tag \mbox{\hyperlink{structcp__info_a912bb7abaa59b0d33fbfa85d2d82f39a}{tag}}
+\item 
+\Hypertarget{structcp__info_ab2df10b8ac24e6e4dc2e383a68c00447}\label{structcp__info_ab2df10b8ac24e6e4dc2e383a68c00447} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\Hypertarget{unioncp__info_1_1_0d0_a8eab98d5054512122761eabea1d97846}\label{unioncp__info_1_1_0d0_a8eab98d5054512122761eabea1d97846} 
+\>struct \{\\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_a3c8912fe67e7d3f9ce150aa6f5bec22d}{name\_index}}\\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_aef3c90a1a874ca4acbc49029aaa0d4cb}{descriptor\_index}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_ae9d7b69345ff53371ea65a1ef5e0023e}\label{unioncp__info_1_1_0d0_ae9d7b69345ff53371ea65a1ef5e0023e} 
+\>struct \{\\
+\Hypertarget{structcp__info_1_1_0d0_1_1_0d4_a6da77c94e34a915768eb87b2e86e78a1}\label{structcp__info_1_1_0d0_1_1_0d4_a6da77c94e34a915768eb87b2e86e78a1} 
+\>\>union \{\\
+\>\>\>uint16\_t \mbox{\hyperlink{structcp__info_ab2b48e96f2178c47f9f6b683c9b2fc59}{class\_index}}\\
+\>\>\>uint16\_t \mbox{\hyperlink{structcp__info_aca6166ef140ed62b7b219479d09dc20b}{bootstrap\_method\_attr\_index}}\\
+\>\>\} \\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_ad7a8733b3b078818a59cc33eb1fa7dc3}{name\_and\_type\_index}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_ae32bc4aa9759e11d0463e732fdbc874a}\label{unioncp__info_1_1_0d0_ae32bc4aa9759e11d0463e732fdbc874a} 
+\>struct \{\\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_aa63dfc7668d7eff682f88b09c48eddc8}{string\_index}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_aeff99773f35aaa40a53ee33e37d61f1e}\label{unioncp__info_1_1_0d0_aeff99773f35aaa40a53ee33e37d61f1e} 
+\>struct \{\\
+\>\>uint32\_t \mbox{\hyperlink{structcp__info_a34ed0f597e452fbeb97cb0f551a678bb}{bytes}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_a5295f8188e027cb6b278ed09fc40618f}\label{unioncp__info_1_1_0d0_a5295f8188e027cb6b278ed09fc40618f} 
+\>struct \{\\
+\>\>uint32\_t \mbox{\hyperlink{structcp__info_ae3858dffc80b9cda456040e27ea19cfe}{high\_bytes}}\\
+\>\>uint32\_t \mbox{\hyperlink{structcp__info_aaafd386722f592c8821e682e4e3718b4}{low\_bytes}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_a402ae862f81f32e2c5d35e70b4763730}\label{unioncp__info_1_1_0d0_a402ae862f81f32e2c5d35e70b4763730} 
+\>struct \{\\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_afa18d3ff419ce300281ca759a20a2cc3}{length}}\\
+\>\>std::vector$<$ uint8\_t $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structcp__info_a737ea74ab2ebf7e2c0f2c1ea027b7c2c}{bytes\_vec}}\\
+\>\} \\
+\Hypertarget{unioncp__info_1_1_0d0_ad3e82fafde41d54dd52aed8fa2fd9580}\label{unioncp__info_1_1_0d0_ad3e82fafde41d54dd52aed8fa2fd9580} 
+\>struct \{\\
+\>\>uint8\_t \mbox{\hyperlink{structcp__info_a69c3a9b691b01e61ca9a47cd34f6dc41}{reference\_kind}}\\
+\>\>uint16\_t \mbox{\hyperlink{structcp__info_a8d167a7f4a522da93dc76c7f5fe246b4}{reference\_index}}\\
+\>\} \\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00026}{26}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+
+
+\doxysubsection{Documentação das funções}
+\Hypertarget{structcp__info_ab7bbb0443f7f4d4c568ca73657600a7b}\label{structcp__info_ab7bbb0443f7f4d4c568ca73657600a7b} 
+\index{cp\_info@{cp\_info}!AsString@{AsString}}
+\index{AsString@{AsString}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{AsString()}{AsString()}}
+{\footnotesize\ttfamily std\+::string cp\+\_\+info\+::\+As\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00062}{62}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//if(tag\ !=\ ConstantPoolTag::CONSTANT\_Utf8\ )\{}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//throw\ \ \ std::runtime\_error("{}Entrada\ nao\ e\ um\ UTF8\(\backslash\)n"{});}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ assert(0);}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(bytes\_vec-\/>data()),\ length\ \};}
+\DoxyCodeLine{00068\ \ \ \ \ \};}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Documentação dos dados membro}
+\Hypertarget{structcp__info_aca6166ef140ed62b7b219479d09dc20b}\label{structcp__info_aca6166ef140ed62b7b219479d09dc20b} 
+\index{cp\_info@{cp\_info}!bootstrap\_method\_attr\_index@{bootstrap\_method\_attr\_index}}
+\index{bootstrap\_method\_attr\_index@{bootstrap\_method\_attr\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{bootstrap\_method\_attr\_index}{bootstrap\_method\_attr\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::bootstrap\+\_\+method\+\_\+attr\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00037}{37}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a34ed0f597e452fbeb97cb0f551a678bb}\label{structcp__info_a34ed0f597e452fbeb97cb0f551a678bb} 
+\index{cp\_info@{cp\_info}!bytes@{bytes}}
+\index{bytes@{bytes}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{bytes}{bytes}}
+{\footnotesize\ttfamily uint32\+\_\+t cp\+\_\+info\+::bytes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00046}{46}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a737ea74ab2ebf7e2c0f2c1ea027b7c2c}\label{structcp__info_a737ea74ab2ebf7e2c0f2c1ea027b7c2c} 
+\index{cp\_info@{cp\_info}!bytes\_vec@{bytes\_vec}}
+\index{bytes\_vec@{bytes\_vec}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{bytes\_vec}{bytes\_vec}}
+{\footnotesize\ttfamily std\+::vector$<$uint8\+\_\+t$>$\texorpdfstring{$\ast$}{*} cp\+\_\+info\+::bytes\+\_\+vec}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00054}{54}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_ab2b48e96f2178c47f9f6b683c9b2fc59}\label{structcp__info_ab2b48e96f2178c47f9f6b683c9b2fc59} 
+\index{cp\_info@{cp\_info}!class\_index@{class\_index}}
+\index{class\_index@{class\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{class\_index}{class\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::class\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00036}{36}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_aef3c90a1a874ca4acbc49029aaa0d4cb}\label{structcp__info_aef3c90a1a874ca4acbc49029aaa0d4cb} 
+\index{cp\_info@{cp\_info}!descriptor\_index@{descriptor\_index}}
+\index{descriptor\_index@{descriptor\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{descriptor\_index}{descriptor\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::descriptor\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00031}{31}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_ae3858dffc80b9cda456040e27ea19cfe}\label{structcp__info_ae3858dffc80b9cda456040e27ea19cfe} 
+\index{cp\_info@{cp\_info}!high\_bytes@{high\_bytes}}
+\index{high\_bytes@{high\_bytes}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{high\_bytes}{high\_bytes}}
+{\footnotesize\ttfamily uint32\+\_\+t cp\+\_\+info\+::high\+\_\+bytes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00049}{49}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_afa18d3ff419ce300281ca759a20a2cc3}\label{structcp__info_afa18d3ff419ce300281ca759a20a2cc3} 
+\index{cp\_info@{cp\_info}!length@{length}}
+\index{length@{length}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{length}{length}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::length}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00053}{53}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_aaafd386722f592c8821e682e4e3718b4}\label{structcp__info_aaafd386722f592c8821e682e4e3718b4} 
+\index{cp\_info@{cp\_info}!low\_bytes@{low\_bytes}}
+\index{low\_bytes@{low\_bytes}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{low\_bytes}{low\_bytes}}
+{\footnotesize\ttfamily uint32\+\_\+t cp\+\_\+info\+::low\+\_\+bytes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00050}{50}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_ad7a8733b3b078818a59cc33eb1fa7dc3}\label{structcp__info_ad7a8733b3b078818a59cc33eb1fa7dc3} 
+\index{cp\_info@{cp\_info}!name\_and\_type\_index@{name\_and\_type\_index}}
+\index{name\_and\_type\_index@{name\_and\_type\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{name\_and\_type\_index}{name\_and\_type\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::name\+\_\+and\+\_\+type\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00039}{39}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a3c8912fe67e7d3f9ce150aa6f5bec22d}\label{structcp__info_a3c8912fe67e7d3f9ce150aa6f5bec22d} 
+\index{cp\_info@{cp\_info}!name\_index@{name\_index}}
+\index{name\_index@{name\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{name\_index}{name\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::name\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00030}{30}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a8d167a7f4a522da93dc76c7f5fe246b4}\label{structcp__info_a8d167a7f4a522da93dc76c7f5fe246b4} 
+\index{cp\_info@{cp\_info}!reference\_index@{reference\_index}}
+\index{reference\_index@{reference\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{reference\_index}{reference\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::reference\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00058}{58}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a69c3a9b691b01e61ca9a47cd34f6dc41}\label{structcp__info_a69c3a9b691b01e61ca9a47cd34f6dc41} 
+\index{cp\_info@{cp\_info}!reference\_kind@{reference\_kind}}
+\index{reference\_kind@{reference\_kind}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{reference\_kind}{reference\_kind}}
+{\footnotesize\ttfamily uint8\+\_\+t cp\+\_\+info\+::reference\+\_\+kind}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00057}{57}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_aa63dfc7668d7eff682f88b09c48eddc8}\label{structcp__info_aa63dfc7668d7eff682f88b09c48eddc8} 
+\index{cp\_info@{cp\_info}!string\_index@{string\_index}}
+\index{string\_index@{string\_index}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{string\_index}{string\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t cp\+\_\+info\+::string\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00043}{43}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structcp__info_a912bb7abaa59b0d33fbfa85d2d82f39a}\label{structcp__info_a912bb7abaa59b0d33fbfa85d2d82f39a} 
+\index{cp\_info@{cp\_info}!tag@{tag}}
+\index{tag@{tag}!cp\_info@{cp\_info}}
+\doxysubsubsection{\texorpdfstring{tag}{tag}}
+{\footnotesize\ttfamily Constant\+Pool\+Tag cp\+\_\+info\+::tag}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00027}{27}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+
+
+A documentação para esta estrutura foi gerada a partir do seguinte ficheiro\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Class\+Loader/Class\+File\+Structs.\+h\end{DoxyCompactItemize}

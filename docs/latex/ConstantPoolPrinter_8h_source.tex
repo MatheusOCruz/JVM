@@ -1,0 +1,28 @@
+\doxysection{Constant\+Pool\+Printer.\+h}
+\hypertarget{ConstantPoolPrinter_8h_source}{}\label{ConstantPoolPrinter_8h_source}\index{include/ClassPrinter/ConstantPoolPrinter.h@{include/ClassPrinter/ConstantPoolPrinter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 6/25/24.}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_CONSTANTPOOLPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_CONSTANTPOOLPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}../typedefs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}../ClassLoader/ClassFileStructs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00011}\mbox{\hyperlink{classConstantPoolPrinter}{00011}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}\ \{}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00013}00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}(std::vector<cp\_info*>*\ constantPool)\ :\ ConstantPool(*constantPool)\ \{\};}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00015}00015\ \ \ \ \ std::string\ CpEntryAsString(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ i);}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00017}00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00018}00018\ \ \ \ \ std::vector<cp\_info*>\ ConstantPool;}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00019}00019\ \};}
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{ConstantPoolPrinter_8h_source_l00022}00022\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CONSTANTPOOLPRINTER\_H}}
+
+\end{DoxyCode}

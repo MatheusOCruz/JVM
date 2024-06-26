@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>JVM: Referência à estrutura attribute_info</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">JVM
+   </div>
+   <div id="projectbrief">Uma mini máquina virtual java, com um leitor-exibidor e um interpretador de bytecode</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Localizar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrada</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Atributos Públicos</a> &#124;
+<a href="structattribute__info-members.html">Mostrar lista completa dos membros</a>  </div>
+  <div class="headertitle"><div class="title">Referência à estrutura attribute_info</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Atributos Públicos</h2></td></tr>
+<tr class="memitem:aa8d580cb4c1e585270a11167bfdec6ff" id="r_aa8d580cb4c1e585270a11167bfdec6ff"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattribute__info.html#aa8d580cb4c1e585270a11167bfdec6ff">attribute_name_index</a></td></tr>
+<tr class="separator:aa8d580cb4c1e585270a11167bfdec6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05bf4c6510e85d1adb7d75c2742b8550" id="r_a05bf4c6510e85d1adb7d75c2742b8550"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattribute__info.html#a05bf4c6510e85d1adb7d75c2742b8550">attribute_length</a></td></tr>
+<tr class="separator:a05bf4c6510e85d1adb7d75c2742b8550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d42f8b11644de545bf292ac06b3381d" id="r_a9d42f8b11644de545bf292ac06b3381d"><td class="memItemLeft" ><a id="a9d42f8b11644de545bf292ac06b3381d" name="a9d42f8b11644de545bf292ac06b3381d"></a>
+union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f973852bdfbc58b0d367edbd07bcc62" id="r_a1f973852bdfbc58b0d367edbd07bcc62"><td class="memItemLeft" ><a id="a1f973852bdfbc58b0d367edbd07bcc62" name="a1f973852bdfbc58b0d367edbd07bcc62"></a>
+&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab275d03e290e9a804df16c1d58283cc7" id="r_ab275d03e290e9a804df16c1d58283cc7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a2903dda0fad8293904441019c200577f">constantvalue_index</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ab275d03e290e9a804df16c1d58283cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f973852bdfbc58b0d367edbd07bcc62" id="r_a1f973852bdfbc58b0d367edbd07bcc62"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1f973852bdfbc58b0d367edbd07bcc62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a9f8b16d0457093b0284640d808c92c" id="r_a2a9f8b16d0457093b0284640d808c92c"><td class="memItemLeft" ><a id="a2a9f8b16d0457093b0284640d808c92c" name="a2a9f8b16d0457093b0284640d808c92c"></a>
+&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade3ce9e8ec8e82bffaa0fdc06958df01" id="r_ade3ce9e8ec8e82bffaa0fdc06958df01"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#af09f0d20c1a34e112f797c1ad5f7a560">max_stack</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ade3ce9e8ec8e82bffaa0fdc06958df01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56cefd9f95bc6a46d7156a92fa9fb5a9" id="r_a56cefd9f95bc6a46d7156a92fa9fb5a9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#afae9c133ad762890d1122b838b922e58">max_locals</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a56cefd9f95bc6a46d7156a92fa9fb5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5d642a3301112bd007502fdeee94672" id="r_ac5d642a3301112bd007502fdeee94672"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u4&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a1082eda498bfdf744ab685ae2ff2ed7a">code_length</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ac5d642a3301112bd007502fdeee94672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b3859fa3bf761255e5c095199ebd446" id="r_a9b3859fa3bf761255e5c095199ebd446"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;std::vector&lt; u1 &gt; *&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a769571c2ba7701531476297bef038b59">code</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a9b3859fa3bf761255e5c095199ebd446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c532f74f0e5dfd4421d763a5186bb99" id="r_a1c532f74f0e5dfd4421d763a5186bb99"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a3834ac24ca65fcef5d0d57a9e2c8bc84">exception_table_length</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1c532f74f0e5dfd4421d763a5186bb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27c5ebfc8db3f4bf99c7d286e67000b" id="r_af27c5ebfc8db3f4bf99c7d286e67000b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;std::vector&lt; <a class="el" href="structException__tableEntry.html">Exception_tableEntry</a> * &gt; *&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a59413d24745afd225bd0577ecc55ef4a">exception_table</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:af27c5ebfc8db3f4bf99c7d286e67000b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c18d32054e2304f37a2fc66b5977b34" id="r_a4c18d32054e2304f37a2fc66b5977b34"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a487b4c3a068e3308b60d827bc52ed58e">attributes_count</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a4c18d32054e2304f37a2fc66b5977b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b39ce9c867b488584a13988c2b67084" id="r_a7b39ce9c867b488584a13988c2b67084"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;std::vector&lt; <a class="el" href="structattribute__info.html">attribute_info</a> * &gt; *&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a43a8fadb4925eb8480b4c69e968bb2a5">attributes</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a7b39ce9c867b488584a13988c2b67084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a9f8b16d0457093b0284640d808c92c" id="r_a2a9f8b16d0457093b0284640d808c92c"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2a9f8b16d0457093b0284640d808c92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c690bf17f638f6d492094144d2a707c" id="r_a0c690bf17f638f6d492094144d2a707c"><td class="memItemLeft" ><a id="a0c690bf17f638f6d492094144d2a707c" name="a0c690bf17f638f6d492094144d2a707c"></a>
+&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b74738828bf83a60adb1dadd490cb15" id="r_a3b74738828bf83a60adb1dadd490cb15"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a02eba1803acfebbec24a2a68dc81b7e7">number_of_exceptions</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a3b74738828bf83a60adb1dadd490cb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e6eeef4523f350b6d98c1932675a831" id="r_a7e6eeef4523f350b6d98c1932675a831"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;std::vector&lt; u2 &gt; *&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a8f190172eaf56f047dbbb32d7a05c87f">exception_index_table</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a7e6eeef4523f350b6d98c1932675a831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c690bf17f638f6d492094144d2a707c" id="r_a0c690bf17f638f6d492094144d2a707c"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a0c690bf17f638f6d492094144d2a707c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2abdf964582710344dcdf037b2c9442d" id="r_a2abdf964582710344dcdf037b2c9442d"><td class="memItemLeft" ><a id="a2abdf964582710344dcdf037b2c9442d" name="a2abdf964582710344dcdf037b2c9442d"></a>
+&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2840ca6ba0ad48eba4788a9756723545" id="r_a2840ca6ba0ad48eba4788a9756723545"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#ab50d4d0f089acd41015e24ccdb603bcf">number_of_classes</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2840ca6ba0ad48eba4788a9756723545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63816e612f9835fd5500393c700b5d52" id="r_a63816e612f9835fd5500393c700b5d52"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;std::vector&lt; <a class="el" href="structInnerClasse.html">InnerClasse</a> * &gt; *&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a51099208c84e74c871f04b74df5b5d16">classes</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a63816e612f9835fd5500393c700b5d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2abdf964582710344dcdf037b2c9442d" id="r_a2abdf964582710344dcdf037b2c9442d"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2abdf964582710344dcdf037b2c9442d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6074fc31013205cac493fc78e5215c91" id="r_a6074fc31013205cac493fc78e5215c91"><td class="memItemLeft" ><a id="a6074fc31013205cac493fc78e5215c91" name="a6074fc31013205cac493fc78e5215c91"></a>
+&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ccc8365b5946bb7ea8b4e615b881de0" id="r_a6ccc8365b5946bb7ea8b4e615b881de0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;u2&#160;&#160;&#160;<a class="el" href="structattribute__info.html#a9eeb0863d1acc4ae788ae13da1845b4a">sourcefile_index</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a6ccc8365b5946bb7ea8b4e615b881de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6074fc31013205cac493fc78e5215c91" id="r_a6074fc31013205cac493fc78e5215c91"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a6074fc31013205cac493fc78e5215c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d42f8b11644de545bf292ac06b3381d" id="r_a9d42f8b11644de545bf292ac06b3381d"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a9d42f8b11644de545bf292ac06b3381d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock">
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00071">71</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+</div><h2 class="groupheader">Documentação dos dados membro</h2>
+<a id="a05bf4c6510e85d1adb7d75c2742b8550" name="a05bf4c6510e85d1adb7d75c2742b8550"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05bf4c6510e85d1adb7d75c2742b8550">&#9670;&#160;</a></span>attribute_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t attribute_info::attribute_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00073">73</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="aa8d580cb4c1e585270a11167bfdec6ff" name="aa8d580cb4c1e585270a11167bfdec6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8d580cb4c1e585270a11167bfdec6ff">&#9670;&#160;</a></span>attribute_name_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t attribute_info::attribute_name_index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00072">72</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a43a8fadb4925eb8480b4c69e968bb2a5" name="a43a8fadb4925eb8480b4c69e968bb2a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43a8fadb4925eb8480b4c69e968bb2a5">&#9670;&#160;</a></span>attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structattribute__info.html">attribute_info</a>*&gt;* attribute_info::attributes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00086">86</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a487b4c3a068e3308b60d827bc52ed58e" name="a487b4c3a068e3308b60d827bc52ed58e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a487b4c3a068e3308b60d827bc52ed58e">&#9670;&#160;</a></span>attributes_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::attributes_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00085">85</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a51099208c84e74c871f04b74df5b5d16" name="a51099208c84e74c871f04b74df5b5d16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51099208c84e74c871f04b74df5b5d16">&#9670;&#160;</a></span>classes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structInnerClasse.html">InnerClasse</a>*&gt;* attribute_info::classes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00094">94</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a769571c2ba7701531476297bef038b59" name="a769571c2ba7701531476297bef038b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a769571c2ba7701531476297bef038b59">&#9670;&#160;</a></span>code</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;u1&gt;* attribute_info::code</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00082">82</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a1082eda498bfdf744ab685ae2ff2ed7a" name="a1082eda498bfdf744ab685ae2ff2ed7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1082eda498bfdf744ab685ae2ff2ed7a">&#9670;&#160;</a></span>code_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u4 attribute_info::code_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00081">81</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a2903dda0fad8293904441019c200577f" name="a2903dda0fad8293904441019c200577f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2903dda0fad8293904441019c200577f">&#9670;&#160;</a></span>constantvalue_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::constantvalue_index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00076">76</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a8f190172eaf56f047dbbb32d7a05c87f" name="a8f190172eaf56f047dbbb32d7a05c87f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f190172eaf56f047dbbb32d7a05c87f">&#9670;&#160;</a></span>exception_index_table</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;u2&gt;* attribute_info::exception_index_table</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00090">90</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a59413d24745afd225bd0577ecc55ef4a" name="a59413d24745afd225bd0577ecc55ef4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59413d24745afd225bd0577ecc55ef4a">&#9670;&#160;</a></span>exception_table</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structException__tableEntry.html">Exception_tableEntry</a>*&gt;* attribute_info::exception_table</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00084">84</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a3834ac24ca65fcef5d0d57a9e2c8bc84" name="a3834ac24ca65fcef5d0d57a9e2c8bc84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3834ac24ca65fcef5d0d57a9e2c8bc84">&#9670;&#160;</a></span>exception_table_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::exception_table_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00083">83</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="afae9c133ad762890d1122b838b922e58" name="afae9c133ad762890d1122b838b922e58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afae9c133ad762890d1122b838b922e58">&#9670;&#160;</a></span>max_locals</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::max_locals</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00080">80</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="af09f0d20c1a34e112f797c1ad5f7a560" name="af09f0d20c1a34e112f797c1ad5f7a560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af09f0d20c1a34e112f797c1ad5f7a560">&#9670;&#160;</a></span>max_stack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::max_stack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00079">79</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="ab50d4d0f089acd41015e24ccdb603bcf" name="ab50d4d0f089acd41015e24ccdb603bcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab50d4d0f089acd41015e24ccdb603bcf">&#9670;&#160;</a></span>number_of_classes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::number_of_classes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00093">93</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a02eba1803acfebbec24a2a68dc81b7e7" name="a02eba1803acfebbec24a2a68dc81b7e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02eba1803acfebbec24a2a68dc81b7e7">&#9670;&#160;</a></span>number_of_exceptions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::number_of_exceptions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00089">89</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a9eeb0863d1acc4ae788ae13da1845b4a" name="a9eeb0863d1acc4ae788ae13da1845b4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eeb0863d1acc4ae788ae13da1845b4a">&#9670;&#160;</a></span>sourcefile_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 attribute_info::sourcefile_index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00097">97</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<hr/>A documentação para esta estrutura foi gerada a partir do seguinte ficheiro:<ul>
+<li>include/ClassLoader/<a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

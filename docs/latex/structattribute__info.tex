@@ -1,0 +1,220 @@
+\doxysection{Referência à estrutura attribute\+\_\+info}
+\hypertarget{structattribute__info}{}\label{structattribute__info}\index{attribute\_info@{attribute\_info}}
+\doxysubsubsection*{Atributos Públicos}
+\begin{DoxyCompactItemize}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structattribute__info_aa8d580cb4c1e585270a11167bfdec6ff}{attribute\+\_\+name\+\_\+index}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structattribute__info_a05bf4c6510e85d1adb7d75c2742b8550}{attribute\+\_\+length}}
+\item 
+\Hypertarget{structattribute__info_a9d42f8b11644de545bf292ac06b3381d}\label{structattribute__info_a9d42f8b11644de545bf292ac06b3381d} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\Hypertarget{unionattribute__info_1_1_0d18_a1f973852bdfbc58b0d367edbd07bcc62}\label{unionattribute__info_1_1_0d18_a1f973852bdfbc58b0d367edbd07bcc62} 
+\>struct \{\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_a2903dda0fad8293904441019c200577f}{constantvalue\_index}}\\
+\>\} \\
+\Hypertarget{unionattribute__info_1_1_0d18_a2a9f8b16d0457093b0284640d808c92c}\label{unionattribute__info_1_1_0d18_a2a9f8b16d0457093b0284640d808c92c} 
+\>struct \{\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_af09f0d20c1a34e112f797c1ad5f7a560}{max\_stack}}\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_afae9c133ad762890d1122b838b922e58}{max\_locals}}\\
+\>\>u4 \mbox{\hyperlink{structattribute__info_a1082eda498bfdf744ab685ae2ff2ed7a}{code\_length}}\\
+\>\>std::vector$<$ u1 $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structattribute__info_a769571c2ba7701531476297bef038b59}{code}}\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_a3834ac24ca65fcef5d0d57a9e2c8bc84}{exception\_table\_length}}\\
+\>\>std::vector$<$ \mbox{\hyperlink{structException__tableEntry}{Exception\_tableEntry}} \texorpdfstring{$\ast$}{*} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structattribute__info_a59413d24745afd225bd0577ecc55ef4a}{exception\_table}}\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_a487b4c3a068e3308b60d827bc52ed58e}{attributes\_count}}\\
+\>\>std::vector$<$ \mbox{\hyperlink{structattribute__info}{attribute\_info}} \texorpdfstring{$\ast$}{*} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structattribute__info_a43a8fadb4925eb8480b4c69e968bb2a5}{attributes}}\\
+\>\} \\
+\Hypertarget{unionattribute__info_1_1_0d18_a0c690bf17f638f6d492094144d2a707c}\label{unionattribute__info_1_1_0d18_a0c690bf17f638f6d492094144d2a707c} 
+\>struct \{\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_a02eba1803acfebbec24a2a68dc81b7e7}{number\_of\_exceptions}}\\
+\>\>std::vector$<$ u2 $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structattribute__info_a8f190172eaf56f047dbbb32d7a05c87f}{exception\_index\_table}}\\
+\>\} \\
+\Hypertarget{unionattribute__info_1_1_0d18_a2abdf964582710344dcdf037b2c9442d}\label{unionattribute__info_1_1_0d18_a2abdf964582710344dcdf037b2c9442d} 
+\>struct \{\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_ab50d4d0f089acd41015e24ccdb603bcf}{number\_of\_classes}}\\
+\>\>std::vector$<$ \mbox{\hyperlink{structInnerClasse}{InnerClasse}} \texorpdfstring{$\ast$}{*} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structattribute__info_a51099208c84e74c871f04b74df5b5d16}{classes}}\\
+\>\} \\
+\Hypertarget{unionattribute__info_1_1_0d18_a6074fc31013205cac493fc78e5215c91}\label{unionattribute__info_1_1_0d18_a6074fc31013205cac493fc78e5215c91} 
+\>struct \{\\
+\>\>u2 \mbox{\hyperlink{structattribute__info_a9eeb0863d1acc4ae788ae13da1845b4a}{sourcefile\_index}}\\
+\>\} \\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00071}{71}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+
+
+\doxysubsection{Documentação dos dados membro}
+\Hypertarget{structattribute__info_a05bf4c6510e85d1adb7d75c2742b8550}\label{structattribute__info_a05bf4c6510e85d1adb7d75c2742b8550} 
+\index{attribute\_info@{attribute\_info}!attribute\_length@{attribute\_length}}
+\index{attribute\_length@{attribute\_length}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{attribute\_length}{attribute\_length}}
+{\footnotesize\ttfamily uint32\+\_\+t attribute\+\_\+info\+::attribute\+\_\+length}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00073}{73}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_aa8d580cb4c1e585270a11167bfdec6ff}\label{structattribute__info_aa8d580cb4c1e585270a11167bfdec6ff} 
+\index{attribute\_info@{attribute\_info}!attribute\_name\_index@{attribute\_name\_index}}
+\index{attribute\_name\_index@{attribute\_name\_index}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{attribute\_name\_index}{attribute\_name\_index}}
+{\footnotesize\ttfamily uint16\+\_\+t attribute\+\_\+info\+::attribute\+\_\+name\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00072}{72}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a43a8fadb4925eb8480b4c69e968bb2a5}\label{structattribute__info_a43a8fadb4925eb8480b4c69e968bb2a5} 
+\index{attribute\_info@{attribute\_info}!attributes@{attributes}}
+\index{attributes@{attributes}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{attributes}{attributes}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structattribute__info}{attribute\+\_\+info}}\texorpdfstring{$\ast$}{*}$>$\texorpdfstring{$\ast$}{*} attribute\+\_\+info\+::attributes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00086}{86}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a487b4c3a068e3308b60d827bc52ed58e}\label{structattribute__info_a487b4c3a068e3308b60d827bc52ed58e} 
+\index{attribute\_info@{attribute\_info}!attributes\_count@{attributes\_count}}
+\index{attributes\_count@{attributes\_count}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{attributes\_count}{attributes\_count}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::attributes\+\_\+count}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00085}{85}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a51099208c84e74c871f04b74df5b5d16}\label{structattribute__info_a51099208c84e74c871f04b74df5b5d16} 
+\index{attribute\_info@{attribute\_info}!classes@{classes}}
+\index{classes@{classes}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{classes}{classes}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structInnerClasse}{Inner\+Classe}}\texorpdfstring{$\ast$}{*}$>$\texorpdfstring{$\ast$}{*} attribute\+\_\+info\+::classes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00094}{94}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a769571c2ba7701531476297bef038b59}\label{structattribute__info_a769571c2ba7701531476297bef038b59} 
+\index{attribute\_info@{attribute\_info}!code@{code}}
+\index{code@{code}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{code}{code}}
+{\footnotesize\ttfamily std\+::vector$<$u1$>$\texorpdfstring{$\ast$}{*} attribute\+\_\+info\+::code}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00082}{82}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a1082eda498bfdf744ab685ae2ff2ed7a}\label{structattribute__info_a1082eda498bfdf744ab685ae2ff2ed7a} 
+\index{attribute\_info@{attribute\_info}!code\_length@{code\_length}}
+\index{code\_length@{code\_length}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{code\_length}{code\_length}}
+{\footnotesize\ttfamily u4 attribute\+\_\+info\+::code\+\_\+length}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00081}{81}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a2903dda0fad8293904441019c200577f}\label{structattribute__info_a2903dda0fad8293904441019c200577f} 
+\index{attribute\_info@{attribute\_info}!constantvalue\_index@{constantvalue\_index}}
+\index{constantvalue\_index@{constantvalue\_index}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{constantvalue\_index}{constantvalue\_index}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::constantvalue\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00076}{76}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a8f190172eaf56f047dbbb32d7a05c87f}\label{structattribute__info_a8f190172eaf56f047dbbb32d7a05c87f} 
+\index{attribute\_info@{attribute\_info}!exception\_index\_table@{exception\_index\_table}}
+\index{exception\_index\_table@{exception\_index\_table}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{exception\_index\_table}{exception\_index\_table}}
+{\footnotesize\ttfamily std\+::vector$<$u2$>$\texorpdfstring{$\ast$}{*} attribute\+\_\+info\+::exception\+\_\+index\+\_\+table}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00090}{90}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a59413d24745afd225bd0577ecc55ef4a}\label{structattribute__info_a59413d24745afd225bd0577ecc55ef4a} 
+\index{attribute\_info@{attribute\_info}!exception\_table@{exception\_table}}
+\index{exception\_table@{exception\_table}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{exception\_table}{exception\_table}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structException__tableEntry}{Exception\+\_\+table\+Entry}}\texorpdfstring{$\ast$}{*}$>$\texorpdfstring{$\ast$}{*} attribute\+\_\+info\+::exception\+\_\+table}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00084}{84}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a3834ac24ca65fcef5d0d57a9e2c8bc84}\label{structattribute__info_a3834ac24ca65fcef5d0d57a9e2c8bc84} 
+\index{attribute\_info@{attribute\_info}!exception\_table\_length@{exception\_table\_length}}
+\index{exception\_table\_length@{exception\_table\_length}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{exception\_table\_length}{exception\_table\_length}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::exception\+\_\+table\+\_\+length}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00083}{83}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_afae9c133ad762890d1122b838b922e58}\label{structattribute__info_afae9c133ad762890d1122b838b922e58} 
+\index{attribute\_info@{attribute\_info}!max\_locals@{max\_locals}}
+\index{max\_locals@{max\_locals}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{max\_locals}{max\_locals}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::max\+\_\+locals}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00080}{80}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_af09f0d20c1a34e112f797c1ad5f7a560}\label{structattribute__info_af09f0d20c1a34e112f797c1ad5f7a560} 
+\index{attribute\_info@{attribute\_info}!max\_stack@{max\_stack}}
+\index{max\_stack@{max\_stack}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{max\_stack}{max\_stack}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::max\+\_\+stack}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00079}{79}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_ab50d4d0f089acd41015e24ccdb603bcf}\label{structattribute__info_ab50d4d0f089acd41015e24ccdb603bcf} 
+\index{attribute\_info@{attribute\_info}!number\_of\_classes@{number\_of\_classes}}
+\index{number\_of\_classes@{number\_of\_classes}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{number\_of\_classes}{number\_of\_classes}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::number\+\_\+of\+\_\+classes}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00093}{93}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a02eba1803acfebbec24a2a68dc81b7e7}\label{structattribute__info_a02eba1803acfebbec24a2a68dc81b7e7} 
+\index{attribute\_info@{attribute\_info}!number\_of\_exceptions@{number\_of\_exceptions}}
+\index{number\_of\_exceptions@{number\_of\_exceptions}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{number\_of\_exceptions}{number\_of\_exceptions}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::number\+\_\+of\+\_\+exceptions}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00089}{89}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+\Hypertarget{structattribute__info_a9eeb0863d1acc4ae788ae13da1845b4a}\label{structattribute__info_a9eeb0863d1acc4ae788ae13da1845b4a} 
+\index{attribute\_info@{attribute\_info}!sourcefile\_index@{sourcefile\_index}}
+\index{sourcefile\_index@{sourcefile\_index}!attribute\_info@{attribute\_info}}
+\doxysubsubsection{\texorpdfstring{sourcefile\_index}{sourcefile\_index}}
+{\footnotesize\ttfamily u2 attribute\+\_\+info\+::sourcefile\+\_\+index}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassFileStructs_8h_source_l00097}{97}} do ficheiro \mbox{\hyperlink{ClassFileStructs_8h_source}{Class\+File\+Structs.\+h}}.
+
+
+
+A documentação para esta estrutura foi gerada a partir do seguinte ficheiro\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Class\+Loader/Class\+File\+Structs.\+h\end{DoxyCompactItemize}

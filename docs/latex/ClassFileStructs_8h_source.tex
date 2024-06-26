@@ -1,0 +1,145 @@
+\doxysection{Class\+File\+Structs.\+h}
+\hypertarget{ClassFileStructs_8h_source}{}\label{ClassFileStructs_8h_source}\index{include/ClassLoader/ClassFileStructs.h@{include/ClassLoader/ClassFileStructs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 4/2/24.}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_CLASSFILESTRUCTS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_CLASSFILESTRUCTS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00014}00014\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structattribute__info}{attribute\_info}};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00015}00015\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmethod__info}{method\_info}};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00016}00016\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structfield__info}{field\_info}};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00017}00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structclass__file}{class\_file}};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00018}00018\ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionFieldEntry}{FieldEntry}};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}ClassFileEnums.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}../typedefs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}AttributeStructs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}../Jvm/JvmStructs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00026}\mbox{\hyperlink{structcp__info}{00026}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcp__info}{cp\_info}}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00027}00027\ \ \ \ \ ConstantPoolTag\ tag;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00028}00028\ \ \ \ \ \textcolor{keyword}{union\ }\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//CONSTANT\_Class\_info,\ CONSTANT\_NameAndType\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ name\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ descriptor\_index;\ \ \textcolor{comment}{//\ CONSTANT\_MethodType\_info\ ,\ CONSTANT\_NameAndType\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00033}00033\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//\ CONSTANT\_Fieldref\_info,\ CONSTANT\_Methodref\_info,\ CONSTANT\_InterfaceMethodref\_info,\ CONSTANT\_InvokeDynamic\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{union}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ class\_index;\ \textcolor{comment}{//\ CONSTANT\_Fieldref\_info,\ CONSTANT\_Methodref\_info,\ CONSTANT\_InterfaceMethodref\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ bootstrap\_method\_attr\_index;\ \textcolor{comment}{//\ CONSTANT\_InvokeDynamic\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ name\_and\_type\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//CONSTANT\_String\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ string\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\{\ \textcolor{comment}{//CONSTANT\_Integer\_info,\ CONSTANT\_Float\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ bytes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\{\ \textcolor{comment}{//CONSTANT\_Long\_info,\ CONSTANT\_Double\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ high\_bytes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ low\_bytes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\{\ \textcolor{comment}{//\ CONSTANT\_UTF8\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \ length;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<uint8\_t>*\ bytes\_vec;\ \textcolor{comment}{//o\ vetor\ ta\ dando\ bo,\ vamo\ ter\ q\ ir\ de\ malloc\ msm}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00055}00055\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\{\ \textcolor{comment}{//\ CONSTANT\_MethodHandle\_info}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ reference\_kind;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ reference\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00060}00060\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00062}00062\ \ \ \ \ std::string\ AsString()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//if(tag\ !=\ ConstantPoolTag::CONSTANT\_Utf8\ )\{}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//throw\ \ \ std::runtime\_error("{}Entrada\ nao\ e\ um\ UTF8\(\backslash\)n"{});}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ assert(0);}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(bytes\_vec-\/>data()),\ length\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00068}00068\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00069}00069\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00071}\mbox{\hyperlink{structattribute__info}{00071}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structattribute__info}{attribute\_info}}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00072}00072\ \ \ \ \ uint16\_t\ attribute\_name\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00073}00073\ \ \ \ \ uint32\_t\ attribute\_length;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00074}00074\ \ \ \ \ \textcolor{keyword}{union\ }\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//\ ConstantValue\_attribute}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ constantvalue\_index;\ \textcolor{comment}{//\ entrada\ com\ o\ valor\ em\ si}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00077}00077\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//\ Code\_attribute}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ max\_stack;\ \textcolor{comment}{//\ profundidade\ maxima\ da\ stack\ pro\ metodo}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ max\_locals;\ \textcolor{comment}{//\ tamanho\ maximo\ da\ array\ de\ variaveis\ locais}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ u4\ code\_length;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<u1>*code;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ exception\_table\_length;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Exception\_tableEntry*>*\ \ exception\_table;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ attributes\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<attribute\_info*>*\ attributes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00087}00087\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\textcolor{comment}{//\ Exceptions\_attribute}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ number\_of\_exceptions;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<u2>*\ exception\_index\_table;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }\{\ \textcolor{comment}{//\ InnerClasses\_attribute}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ number\_of\_classes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<InnerClasse*>*\ classes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00095}00095\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\{\ \textcolor{comment}{//\ source\ file}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ u2\ sourcefile\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00098}00098\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00099}00099\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00100}00100\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00102}\mbox{\hyperlink{structfield__info}{00102}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structfield__info}{field\_info}}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00103}00103\ \ \ \ \ uint16\_t\ access\_flags;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00104}00104\ \ \ \ \ uint16\_t\ name\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00105}00105\ \ \ \ \ uint16\_t\ descriptor\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00106}00106\ \ \ \ \ uint16\_t\ attributes\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00107}00107\ \ \ \ \ std::vector<attribute\_info*>*\ attributes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00108}00108\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00110}\mbox{\hyperlink{structmethod__info}{00110}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmethod__info}{method\_info}}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00111}00111\ \ \ \ \ u2\ access\_flags;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00112}00112\ \ \ \ \ u2\ name\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00113}00113\ \ \ \ \ u2\ descriptor\_index;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00114}00114\ \ \ \ \ u2\ attributes\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00115}00115\ \ \ \ \ std::vector<attribute\_info*>*\ attributes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00116}00116\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00118}\mbox{\hyperlink{structclass__file}{00118}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structclass__file}{class\_file}}\{}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00119}00119\ \ \ \ \ u4\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ magic;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00120}00120\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ minor\_version;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00121}00121\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ major\_version;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00122}00122\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ constant\_pool\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00123}00123\ \ \ \ \ std::vector<cp\_info*>*\ \ \ \ \ \ \ \ constant\_pool;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00124}00124\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ access\_flags;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00125}00125\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this\_class;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00126}00126\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ super\_class;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00127}00127\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ interfaces\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00128}00128\ \ \ \ \ std::vector<u2>*\ \ \ \ \ \ \ \ \ \ \ \ \ \ interfaces;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00129}00129\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fields\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00130}00130\ \ \ \ \ std::vector<field\_info*>*\ \ \ \ \ fields;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00131}00131\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ methods\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00132}00132\ \ \ \ \ std::vector<method\_info*>*\ \ \ \ methods;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00133}00133\ \ \ \ \ u2\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ attributes\_count;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00134}00134\ \ \ \ \ std::vector<attribute\_info*>*\ attributes;}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00135}00135\ \ \ \ \ std::unordered\_map<std::string,FieldEntry*>*\ StaticFields\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00136}00136\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00138}00138\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSFILESTRUCTS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassFileStructs_8h_source_l00139}00139\ }
+
+\end{DoxyCode}

@@ -1,0 +1,33 @@
+\doxysection{Run\+Time\+Exceptions.\+h}
+\hypertarget{RunTimeExceptions_8h_source}{}\label{RunTimeExceptions_8h_source}\index{include/Jvm/RunTimeExceptions.h@{include/Jvm/RunTimeExceptions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 4/28/24.}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_RUNTIMEEXCEPTIONS\_H}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_RUNTIMEEXCEPTIONS\_H}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00011}\mbox{\hyperlink{classRunTimeExceptions}{00011}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRunTimeExceptions}{RunTimeExceptions}}\ :\ \textcolor{keyword}{public}\ std::exception\ \ \{\};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00014}00014\ \textcolor{comment}{//\ usado\ quando\ ocorre\ a\ tentativa\ de\ uma\ divisao\ por\ 0}}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00015}\mbox{\hyperlink{classArithmeticException}{00015}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classArithmeticException}{ArithmeticException}}\ :\ \mbox{\hyperlink{classRunTimeExceptions}{RunTimeExceptions}}\{}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00016}00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00017}00017\ \ \ \ \ \mbox{\hyperlink{classArithmeticException}{ArithmeticException}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00018}00018\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00019}00019\ \};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00020}\mbox{\hyperlink{classNegativeArraySizeException}{00020}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classNegativeArraySizeException}{NegativeArraySizeException}}\ :\ \mbox{\hyperlink{classRunTimeExceptions}{RunTimeExceptions}}\{}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00021}00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00022}00022\ \ \ \ \ \mbox{\hyperlink{classNegativeArraySizeException}{NegativeArraySizeException}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00023}00023\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00024}00024\ \};}
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{RunTimeExceptions_8h_source_l00027}00027\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_RUNTIMEEXCEPTIONS\_H}}
+
+\end{DoxyCode}

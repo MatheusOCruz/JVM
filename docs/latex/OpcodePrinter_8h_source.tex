@@ -1,0 +1,320 @@
+\doxysection{Opcode\+Printer.\+h}
+\hypertarget{OpcodePrinter_8h_source}{}\label{OpcodePrinter_8h_source}\index{include/ClassPrinter/OpcodePrinter.h@{include/ClassPrinter/OpcodePrinter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 4/20/24.}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_OPCODEPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_OPCODEPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}../typedefs.h"{}}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}../ClassLoader/ClassFileEnums.h"{}}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}ConstantPoolPrinter.h"{}}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00014}\mbox{\hyperlink{classOpcodePrinter}{00014}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00015}00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00016}00016\ \ \ \ \ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}(\mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}*\ printer)\ :\ Printer(printer)\ \{\};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00018}00018\ \ \ \ \ std::string\ CodeToString(u1\ code[],\textcolor{keyword}{const}\ u4\ code\_lenght);}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00019}00019\ \ \ \ \ \textcolor{comment}{//\ Declaração\ do\ metodo\ set\ code\ <tableswitch>}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00020}00020\ \ \ \ \ \textcolor{keywordtype}{void}\ setCode(u1*\ code,\ \textcolor{keywordtype}{size\_t}\ code\_size);\ \textcolor{comment}{//\ Novo\ metodo\ para\ configurar\ o\ código\ e\ o\ tamanho}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00022}00022\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00023}00023\ \ \ \ \ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}*\ Printer;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00024}00024\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ code\_size;\ \textcolor{comment}{//\ Adicione\ isso}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00025}00025\ \ \ \ \ \textcolor{keywordtype}{void}\ nop();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00026}00026\ \ \ \ \ \textcolor{keywordtype}{void}\ aconst\_null();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_m1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00028}00028\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00029}00029\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00030}00030\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00031}00031\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00032}00032\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_4();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{void}\ iconst\_5();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{void}\ lconst\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00035}00035\ \ \ \ \ \textcolor{keywordtype}{void}\ lconst\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00036}00036\ \ \ \ \ \textcolor{keywordtype}{void}\ fconst\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00037}00037\ \ \ \ \ \textcolor{keywordtype}{void}\ fconst\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{void}\ fconst\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{void}\ dconst\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ dconst\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{void}\ bipush();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ sipush();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00043}00043\ \ \ \ \ \textcolor{keywordtype}{void}\ ldc();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00044}00044\ \ \ \ \ \textcolor{keywordtype}{void}\ ldc\_w();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{void}\ ldc2\_w();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{void}\ iload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00047}00047\ \ \ \ \ \textcolor{keywordtype}{void}\ lload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00048}00048\ \ \ \ \ \textcolor{keywordtype}{void}\ fload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00049}00049\ \ \ \ \ \textcolor{keywordtype}{void}\ dload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00050}00050\ \ \ \ \ \textcolor{keywordtype}{void}\ aload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00051}00051\ \ \ \ \ \textcolor{keywordtype}{void}\ iload\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00052}00052\ \ \ \ \ \textcolor{keywordtype}{void}\ iload\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00053}00053\ \ \ \ \ \textcolor{keywordtype}{void}\ iload\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00054}00054\ \ \ \ \ \textcolor{keywordtype}{void}\ iload\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00055}00055\ \ \ \ \ \textcolor{keywordtype}{void}\ lload\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00056}00056\ \ \ \ \ \textcolor{keywordtype}{void}\ lload\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00057}00057\ \ \ \ \ \textcolor{keywordtype}{void}\ lload\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00058}00058\ \ \ \ \ \textcolor{keywordtype}{void}\ lload\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00059}00059\ \ \ \ \ \textcolor{keywordtype}{void}\ fload\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00060}00060\ \ \ \ \ \textcolor{keywordtype}{void}\ fload\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00061}00061\ \ \ \ \ \textcolor{keywordtype}{void}\ fload\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00062}00062\ \ \ \ \ \textcolor{keywordtype}{void}\ fload\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00063}00063\ \ \ \ \ \textcolor{keywordtype}{void}\ dload\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{void}\ dload\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00065}00065\ \ \ \ \ \textcolor{keywordtype}{void}\ dload\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00066}00066\ \ \ \ \ \textcolor{keywordtype}{void}\ dload\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00067}00067\ \ \ \ \ \textcolor{keywordtype}{void}\ aload\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00068}00068\ \ \ \ \ \textcolor{keywordtype}{void}\ aload\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00069}00069\ \ \ \ \ \textcolor{keywordtype}{void}\ aload\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00070}00070\ \ \ \ \ \textcolor{keywordtype}{void}\ aload\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00071}00071\ \ \ \ \ \textcolor{keywordtype}{void}\ iaload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00072}00072\ \ \ \ \ \textcolor{keywordtype}{void}\ laload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00073}00073\ \ \ \ \ \textcolor{keywordtype}{void}\ faload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00074}00074\ \ \ \ \ \textcolor{keywordtype}{void}\ daload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00075}00075\ \ \ \ \ \textcolor{keywordtype}{void}\ aaload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00076}00076\ \ \ \ \ \textcolor{keywordtype}{void}\ baload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00077}00077\ \ \ \ \ \textcolor{keywordtype}{void}\ caload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00078}00078\ \ \ \ \ \textcolor{keywordtype}{void}\ saload();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00079}00079\ \ \ \ \ \textcolor{keywordtype}{void}\ istore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00080}00080\ \ \ \ \ \textcolor{keywordtype}{void}\ lstore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00081}00081\ \ \ \ \ \textcolor{keywordtype}{void}\ fstore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00082}00082\ \ \ \ \ \textcolor{keywordtype}{void}\ dstore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00083}00083\ \ \ \ \ \textcolor{keywordtype}{void}\ astore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00084}00084\ \ \ \ \ \textcolor{keywordtype}{void}\ istore\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00085}00085\ \ \ \ \ \textcolor{keywordtype}{void}\ istore\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00086}00086\ \ \ \ \ \textcolor{keywordtype}{void}\ istore\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00087}00087\ \ \ \ \ \textcolor{keywordtype}{void}\ istore\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00088}00088\ \ \ \ \ \textcolor{keywordtype}{void}\ lstore\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00089}00089\ \ \ \ \ \textcolor{keywordtype}{void}\ lstore\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00090}00090\ \ \ \ \ \textcolor{keywordtype}{void}\ lstore\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00091}00091\ \ \ \ \ \textcolor{keywordtype}{void}\ lstore\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00092}00092\ \ \ \ \ \textcolor{keywordtype}{void}\ fstore\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00093}00093\ \ \ \ \ \textcolor{keywordtype}{void}\ fstore\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00094}00094\ \ \ \ \ \textcolor{keywordtype}{void}\ fstore\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00095}00095\ \ \ \ \ \textcolor{keywordtype}{void}\ fstore\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00096}00096\ \ \ \ \ \textcolor{keywordtype}{void}\ dstore\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00097}00097\ \ \ \ \ \textcolor{keywordtype}{void}\ dstore\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00098}00098\ \ \ \ \ \textcolor{keywordtype}{void}\ dstore\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00099}00099\ \ \ \ \ \textcolor{keywordtype}{void}\ dstore\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00100}00100\ \ \ \ \ \textcolor{keywordtype}{void}\ astore\_0();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00101}00101\ \ \ \ \ \textcolor{keywordtype}{void}\ astore\_1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00102}00102\ \ \ \ \ \textcolor{keywordtype}{void}\ astore\_2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00103}00103\ \ \ \ \ \textcolor{keywordtype}{void}\ astore\_3();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00104}00104\ \ \ \ \ \textcolor{keywordtype}{void}\ iastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00105}00105\ \ \ \ \ \textcolor{keywordtype}{void}\ lastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00106}00106\ \ \ \ \ \textcolor{keywordtype}{void}\ fastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00107}00107\ \ \ \ \ \textcolor{keywordtype}{void}\ dastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00108}00108\ \ \ \ \ \textcolor{keywordtype}{void}\ aastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00109}00109\ \ \ \ \ \textcolor{keywordtype}{void}\ bastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00110}00110\ \ \ \ \ \textcolor{keywordtype}{void}\ castore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00111}00111\ \ \ \ \ \textcolor{keywordtype}{void}\ sastore();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00112}00112\ \ \ \ \ \textcolor{keywordtype}{void}\ pop();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00113}00113\ \ \ \ \ \textcolor{keywordtype}{void}\ pop2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00114}00114\ \ \ \ \ \textcolor{keywordtype}{void}\ dup();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00115}00115\ \ \ \ \ \textcolor{keywordtype}{void}\ dup\_x1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00116}00116\ \ \ \ \ \textcolor{keywordtype}{void}\ dup\_x2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00117}00117\ \ \ \ \ \textcolor{keywordtype}{void}\ dup2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00118}00118\ \ \ \ \ \textcolor{keywordtype}{void}\ dup2\_x1();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00119}00119\ \ \ \ \ \textcolor{keywordtype}{void}\ dup2\_x2();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00120}00120\ \ \ \ \ \textcolor{keywordtype}{void}\ swap();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00121}00121\ \ \ \ \ \textcolor{keywordtype}{void}\ iadd();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00122}00122\ \ \ \ \ \textcolor{keywordtype}{void}\ ladd();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00123}00123\ \ \ \ \ \textcolor{keywordtype}{void}\ fadd();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00124}00124\ \ \ \ \ \textcolor{keywordtype}{void}\ dadd();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00125}00125\ \ \ \ \ \textcolor{keywordtype}{void}\ isub();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00126}00126\ \ \ \ \ \textcolor{keywordtype}{void}\ lsub();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00127}00127\ \ \ \ \ \textcolor{keywordtype}{void}\ fsub();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00128}00128\ \ \ \ \ \textcolor{keywordtype}{void}\ dsub();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00129}00129\ \ \ \ \ \textcolor{keywordtype}{void}\ imul();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00130}00130\ \ \ \ \ \textcolor{keywordtype}{void}\ lmul();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00131}00131\ \ \ \ \ \textcolor{keywordtype}{void}\ fmul();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00132}00132\ \ \ \ \ \textcolor{keywordtype}{void}\ dmul();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00133}00133\ \ \ \ \ \textcolor{keywordtype}{void}\ idiv();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00134}00134\ \ \ \ \ \textcolor{keywordtype}{void}\ ldiv();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00135}00135\ \ \ \ \ \textcolor{keywordtype}{void}\ fdiv();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00136}00136\ \ \ \ \ \textcolor{keywordtype}{void}\ ddiv();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00137}00137\ \ \ \ \ \textcolor{keywordtype}{void}\ irem();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00138}00138\ \ \ \ \ \textcolor{keywordtype}{void}\ lrem();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00139}00139\ \ \ \ \ \textcolor{keywordtype}{void}\ frem();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00140}00140\ \ \ \ \ \textcolor{keywordtype}{void}\ drem();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00141}00141\ \ \ \ \ \textcolor{keywordtype}{void}\ ineg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00142}00142\ \ \ \ \ \textcolor{keywordtype}{void}\ lneg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00143}00143\ \ \ \ \ \textcolor{keywordtype}{void}\ fneg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00144}00144\ \ \ \ \ \textcolor{keywordtype}{void}\ dneg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00145}00145\ \ \ \ \ \textcolor{keywordtype}{void}\ ishl();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00146}00146\ \ \ \ \ \textcolor{keywordtype}{void}\ lshl();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00147}00147\ \ \ \ \ \textcolor{keywordtype}{void}\ ishr();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00148}00148\ \ \ \ \ \textcolor{keywordtype}{void}\ lshr();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00149}00149\ \ \ \ \ \textcolor{keywordtype}{void}\ iushr();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00150}00150\ \ \ \ \ \textcolor{keywordtype}{void}\ lushr();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00151}00151\ \ \ \ \ \textcolor{keywordtype}{void}\ iand();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00152}00152\ \ \ \ \ \textcolor{keywordtype}{void}\ land();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00153}00153\ \ \ \ \ \textcolor{keywordtype}{void}\ ior();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00154}00154\ \ \ \ \ \textcolor{keywordtype}{void}\ lor();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00155}00155\ \ \ \ \ \textcolor{keywordtype}{void}\ ixor();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00156}00156\ \ \ \ \ \textcolor{keywordtype}{void}\ lxor();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00157}00157\ \ \ \ \ \textcolor{keywordtype}{void}\ iinc();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00158}00158\ \ \ \ \ \textcolor{keywordtype}{void}\ i2l();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00159}00159\ \ \ \ \ \textcolor{keywordtype}{void}\ i2f();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00160}00160\ \ \ \ \ \textcolor{keywordtype}{void}\ i2d();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00161}00161\ \ \ \ \ \textcolor{keywordtype}{void}\ l2i();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00162}00162\ \ \ \ \ \textcolor{keywordtype}{void}\ l2f();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00163}00163\ \ \ \ \ \textcolor{keywordtype}{void}\ l2d();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00164}00164\ \ \ \ \ \textcolor{keywordtype}{void}\ f2i();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00165}00165\ \ \ \ \ \textcolor{keywordtype}{void}\ f2l();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00166}00166\ \ \ \ \ \textcolor{keywordtype}{void}\ f2d();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00167}00167\ \ \ \ \ \textcolor{keywordtype}{void}\ d2i();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00168}00168\ \ \ \ \ \textcolor{keywordtype}{void}\ d2l();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00169}00169\ \ \ \ \ \textcolor{keywordtype}{void}\ d2f();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00170}00170\ \ \ \ \ \textcolor{keywordtype}{void}\ i2b();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00171}00171\ \ \ \ \ \textcolor{keywordtype}{void}\ i2c();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00172}00172\ \ \ \ \ \textcolor{keywordtype}{void}\ i2s();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00173}00173\ \ \ \ \ \textcolor{keywordtype}{void}\ lcmp();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00174}00174\ \ \ \ \ \textcolor{keywordtype}{void}\ fcmpl();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00175}00175\ \ \ \ \ \textcolor{keywordtype}{void}\ fcmpg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00176}00176\ \ \ \ \ \textcolor{keywordtype}{void}\ dcmpl();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00177}00177\ \ \ \ \ \textcolor{keywordtype}{void}\ dcmpg();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00178}00178\ \ \ \ \ \textcolor{keywordtype}{void}\ ifeq();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00179}00179\ \ \ \ \ \textcolor{keywordtype}{void}\ ifne();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00180}00180\ \ \ \ \ \textcolor{keywordtype}{void}\ iflt();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00181}00181\ \ \ \ \ \textcolor{keywordtype}{void}\ ifge();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00182}00182\ \ \ \ \ \textcolor{keywordtype}{void}\ ifgt();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00183}00183\ \ \ \ \ \textcolor{keywordtype}{void}\ ifle();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00184}00184\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmpeq();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00185}00185\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmpne();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00186}00186\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmplt();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00187}00187\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmpge();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00188}00188\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmpgt();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00189}00189\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_icmple();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00190}00190\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_acmpeq();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00191}00191\ \ \ \ \ \textcolor{keywordtype}{void}\ if\_acmpne();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00192}00192\ \ \ \ \ \textcolor{keywordtype}{void}\ goto\_();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00193}00193\ \ \ \ \ \textcolor{keywordtype}{void}\ jsr\_();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00194}00194\ \ \ \ \ \textcolor{keywordtype}{void}\ ret\_();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00195}00195\ \ \ \ \ \textcolor{keywordtype}{void}\ tableswitch();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00196}00196\ \ \ \ \ \textcolor{keywordtype}{void}\ lookupswitch();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00197}00197\ \ \ \ \ \textcolor{keywordtype}{void}\ ireturn();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00198}00198\ \ \ \ \ \textcolor{keywordtype}{void}\ lreturn();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00199}00199\ \ \ \ \ \textcolor{keywordtype}{void}\ freturn();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00200}00200\ \ \ \ \ \textcolor{keywordtype}{void}\ dreturn();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00201}00201\ \ \ \ \ \textcolor{keywordtype}{void}\ areturn();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00202}00202\ \ \ \ \ \textcolor{keywordtype}{void}\ return\_();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00203}00203\ \ \ \ \ \textcolor{keywordtype}{void}\ getstatic();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00204}00204\ \ \ \ \ \textcolor{keywordtype}{void}\ putstatic();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00205}00205\ \ \ \ \ \textcolor{keywordtype}{void}\ getfield();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00206}00206\ \ \ \ \ \textcolor{keywordtype}{void}\ putfield();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00207}00207\ \ \ \ \ \textcolor{keywordtype}{void}\ invokevirtual();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00208}00208\ \ \ \ \ \textcolor{keywordtype}{void}\ invokespecial();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00209}00209\ \ \ \ \ \textcolor{keywordtype}{void}\ invokestatic();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00210}00210\ \ \ \ \ \textcolor{keywordtype}{void}\ invokeinterface();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00211}00211\ \ \ \ \ \textcolor{keywordtype}{void}\ invokedynamic();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00212}00212\ \ \ \ \ \textcolor{keywordtype}{void}\ new\_();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00213}00213\ \ \ \ \ \textcolor{keywordtype}{void}\ newarray();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00214}00214\ \ \ \ \ \textcolor{keywordtype}{void}\ anewarray();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00215}00215\ \ \ \ \ \textcolor{keywordtype}{void}\ arraylength();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00216}00216\ \ \ \ \ \textcolor{keywordtype}{void}\ athrow();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00217}00217\ \ \ \ \ \textcolor{keywordtype}{void}\ checkcast();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00218}00218\ \ \ \ \ \textcolor{keywordtype}{void}\ instanceof();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00219}00219\ \ \ \ \ \textcolor{keywordtype}{void}\ monitorenter();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00220}00220\ \ \ \ \ \textcolor{keywordtype}{void}\ monitorexit();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00221}00221\ \ \ \ \ \textcolor{keywordtype}{void}\ wide();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00222}00222\ \ \ \ \ \textcolor{keywordtype}{void}\ multianewarray();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00223}00223\ \ \ \ \ \textcolor{keywordtype}{void}\ ifnull();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00224}00224\ \ \ \ \ \textcolor{keywordtype}{void}\ ifnonnull();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00225}00225\ \ \ \ \ \textcolor{keywordtype}{void}\ goto\_w();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00226}00226\ \ \ \ \ \textcolor{keywordtype}{void}\ jsr\_w();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00229}00229\ \ \ \ \ \textcolor{keyword}{using\ }BytecodeFunc\ =\ void\ (\mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}::*)();}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00231}00231\ \textcolor{comment}{//\ Vetor\ de\ ponteiros\ para\ as\ funções}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00232}00232\ \ \ \ \ std::vector<BytecodeFunc>\ bytecodeFuncs\ =\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::nop,\ \ \ \ \ \ \ \ \&OpcodePrinter::aconst\_null,\ \ \ \&OpcodePrinter::iconst\_m1,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iconst\_0,\ \ \ \&OpcodePrinter::iconst\_1,\ \ \ \ \ \ \&OpcodePrinter::iconst\_2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iconst\_3,\ \ \ \&OpcodePrinter::iconst\_4,\ \ \ \ \ \ \&OpcodePrinter::iconst\_5,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lconst\_0,\ \ \ \&OpcodePrinter::lconst\_1,\ \ \ \ \ \ \&OpcodePrinter::fconst\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fconst\_1,\ \ \ \&OpcodePrinter::fconst\_2,\ \ \ \ \ \ \&OpcodePrinter::dconst\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dconst\_1,\ \ \ \&OpcodePrinter::bipush,\ \ \ \ \ \ \ \ \&OpcodePrinter::sipush,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ldc,\ \ \ \ \ \ \ \ \&OpcodePrinter::ldc\_w,\ \ \ \ \ \ \ \ \ \&OpcodePrinter::ldc2\_w,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iload,\ \ \ \ \ \ \&OpcodePrinter::lload,\ \ \ \ \ \ \ \ \ \&OpcodePrinter::fload,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dload,\ \ \ \ \ \ \&OpcodePrinter::aload,\ \ \ \ \ \ \ \ \ \&OpcodePrinter::iload\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iload\_1,\ \ \ \ \&OpcodePrinter::iload\_2,\ \ \ \ \ \ \ \&OpcodePrinter::iload\_3,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lload\_0,\ \ \ \ \&OpcodePrinter::lload\_1,\ \ \ \ \ \ \ \&OpcodePrinter::lload\_2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lload\_3,\ \ \ \ \&OpcodePrinter::fload\_0,\ \ \ \ \ \ \ \&OpcodePrinter::fload\_1,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fload\_2,\ \ \ \ \&OpcodePrinter::fload\_3,\ \ \ \ \ \ \ \&OpcodePrinter::dload\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dload\_1,\ \ \ \ \&OpcodePrinter::dload\_2,\ \ \ \ \ \ \ \&OpcodePrinter::dload\_3,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::aload\_0,\ \ \ \ \&OpcodePrinter::aload\_1,\ \ \ \ \ \ \ \&OpcodePrinter::aload\_2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::aload\_3,\ \ \ \ \&OpcodePrinter::iaload,\ \ \ \ \ \ \ \ \&OpcodePrinter::laload,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::faload,\ \ \ \ \ \&OpcodePrinter::daload,\ \ \ \ \ \ \ \ \&OpcodePrinter::aaload,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::baload,\ \ \ \ \ \&OpcodePrinter::caload,\ \ \ \ \ \ \ \ \&OpcodePrinter::saload,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::istore,\ \ \ \ \ \&OpcodePrinter::lstore,\ \ \ \ \ \ \ \ \&OpcodePrinter::fstore,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dstore,\ \ \ \ \ \&OpcodePrinter::astore,\ \ \ \ \ \ \ \ \&OpcodePrinter::istore\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::istore\_1,\ \ \ \&OpcodePrinter::istore\_2,\ \ \ \ \ \ \&OpcodePrinter::istore\_3,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lstore\_0,\ \ \ \&OpcodePrinter::lstore\_1,\ \ \ \ \ \ \&OpcodePrinter::lstore\_2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lstore\_3,\ \ \ \&OpcodePrinter::fstore\_0,\ \ \ \ \ \ \&OpcodePrinter::fstore\_1,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fstore\_2,\ \ \ \&OpcodePrinter::fstore\_3,\ \ \ \ \ \ \&OpcodePrinter::dstore\_0,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dstore\_1,\ \ \ \&OpcodePrinter::dstore\_2,\ \ \ \ \ \ \&OpcodePrinter::dstore\_3,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::astore\_0,\ \ \ \&OpcodePrinter::astore\_1,\ \ \ \ \ \ \&OpcodePrinter::astore\_2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::astore\_3,\ \ \ \&OpcodePrinter::iastore,\ \ \ \ \ \ \ \&OpcodePrinter::lastore,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fastore,\ \ \ \ \&OpcodePrinter::dastore,\ \ \ \ \ \ \ \&OpcodePrinter::aastore,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::bastore,\ \ \ \ \&OpcodePrinter::castore,\ \ \ \ \ \ \ \&OpcodePrinter::sastore,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::pop,\ \ \ \ \ \ \ \ \&OpcodePrinter::pop2,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dup,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dup\_x1,\ \ \ \ \ \&OpcodePrinter::dup\_x2,\ \ \ \ \ \ \ \ \&OpcodePrinter::dup2,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dup2\_x1,\ \ \ \ \&OpcodePrinter::dup2\_x2,\ \ \ \ \ \ \ \&OpcodePrinter::swap,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iadd,\ \ \ \ \ \ \ \&OpcodePrinter::ladd,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fadd,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dadd,\ \ \ \ \ \ \ \&OpcodePrinter::isub,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lsub,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fsub,\ \ \ \ \ \ \ \&OpcodePrinter::dsub,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::imul,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lmul,\ \ \ \ \ \ \ \&OpcodePrinter::fmul,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dmul,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::idiv,\ \ \ \ \ \ \ \&OpcodePrinter::ldiv,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fdiv,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ddiv,\ \ \ \ \ \ \ \&OpcodePrinter::irem,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lrem,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::frem,\ \ \ \ \ \ \ \&OpcodePrinter::drem,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ineg,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lneg,\ \ \ \ \ \ \ \&OpcodePrinter::fneg,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::dneg,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ishl,\ \ \ \ \ \ \ \&OpcodePrinter::lshl,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ishr,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lshr,\ \ \ \ \ \ \ \&OpcodePrinter::iushr,\ \ \ \ \ \ \ \ \ \&OpcodePrinter::lushr,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iand,\ \ \ \ \ \ \ \&OpcodePrinter::land,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ior,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lor,\ \ \ \ \ \ \ \ \&OpcodePrinter::ixor,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lxor,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iinc,\ \ \ \ \ \ \ \&OpcodePrinter::i2l,\ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::i2f,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::i2d,\ \ \ \ \ \ \ \ \&OpcodePrinter::l2i,\ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::l2f,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::l2d,\ \ \ \ \ \ \ \ \&OpcodePrinter::f2i,\ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::f2l,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::f2d,\ \ \ \ \ \ \ \ \&OpcodePrinter::d2i,\ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::d2l,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::d2f,\ \ \ \ \ \ \ \ \&OpcodePrinter::i2b,\ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::i2c,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::i2s,\ \ \ \ \ \ \ \ \&OpcodePrinter::lcmp,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fcmpl,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::fcmpg,\ \ \ \ \ \ \&OpcodePrinter::dcmpl,\ \ \ \ \ \ \ \ \ \&OpcodePrinter::dcmpg,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ifeq,\ \ \ \ \ \ \ \&OpcodePrinter::ifne,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::iflt,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ifge,\ \ \ \ \ \ \ \&OpcodePrinter::ifgt,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ifle,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::if\_icmpeq,\ \ \&OpcodePrinter::if\_icmpne,\ \ \ \ \ \&OpcodePrinter::if\_icmplt,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::if\_icmpge,\ \ \&OpcodePrinter::if\_icmpgt,\ \ \ \ \ \&OpcodePrinter::if\_icmple,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::if\_acmpeq,\ \ \&OpcodePrinter::if\_acmpne,\ \ \ \ \ \&OpcodePrinter::goto\_,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::jsr\_,\ \ \ \ \ \ \ \&OpcodePrinter::ret\_,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::tableswitch,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::lookupswitch,\&OpcodePrinter::ireturn,\ \ \ \ \ \ \ \&OpcodePrinter::lreturn,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::freturn,\ \ \ \ \&OpcodePrinter::dreturn,\ \ \ \ \ \ \ \&OpcodePrinter::areturn,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::return\_,\ \ \ \ \&OpcodePrinter::getstatic,\ \ \ \ \ \&OpcodePrinter::putstatic,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::getfield,\ \ \ \&OpcodePrinter::putfield,\ \ \ \ \ \ \&OpcodePrinter::invokevirtual,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::invokespecial,\&OpcodePrinter::invokestatic,\&OpcodePrinter::invokeinterface,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::invokedynamic,\&OpcodePrinter::new\_,\ \ \ \ \ \ \ \ \&OpcodePrinter::newarray,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::anewarray,\ \ \ \ \&OpcodePrinter::arraylength,\ \ \ \&OpcodePrinter::athrow,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::checkcast,\ \ \ \ \&OpcodePrinter::instanceof,\ \ \ \ \&OpcodePrinter::monitorenter,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::monitorexit,\ \ \&OpcodePrinter::wide,\ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::multianewarray,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::ifnull,\ \ \ \ \ \ \ \&OpcodePrinter::ifnonnull,\ \ \ \ \ \&OpcodePrinter::goto\_w,}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \&OpcodePrinter::jsr\_w}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00301}00301\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00302}00302\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00303}00303\ \ \ \ \ std::string\ StringBuffer;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00304}00304\ \ \ \ \ u4\ code\_iterator;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00305}00305\ \ \ \ \ u1*\ code;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00306}00306\ \};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00308}00308\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00309}00309\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00310}00310\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_OPCODEPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00312}00312\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8h_source_l00314}00314\ }
+
+\end{DoxyCode}

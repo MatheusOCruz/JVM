@@ -1,0 +1,65 @@
+\doxysection{Referência à classe Template JVM\+::stack\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}}
+\hypertarget{classJVM_1_1stack}{}\label{classJVM_1_1stack}\index{JVM::stack$<$ T $>$@{JVM::stack$<$ T $>$}}
+
+
+Diagrama de heranças da classe JVM\+::stack\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{classJVM_1_1stack__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Diagrama de colaboração para JVM\+::stack\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{classJVM_1_1stack__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+T \mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+\subsubsection*{template$<$typename T$>$\newline
+class JVM\+::stack$<$ T $>$}
+
+
+Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00015}{15}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
+
+
+
+\doxysubsection{Documentação das funções}
+\Hypertarget{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}\label{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e} 
+\index{JVM::stack$<$ T $>$@{JVM::stack$<$ T $>$}!Pop@{Pop}}
+\index{Pop@{Pop}!JVM::stack$<$ T $>$@{JVM::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Pop()}{Pop()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \mbox{\hyperlink{classJVM_1_1stack}{JVM\+::stack}}$<$ T $>$\+::\+Pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00018}{18}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(this-\/>empty())\{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}Pilha\ ta\ vazia\ meu\ rei\(\backslash\)n"{}});}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ T\ topValue\ =\ std::stack<T>::top();}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ std::stack<T>::pop();}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ topValue;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+A documentação para esta classe foi gerada a partir do seguinte ficheiro\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Jvm/Jvm\+Structs.\+h\end{DoxyCompactItemize}
