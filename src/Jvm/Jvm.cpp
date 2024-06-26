@@ -224,6 +224,23 @@ void Jvm::PopFrameStack(){
     GetCurrentMethodCode();
 }
 
+int Jvm::GetInterfaceMethod(class_file* Class, const std::string& MethodName, const std::string& Descriptor) {
+    auto Interfaces = *Class->interfaces;
+    for(int InterfaceIndex: Interfaces){
+        auto Entry = (*Class->constant_pool)[InterfaceIndex]; // ca
+        auto Interface = GetClass((*Class->constant_pool)[Entry->name_index]->AsString());
+        for(auto Method: *Interface->methods)
+            if((*Interface->constant_pool)[Method->name_index]->AsString() == MethodName){
+                if(!Descriptor.empty() and Descriptor != (*Interface->constant_pool)[Method->descriptor_index]->AsString())
+                    continue ;
+                CurrentClass = Interface;
+                CurrentMethod = Method;
+                return 1;
+            }
+    }
+    return 0;
+}
+
 //TODO: procurar nas interfaces da superclasse
 /**
  *  @brief Atualiza o método atual
@@ -234,15 +251,19 @@ void Jvm::PopFrameStack(){
  * @param MethodName Nome do método que deve ser executado
  * @return caso o método existe, retorna 1, caso contrario 0
  */
-int Jvm::GetMethod(const std::string& MethodName){
+int Jvm::GetMethod(const std::string& MethodName, const std::string& Descriptor){
 
     for(auto Method: *CurrentClass->methods)
         if((*CurrentClass->constant_pool)[Method->name_index]->AsString() == MethodName){
+            if(!Descriptor.empty() and Descriptor != (*CurrentClass->constant_pool)[Method->descriptor_index]->AsString())
+                continue ;
             CurrentMethod = Method;
             return 1;
         }
     if(MethodName == "<clinit>")
         return 0;
+    if(GetInterfaceMethod(CurrentClass,MethodName,Descriptor))
+        return 1;
     // procura nas superclasses
     auto* Class = CurrentClass;
     while(Class->super_class) {
@@ -251,10 +272,14 @@ int Jvm::GetMethod(const std::string& MethodName){
         auto* Class = GetClass(Name);
         for(auto Method: *Class->methods)
             if((*Class->constant_pool)[Method->name_index]->AsString() == MethodName){
+                if(!Descriptor.empty() and Descriptor != (*Class->constant_pool)[Method->descriptor_index]->AsString())
+                    continue ;
                 CurrentClass  = Class;
                 CurrentMethod = Method;
                 return 1;
             }
+        if(GetInterfaceMethod(Class,MethodName,Descriptor))
+            return 1;
     }
     Class = CurrentClass;
     //bora procurar nas interfaces
