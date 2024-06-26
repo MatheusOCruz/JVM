@@ -13,7 +13,7 @@ public class Pessoa2 extends Pessoa {
     public void exibirInfo2() {
         System.out.println("Idade: ");
         System.out.println(getIdade()*Pessoa.mul);
-        System.out.println("\nNúmero: ");
+        System.out.println("Num: ");
         System.out.println(this.numero);
     }
     static void teste(){
