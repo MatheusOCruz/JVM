@@ -1,12 +1,14 @@
 # Compilação
 
-Com make:
+## Linux:
 
 ```sh
 cmake ./
 make
 ```
-
+## Windows:
+cmake -G "MinGW Makefiles" ./
+make
 # Uso:
 
 ```sh
