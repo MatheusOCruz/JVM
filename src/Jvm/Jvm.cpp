@@ -2488,13 +2488,11 @@ void Jvm::goto_(){
 }
 
 // todo testa, potencial de ta errado
-//     The address of the opcode of the instruction immediately
-// following this jsr instruction is pushed onto the operand stack as
-// a value of type returnAddress.
 void Jvm::jsr(){
+	u4 inst_pc = pc - 1;
     u2 offset = GetIndex2();
-    CurrentFrame->OperandStack->push(pc + offset);
-    // !todo: devia ter dado push como type returnAddress? n aconteceu
+    CurrentFrame->OperandStack->push(pc);
+	pc = inst_pc + offset;
 }
 
 void Jvm::ret(){
@@ -3063,8 +3061,9 @@ void Jvm::goto_w(){
 
 
 void Jvm::jsr_w(){    
-
-    u2 offset = GetIndex2();
-    CurrentFrame->OperandStack->push(pc + offset);
+	u4 inst_pc = pc - 1;
+    u4 offset = read_u4();
+    CurrentFrame->OperandStack->push(pc);
+	pc = inst_pc + offset;
 }
 
