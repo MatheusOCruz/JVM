@@ -111,10 +111,12 @@ struct Reference{
  */
 union Cat2Value{
     struct{
-        u4 HighBytes;
         u4 LowBytes;
+        u4 HighBytes;
     };
-    u8  AsLong;
+	s4 AsInt;
+    u8    Bytes;
+    int64_t  AsLong;
     double    AsDouble;
 };
 
@@ -133,10 +135,10 @@ union Cat2Value{
 union U4ToType{
     u4    UBytes;
     float AsFloat;
+    s4 AsInt;
     s2 AsShort;
-    char AsChar;
-    int16_t AsInt;
     s1 AsByte;
+    u2 AsChar;
 };
 
 
