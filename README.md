@@ -7,8 +7,10 @@ cmake ./
 make
 ```
 ## Windows:
+```sh
 cmake -G "MinGW Makefiles" ./
 make
+```
 # Uso:
 
 ```sh
