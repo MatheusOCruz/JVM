@@ -507,26 +507,42 @@ void Jvm::LoadLocalVariables(std::string& Descriptor, JVM::stack<u4> *CallerOper
 
 
 /**
- * @brief Implementação do Println do Java
+ * @brief Implementação do Print do Java
  * @param MethodDescriptor usado para determinar o tipo de print a ser usado,
  * string, int, etc
  */
 void Jvm::JavaPrint(std::string& MethodDescriptor) {
 
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
-    std::unordered_set<std::string> PrintAsInt = {"B", "S", "I"};
     if(PrintType == "Ljava/lang/String;"){
         auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
         std::cout<<Output;
     }
-    else if(PrintAsInt.find(PrintType) != PrintAsInt.end()){
-        int Output = CurrentFrame->OperandStack->Pop();
-        std::cout<<Output;
+    else if(PrintType == "I"){
+		U4ToType output;
+        output.UBytes = CurrentFrame->OperandStack->Pop();
+        std::cout<<output.AsInt;
+    }
+    else if(PrintType == "S"){
+		U4ToType output;
+        output.UBytes = CurrentFrame->OperandStack->Pop();
+        std::cout << output.AsShort;
+    }
+    else if(PrintType == "C"){
+		U4ToType output;
+        output.UBytes = CurrentFrame->OperandStack->Pop();
+		wchar_t f = output.AsChar;
+        std::wcout << f;
+    }
+    else if(PrintType == "B"){
+		U4ToType output;
+        output.UBytes = CurrentFrame->OperandStack->Pop();
+        std::cout << output.AsByte;
     }
     else if(PrintType == "F"){
-        FieldEntry Output{};
-        Output.AsInt = CurrentFrame->OperandStack->Pop();
-        std::cout << Output.AsFloat;
+		U4ToType output;
+        output.UBytes = CurrentFrame->OperandStack->Pop();
+        std::cout << output.AsFloat;
     }
     else if(PrintType == "D"){
         Cat2Value Output;
@@ -990,7 +1006,6 @@ void Jvm::iaload(){
 
 
 void Jvm::laload(){
-    Cat2Value value{};
     s4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1006,7 +1021,8 @@ void Jvm::laload(){
     if( index > Array->size - 1) 
         std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-    value.AsLong = reinterpret_cast<long*>(Array->DataVec)[index]; 
+    Cat2Value value{};
+    value.AsLong = reinterpret_cast<s8*>(Array->DataVec)[index]; 
 
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 
@@ -1101,7 +1117,7 @@ void Jvm::baload(){
     if(Array->ComponentType != ArrayTypeCode::T_BYTE) 
         std::cerr<<"baload: Array nao e de byte\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
+    s1 value = reinterpret_cast<s1*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 }
 
@@ -1122,7 +1138,7 @@ void Jvm::caload(){
     if(Array->ComponentType != ArrayTypeCode::T_CHAR) 
         std::cerr<<"caload: Array nao e de char\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
+    u2 value = reinterpret_cast<u2*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 }
@@ -1144,7 +1160,7 @@ void Jvm::saload(){
     if(Array->ComponentType != ArrayTypeCode::T_SHORT) 
         std::cerr<<"saload: Array nao e de short\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
+    s2 value = reinterpret_cast<s2*>(Array->DataVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 }
@@ -1429,13 +1445,13 @@ void Jvm::iastore(){
     if( index > Array->size - 1) 
         std::cerr<<"laload ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-    reinterpret_cast<int*>(Array->DataVec)[index] = static_cast<int>(value);
+    reinterpret_cast<s4*>(Array->DataVec)[index] = static_cast<s4>(value);
 }
 
 
 
 void Jvm::lastore(){
-    long long value = popU8FromOpStack();
+    s8 value = popU8FromOpStack();
     s4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1449,7 +1465,7 @@ void Jvm::lastore(){
     if(Array->ComponentType != ArrayTypeCode::T_LONG)
         std::cerr<<"lastore: Array nao e de long\n";
 
-    reinterpret_cast<long long*>(Array->DataVec)[index] = (value);
+    reinterpret_cast<s8*>(Array->DataVec)[index] = (value);
 
 }
 
@@ -1457,7 +1473,8 @@ void Jvm::lastore(){
 
 
 void Jvm::fastore(){
-    float value = CurrentFrame->OperandStack->Pop();
+	U4ToType value;
+    value.UBytes = CurrentFrame->OperandStack->Pop();
     s4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1472,9 +1489,7 @@ void Jvm::fastore(){
         std::cerr<<"fastore: Array nao e de float\n";
     if( index > Array->size - 1) 
         std::cerr<<"fastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
-    FieldEntry f{};
-    f.AsInt = value;
-    reinterpret_cast<float*>(Array->DataVec)[index] = f.AsFloat;
+    reinterpret_cast<float*>(Array->DataVec)[index] = value.AsFloat;
 
 }
 
@@ -1482,7 +1497,8 @@ void Jvm::fastore(){
 
 
 void Jvm::dastore(){
-    double value = popU8FromOpStack();
+	Cat2Value value;
+    value.Bytes = popU8FromOpStack();
     s4 index = CurrentFrame->OperandStack->Pop();
 
     auto* ArrayRef = reinterpret_cast<Reference*>(CurrentFrame->OperandStack->Pop());
@@ -1498,12 +1514,8 @@ void Jvm::dastore(){
     if(Array->ComponentType != ArrayTypeCode::T_DOUBLE)
         std::cerr<<"dastore: Array nao e de double\n";
 
-    reinterpret_cast<double*>(Array->DataVec)[index] = (value);
-
+    reinterpret_cast<double*>(Array->DataVec)[index] = (value.AsDouble);
 }
-
-
-
 
 void Jvm::aastore(){
     u4 value = CurrentFrame->OperandStack->Pop();
@@ -1523,9 +1535,6 @@ void Jvm::aastore(){
     reinterpret_cast<u4*>(Array->DataVec)[index] = static_cast<int>(value);
 }
 
-
-
-
 void Jvm::bastore(){
     s4 value = CurrentFrame->OperandStack->Pop();
     s4 index = CurrentFrame->OperandStack->Pop();
@@ -1543,7 +1552,7 @@ void Jvm::bastore(){
     if( index > Array->size - 1) 
         std::cerr<<"bastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-    reinterpret_cast<u1*>(Array->DataVec)[index] = static_cast<u1>(value);
+    reinterpret_cast<s1*>(Array->DataVec)[index] = static_cast<s1>(value);
 
 }
 
@@ -1567,8 +1576,7 @@ void Jvm::castore(){
     if( index > Array->size - 1) 
         std::cerr<<"castore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-    reinterpret_cast<char*>(Array->DataVec)[index] = static_cast<char>(value); 
-
+    reinterpret_cast<u2*>(Array->DataVec)[index] = static_cast<u2>(value); 
 }
 
 
@@ -1591,8 +1599,7 @@ void Jvm::sastore(){
     if( index > Array->size - 1) 
         std::cerr<<"sastore ArrayIndexOutOfBoundsException: Index do value além do escopo do array\n";
 
-    reinterpret_cast<short*>(Array->DataVec)[index] = static_cast<short>(value); //todo use u1 or s1
-
+    reinterpret_cast<s2*>(Array->DataVec)[index] = static_cast<s2>(value); //todo use u1 or s1
 }
 
 
