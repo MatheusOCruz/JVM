@@ -941,7 +941,7 @@ void Jvm::fload_3(){
  * @param index índice pra colocar o double nas varáveis locais
  * @return void
  */
-void Jvm::dload(uint index){
+void Jvm::dload(u4 index){
     Cat2Value value{};
     value.Bytes = getU8FromLocalVars(index);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);

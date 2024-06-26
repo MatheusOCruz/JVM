@@ -7,6 +7,11 @@ set(CMAKE_CXXFLAGS "fsanitize=address,undefined")
 
 # configuração pra usar ponteiro de 32 bits
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    #compilador 32 bits para windows
+    if (WIN32)
+        set(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
+    endif()
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -g")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -g")
 endif()
