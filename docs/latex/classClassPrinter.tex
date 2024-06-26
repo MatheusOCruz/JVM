@@ -1,0 +1,65 @@
+\doxysection{Referência à classe Class\+Printer}
+\hypertarget{classClassPrinter}{}\label{classClassPrinter}\index{ClassPrinter@{ClassPrinter}}
+\doxysubsubsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classClassPrinter_a22c7f4ea5870e5c817e2950fa648305b}{Class\+Printer}} (const std\+::string \+\_\+main\+\_\+file)
+\item 
+void \mbox{\hyperlink{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}{Run}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+
+
+Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00019}{19}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
+
+
+
+\doxysubsection{Documentação dos Construtores \& Destrutor}
+\Hypertarget{classClassPrinter_a22c7f4ea5870e5c817e2950fa648305b}\label{classClassPrinter_a22c7f4ea5870e5c817e2950fa648305b} 
+\index{ClassPrinter@{ClassPrinter}!ClassPrinter@{ClassPrinter}}
+\index{ClassPrinter@{ClassPrinter}!ClassPrinter@{ClassPrinter}}
+\doxysubsubsection{\texorpdfstring{ClassPrinter()}{ClassPrinter()}}
+{\footnotesize\ttfamily Class\+Printer\+::\+Class\+Printer (\begin{DoxyParamCaption}\item[{const std\+::string}]{\+\_\+main\+\_\+file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00021}{21}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ main\_file(\_main\_file)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ Loader\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}};}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Documentação das funções}
+\Hypertarget{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}\label{classClassPrinter_ada588bf422f492f6c73c2db68edb573e} 
+\index{ClassPrinter@{ClassPrinter}!Run@{Run}}
+\index{Run@{Run}!ClassPrinter@{ClassPrinter}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily void Class\+Printer\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definido na linha \mbox{\hyperlink{ClassPrinter_8cpp_source_l00016}{16}} do ficheiro \mbox{\hyperlink{ClassPrinter_8cpp_source}{Class\+Printer.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ ClassFile\ =\ Loader-\/>\mbox{\hyperlink{classClassLoader_a559a5967b5395e8f6e808a722ba46a72}{GetClass}}(main\_file);}
+\DoxyCodeLine{00018\ \ \ \ \ PoolPrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}(ClassFile-\/>constant\_pool);}
+\DoxyCodeLine{00019\ \ \ \ \ CodePrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}(PoolPrinter);}
+\DoxyCodeLine{00020\ \ \ \ \ PrintClassFile();}
+\DoxyCodeLine{00021\ \}}
+
+\end{DoxyCode}
+
+
+A documentação para esta classe foi gerada a partir dos seguintes ficheiros\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Class\+Printer/Class\+Printer.\+h\item 
+src/\+Class\+Printer/Class\+Printer.\+cpp\end{DoxyCompactItemize}

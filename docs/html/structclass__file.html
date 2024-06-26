@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>JVM: Referência à estrutura class_file</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">JVM
+   </div>
+   <div id="projectbrief">Uma mini máquina virtual java, com um leitor-exibidor e um interpretador de bytecode</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Localizar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrada</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Atributos Públicos</a> &#124;
+<a href="structclass__file-members.html">Mostrar lista completa dos membros</a>  </div>
+  <div class="headertitle"><div class="title">Referência à estrutura class_file</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Atributos Públicos</h2></td></tr>
+<tr class="memitem:a85eeca89e225dff97572e4101bddf809" id="r_a85eeca89e225dff97572e4101bddf809"><td class="memItemLeft" align="right" valign="top">u4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a85eeca89e225dff97572e4101bddf809">magic</a></td></tr>
+<tr class="separator:a85eeca89e225dff97572e4101bddf809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af362259638ccc177e18363c5ca419f5a" id="r_af362259638ccc177e18363c5ca419f5a"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#af362259638ccc177e18363c5ca419f5a">minor_version</a></td></tr>
+<tr class="separator:af362259638ccc177e18363c5ca419f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacfd70a757d576327ee05bad69449e8e" id="r_aacfd70a757d576327ee05bad69449e8e"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#aacfd70a757d576327ee05bad69449e8e">major_version</a></td></tr>
+<tr class="separator:aacfd70a757d576327ee05bad69449e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16efa35301a6defb65ec2372ee87b9e3" id="r_a16efa35301a6defb65ec2372ee87b9e3"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a16efa35301a6defb65ec2372ee87b9e3">constant_pool_count</a></td></tr>
+<tr class="separator:a16efa35301a6defb65ec2372ee87b9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd22ceadc07b0184d86b6f750567b1ef" id="r_abd22ceadc07b0184d86b6f750567b1ef"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structcp__info.html">cp_info</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#abd22ceadc07b0184d86b6f750567b1ef">constant_pool</a></td></tr>
+<tr class="separator:abd22ceadc07b0184d86b6f750567b1ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aac8de1d9d72e95257078d25792cb49" id="r_a8aac8de1d9d72e95257078d25792cb49"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a8aac8de1d9d72e95257078d25792cb49">access_flags</a></td></tr>
+<tr class="separator:a8aac8de1d9d72e95257078d25792cb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7128e599618f05d320e275f06d52a4cd" id="r_a7128e599618f05d320e275f06d52a4cd"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a7128e599618f05d320e275f06d52a4cd">this_class</a></td></tr>
+<tr class="separator:a7128e599618f05d320e275f06d52a4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a636a77b3213838147827e280ee890399" id="r_a636a77b3213838147827e280ee890399"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a636a77b3213838147827e280ee890399">super_class</a></td></tr>
+<tr class="separator:a636a77b3213838147827e280ee890399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b8bc154339e1ec07b8d4aa7cdd17f86" id="r_a4b8bc154339e1ec07b8d4aa7cdd17f86"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a4b8bc154339e1ec07b8d4aa7cdd17f86">interfaces_count</a></td></tr>
+<tr class="separator:a4b8bc154339e1ec07b8d4aa7cdd17f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12329d9ba45c49f16fd3c32438108a6" id="r_ae12329d9ba45c49f16fd3c32438108a6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; u2 &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#ae12329d9ba45c49f16fd3c32438108a6">interfaces</a></td></tr>
+<tr class="separator:ae12329d9ba45c49f16fd3c32438108a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a092b3f156f859c8dadd7698783ef4" id="r_a62a092b3f156f859c8dadd7698783ef4"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a62a092b3f156f859c8dadd7698783ef4">fields_count</a></td></tr>
+<tr class="separator:a62a092b3f156f859c8dadd7698783ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98308e936c6d343b81db8c445541813b" id="r_a98308e936c6d343b81db8c445541813b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structfield__info.html">field_info</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a98308e936c6d343b81db8c445541813b">fields</a></td></tr>
+<tr class="separator:a98308e936c6d343b81db8c445541813b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75f7815370a51fc2c80c0371dd10fac5" id="r_a75f7815370a51fc2c80c0371dd10fac5"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a75f7815370a51fc2c80c0371dd10fac5">methods_count</a></td></tr>
+<tr class="separator:a75f7815370a51fc2c80c0371dd10fac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa28f066b6e4c04d0514990b9374ad6ea" id="r_aa28f066b6e4c04d0514990b9374ad6ea"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structmethod__info.html">method_info</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#aa28f066b6e4c04d0514990b9374ad6ea">methods</a></td></tr>
+<tr class="separator:aa28f066b6e4c04d0514990b9374ad6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97d635072677aedf4a30f48128726c00" id="r_a97d635072677aedf4a30f48128726c00"><td class="memItemLeft" align="right" valign="top">u2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a97d635072677aedf4a30f48128726c00">attributes_count</a></td></tr>
+<tr class="separator:a97d635072677aedf4a30f48128726c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3686d361065200325cd2d468ef8f516f" id="r_a3686d361065200325cd2d468ef8f516f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structattribute__info.html">attribute_info</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a3686d361065200325cd2d468ef8f516f">attributes</a></td></tr>
+<tr class="separator:a3686d361065200325cd2d468ef8f516f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac5d2de0a858a7a26a73369c0b98d79" id="r_a5ac5d2de0a858a7a26a73369c0b98d79"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="unionFieldEntry.html">FieldEntry</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structclass__file.html#a5ac5d2de0a858a7a26a73369c0b98d79">StaticFields</a> = nullptr</td></tr>
+<tr class="separator:a5ac5d2de0a858a7a26a73369c0b98d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock">
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00118">118</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+</div><h2 class="groupheader">Documentação dos dados membro</h2>
+<a id="a8aac8de1d9d72e95257078d25792cb49" name="a8aac8de1d9d72e95257078d25792cb49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aac8de1d9d72e95257078d25792cb49">&#9670;&#160;</a></span>access_flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::access_flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00124">124</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a3686d361065200325cd2d468ef8f516f" name="a3686d361065200325cd2d468ef8f516f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3686d361065200325cd2d468ef8f516f">&#9670;&#160;</a></span>attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structattribute__info.html">attribute_info</a>*&gt;* class_file::attributes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00134">134</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a97d635072677aedf4a30f48128726c00" name="a97d635072677aedf4a30f48128726c00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97d635072677aedf4a30f48128726c00">&#9670;&#160;</a></span>attributes_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::attributes_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00133">133</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="abd22ceadc07b0184d86b6f750567b1ef" name="abd22ceadc07b0184d86b6f750567b1ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd22ceadc07b0184d86b6f750567b1ef">&#9670;&#160;</a></span>constant_pool</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structcp__info.html">cp_info</a>*&gt;* class_file::constant_pool</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00123">123</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a16efa35301a6defb65ec2372ee87b9e3" name="a16efa35301a6defb65ec2372ee87b9e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16efa35301a6defb65ec2372ee87b9e3">&#9670;&#160;</a></span>constant_pool_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::constant_pool_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00122">122</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a98308e936c6d343b81db8c445541813b" name="a98308e936c6d343b81db8c445541813b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98308e936c6d343b81db8c445541813b">&#9670;&#160;</a></span>fields</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structfield__info.html">field_info</a>*&gt;* class_file::fields</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00130">130</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a62a092b3f156f859c8dadd7698783ef4" name="a62a092b3f156f859c8dadd7698783ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62a092b3f156f859c8dadd7698783ef4">&#9670;&#160;</a></span>fields_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::fields_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00129">129</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="ae12329d9ba45c49f16fd3c32438108a6" name="ae12329d9ba45c49f16fd3c32438108a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae12329d9ba45c49f16fd3c32438108a6">&#9670;&#160;</a></span>interfaces</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;u2&gt;* class_file::interfaces</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00128">128</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a4b8bc154339e1ec07b8d4aa7cdd17f86" name="a4b8bc154339e1ec07b8d4aa7cdd17f86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b8bc154339e1ec07b8d4aa7cdd17f86">&#9670;&#160;</a></span>interfaces_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::interfaces_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00127">127</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a85eeca89e225dff97572e4101bddf809" name="a85eeca89e225dff97572e4101bddf809"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85eeca89e225dff97572e4101bddf809">&#9670;&#160;</a></span>magic</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u4 class_file::magic</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00119">119</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="aacfd70a757d576327ee05bad69449e8e" name="aacfd70a757d576327ee05bad69449e8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacfd70a757d576327ee05bad69449e8e">&#9670;&#160;</a></span>major_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::major_version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00121">121</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="aa28f066b6e4c04d0514990b9374ad6ea" name="aa28f066b6e4c04d0514990b9374ad6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa28f066b6e4c04d0514990b9374ad6ea">&#9670;&#160;</a></span>methods</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structmethod__info.html">method_info</a>*&gt;* class_file::methods</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00132">132</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a75f7815370a51fc2c80c0371dd10fac5" name="a75f7815370a51fc2c80c0371dd10fac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75f7815370a51fc2c80c0371dd10fac5">&#9670;&#160;</a></span>methods_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::methods_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00131">131</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="af362259638ccc177e18363c5ca419f5a" name="af362259638ccc177e18363c5ca419f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af362259638ccc177e18363c5ca419f5a">&#9670;&#160;</a></span>minor_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::minor_version</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00120">120</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a5ac5d2de0a858a7a26a73369c0b98d79" name="a5ac5d2de0a858a7a26a73369c0b98d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ac5d2de0a858a7a26a73369c0b98d79">&#9670;&#160;</a></span>StaticFields</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string,<a class="el" href="unionFieldEntry.html">FieldEntry</a>*&gt;* class_file::StaticFields = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00135">135</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a636a77b3213838147827e280ee890399" name="a636a77b3213838147827e280ee890399"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a636a77b3213838147827e280ee890399">&#9670;&#160;</a></span>super_class</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::super_class</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00126">126</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<a id="a7128e599618f05d320e275f06d52a4cd" name="a7128e599618f05d320e275f06d52a4cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7128e599618f05d320e275f06d52a4cd">&#9670;&#160;</a></span>this_class</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">u2 class_file::this_class</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definido na linha <a class="el" href="ClassFileStructs_8h_source.html#l00125">125</a> do ficheiro <a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a>.</p>
+
+</div>
+</div>
+<hr/>A documentação para esta estrutura foi gerada a partir do seguinte ficheiro:<ul>
+<li>include/ClassLoader/<a class="el" href="ClassFileStructs_8h_source.html">ClassFileStructs.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,166 @@
+\doxysection{Referência à classe Jvm}
+\hypertarget{classJvm}{}\label{classJvm}\index{Jvm@{Jvm}}
+\doxysubsubsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classJvm_ae0ce494404956f45052b8184429ecc85}{Jvm}} (std\+::string \+\_\+main\+\_\+file)
+\item 
+void \mbox{\hyperlink{classJvm_acf1f8cffbb31f943e9ffbde3b4829bbb}{Run}} ()
+\item 
+\Hypertarget{classJvm_a94bcd699c5b40a97136284883d70c12e}\label{classJvm_a94bcd699c5b40a97136284883d70c12e} 
+uint32\+\_\+t {\bfseries read\+\_\+u4} (const std\+::vector$<$ uint8\+\_\+t $>$ \&code, size\+\_\+t \&index)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Membros públicos estáticos}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classJvm_a269a7200bcdf099f8f42b3383794565d}{number\+Of\+Entries\+From\+String}} (const std\+::string \&Descriptor)
+\begin{DoxyCompactList}\small\item\em Realiza o parse do descritor de um método e retorna quantidade de elementos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+
+
+Definido na linha \mbox{\hyperlink{Jvm_8h_source_l00017}{17}} do ficheiro \mbox{\hyperlink{Jvm_8h_source}{Jvm.\+h}}.
+
+
+
+\doxysubsection{Documentação dos Construtores \& Destrutor}
+\Hypertarget{classJvm_ae0ce494404956f45052b8184429ecc85}\label{classJvm_ae0ce494404956f45052b8184429ecc85} 
+\index{Jvm@{Jvm}!Jvm@{Jvm}}
+\index{Jvm@{Jvm}!Jvm@{Jvm}}
+\doxysubsubsection{\texorpdfstring{Jvm()}{Jvm()}}
+{\footnotesize\ttfamily Jvm\+::\+Jvm (\begin{DoxyParamCaption}\item[{std\+::string}]{\+\_\+main\+\_\+file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Definido na linha \mbox{\hyperlink{Jvm_8h_source_l00019}{19}} do ficheiro \mbox{\hyperlink{Jvm_8h_source}{Jvm.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019\ :\ MainClass(std::move(\_main\_file))\ \{\}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Documentação das funções}
+\Hypertarget{classJvm_a269a7200bcdf099f8f42b3383794565d}\label{classJvm_a269a7200bcdf099f8f42b3383794565d} 
+\index{Jvm@{Jvm}!numberOfEntriesFromString@{numberOfEntriesFromString}}
+\index{numberOfEntriesFromString@{numberOfEntriesFromString}!Jvm@{Jvm}}
+\doxysubsubsection{\texorpdfstring{numberOfEntriesFromString()}{numberOfEntriesFromString()}}
+{\footnotesize\ttfamily int Jvm\+::number\+Of\+Entries\+From\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{Descriptor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Realiza o parse do descritor de um método e retorna quantidade de elementos. 
+
+Itera pela string Descriptor para determinar quantos u4 devem ser transferidos da pilha de operandos para o vetor de variáveis do método a ser chamado
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em Descriptor} & String que descreve parametros de um método \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+quantidade de entradas que devem ser "{}popadas"{} da pilha 
+\end{DoxyReturn}
+
+
+Definido na linha \mbox{\hyperlink{Jvm_8cpp_source_l00100}{100}} do ficheiro \mbox{\hyperlink{Jvm_8cpp_source}{Jvm.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{if}(Descriptor.empty())}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{int}\ number\_of\_attr\ =\ 0;}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ iter\ =\ Descriptor.c\_str();}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ c\ =\ *iter++\ ;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (c)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{')'}:}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'L'}:}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ number\_of\_attr++;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(c!=\textcolor{charliteral}{';'})\ c\ =\ *iter++;}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'B'}:}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'S'}:}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'I'}:}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'F'}:}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'C'}:}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'Z'}:}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ number\_of\_attr++;}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'J'}:}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'D'}:}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ number\_of\_attr\ +=\ 2;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'['}:}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'('}:}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}WARNING:\ "{}}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}Caracter\ "{}}\ <<\ c\ <<\ \textcolor{stringliteral}{"{}\ not\ recognized\ during\ attr\ parsing"{}}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \}\ \textcolor{keywordflow}{while}(*iter);}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ number\_of\_attr;}
+\DoxyCodeLine{00147\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classJvm_acf1f8cffbb31f943e9ffbde3b4829bbb}\label{classJvm_acf1f8cffbb31f943e9ffbde3b4829bbb} 
+\index{Jvm@{Jvm}!Run@{Run}}
+\index{Run@{Run}!Jvm@{Jvm}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily void Jvm\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definido na linha \mbox{\hyperlink{Jvm_8cpp_source_l00015}{15}} do ficheiro \mbox{\hyperlink{Jvm_8cpp_source}{Jvm.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ MethodArea\ =\ \textcolor{keyword}{new}\ std::unordered\_map<std::string,class\_file*>;}
+\DoxyCodeLine{00017\ \ \ \ \ Loader\ \ \ \ \ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}}(MethodArea);}
+\DoxyCodeLine{00018\ \ \ \ \ Loader-\/>\mbox{\hyperlink{classClassLoader_aa2b7180f7e502b091266a179b6438232}{LoadClass}}(MainClass);}
+\DoxyCodeLine{00019\ \ \ \ \ CurrentClass\ =\ GetClass(MainClass);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ std::string\ MethodName\ =\ \textcolor{stringliteral}{"{}<clinit>"{}};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}(GetMethod(MethodName))\{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ GetCurrentMethodCode();}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ NewFrame();}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ CurrentClass-\/>StaticFields\ =\ \textcolor{keyword}{new}\ std::unordered\_map<std::string,\ FieldEntry*>;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ SaveFrameState();}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ ExecBytecode();}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ MethodName\ =\ \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00033\ \ \ \ \ GetMethod(MethodName);}
+\DoxyCodeLine{00034\ \ \ \ \ GetCurrentMethodCode();}
+\DoxyCodeLine{00035\ \ \ \ \ NewFrame();}
+\DoxyCodeLine{00036\ \ \ \ \ SaveFrameState();}
+\DoxyCodeLine{00037\ \ \ \ \ ExecBytecode();}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}}
+
+\end{DoxyCode}
+
+
+A documentação para esta classe foi gerada a partir dos seguintes ficheiros\+:\begin{DoxyCompactItemize}
+\item 
+include/\+Jvm/Jvm.\+h\item 
+src/\+Jvm/Jvm.\+cpp\end{DoxyCompactItemize}

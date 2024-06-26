@@ -1,0 +1,11 @@
+<map id="Reference" name="Reference">
+<area shape="rect" id="Node000001" title=" " alt="" coords="63,269,151,295"/>
+<area shape="rect" id="Node000002" href="$structArrayInstance.html" title=" " alt="" coords="5,181,117,207"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,218,86,244,101,268,96,271,82,247,69,221"/>
+<area shape="rect" id="Node000003" href="$structClassInstance.html" title=" " alt="" coords="141,181,253,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,218,147,247,121,271,117,267,144,243,174,215"/>
+<area shape="rect" id="Node000004" href="$structHandle.html" title=" " alt="" coords="163,93,231,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="200,133,200,181,195,181,195,133"/>
+<area shape="rect" id="Node000005" href="$structclass__file.html" title=" " alt="" coords="156,5,239,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,45,200,93,195,93,195,45"/>
+</map>

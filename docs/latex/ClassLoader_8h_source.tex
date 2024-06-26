@@ -1,0 +1,82 @@
+\doxysection{Class\+Loader.\+h}
+\hypertarget{ClassLoader_8h_source}{}\label{ClassLoader_8h_source}\index{include/ClassLoader/ClassLoader.h@{include/ClassLoader/ClassLoader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 4/2/24.}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_CLASSLOADER\_H}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_CLASSLOADER\_H}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <dirent.h>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <stack>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <regex>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ "{}ClassFileEnums.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}ClassFileStructs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}../typedefs.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}ClassLoaderErrors.h"{}}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00026}\mbox{\hyperlink{classClassLoader}{00026}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassLoader}{ClassLoader}}\ \{}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00027}00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00029}\mbox{\hyperlink{classClassLoader_a32571545f1d1de279e546606c471c0e6}{00029}}\ \ \ \ \ \mbox{\hyperlink{classClassLoader_a32571545f1d1de279e546606c471c0e6}{ClassLoader}}()\ \{class\_files\ =\ \textcolor{keyword}{new}\ std::unordered\_map<std::string,class\_file*>;\}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00031}\mbox{\hyperlink{classClassLoader_ac8cf9a344093199346386b249c5a9c6e}{00031}}\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classClassLoader_ac8cf9a344093199346386b249c5a9c6e}{ClassLoader}}(std::unordered\_map<std::string\ ,class\_file*>*\ \_class\_files)\ :\ class\_files(\_class\_files)\ \{\}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00033}00033\ \ \ \ \ \mbox{\hyperlink{classClassLoader}{\string~ClassLoader}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00042}00042\ \ \ \ \ \mbox{\hyperlink{structclass__file}{class\_file}}*\ \mbox{\hyperlink{classClassLoader_a559a5967b5395e8f6e808a722ba46a72}{GetClass}}(\textcolor{keyword}{const}\ std::string\ ClassName);}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00049}00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classClassLoader_aa2b7180f7e502b091266a179b6438232}{LoadClass}}(\textcolor{keyword}{const}\ std::string\ ClassName);}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00051}00051\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00057}00057\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadFile(std::string\ ClassName);}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00064}00064\ \ \ \ \ std::string\ FindClass(\textcolor{keyword}{const}\ std::string\ ClassName,\ \textcolor{keyword}{const}\ std::string\ Path\ =\ \textcolor{stringliteral}{"{}."{}});}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ funcoes\ que\ leem\ o\ iterador\ do\ buffer\ \ retoram\ a\ proxima\ entrada}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\ convertida\ pra\ little\ endian\ e\ incrementam\ iterador}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00070}00070\ \ \ \ \ u1\ read\_u1();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00072}00072\ \ \ \ \ u2\ read\_u2();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00074}00074\ \ \ \ \ u4\ read\_u4();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00080}00080\ \ \ \ \ std::vector<u2>\ *read\_vec\_u2(\textcolor{keywordtype}{int}\ length);}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00086}00086\ \ \ \ \ std::vector<u1>\ *read\_vec\_u1(\textcolor{keywordtype}{int}\ length);}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00093}00093\ \ \ \ \ \textcolor{keywordtype}{int}\ \ BuildConstantPoolInfo();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00099}00099\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildFieldInfo();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00103}00103\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildMethodInfo();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00112}00112\ \ \ \ \ \mbox{\hyperlink{structattribute__info}{attribute\_info}}*\ BuildAttributeInfo();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00114}00114\ \ \ \ \ \textcolor{keywordtype}{void}\ CheckMagic();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00116}00116\ \ \ \ \ \textcolor{keywordtype}{void}\ CheckVersion();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00126}00126\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildConstantPoolTable();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00133}00133\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildInterfaces();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00141}00141\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildFields();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00149}00149\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildMethods();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00157}00157\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildAttributes();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00167}00167\ \ \ \ \ \textcolor{keywordtype}{void}\ BuildAttributes(\textcolor{keywordtype}{int}\ attribute\_count,\ std::vector<attribute\_info*>\ \&attributes);\ \textcolor{comment}{//\ pro\ attributes\ dentro\ do\ field\ e\ method\ info}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00170}00170\ \ \ \ \ \textcolor{keywordtype}{void}\ FormatCheck();}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00172}00172\ \ \ \ \ std::vector<uint8\_t>*\ \ \ \ \ \ \ file\_buffer\{\};\ \textcolor{comment}{//\ pra\ poder\ liberar\ o\ arquivo\ dps}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00173}00173\ \ \ \ \ buffer\_iterator\ \ \ \ \ \ \ \ \ \ \ \ \ iter;\ \textcolor{comment}{//\ ler\ bytes\ sem\ ter\ q\ recalcular\ o\ offset}}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00174}00174\ \ \ \ \ \mbox{\hyperlink{structclass__file}{class\_file}}*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ current\_file\{\};}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00175}00175\ \ \ \ \ std::unordered\_map<std::string\ ,class\_file*>*\ class\_files;}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00178}00178\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{ClassLoader_8h_source_l00181}00181\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSLOADER\_H}}
+
+\end{DoxyCode}

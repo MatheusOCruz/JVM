@@ -1,0 +1,101 @@
+\doxysection{Class\+File\+Enums.\+h}
+\hypertarget{ClassFileEnums_8h_source}{}\label{ClassFileEnums_8h_source}\index{include/ClassLoader/ClassFileEnums.h@{include/ClassLoader/ClassFileEnums.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00001}00001\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00002}00002\ \textcolor{comment}{//\ Created\ by\ matheus\ on\ 4/2/24.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00003}00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00005}00005\ \textcolor{preprocessor}{\#ifndef\ JVM\_CLASSFILEENUMS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00006}00006\ \textcolor{preprocessor}{\#define\ JVM\_CLASSFILEENUMS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00010}00010\ \textcolor{keyword}{enum\ class}\ ClassAccessFlag:\ uint16\_t\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00011}00011\ \ \ \ \ ACC\_PUBLIC\ \ =\ 0x0001,\ \textcolor{comment}{//\ Declared\ public;\ may\ be\ accessed\ from\ outside\ its\ package.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00012}00012\ \ \ \ \ ACC\_FINAL\ =\ 0x0010,\ \textcolor{comment}{//\ Declared\ final;\ no\ subclasses\ allowed.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00013}00013\ \ \ \ \ ACC\_SUPER\ =\ 0x0020,\ \textcolor{comment}{//\ Treat\ superclass\ methods\ specially\ when\ invoked\ by\ the\ invokespecial\ instruction.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00014}00014\ \ \ \ \ ACC\_INTERFACE\ =\ 0x0200,\ \textcolor{comment}{//\ Is\ an\ interface,\ not\ a\ class.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00015}00015\ \ \ \ \ ACC\_ABSTRACT\ =\ 0x0400,\ \textcolor{comment}{//\ Declared\ abstract;\ must\ not\ be\ instantiated.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00016}00016\ \ \ \ \ ACC\_SYNTHETIC\ =\ 0x1000,\ \textcolor{comment}{//\ Declared\ synthetic;\ not\ present\ in\ the\ source\ code.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00017}00017\ \ \ \ \ ACC\_ANNOTATION\ =\ 0x2000,\ \textcolor{comment}{//\ Declared\ as\ an\ annotation\ type.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00018}00018\ \ \ \ \ ACC\_ENUM\ =\ 0x4000\ \textcolor{comment}{//\ Declared\ as\ an\ enum\ type.\ }}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00019}00019\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00021}00021\ \textcolor{keyword}{enum\ class}\ FieldAccessFlag:\ uint16\_t\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00022}00022\ \ \ \ \ ACC\_PUBLIC\ =\ 0x0001,\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ público;\ pode\ ser\ acessado\ de\ fora\ do\ seu\ pacote.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00023}00023\ \ \ \ \ ACC\_PRIVATE\ =\ 0x0002,\ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ privado;\ acessível\ apenas\ dentro\ da\ classe\ definidora.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00024}00024\ \ \ \ \ ACC\_PROTECTED\ =\ 0x0004,\ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ protegido;\ pode\ ser\ acessado\ dentro\ de\ subclasses.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00025}00025\ \ \ \ \ ACC\_STATIC\ =\ 0x0008,\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ estático.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00026}00026\ \ \ \ \ ACC\_FINAL\ =\ 0x0010,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ final;\ não\ pode\ ser\ sobrescrito.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00027}00027\ \ \ \ \ ACC\_SYNCHRONIZED\ =\ 0x0020,\ \ \ \textcolor{comment}{//\ Declarado\ synchronized;\ a\ invocação\ é\ envolta\ por\ um\ lock\ de\ monitor.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00028}00028\ \ \ \ \ ACC\_VOLATILE\ =\ 0x0040,\ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ volatile;\ não\ pode\ ser\ armazenado\ em\ cache.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00029}00029\ \ \ \ \ ACC\_TRANSIENT\ =\ 0x0080,\ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ transient;\ não\ é\ escrito\ ou\ lido\ por\ um\ gerenciador\ de\ objeto\ persistente.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00030}00030\ \ \ \ \ ACC\_NATIVE\ =\ 0x0100,\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ native;\ implementado\ em\ uma\ linguagem\ diferente\ de\ Java.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00031}00031\ \ \ \ \ ACC\_INTERFACE\ =\ 0x0200,\ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ uma\ interface,\ não\ uma\ classe.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00032}00032\ \ \ \ \ ACC\_ABSTRACT\ =\ 0x0400,\ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ abstract;\ não\ pode\ ser\ instanciado.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00033}00033\ \ \ \ \ ACC\_STRICT\ =\ 0x0800,\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ strictfp;\ modo\ de\ ponto\ flutuante\ é\ FP-\/strict.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00034}00034\ \ \ \ \ ACC\_SYNTHETIC\ =\ 0x1000,\ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ synthetic;\ não\ está\ presente\ no\ código-\/fonte.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00035}00035\ \ \ \ \ ACC\_ANNOTATION\ =\ 0x2000,\ \ \ \ \ \textcolor{comment}{//\ Declarado\ como\ um\ tipo\ de\ anotação.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00036}00036\ \ \ \ \ ACC\_ENUM\ =\ 0x4000\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Declarado\ como\ um\ tipo\ enum.}}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00037}00037\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00038}00038\ \textcolor{keyword}{enum\ class}\ MethodAccessFlag:\ uint16\_t\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00039}00039\ \ \ \ \ ACC\_PUBLIC\ =\ 0x0001,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00040}00040\ \ \ \ \ ACC\_PRIVATE\ =\ 0x0002,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00041}00041\ \ \ \ \ ACC\_PROTECTED\ =\ 0x0004,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00042}00042\ \ \ \ \ ACC\_STATIC\ =\ 0x0008,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00043}00043\ \ \ \ \ ACC\_FINAL\ =\ 0x0010,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00044}00044\ \ \ \ \ ACC\_SYNCHRONIZED\ =\ 0x0020,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00045}00045\ \ \ \ \ ACC\_BRIDGE\ =\ 0x0040,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00046}00046\ \ \ \ \ ACC\_VARARGS\ =\ 0x0080,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00047}00047\ \ \ \ \ ACC\_NATIVE\ =\ 0x0100,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00048}00048\ \ \ \ \ ACC\_ABSTRACT\ =\ 0x0400,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00049}00049\ \ \ \ \ ACC\_STRICT\ =\ 0x0800,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00050}00050\ \ \ \ \ ACC\_SYNTHETIC\ =\ 0x1000,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00051}00051\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00054}00054\ \textcolor{keyword}{enum\ class}\ ConstantPoolTag\ :\ uint8\_t\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00055}00055\ \ \ \ \ CONSTANT\_Utf8\ =\ 1,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00056}00056\ \ \ \ \ CONSTANT\_Integer\ =\ 3,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00057}00057\ \ \ \ \ CONSTANT\_Float\ =\ 4,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00058}00058\ \ \ \ \ CONSTANT\_Long\ =\ 5,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00059}00059\ \ \ \ \ CONSTANT\_Double\ =\ 6,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00060}00060\ \ \ \ \ CONSTANT\_Class\ =\ 7,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00061}00061\ \ \ \ \ CONSTANT\_String\ =\ 8,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00062}00062\ \ \ \ \ CONSTANT\_Fieldref\ =\ 9,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00063}00063\ \ \ \ \ CONSTANT\_Methodref\ =\ 10,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00064}00064\ \ \ \ \ CONSTANT\_InterfaceMethodref\ =\ 11,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00065}00065\ \ \ \ \ CONSTANT\_NameAndType\ =\ 12,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00066}00066\ \ \ \ \ CONSTANT\_MethodHandle\ =\ 15,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00067}00067\ \ \ \ \ CONSTANT\_MethodType\ =\ 16,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00068}00068\ \ \ \ \ CONSTANT\_InvokeDynamic\ =\ 18}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00069}00069\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00071}00071\ \textcolor{keyword}{enum\ class}\ WideOp:\ uint8\_t\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00072}00072\ \ \ \ \ WIDE\_iload\ =\ 0x15,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00073}00073\ \ \ \ \ WIDE\_lload\ =\ 0x16,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00074}00074\ \ \ \ \ WIDE\_fload\ =\ 0x17,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00075}00075\ \ \ \ \ WIDE\_dload\ =\ 0x18,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00076}00076\ \ \ \ \ WIDE\_aload\ =\ 0x19,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00077}00077\ \ \ \ \ WIDE\_istore\ =\ 0x36,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00078}00078\ \ \ \ \ WIDE\_lstore\ =\ 0x37,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00079}00079\ \ \ \ \ WIDE\_fstore\ =\ 0x38,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00080}00080\ \ \ \ \ WIDE\_dstore\ =\ 0x39,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00081}00081\ \ \ \ \ WIDE\_astore\ =\ 0x3a,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00082}00082\ \ \ \ \ WIDE\_ret\ =\ 0xa9,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00083}00083\ \ \ \ \ WIDE\_iinc\ =\ 0x84}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00084}00084\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00086}00086\ \textcolor{keyword}{enum\ class}\ AttributeType\ \{}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00087}00087\ \ \ \ \ ConstantValue\ \ =\ 0,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00088}00088\ \ \ \ \ Code\ \ \ \ \ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00089}00089\ \ \ \ \ Exceptions\ \ \ \ \ =\ 3,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00090}00090\ \ \ \ \ InnerClasses\ \ \ =\ 4,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00091}00091\ \ \ \ \ Synthetic\ \ \ \ \ \ =\ 6,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00092}00092\ \ \ \ \ SourceFile\ \ \ \ \ =\ 8,}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00093}00093\ \ \ \ \ NotImplemented\ =\ -\/1}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00094}00094\ \};}
+\DoxyCodeLine{\Hypertarget{ClassFileEnums_8h_source_l00095}00095\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSFILEENUMS\_H}}
+
+\end{DoxyCode}

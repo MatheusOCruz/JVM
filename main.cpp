@@ -82,7 +82,7 @@ int main(){
 
     int mode = JVM_MODE;
 
-    std::string file = "multi";
+    std::string file = "UsaDog";
     switch (mode) {
         case JVM_MODE:
             Jvm(file).Run();

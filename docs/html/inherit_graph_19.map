@@ -1,0 +1,21 @@
+<map id="Representação gráfica da hiearquia da classe" name="Representação gráfica da hiearquia da classe">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,203,120,228"/>
+<area shape="rect" id="Node000001" href="$classClassLoaderError.html" title=" " alt="" coords="177,129,309,155"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="107,195,210,152,212,157,109,200"/>
+<area shape="rect" id="Node000007" href="$classRunTimeExceptions.html" title=" " alt="" coords="168,252,319,277"/>
+<area shape="poly" id="edge7_Node000000_Node000007" title=" " alt="" coords="124,229,196,249,195,254,123,234"/>
+<area shape="rect" id="Node000002" href="$classClassCircularityError.html" title=" " alt="" coords="401,5,555,31"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="264,118,308,77,336,57,366,40,400,27,401,32,368,44,339,61,311,82,267,122"/>
+<area shape="rect" id="Node000003" href="$classClassFormatError.html" title=" " alt="" coords="411,55,545,80"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="283,121,366,89,410,77,411,82,367,94,285,126"/>
+<area shape="rect" id="Node000004" href="$classIncompatibleClassChangeError.html" title=" " alt="" coords="367,104,589,129"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="323,131,366,126,367,131,324,136"/>
+<area shape="rect" id="Node000005" href="$classNoClassDefFoundError.html" title=" " alt="" coords="394,153,562,179"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="324,148,394,155,393,160,323,153"/>
+<area shape="rect" id="Node000006" href="$classUnsupportedClassVersionError.html" title=" " alt="" coords="369,203,587,228"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="287,158,367,187,415,200,413,205,366,193,285,163"/>
+<area shape="rect" id="Node000008" href="$classArithmeticException.html" title=" " alt="" coords="401,252,555,277"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="332,262,401,262,401,267,332,267"/>
+<area shape="rect" id="Node000009" href="$classNegativeArraySizeException.html" title=" " alt="" coords="375,301,581,327"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="318,278,417,299,416,304,317,283"/>
+</map>
