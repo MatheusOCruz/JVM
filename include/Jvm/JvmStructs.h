@@ -27,7 +27,12 @@ namespace JVM{
  
 }
 
-
+/**
+* @brief Estrutura que representa um frame da JVM
+* @details Um frame é uma estrutura que contém as informações necessárias para a execução de um metodo.
+* Ele contém um vetor de variáveis locais, uma pilha de operandos, uma referência para o metodo que está sendo executado,
+* uma referência para a classe que contém o metodo e o próximo PC (Program Counter) que será executado.
+*/
 struct Frame{
     std::vector<u4>* localVariables;
     JVM::stack<u4>*  OperandStack;

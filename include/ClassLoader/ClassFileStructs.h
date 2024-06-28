@@ -23,6 +23,12 @@ union FieldEntry;
 #include "../Jvm/JvmStructs.h"
 
 
+/**
+ * @brief cp_info é uma estrutura que representa uma entrada da Constant Pool
+ * @details A Constant Pool é uma tabela que contém todas as constantes utilizadas no arquivo .class.
+ * Ela é indexada a partir de 1 e contém uma sequência de entradas, onde cada entrada pode ser de um tipo diferente.
+ * Cada entrada tem um tag que indica o tipo da entrada e um valor que é específico para cada tipo.
+*/
 struct cp_info{
     ConstantPoolTag tag;
     union {
@@ -68,6 +74,12 @@ struct cp_info{
     };
 };
 
+/**
+* @brief attribute_info é uma estrutura que representa um atributo de uma classe
+* @details Atributos são informações adicionais que podem ser associadas a classes, métodos ou campos.
+* Eles são utilizados para armazenar informações que não são diretamente traduzidas para código executável, como por exemplo, o nome de um arquivo fonte.
+* Cada atributo é composto por um índice que aponta para o nome do atributo na Constant Pool, um tamanho e um valor que é específico para cada tipo de atributo.
+*/
 struct attribute_info{
     uint16_t attribute_name_index;
     uint32_t attribute_length;
@@ -99,6 +111,11 @@ struct attribute_info{
     };
 };
 
+/**
+* @brief field_info é uma estrutura que representa um campo de uma classe
+* @details Campos são variáveis que são associadas a uma classe e que podem ser acessadas por todos os métodos da classe.
+* Cada campo é composto por um conjunto de flags que indicam as permissões de acesso, um índice que aponta para o nome do campo na Constant Pool, um índice que aponta para o descritor do campo na Constant Pool e um conjunto de atributos.
+*/
 struct field_info{
     uint16_t access_flags;
     uint16_t name_index;
@@ -107,6 +124,11 @@ struct field_info{
     std::vector<attribute_info*>* attributes;
 };
 
+/**
+* @brief method_info é uma estrutura que representa um metodo de uma classe
+* @details Métodos são funções que são associadas a uma classe e que podem ser chamadas por outras classes.
+* Cada metodo é composto por um conjunto de flags que indicam as permissões de acesso, um índice que aponta para o nome do metodo na Constant Pool, um índice que aponta para o descritor do metodo na Constant Pool e um conjunto de atributos.
+*/
 struct method_info{
     u2 access_flags;
     u2 name_index;
@@ -115,6 +137,11 @@ struct method_info{
     std::vector<attribute_info*>* attributes;
 };
 
+/**
+* @brief class_file é uma estrutura que representa um arquivo .class
+* @details Um arquivo .class é um arquivo binário que contém as informações de uma classe Java.
+* Ele é composto por um cabeçalho, uma tabela de constantes, um conjunto de flags que indicam as permissões de acesso, um índice que aponta para o nome da classe na Constant Pool, um índice que aponta para a superclasse na Constant Pool, um conjunto de interfaces, um conjunto de campos, um conjunto de métodos e um conjunto de atributos.
+*/
 struct class_file{
     u4                            magic;
     u2                            minor_version;
