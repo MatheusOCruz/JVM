@@ -758,7 +758,6 @@ void OpcodePrinter::lookupswitch() {
     //StringBuffer.clear();  // Limpa o buffer antes de iniciar
     std::string buffer;
     size_t start_index = code_iterator;
-    size_t code_size;
     u1 index = code[code_iterator++];  // Índice do opcode
 
     // Verifica se há padding

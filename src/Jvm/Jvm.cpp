@@ -540,8 +540,8 @@ void Jvm::JavaPrint(std::string& MethodDescriptor) {
 
     auto PrintType = MethodDescriptor.substr(1, MethodDescriptor.size() - 3);
     if(PrintType == "Ljava/lang/String;"){
-        auto Output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString(); // segfault:  reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop()) n é acessível
-        std::cout<<Output;
+		const auto output = reinterpret_cast<cp_info*>(CurrentFrame->OperandStack->Pop())->AsString();
+		std::cout << output;
     }
     else if(PrintType == "I"){
 		U4ToType output;
@@ -1339,11 +1339,8 @@ void Jvm::lstore_3(){
 
 
 void Jvm::fstore_0(){
-    U4ToType value;
-
-    value.AsFloat = CurrentFrame->OperandStack->Pop();
-    (*CurrentFrame->localVariables)[0] = value.UBytes;
-
+    u4 value = CurrentFrame->OperandStack->Pop();
+    (*CurrentFrame->localVariables)[0] = value;
 }
 
 
@@ -2183,9 +2180,6 @@ void Jvm::lxor(){
 
 }
 
-
-
-
 void Jvm::iinc(){
     u1 index = (*CurrentCode->code)[pc++];
     auto const_ = static_cast<int8_t>((*CurrentCode->code)[pc++]);
@@ -2193,200 +2187,134 @@ void Jvm::iinc(){
 
 }
 
-
-
-
 void Jvm::i2l(){
-    Cat2Value value{};
+    Cat2Value value;
     value.AsLong = (CurrentFrame->OperandStack->Pop());
-
-    // push pro operand stack em big endian
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
-
-
-
 
 void Jvm::i2f(){
-
-    int Value = static_cast<int>(CurrentFrame->OperandStack->Pop());
-    float AsFloat = Value;
-    FieldEntry Converter{};
-    Converter.AsFloat = AsFloat;
-    CurrentFrame->OperandStack->push(Converter.AsInt);
- 
-  
-}
-
-
-//Converte int pra double
-void Jvm::i2d(){
-    Cat2Value value{};
-
-    s4 AsInt = CurrentFrame->OperandStack->Pop();
-    value.AsDouble = AsInt;
-
-    // push em big endian
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-}
-
-
-
-
-void Jvm::l2i(){    
-    Cat2Value value{};
-
-    value.AsLong = popU8FromOpStack();
-    // push pro low-order 32 pro stack, em big endian
-    CurrentFrame->OperandStack->push(value.LowBytes);
-
-}
-
-
-
-void Jvm::l2f(){
-    float value = popU8FromOpStack();
-
-    CurrentFrame->OperandStack->push(static_cast<u4>(value));
-}
-
-
-
-
-void Jvm::l2d(){
-    Cat2Value value{};
-    long long AsLong;
-
-    AsLong = popU8FromOpStack();
-    value.AsDouble = AsLong;
-
-    // push pro operand stack em big endian
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
-}
-
-
-
-
-void Jvm::f2i(){
-    U4ToType converter {};
-
-    converter.AsFloat = CurrentFrame->OperandStack->Pop();
-    u4 result = converter.AsInt;
-
-    CurrentFrame->OperandStack->push(result);
-}
-
-
-// todo fix, might be wrong
-void Jvm::f2l(){
-    //converte u4 pra float, float pra long
-    Cat2Value value{};
-    U4ToType valueFloat {};
-    valueFloat.AsFloat = (CurrentFrame->OperandStack->Pop());
-
-    value.AsLong = valueFloat.AsFloat;
-
-    if(std::isnan(value.AsLong)){
-        value.HighBytes = 0;
-        value.LowBytes = 0;
-
-    } else if(  value.AsLong >= INT64_MAX ||  value.AsLong == std::numeric_limits<float>::infinity()){
-        value.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
-        value.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
-
-    } else if(  value.AsLong <= INT64_MIN ||  value.AsLong == -1 * std::numeric_limits<float>::infinity()) {
-        value.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
-        value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
-
-    } else {
-
-    }
-
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
-}
-
-
-
-
-void Jvm::f2d(){
-    Cat2Value value{};
-    U4ToType AsFloat{};
-
-    AsFloat.AsFloat = CurrentFrame->OperandStack->Pop();
-    value.AsDouble = AsFloat.AsFloat;
-    pushU8ToOpStack(value.HighBytes, value.LowBytes);
-}
-
-
-
-void Jvm::d2i(){
-    Cat2Value value{};
-    U4ToType converter {};
-    value.AsDouble = popU8FromOpStack();
-    converter.AsInt = value.AsDouble;
-    CurrentFrame->OperandStack->push(converter.UBytes);
-
-}
-
-
-
-
-void Jvm::d2l(){
-    Cat2Value value{};
-    Cat2Value AsLong {};
-
-    value.AsDouble = popU8FromOpStack();
-    AsLong.AsLong = value.AsDouble;
-
-    pushU8ToOpStack(AsLong.HighBytes, AsLong.LowBytes);
-
-}
-
-
-
-
-void Jvm::d2f(){
-    Cat2Value valDouble{};
-    U4ToType converter {};
-    
-    valDouble.AsDouble = popU8FromOpStack();
-    converter.AsFloat = valDouble.AsDouble;
-    
-    CurrentFrame->OperandStack->push(converter.UBytes);
-
-}
-
-
-void Jvm::i2b(){    
-    U4ToType value;
-    value.AsInt = CurrentFrame->OperandStack->Pop();
-    CurrentFrame->OperandStack->push(static_cast<u4>(value.AsByte));
-   return;
-}
-
-
-
-
-void Jvm::i2c(){    
-    U4ToType value{};
-    value.AsInt = CurrentFrame->OperandStack->Pop();
-    CurrentFrame->OperandStack->push(value.AsChar);
-
-}
-
-
-
-
-void Jvm::i2s(){
-    U4ToType value{};
-    // trunca e faz sign extension
-    value.AsShort = CurrentFrame->OperandStack->Pop();
+	U4ToType value;
+    value.UBytes = (CurrentFrame->OperandStack->Pop());
+	value.AsFloat = value.AsInt;
     CurrentFrame->OperandStack->push(value.UBytes);
 }
 
+//Converte int pra double
+void Jvm::i2d(){
+    Cat2Value value;
+    value.Bytes = CurrentFrame->OperandStack->Pop();
+	value.AsDouble = value.AsInt;
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
+}
 
+void Jvm::l2i(){    
+    Cat2Value value;
+	U4ToType to_value;
+    value.Bytes = popU8FromOpStack();
+	to_value.AsInt = value.AsLong;
+    CurrentFrame->OperandStack->push(to_value.UBytes);
+}
+
+void Jvm::l2f(){
+    Cat2Value value;
+	U4ToType to_value;
+    value.Bytes = popU8FromOpStack();
+	to_value.AsFloat = value.AsLong;
+    CurrentFrame->OperandStack->push(to_value.UBytes);
+}
+
+void Jvm::l2d(){
+    Cat2Value value;
+    value.Bytes = popU8FromOpStack();
+	value.AsDouble = value.AsLong;
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
+}
+
+void Jvm::f2i(){
+    U4ToType value;
+	value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsInt = value.AsFloat;
+    CurrentFrame->OperandStack->push(value.UBytes);
+}
+
+// TODO(ruan): Talvez seja necessario verificar o caso de not a number
+void Jvm::f2l(){
+    Cat2Value to_value;
+	U4ToType value;
+    value.UBytes = (CurrentFrame->OperandStack->Pop());
+	to_value.AsLong = value.AsFloat;
+    pushU8ToOpStack(to_value.HighBytes, to_value.LowBytes);
+
+		// if(std::isnan(value.AsLong)){
+		//     value.HighBytes = 0;
+		//     value.LowBytes = 0;
+
+		// } else if(  value.AsLong >= INT64_MAX ||  value.AsLong == std::numeric_limits<float>::infinity()){
+		//     value.LowBytes = static_cast<u4>((INT64_MAX & 0xffffffff00000000) >> 32);
+		//     value.HighBytes = static_cast<u4>(INT64_MAX & 0x00000000ffffffff);
+
+		// } else if(  value.AsLong <= INT64_MIN ||  value.AsLong == -1 * std::numeric_limits<float>::infinity()) {
+		//     value.LowBytes = static_cast<u4>((INT64_MIN & 0xffffffff00000000) >> 32);
+		//     value.HighBytes = static_cast<u4>(INT64_MIN & 0x00000000ffffffff);
+
+		// } else {
+
+		// }
+}
+
+void Jvm::f2d(){
+	U4ToType value;
+    Cat2Value to_value;
+    value.UBytes = (CurrentFrame->OperandStack->Pop());
+	to_value.AsDouble = value.AsFloat;
+    pushU8ToOpStack(to_value.HighBytes, to_value.LowBytes);
+}
+
+void Jvm::d2i(){
+    Cat2Value value;
+    U4ToType to_value;
+    value.Bytes = popU8FromOpStack();
+	to_value.AsInt = value.AsDouble;
+    CurrentFrame->OperandStack->push(to_value.UBytes);
+}
+
+void Jvm::d2l(){
+    Cat2Value value{};
+    value.Bytes = popU8FromOpStack();
+	value.AsLong = value.AsDouble;
+    pushU8ToOpStack(value.HighBytes, value.LowBytes);
+}
+
+void Jvm::d2f(){
+    Cat2Value value;
+    U4ToType to_value;
+    value.Bytes = popU8FromOpStack();
+	to_value.AsFloat = value.AsDouble;
+    CurrentFrame->OperandStack->push(to_value.UBytes);
+}
+
+void Jvm::i2b(){    
+    U4ToType value;
+    value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsInt = value.AsByte;
+    CurrentFrame->OperandStack->push(value.UBytes);
+	return;
+}
+
+void Jvm::i2c(){    
+    U4ToType value{};
+    value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsInt = value.AsChar;
+    CurrentFrame->OperandStack->push(value.UBytes);
+}
+
+void Jvm::i2s(){
+    U4ToType value{};
+    value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsInt = value.AsShort;
+    CurrentFrame->OperandStack->push(value.UBytes);
+}
 
 void Jvm::lcmp(){
     long long value2 = popU8FromOpStack();
@@ -2403,37 +2331,33 @@ void Jvm::lcmp(){
 
 }
 
-
-
-
 void Jvm::fcmpl(){
-    float value2 = CurrentFrame->OperandStack->Pop();
-    float value1 = CurrentFrame->OperandStack->Pop();
+    U4ToType value1, value2;
+    value2.UBytes = CurrentFrame->OperandStack->Pop();
+    value1.UBytes = CurrentFrame->OperandStack->Pop();
+
     int intValue = 9;
 
-    if(value1 > value2)
+    if(value1.AsFloat > value2.AsFloat)
         intValue = 1;
-    else if(value1 == value2)
+    else if(value1.AsFloat == value2.AsFloat)
         intValue = 0;
     else // (value1 < value2)
         intValue = -1;
 
     CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
-
-
 }
-
-
-
 
 void Jvm::fcmpg(){
-    float value2 = CurrentFrame->OperandStack->Pop();
-    float value1 = CurrentFrame->OperandStack->Pop();
+    U4ToType value1, value2;
+    value2.UBytes = CurrentFrame->OperandStack->Pop();
+    value1.UBytes = CurrentFrame->OperandStack->Pop();
+
     int intValue = 9;
 
-    if(value1 > value2)
+    if(value1.AsFloat > value2.AsFloat)
         intValue = 1;
-    else if(value1 == value2)
+    else if(value1.AsFloat == value2.AsFloat)
         intValue = 0;
     else // (value1 < value2)
         intValue = -1;
@@ -2442,44 +2366,39 @@ void Jvm::fcmpg(){
 
 }
 
-
-
-
+// TODO(ruan): Check case nan
 void Jvm::dcmpl(){
-    double value2 = static_cast<double>(popU8FromOpStack());
-    double value1 = static_cast<double>(popU8FromOpStack());
+	Cat2Value value1, value2;
+    value2.Bytes = popU8FromOpStack();
+    value1.Bytes = popU8FromOpStack();
+
     int intValue = 9;
-    if(value1 > value2)
+    if(value1.AsDouble > value2.AsDouble)
         intValue = 1;
-    else if(value1 == value2)
+    else if(value1.AsDouble == value2.AsDouble)
         intValue = 0;
     else // (value1 < value2)
         intValue = -1;
 
     CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
-
 }
 
-
-
-
+// TODO(ruan): Check case nan
 void Jvm::dcmpg(){
-    double value2 = static_cast<double>(popU8FromOpStack());
-    double value1 = static_cast<double>(popU8FromOpStack());
+	Cat2Value value1, value2;
+    value2.Bytes = popU8FromOpStack();
+    value1.Bytes = popU8FromOpStack();
+
     int intValue = 9;
-    if(value1 > value2)
+    if(value1.AsDouble > value2.AsDouble)
         intValue = 1;
-    else if(value1 == value2)
+    else if(value1.AsDouble == value2.AsDouble)
         intValue = 0;
     else // (value1 < value2)
         intValue = -1;
 
     CurrentFrame->OperandStack->push(static_cast<u4>(intValue));
-
 }
-
-
-
 
 void Jvm::ifeq(){
     int32_t value = static_cast<int32_t>(CurrentFrame->OperandStack->Pop());
