@@ -23,6 +23,10 @@ union FieldEntry;
 #include "../Jvm/JvmStructs.h"
 
 
+/**
+ * @brief cp_info é uma estrutura que contém informações sobre uma entrada da constant pool.
+ * @Details A estrutura contém um tag que indica o tipo da entrada, e um union com informações específicas de cada tipo de entrada.
+ */
 struct cp_info{
     ConstantPoolTag tag;
     union {
@@ -119,7 +123,6 @@ struct field_info{
  * @brief method_info é uma estrutura que contém informações sobre um metodo de uma classe.
  * @Details A estrutura contém um índice para o nome do metodo, um índice para o descritor do metodo, o número de atributos do metodo e um vetor de atributos.
  */
-
 struct method_info{
     u2 access_flags;
     u2 name_index;
@@ -153,4 +156,5 @@ struct class_file{
 };
 
 #endif //JVM_CLASSFILESTRUCTS_H
+
 
