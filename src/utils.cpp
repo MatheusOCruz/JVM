@@ -12,17 +12,20 @@
 #include <iostream>
 
 namespace utils {
+    /**
+     * @return Path em que a JVM esta sendo executada
+     */
     std::string GetCWD() {
         char cwd[PATH_MAX];
-#ifdef _WIN32
+        #ifdef _WIN32
         if (!GetCurrentDirectoryA(sizeof(cwd), cwd)){
                     std::cerr<<"num deu pra pegar o dir atual";
                 }
-#else
+        #else
         if (getcwd(cwd, sizeof(cwd)) == NULL) {
             std::cerr << "num deu pra pegar o dir atual";
         }
-#endif
+        #endif
         return {cwd};
     }
 }

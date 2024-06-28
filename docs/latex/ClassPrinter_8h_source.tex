@@ -19,46 +19,45 @@
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}ConstantPoolPrinter.h"{}}}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00017}00017\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00018}00018\ \textcolor{comment}{//TODO:\ depois\ tenho\ q\ jogar\ as\ funcao\ de\ print\ pra\ ca\ pra\ n\ virar\ bagunca\ o\ loader}}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00019}\mbox{\hyperlink{classClassPrinter}{00019}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassPrinter}{ClassPrinter}}\ \{}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00020}00020\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00021}00021\ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(\textcolor{keyword}{const}\ std::string\ \_main\_file)\ :\ main\_file(\_main\_file)\ \{}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00022}00022\ \ \ \ \ \ \ \ \ Loader\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}};}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00023}00023\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00024}00024\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00025}00025\ \ \ \ \ \textcolor{keywordtype}{void}\ Run();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00021}\mbox{\hyperlink{classClassPrinter}{00021}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassPrinter}{ClassPrinter}}\ \{}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00022}00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00023}00023\ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(\textcolor{keyword}{const}\ std::string\ \_main\_file)\ :\ main\_file(\_main\_file)\ \{}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00024}00024\ \ \ \ \ \ \ \ \ Loader\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}};}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00025}00025\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00026}00026\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00027}00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}{Run}}();}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00028}00028\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00029}00029\ \ \ \ \ std::string\ ClassName(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcp__info}{cp\_info}}\ *Entry);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00029}00029\ \textcolor{keyword}{private}:}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00030}00030\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00031}00031\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintClassFile();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00032}00032\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintConstantPoolTable();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintInterfaces();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintFields();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00035}00035\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintMethods();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00036}00036\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributes();}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00037}00037\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributes(std::vector<attribute\_info*>*);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintConstantPoolEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcp__info}{cp\_info}}\ *Entry,\ \textcolor{keywordtype}{size\_t}\ idx);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00039}00039\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintFieldEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structfield__info}{field\_info}}\ *\ field);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintMethodEntry(\mbox{\hyperlink{structmethod__info}{method\_info}}*\ Method);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributeEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structattribute__info}{attribute\_info}}*\ Attribute,\ \textcolor{keywordtype}{int}\ indent\_width=4);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00043}00043\ \ \ \ \ std::string\ ClassAccessFlagToString(u2\ flag);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00044}00044\ \ \ \ \ std::string\ MethodAccessFlagToString(u2\ flag);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00045}00045\ \ \ \ \ std::string\ FieldAccessFlagToString(u2\ flag);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00046}00046\ \ \ \ \ std::string\ GetJavaVersion(u2\ major\_version,\ u2\ minor\_version);}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00047}00047\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00031}00031\ \ \ \ \ std::string\ ClassName(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcp__info}{cp\_info}}\ *Entry);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintClassFile();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintConstantPoolTable();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00035}00035\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintInterfaces();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00036}00036\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintFields();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00037}00037\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintMethods();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributes();}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributes(std::vector<attribute\_info*>*);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintConstantPoolEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcp__info}{cp\_info}}\ *Entry,\ \textcolor{keywordtype}{size\_t}\ idx);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintFieldEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structfield__info}{field\_info}}\ *\ field);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00043}00043\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintMethodEntry(\mbox{\hyperlink{structmethod__info}{method\_info}}*\ Method);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00044}00044\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintAttributeEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{structattribute__info}{attribute\_info}}*\ Attribute,\ \textcolor{keywordtype}{int}\ indent\_width=4);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00045}00045\ \ \ \ \ std::string\ ClassAccessFlagToString(u2\ flag);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00046}00046\ \ \ \ \ std::string\ MethodAccessFlagToString(u2\ flag);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00047}00047\ \ \ \ \ std::string\ FieldAccessFlagToString(u2\ flag);}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00048}00048\ \ \ \ \ std::string\ GetJavaVersion(u2\ major\_version,\ u2\ minor\_version);}
 \DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00049}00049\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00050}00050\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ main\_file;}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00051}00051\ \ \ \ \ \mbox{\hyperlink{structclass__file}{class\_file}}*\ ClassFile;}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00052}00052\ \ \ \ \ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}*\ CodePrinter;}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00053}00053\ \ \ \ \ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}*\ PoolPrinter;}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00054}00054\ \ \ \ \ \mbox{\hyperlink{classClassLoader}{ClassLoader}}*\ Loader;}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00055}00055\ \};}
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00057}00057\ }
-\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00058}00058\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSPRINTER\_H}}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ main\_file;}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00053}00053\ \ \ \ \ \mbox{\hyperlink{structclass__file}{class\_file}}*\ ClassFile;}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00054}00054\ \ \ \ \ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}*\ CodePrinter;}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}*\ PoolPrinter;}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00056}00056\ \ \ \ \ \mbox{\hyperlink{classClassLoader}{ClassLoader}}*\ Loader;}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00057}00057\ \};}
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{ClassPrinter_8h_source_l00060}00060\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSPRINTER\_H}}
 
 \end{DoxyCode}

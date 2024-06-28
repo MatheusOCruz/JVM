@@ -76,6 +76,11 @@ $(function() {
   <div class="headertitle"><div class="title">Referência à classe ClassPrinter</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Classe responsável pelo modo leitor_exibidor.  
+ <a href="classClassPrinter.html#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ClassPrinter_8h_source.html">ClassPrinter.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Membros públicos</h2></td></tr>
@@ -85,8 +90,9 @@ Membros públicos</h2></td></tr>
 <tr class="separator:ada588bf422f492f6c73c2db68edb573e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
-<div class="textblock">
-<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8h_source.html#l00019">19</a> do ficheiro <a class="el" href="ClassPrinter_8h_source.html">ClassPrinter.h</a>.</p>
+<div class="textblock"><p>Classe responsável pelo modo leitor_exibidor. </p>
+
+<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8h_source.html#l00021">21</a> do ficheiro <a class="el" href="ClassPrinter_8h_source.html">ClassPrinter.h</a>.</p>
 </div><h2 class="groupheader">Documentação dos Construtores &amp; Destrutor</h2>
 <a id="a22c7f4ea5870e5c817e2950fa648305b" name="a22c7f4ea5870e5c817e2950fa648305b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22c7f4ea5870e5c817e2950fa648305b">&#9670;&#160;</a></span>ClassPrinter()</h2>
@@ -112,10 +118,10 @@ Membros públicos</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8h_source.html#l00021">21</a> do ficheiro <a class="el" href="ClassPrinter_8h_source.html">ClassPrinter.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   21</span>                                             : main_file(_main_file) {</div>
-<div class="line"><span class="lineno">   22</span>        Loader = <span class="keyword">new</span> <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>;</div>
-<div class="line"><span class="lineno">   23</span>    }</div>
+<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8h_source.html#l00023">23</a> do ficheiro <a class="el" href="ClassPrinter_8h_source.html">ClassPrinter.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>                                             : main_file(_main_file) {</div>
+<div class="line"><span class="lineno">   24</span>        Loader = <span class="keyword">new</span> <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>;</div>
+<div class="line"><span class="lineno">   25</span>    }</div>
 <div class="ttc" id="aclassClassLoader_html"><div class="ttname"><a href="classClassLoader.html">ClassLoader</a></div><div class="ttdoc">Classe responsavel por abrir arquivo .class e formar a struct class_file que o representa.</div><div class="ttdef"><b>Definição</b> <a href="ClassLoader_8h_source.html#l00026">ClassLoader.h:26</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -135,14 +141,15 @@ Membros públicos</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Função principal, chamada na main, que inicializa classes internas e invoca o <a class="el" href="classClassLoader.html" title="Classe responsavel por abrir arquivo .class e formar a struct class_file que o representa.">ClassLoader</a> para obter a representação interna do .class a ser exibido, então invoca o método interno PrintClassFile </p>
 
-<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8cpp_source.html#l00016">16</a> do ficheiro <a class="el" href="ClassPrinter_8cpp_source.html">ClassPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>                       {</div>
-<div class="line"><span class="lineno">   17</span>    ClassFile = Loader-&gt;<a class="code hl_function" href="classClassLoader.html#a559a5967b5395e8f6e808a722ba46a72">GetClass</a>(main_file);</div>
-<div class="line"><span class="lineno">   18</span>    PoolPrinter = <span class="keyword">new</span> <a class="code hl_class" href="classConstantPoolPrinter.html">ConstantPoolPrinter</a>(ClassFile-&gt;constant_pool);</div>
-<div class="line"><span class="lineno">   19</span>    CodePrinter = <span class="keyword">new</span> <a class="code hl_class" href="classOpcodePrinter.html">OpcodePrinter</a>(PoolPrinter);</div>
-<div class="line"><span class="lineno">   20</span>    PrintClassFile();</div>
-<div class="line"><span class="lineno">   21</span>}</div>
+<p class="definition">Definido na linha <a class="el" href="ClassPrinter_8cpp_source.html#l00025">25</a> do ficheiro <a class="el" href="ClassPrinter_8cpp_source.html">ClassPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                       {</div>
+<div class="line"><span class="lineno">   26</span>    ClassFile = Loader-&gt;<a class="code hl_function" href="classClassLoader.html#a559a5967b5395e8f6e808a722ba46a72">GetClass</a>(main_file);</div>
+<div class="line"><span class="lineno">   27</span>    PoolPrinter = <span class="keyword">new</span> <a class="code hl_class" href="classConstantPoolPrinter.html">ConstantPoolPrinter</a>(ClassFile-&gt;constant_pool);</div>
+<div class="line"><span class="lineno">   28</span>    CodePrinter = <span class="keyword">new</span> <a class="code hl_class" href="classOpcodePrinter.html">OpcodePrinter</a>(PoolPrinter);</div>
+<div class="line"><span class="lineno">   29</span>    PrintClassFile();</div>
+<div class="line"><span class="lineno">   30</span>}</div>
 <div class="ttc" id="aclassClassLoader_html_a559a5967b5395e8f6e808a722ba46a72"><div class="ttname"><a href="classClassLoader.html#a559a5967b5395e8f6e808a722ba46a72">ClassLoader::GetClass</a></div><div class="ttdeci">class_file * GetClass(const std::string ClassName)</div><div class="ttdoc">Checa se a classe ja esta carregada, se sim retorna sua representação, caso contrário,...</div><div class="ttdef"><b>Definição</b> <a href="ClassLoader_8cpp_source.html#l00009">ClassLoader.cpp:9</a></div></div>
 <div class="ttc" id="aclassConstantPoolPrinter_html"><div class="ttname"><a href="classConstantPoolPrinter.html">ConstantPoolPrinter</a></div><div class="ttdef"><b>Definição</b> <a href="ConstantPoolPrinter_8h_source.html#l00011">ConstantPoolPrinter.h:11</a></div></div>
 <div class="ttc" id="aclassOpcodePrinter_html"><div class="ttname"><a href="classOpcodePrinter.html">OpcodePrinter</a></div><div class="ttdef"><b>Definição</b> <a href="OpcodePrinter_8h_source.html#l00014">OpcodePrinter.h:14</a></div></div>

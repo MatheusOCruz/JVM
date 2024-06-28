@@ -15,7 +15,9 @@
 #include "ConstantPoolPrinter.h"
 #include <unordered_map>
 
-//TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader
+/**
+ * @brief Classe responsável pelo modo leitor_exibidor
+ */
 class ClassPrinter {
 public:
     ClassPrinter(const std::string _main_file) : main_file(_main_file) {

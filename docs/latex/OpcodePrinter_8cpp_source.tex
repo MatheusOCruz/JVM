@@ -762,354 +762,353 @@
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00758}00758\ \ \ \ \ \textcolor{comment}{//StringBuffer.clear();\ \ //\ Limpa\ o\ buffer\ antes\ de\ iniciar}}
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00759}00759\ \ \ \ \ std::string\ buffer;}
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00760}00760\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\_index\ =\ code\_iterator;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00761}00761\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ code\_size;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00762}00762\ \ \ \ \ u1\ index\ =\ code[code\_iterator++];\ \ \textcolor{comment}{//\ Índice\ do\ opcode}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00763}00763\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00764}00764\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ padding}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00765}00765\ \ \ \ \ \textcolor{keywordflow}{while}\ (code\_iterator\ \%\ 4\ !=\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00766}00766\ \ \ \ \ \ \ \ \ code\_iterator++;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00767}00767\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00768}00768\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00769}00769\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ bytes\ suficientes\ para\ ler\ o\ default\ e\ npairs\ (8\ bytes\ no\ total)}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00770}00770\ \ \ \ \ \textcolor{keywordflow}{if}\ (code\_iterator\ +\ 8\ >\ code\_size)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00771}00771\ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Erro:\ Acesso\ fora\ dos\ limites\ do\ array\ 'code'.A"{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00772}00772\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append(buffer);}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00773}00773\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00774}00774\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00775}00775\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00776}00776\ \ \ \ \ \textcolor{comment}{//\ Lendo\ default\ (4\ bytes)}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00777}00777\ \ \ \ \ \textcolor{keywordtype}{int}\ defaultoffset\ =\ (code[code\_iterator]\ <<\ 24)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00778}00778\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00779}00779\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00780}00780\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00781}00781\ \ \ \ \ code\_iterator\ +=\ 4;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00782}00782\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00783}00783\ \ \ \ \ \textcolor{comment}{//\ Lendo\ npairs\ (4\ bytes)}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00784}00784\ \ \ \ \ \textcolor{keywordtype}{int}\ npairs\ =\ (code[code\_iterator]\ <<\ 24)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00785}00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00786}00786\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00787}00787\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00788}00788\ \ \ \ \ code\_iterator\ +=\ 4;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00789}00789\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00790}00790\ \ \ \ \ \textcolor{comment}{//\ Print\ defaultoffset\ e\ npairs}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00791}00791\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lookupswitch"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00792}00792\ \ \ \ \ \textcolor{comment}{//StringBuffer.append(std::to\_string(index));}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00793}00793\ \ \ \ \ \textcolor{comment}{//StringBuffer.append("{}\ default:\ "{}).append(std::to\_string(defaultoffset));}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00794}00794\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ "{}}).append(std::to\_string(npairs));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00795}00795\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00796}00796\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00797}00797\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ bytes\ suficientes\ para\ ler\ os\ pares\ de\ valores\ de\ caso\ /\ deslocamento\ de\ ramificação}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00798}00798\ \ \ \ \ \textcolor{keywordflow}{if}\ (code\_iterator\ +\ 8\ *\ npairs\ >\ code\_size)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00799}00799\ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Erro:\ Acesso\ fora\ dos\ limites\ do\ array\ 'code'.\ B"{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00800}00800\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append(buffer);}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00801}00801\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00802}00802\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00803}00803\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00804}00804\ \ \ \ \ \textcolor{comment}{//\ Lê\ os\ pares\ de\ valores\ de\ caso\ /\ deslocamento\ de\ ramificação}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00805}00805\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npairs;\ i++)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00806}00806\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ match\ =\ (code[code\_iterator]\ <<\ 24)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00807}00807\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00808}00808\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00809}00809\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00810}00810\ \ \ \ \ \ \ \ \ code\_iterator\ +=\ 4;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00811}00811\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00812}00812\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ offset\ =\ (code[code\_iterator]\ <<\ 24)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00813}00813\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00814}00814\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00815}00815\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00816}00816\ \ \ \ \ \ \ \ \ code\_iterator\ +=\ 4;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00817}00817\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00818}00818\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ displacement\ =\ start\_index\ +\ offset\ -\/\ 1;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00819}00819\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ "{}});\ \textcolor{comment}{//\ Indentação}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00820}00820\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}"{}}).append(std::to\_string(match)).append(\textcolor{stringliteral}{"{}:\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00821}00821\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deslocamento}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00822}00822\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}"{}}).append(std::to\_string(displacement));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00823}00823\ \ \ \ \ \ \ \ \ \textcolor{comment}{//offset}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00824}00824\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ (+"{}}).append(std::to\_string(offset)).append(\textcolor{stringliteral}{"{})\ "{}}).append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00825}00825\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00826}00826\ \ \ \ \ \ \ \ \ \textcolor{comment}{//size\_t\ displacement\ =\ start\_index\ +\ offset\ -\/\ 1;}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00827}00827\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deslocamento}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00828}00828\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append("{}"{}).append(std::to\_string(i)).append("{}:\ "{}).append(std::to\_string(displacement));}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00829}00829\ \ \ \ \ \ \ \ \ \textcolor{comment}{//offset}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00830}00830\ \ \ \ \ \ \ \ \textcolor{comment}{//\ StringBuffer.append("{}\ (+"{}).append(std::to\_string(offset)).append("{})\ "{}).append("{}\(\backslash\)n"{});}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00831}00831\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00832}00832\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ "{}});\ \textcolor{comment}{//\ Indentação}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00833}00833\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}default:\ "{}}).append(std::to\_string(start\_index\ +\ defaultoffset\ -\/1));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00834}00834\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ (+"{}}).append(std::to\_string(defaultoffset)).append(\textcolor{stringliteral}{"{})\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00835}00835\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00836}00836\ \ \ \ \ StringBuffer.append(buffer);}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00837}00837\ \ \ \ \ \textcolor{comment}{//\ \ mensagem\ completa}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00838}00838\ \ \ \ \ \textcolor{comment}{//std::cout\ <<\ StringBuffer\ <<\ std::endl;}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00839}00839\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00840}00840\ \textcolor{keywordtype}{void}\ OpcodePrinter::ireturn()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00841}00841\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ireturn\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00842}00842\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00843}00843\ \textcolor{keywordtype}{void}\ OpcodePrinter::lreturn()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00844}00844\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lreturn\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00845}00845\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00846}00846\ \textcolor{keywordtype}{void}\ OpcodePrinter::freturn()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00847}00847\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ freturn\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00848}00848\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00849}00849\ \textcolor{keywordtype}{void}\ OpcodePrinter::dreturn()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00850}00850\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dreturn\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00851}00851\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00852}00852\ \textcolor{keywordtype}{void}\ OpcodePrinter::areturn()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00853}00853\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ areturn\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00854}00854\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00855}00855\ \textcolor{keywordtype}{void}\ OpcodePrinter::return\_()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00856}00856\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ return\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00857}00857\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00858}00858\ \textcolor{keywordtype}{void}\ OpcodePrinter::getstatic()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00859}00859\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00860}00860\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00861}00861\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ getstatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00862}00862\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00863}00863\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00864}00864\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00865}00865\ \textcolor{keywordtype}{void}\ OpcodePrinter::putstatic()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00866}00866\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00867}00867\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00868}00868\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ putstatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00869}00869\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00870}00870\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00871}00871\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00872}00872\ \textcolor{keywordtype}{void}\ OpcodePrinter::getfield()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00873}00873\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00874}00874\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00875}00875\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ getfield\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00876}00876\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00877}00877\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00878}00878\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00879}00879\ \textcolor{keywordtype}{void}\ OpcodePrinter::putfield()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00880}00880\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00881}00881\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00882}00882\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ putfield\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00883}00883\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00884}00884\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00885}00885\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00886}00886\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokevirtual()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00887}00887\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00888}00888\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00889}00889\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokevirtual\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00890}00890\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00891}00891\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00892}00892\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00893}00893\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokespecial()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00894}00894\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00895}00895\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00896}00896\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokespecial\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00897}00897\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00898}00898\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00899}00899\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00900}00900\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokestatic()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00901}00901\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00902}00902\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00903}00903\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokestatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00904}00904\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00905}00905\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00906}00906\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00907}00907\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokeinterface()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00908}00908\ \textcolor{comment}{//\ vai\ ter\ algo\ aqui\ -\/\ bloco\ de\ notas}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00909}00909\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00910}00910\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokedynamic()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00911}00911\ \ \ \ \ \textcolor{comment}{//\ vai\ ter\ algo\ aqui\ -\/\ bloco\ de\ notas}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00912}00912\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00913}00913\ \textcolor{keywordtype}{void}\ OpcodePrinter::new\_()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00914}00914\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00915}00915\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00916}00916\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ new\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00917}00917\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00918}00918\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00919}00919\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00920}00920\ \textcolor{keywordtype}{void}\ OpcodePrinter::newarray()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00921}00921\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00922}00922\ \ \ \ \ std::string\ buffer;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00923}00923\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00924}00924\ \ \ \ \ u1\ atype\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00761}00761\ \ \ \ \ u1\ index\ =\ code[code\_iterator++];\ \ \textcolor{comment}{//\ Índice\ do\ opcode}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00762}00762\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00763}00763\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ padding}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00764}00764\ \ \ \ \ \textcolor{keywordflow}{while}\ (code\_iterator\ \%\ 4\ !=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00765}00765\ \ \ \ \ \ \ \ \ code\_iterator++;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00766}00766\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00767}00767\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00768}00768\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ bytes\ suficientes\ para\ ler\ o\ default\ e\ npairs\ (8\ bytes\ no\ total)}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00769}00769\ \ \ \ \ \textcolor{keywordflow}{if}\ (code\_iterator\ +\ 8\ >\ code\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00770}00770\ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Erro:\ Acesso\ fora\ dos\ limites\ do\ array\ 'code'.A"{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00771}00771\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append(buffer);}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00772}00772\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00773}00773\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00774}00774\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00775}00775\ \ \ \ \ \textcolor{comment}{//\ Lendo\ default\ (4\ bytes)}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00776}00776\ \ \ \ \ \textcolor{keywordtype}{int}\ defaultoffset\ =\ (code[code\_iterator]\ <<\ 24)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00777}00777\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00778}00778\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00779}00779\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00780}00780\ \ \ \ \ code\_iterator\ +=\ 4;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00781}00781\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00782}00782\ \ \ \ \ \textcolor{comment}{//\ Lendo\ npairs\ (4\ bytes)}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00783}00783\ \ \ \ \ \textcolor{keywordtype}{int}\ npairs\ =\ (code[code\_iterator]\ <<\ 24)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00784}00784\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00785}00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00786}00786\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00787}00787\ \ \ \ \ code\_iterator\ +=\ 4;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00788}00788\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00789}00789\ \ \ \ \ \textcolor{comment}{//\ Print\ defaultoffset\ e\ npairs}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00790}00790\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lookupswitch"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00791}00791\ \ \ \ \ \textcolor{comment}{//StringBuffer.append(std::to\_string(index));}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00792}00792\ \ \ \ \ \textcolor{comment}{//StringBuffer.append("{}\ default:\ "{}).append(std::to\_string(defaultoffset));}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00793}00793\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ "{}}).append(std::to\_string(npairs));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00794}00794\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00795}00795\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00796}00796\ \ \ \ \ \textcolor{comment}{//\ Verifica\ se\ há\ bytes\ suficientes\ para\ ler\ os\ pares\ de\ valores\ de\ caso\ /\ deslocamento\ de\ ramificação}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00797}00797\ \ \ \ \ \textcolor{keywordflow}{if}\ (code\_iterator\ +\ 8\ *\ npairs\ >\ code\_size)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00798}00798\ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Erro:\ Acesso\ fora\ dos\ limites\ do\ array\ 'code'.\ B"{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00799}00799\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append(buffer);}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00800}00800\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00801}00801\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00802}00802\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00803}00803\ \ \ \ \ \textcolor{comment}{//\ Lê\ os\ pares\ de\ valores\ de\ caso\ /\ deslocamento\ de\ ramificação}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00804}00804\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npairs;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00805}00805\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ match\ =\ (code[code\_iterator]\ <<\ 24)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00806}00806\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00807}00807\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00808}00808\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00809}00809\ \ \ \ \ \ \ \ \ code\_iterator\ +=\ 4;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00810}00810\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00811}00811\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ offset\ =\ (code[code\_iterator]\ <<\ 24)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00812}00812\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 1]\ <<\ 16)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00813}00813\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (code[code\_iterator\ +\ 2]\ <<\ 8)\ |}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00814}00814\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ code[code\_iterator\ +\ 3];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00815}00815\ \ \ \ \ \ \ \ \ code\_iterator\ +=\ 4;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00816}00816\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00817}00817\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ displacement\ =\ start\_index\ +\ offset\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00818}00818\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ "{}});\ \textcolor{comment}{//\ Indentação}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00819}00819\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}"{}}).append(std::to\_string(match)).append(\textcolor{stringliteral}{"{}:\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00820}00820\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deslocamento}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00821}00821\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}"{}}).append(std::to\_string(displacement));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00822}00822\ \ \ \ \ \ \ \ \ \textcolor{comment}{//offset}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00823}00823\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ (+"{}}).append(std::to\_string(offset)).append(\textcolor{stringliteral}{"{})\ "{}}).append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00824}00824\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00825}00825\ \ \ \ \ \ \ \ \ \textcolor{comment}{//size\_t\ displacement\ =\ start\_index\ +\ offset\ -\/\ 1;}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00826}00826\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deslocamento}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00827}00827\ \ \ \ \ \ \ \ \ \textcolor{comment}{//StringBuffer.append("{}"{}).append(std::to\_string(i)).append("{}:\ "{}).append(std::to\_string(displacement));}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00828}00828\ \ \ \ \ \ \ \ \ \textcolor{comment}{//offset}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00829}00829\ \ \ \ \ \ \ \ \textcolor{comment}{//\ StringBuffer.append("{}\ (+"{}).append(std::to\_string(offset)).append("{})\ "{}).append("{}\(\backslash\)n"{});}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00830}00830\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00831}00831\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ \ \ \ \ "{}});\ \textcolor{comment}{//\ Indentação}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00832}00832\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}default:\ "{}}).append(std::to\_string(start\_index\ +\ defaultoffset\ -\/1));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00833}00833\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ (+"{}}).append(std::to\_string(defaultoffset)).append(\textcolor{stringliteral}{"{})\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00834}00834\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00835}00835\ \ \ \ \ StringBuffer.append(buffer);}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00836}00836\ \ \ \ \ \textcolor{comment}{//\ \ mensagem\ completa}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00837}00837\ \ \ \ \ \textcolor{comment}{//std::cout\ <<\ StringBuffer\ <<\ std::endl;}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00838}00838\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00839}00839\ \textcolor{keywordtype}{void}\ OpcodePrinter::ireturn()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00840}00840\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ireturn\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00841}00841\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00842}00842\ \textcolor{keywordtype}{void}\ OpcodePrinter::lreturn()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00843}00843\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lreturn\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00844}00844\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00845}00845\ \textcolor{keywordtype}{void}\ OpcodePrinter::freturn()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00846}00846\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ freturn\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00847}00847\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00848}00848\ \textcolor{keywordtype}{void}\ OpcodePrinter::dreturn()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00849}00849\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dreturn\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00850}00850\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00851}00851\ \textcolor{keywordtype}{void}\ OpcodePrinter::areturn()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00852}00852\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ areturn\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00853}00853\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00854}00854\ \textcolor{keywordtype}{void}\ OpcodePrinter::return\_()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00855}00855\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ return\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00856}00856\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00857}00857\ \textcolor{keywordtype}{void}\ OpcodePrinter::getstatic()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00858}00858\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00859}00859\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00860}00860\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ getstatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00861}00861\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00862}00862\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00863}00863\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00864}00864\ \textcolor{keywordtype}{void}\ OpcodePrinter::putstatic()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00865}00865\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00866}00866\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00867}00867\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ putstatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00868}00868\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00869}00869\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00870}00870\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00871}00871\ \textcolor{keywordtype}{void}\ OpcodePrinter::getfield()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00872}00872\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00873}00873\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00874}00874\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ getfield\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00875}00875\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00876}00876\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00877}00877\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00878}00878\ \textcolor{keywordtype}{void}\ OpcodePrinter::putfield()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00879}00879\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00880}00880\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00881}00881\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ putfield\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00882}00882\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00883}00883\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00884}00884\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00885}00885\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokevirtual()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00886}00886\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00887}00887\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00888}00888\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokevirtual\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00889}00889\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00890}00890\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00891}00891\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00892}00892\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokespecial()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00893}00893\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00894}00894\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00895}00895\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokespecial\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00896}00896\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00897}00897\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00898}00898\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00899}00899\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokestatic()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00900}00900\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00901}00901\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00902}00902\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ invokestatic\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00903}00903\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00904}00904\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00905}00905\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00906}00906\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokeinterface()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00907}00907\ \textcolor{comment}{//\ vai\ ter\ algo\ aqui\ -\/\ bloco\ de\ notas}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00908}00908\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00909}00909\ \textcolor{keywordtype}{void}\ OpcodePrinter::invokedynamic()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00910}00910\ \ \ \ \ \textcolor{comment}{//\ vai\ ter\ algo\ aqui\ -\/\ bloco\ de\ notas}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00911}00911\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00912}00912\ \textcolor{keywordtype}{void}\ OpcodePrinter::new\_()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00913}00913\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00914}00914\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00915}00915\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ new\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00916}00916\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00917}00917\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00918}00918\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00919}00919\ \textcolor{keywordtype}{void}\ OpcodePrinter::newarray()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00920}00920\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00921}00921\ \ \ \ \ std::string\ buffer;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00922}00922\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00923}00923\ \ \ \ \ u1\ atype\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00924}00924\ }
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00925}00925\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00926}00926\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00927}00927\ \ \ \ \ \textcolor{comment}{//\ \ atype\ (1\ byte)\ non\ nexecisa}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00928}00928\ \ \ \ \ \textcolor{comment}{//u1\ atype\ =\ code[code\_iterator++];}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00929}00929\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00930}00930\ \ \ \ \ \textcolor{comment}{//\ Mapeando\ o\ atype\ para\ o\ tipo\ de\ array\ correspondente}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00931}00931\ \ \ \ \ std::string\ array\_type;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00932}00932\ \ \ \ \ \textcolor{keywordflow}{switch}\ (atype)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00933}00933\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ array\_type\ =\ \textcolor{stringliteral}{"{}boolean"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00934}00934\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ array\_type\ =\ \textcolor{stringliteral}{"{}char"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00935}00935\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ array\_type\ =\ \textcolor{stringliteral}{"{}float"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00936}00936\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ array\_type\ =\ \textcolor{stringliteral}{"{}double"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00937}00937\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ array\_type\ =\ \textcolor{stringliteral}{"{}byte"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00938}00938\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ array\_type\ =\ \textcolor{stringliteral}{"{}short"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00939}00939\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 10:\ array\_type\ =\ \textcolor{stringliteral}{"{}int"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00940}00940\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ array\_type\ =\ \textcolor{stringliteral}{"{}long"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00941}00941\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ array\_type\ =\ \textcolor{stringliteral}{"{}UNKNOWN"{}};\ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00942}00942\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00943}00943\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00944}00944\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ newarray\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00945}00945\ \ \ \ \ \textcolor{comment}{//tipo\ do\ array}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00946}00946\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ "{}}).append(std::to\_string(atype));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00947}00947\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ("{}}).append(array\_type).append(\textcolor{stringliteral}{"{})\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00948}00948\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00949}00949\ \textcolor{keywordtype}{void}\ OpcodePrinter::anewarray()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00950}00950\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00951}00951\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00952}00952\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ anewarray\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00953}00953\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00954}00954\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00955}00955\ \textcolor{keywordtype}{void}\ OpcodePrinter::arraylength()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00956}00956\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ arraylength\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00957}00957\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00958}00958\ \textcolor{keywordtype}{void}\ OpcodePrinter::athrow()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00959}00959\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ athrow\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00960}00960\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00961}00961\ \textcolor{keywordtype}{void}\ OpcodePrinter::checkcast()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00962}00962\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00963}00963\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00964}00964\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ checkcast\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00965}00965\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00966}00966\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00967}00967\ \textcolor{keywordtype}{void}\ OpcodePrinter::instanceof()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00968}00968\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00969}00969\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00970}00970\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ instanceof\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00971}00971\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00972}00972\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00973}00973\ \textcolor{keywordtype}{void}\ OpcodePrinter::monitorenter()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00974}00974\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ monitorenter\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00975}00975\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00976}00976\ \textcolor{keywordtype}{void}\ OpcodePrinter::monitorexit()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00977}00977\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ monitorexit\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00978}00978\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00979}00979\ \textcolor{keywordtype}{void}\ OpcodePrinter::wide()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00980}00980\ \ \ \ \ u1\ instruction\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00981}00981\ \ \ \ \ u1\ indexbyte1\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00982}00982\ \ \ \ \ u1\ indexbyte2\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00983}00983\ \ \ \ \ u2\ index\ =\ (((u2)\ indexbyte1)\ <<\ 8)\ |\ indexbyte2;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00984}00984\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00985}00985\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ wide"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00986}00986\ \ \ \ \ \textcolor{keywordflow}{switch}((WideOp)\ instruction)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00987}00987\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_iload):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00988}00988\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ iload\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00989}00989\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00990}00990\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00991}00991\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00992}00992\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_fload):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00993}00993\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ fload\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00994}00994\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00995}00995\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00996}00996\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00997}00997\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_lload):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00998}00998\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lload\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00999}00999\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01000}01000\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01001}01001\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01002}01002\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_aload):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01003}01003\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ aload\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01004}01004\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01005}01005\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01006}01006\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01007}01007\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_dload):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01008}01008\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dload\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01009}01009\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01010}01010\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01011}01011\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01012}01012\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_istore):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01013}01013\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ istore\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01014}01014\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01015}01015\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01016}01016\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01017}01017\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_fstore):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01018}01018\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ fstore\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01019}01019\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01020}01020\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01021}01021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01022}01022\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_astore):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01023}01023\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ astore\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01024}01024\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01025}01025\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01026}01026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01027}01027\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_lstore):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01028}01028\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lstore\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01029}01029\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01030}01030\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01031}01031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01032}01032\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_dstore):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01033}01033\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dstore\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01034}01034\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01035}01035\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01036}01036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01037}01037\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_ret):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01038}01038\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ret\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01039}01039\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01040}01040\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01041}01041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01042}01042\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_iinc):}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01043}01043\ \ \ \ \ \ \ \ \ u1\ constbyte1\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01044}01044\ \ \ \ \ \ \ \ \ u1\ constbyte2\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01045}01045\ \ \ \ \ \ \ \ \ u2\ \_const\ =\ (((u2)constbyte1)\ <<\ 8)\ |\ constbyte2;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01046}01046\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01047}01047\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ iinc\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01048}01048\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01049}01049\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ by\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01050}01050\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(\_const));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01051}01051\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01052}01052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01053}01053\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01054}01054\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01055}01055\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01056}01056\ \textcolor{keywordtype}{void}\ OpcodePrinter::multianewarray()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00926}00926\ \ \ \ \ \textcolor{comment}{//\ \ atype\ (1\ byte)\ non\ nexecisa}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00927}00927\ \ \ \ \ \textcolor{comment}{//u1\ atype\ =\ code[code\_iterator++];}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00928}00928\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00929}00929\ \ \ \ \ \textcolor{comment}{//\ Mapeando\ o\ atype\ para\ o\ tipo\ de\ array\ correspondente}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00930}00930\ \ \ \ \ std::string\ array\_type;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00931}00931\ \ \ \ \ \textcolor{keywordflow}{switch}\ (atype)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00932}00932\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ array\_type\ =\ \textcolor{stringliteral}{"{}boolean"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00933}00933\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ array\_type\ =\ \textcolor{stringliteral}{"{}char"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00934}00934\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ array\_type\ =\ \textcolor{stringliteral}{"{}float"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00935}00935\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ array\_type\ =\ \textcolor{stringliteral}{"{}double"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00936}00936\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ array\_type\ =\ \textcolor{stringliteral}{"{}byte"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00937}00937\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ array\_type\ =\ \textcolor{stringliteral}{"{}short"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00938}00938\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 10:\ array\_type\ =\ \textcolor{stringliteral}{"{}int"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00939}00939\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ array\_type\ =\ \textcolor{stringliteral}{"{}long"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00940}00940\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ array\_type\ =\ \textcolor{stringliteral}{"{}UNKNOWN"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00941}00941\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00942}00942\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00943}00943\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ newarray\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00944}00944\ \ \ \ \ \textcolor{comment}{//tipo\ do\ array}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00945}00945\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ "{}}).append(std::to\_string(atype));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00946}00946\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ("{}}).append(array\_type).append(\textcolor{stringliteral}{"{})\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00947}00947\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00948}00948\ \textcolor{keywordtype}{void}\ OpcodePrinter::anewarray()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00949}00949\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00950}00950\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00951}00951\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ anewarray\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00952}00952\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00953}00953\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00954}00954\ \textcolor{keywordtype}{void}\ OpcodePrinter::arraylength()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00955}00955\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ arraylength\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00956}00956\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00957}00957\ \textcolor{keywordtype}{void}\ OpcodePrinter::athrow()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00958}00958\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ athrow\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00959}00959\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00960}00960\ \textcolor{keywordtype}{void}\ OpcodePrinter::checkcast()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00961}00961\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00962}00962\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00963}00963\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ checkcast\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00964}00964\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00965}00965\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00966}00966\ \textcolor{keywordtype}{void}\ OpcodePrinter::instanceof()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00967}00967\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00968}00968\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00969}00969\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ instanceof\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00970}00970\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00971}00971\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00972}00972\ \textcolor{keywordtype}{void}\ OpcodePrinter::monitorenter()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00973}00973\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ monitorenter\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00974}00974\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00975}00975\ \textcolor{keywordtype}{void}\ OpcodePrinter::monitorexit()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00976}00976\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ monitorexit\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00977}00977\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00978}00978\ \textcolor{keywordtype}{void}\ OpcodePrinter::wide()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00979}00979\ \ \ \ \ u1\ instruction\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00980}00980\ \ \ \ \ u1\ indexbyte1\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00981}00981\ \ \ \ \ u1\ indexbyte2\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00982}00982\ \ \ \ \ u2\ index\ =\ (((u2)\ indexbyte1)\ <<\ 8)\ |\ indexbyte2;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00983}00983\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00984}00984\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ wide"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00985}00985\ \ \ \ \ \textcolor{keywordflow}{switch}((WideOp)\ instruction)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00986}00986\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_iload):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00987}00987\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ iload\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00988}00988\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00989}00989\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00990}00990\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00991}00991\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_fload):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00992}00992\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ fload\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00993}00993\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00994}00994\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00995}00995\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00996}00996\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_lload):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00997}00997\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lload\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00998}00998\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l00999}00999\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01000}01000\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01001}01001\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_aload):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01002}01002\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ aload\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01003}01003\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01004}01004\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01005}01005\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01006}01006\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_dload):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01007}01007\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dload\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01008}01008\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01009}01009\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01010}01010\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01011}01011\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_istore):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01012}01012\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ istore\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01013}01013\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01014}01014\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01015}01015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01016}01016\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_fstore):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01017}01017\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ fstore\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01018}01018\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01019}01019\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01020}01020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01021}01021\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_astore):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01022}01022\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ astore\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01023}01023\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01024}01024\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01025}01025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01026}01026\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_lstore):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01027}01027\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ lstore\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01028}01028\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01029}01029\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01030}01030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01031}01031\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_dstore):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01032}01032\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dstore\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01033}01033\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01034}01034\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01035}01035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01036}01036\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_ret):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01037}01037\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ret\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01038}01038\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01039}01039\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01040}01040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01041}01041\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_iinc):}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01042}01042\ \ \ \ \ \ \ \ \ u1\ constbyte1\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01043}01043\ \ \ \ \ \ \ \ \ u1\ constbyte2\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01044}01044\ \ \ \ \ \ \ \ \ u2\ \_const\ =\ (((u2)constbyte1)\ <<\ 8)\ |\ constbyte2;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01045}01045\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01046}01046\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ iinc\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01047}01047\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01048}01048\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ by\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01049}01049\ \ \ \ \ \ \ \ \ StringBuffer.append(std::to\_string(\_const));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01050}01050\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01051}01051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01052}01052\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01053}01053\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01054}01054\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01055}01055\ \textcolor{keywordtype}{void}\ OpcodePrinter::multianewarray()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01056}01056\ }
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01057}01057\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01058}01058\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01059}01059\ \ \ \ \ \textcolor{comment}{//\ Ler\ indexbyte1,\ indexbyte2\ e\ dimensõess}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01060}01060\ \ \ \ \ u1\ indexbyte1\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01061}01061\ \ \ \ \ u1\ indexbyte2\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01062}01062\ \ \ \ \ u1\ dimensions\ =\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01063}01063\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01064}01064\ \ \ \ \ \textcolor{comment}{//\ índice}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01065}01065\ \ \ \ \ u2\ index\ =\ (indexbyte1\ <<\ 8)\ |\ indexbyte2;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01066}01066\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01067}01067\ \ \ \ \ \textcolor{comment}{//\ Verificadimensão}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01068}01068\ \ \ \ \ \textcolor{keywordflow}{if}\ (dimensions\ <\ 1)\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01069}01069\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}Erro:\ O\ valor\ de\ 'dimensions'\ deve\ ser\ maior\ ou\ igual\ a\ 1.\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01070}01070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01071}01071\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01058}01058\ \ \ \ \ \textcolor{comment}{//\ Ler\ indexbyte1,\ indexbyte2\ e\ dimensõess}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01059}01059\ \ \ \ \ u1\ indexbyte1\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01060}01060\ \ \ \ \ u1\ indexbyte2\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01061}01061\ \ \ \ \ u1\ dimensions\ =\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01062}01062\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01063}01063\ \ \ \ \ \textcolor{comment}{//\ índice}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01064}01064\ \ \ \ \ u2\ index\ =\ (indexbyte1\ <<\ 8)\ |\ indexbyte2;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01065}01065\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01066}01066\ \ \ \ \ \textcolor{comment}{//\ Verificadimensão}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01067}01067\ \ \ \ \ \textcolor{keywordflow}{if}\ (dimensions\ <\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01068}01068\ \ \ \ \ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}Erro:\ O\ valor\ de\ 'dimensions'\ deve\ ser\ maior\ ou\ igual\ a\ 1.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01069}01069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01070}01070\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01071}01071\ }
 \DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01072}01072\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01073}01073\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01074}01074\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ multianewarray\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01075}01075\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\#\ "{}}).append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01076}01076\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dim\ "{}}).append(std::to\_string(dimensions)).append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01077}01077\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01078}01078\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01079}01079\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01080}01080\ \textcolor{keywordtype}{void}\ OpcodePrinter::ifnull()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01081}01081\ \ \ \ \ \textcolor{keywordtype}{short}\ index\ =\ code\_iterator\ -\/\ 1;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01082}01082\ \ \ \ \ index\ +=\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01083}01083\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01084}01084\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ifnull\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01085}01085\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01086}01086\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01087}01087\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01088}01088\ \textcolor{keywordtype}{void}\ OpcodePrinter::ifnonnull()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01089}01089\ \ \ \ \ \textcolor{keywordtype}{short}\ index\ =\ code\_iterator\ -\/\ 1;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01090}01090\ \ \ \ \ index\ +=\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++];}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01091}01091\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01092}01092\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ifnonnull\ "{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01093}01093\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01094}01094\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01095}01095\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01096}01096\ \textcolor{keywordtype}{void}\ OpcodePrinter::goto\_w()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01097}01097\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01098}01098\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01099}01099\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ goto\_w\ \#"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01100}01100\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01101}01101\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01102}01102\ \}}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01103}01103\ \textcolor{keywordtype}{void}\ OpcodePrinter::jsr\_w()\ \{}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01104}01104\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01105}01105\ }
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01106}01106\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ jsr\_w\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01107}01107\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01108}01108\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
-\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01109}01109\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01073}01073\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ multianewarray\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01074}01074\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\#\ "{}}).append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01075}01075\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ dim\ "{}}).append(std::to\_string(dimensions)).append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01076}01076\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01077}01077\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01078}01078\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01079}01079\ \textcolor{keywordtype}{void}\ OpcodePrinter::ifnull()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01080}01080\ \ \ \ \ \textcolor{keywordtype}{short}\ index\ =\ code\_iterator\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01081}01081\ \ \ \ \ index\ +=\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01082}01082\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01083}01083\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ifnull\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01084}01084\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01085}01085\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01086}01086\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01087}01087\ \textcolor{keywordtype}{void}\ OpcodePrinter::ifnonnull()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01088}01088\ \ \ \ \ \textcolor{keywordtype}{short}\ index\ =\ code\_iterator\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01089}01089\ \ \ \ \ index\ +=\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++];}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01090}01090\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01091}01091\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ ifnonnull\ "{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01092}01092\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01093}01093\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01094}01094\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01095}01095\ \textcolor{keywordtype}{void}\ OpcodePrinter::goto\_w()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01096}01096\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01097}01097\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01098}01098\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ goto\_w\ \#"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01099}01099\ \ \ \ \ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01100}01100\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01101}01101\ \}}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01102}01102\ \textcolor{keywordtype}{void}\ OpcodePrinter::jsr\_w()\ \{}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01103}01103\ \ \ \ \ u2\ index\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{short}\textcolor{keyword}{>}(code[code\_iterator++])<<8\ |\ code[code\_iterator++]\ ;}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01104}01104\ }
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01105}01105\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ jsr\_w\ \#"{}});\ StringBuffer.append(std::to\_string(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01106}01106\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\ \ //\ "{}}+\ Printer-\/>CpEntryAsString(index));}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01107}01107\ \ \ \ \ StringBuffer.append(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{OpcodePrinter_8cpp_source_l01108}01108\ \}}
 
 \end{DoxyCode}

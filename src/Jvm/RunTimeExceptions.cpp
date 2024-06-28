@@ -4,7 +4,7 @@
 
 #include "../../include/Jvm/RunTimeExceptions.h"
 
-//TODO: formatar msg de erro
+
 const char *ArithmeticException::what() const noexcept {
     return exception::what();
 }

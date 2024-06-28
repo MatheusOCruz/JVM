@@ -35,7 +35,7 @@
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00032}00032\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00033}00033\ \textcolor{comment}{//\ ESSA\ E\ A\ MAIN\ FUNCIONAL}}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00034}00034\ }
-\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00035}00035\ \textcolor{keywordtype}{int}\ maidn(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}*\ argv[])\ \{}
+\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00035}00035\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}*\ argv[])\ \{}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00036}00036\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00037}00037\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ program\_name\ =\ shift\_args(argc,\ \&argv);}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00038}00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (!argc)\ \{}
@@ -62,7 +62,7 @@
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ std::ofstream\ outputFile(output\_file\_path);}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00060}00060\ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00061}00061\ }
-\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(class\_file\_path).Run();}
+\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(class\_file\_path).\mbox{\hyperlink{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}{Run}}();}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00063}00063\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00064}00064\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00065}00065\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(command,\ \textcolor{stringliteral}{"{}jvm"{}})\ ==\ 0)}
@@ -81,7 +81,7 @@
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00078}00078\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00079}00079\ \textcolor{comment}{//\ MAIN\ PRA\ TESTE\ JVM}}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00080}00080\ }
-\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00081}00081\ \textcolor{keywordtype}{int}\ main()\{}
+\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00081}00081\ \textcolor{keywordtype}{int}\ maind()\{}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00082}00082\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00083}00083\ \ \ \ \ \textcolor{keywordtype}{int}\ mode\ =\ JVM\_MODE;}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00084}00084\ }
@@ -91,7 +91,7 @@
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classJvm}{Jvm}}(file).Run();}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ LEITOR\_EXIBIDOR:}
-\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(file).Run();}
+\DoxyCodeLine{\Hypertarget{main_8cpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classClassPrinter}{ClassPrinter}}(file).\mbox{\hyperlink{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}{Run}}();}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00093}00093\ }
 \DoxyCodeLine{\Hypertarget{main_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}

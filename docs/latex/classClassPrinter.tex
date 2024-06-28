@@ -1,5 +1,14 @@
 \doxysection{Referência à classe Class\+Printer}
 \hypertarget{classClassPrinter}{}\label{classClassPrinter}\index{ClassPrinter@{ClassPrinter}}
+
+
+Classe responsável pelo modo leitor\+\_\+exibidor.  
+
+
+
+
+{\ttfamily \#include $<$Class\+Printer.\+h$>$}
+
 \doxysubsubsection*{Membros públicos}
 \begin{DoxyCompactItemize}
 \item 
@@ -10,9 +19,9 @@ void \mbox{\hyperlink{classClassPrinter_ada588bf422f492f6c73c2db68edb573e}{Run}}
 
 
 \doxysubsection{Descrição detalhada}
+Classe responsável pelo modo leitor\+\_\+exibidor. 
 
-
-Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00019}{19}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
+Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00021}{21}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
 
 
 
@@ -25,13 +34,13 @@ Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00019}{19}} do fichei
 
 
 
-Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00021}{21}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
+Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00023}{23}} do ficheiro \mbox{\hyperlink{ClassPrinter_8h_source}{Class\+Printer.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ main\_file(\_main\_file)\ \{}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ Loader\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}};}
-\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ main\_file(\_main\_file)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ Loader\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classClassLoader}{ClassLoader}};}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -43,18 +52,18 @@ Definido na linha \mbox{\hyperlink{ClassPrinter_8h_source_l00021}{21}} do fichei
 \doxysubsubsection{\texorpdfstring{Run()}{Run()}}
 {\footnotesize\ttfamily void Class\+Printer\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Função principal, chamada na main, que inicializa classes internas e invoca o \doxylink{classClassLoader}{Class\+Loader} para obter a representação interna do .class a ser exibido, então invoca o método interno Print\+Class\+File 
 
-
-Definido na linha \mbox{\hyperlink{ClassPrinter_8cpp_source_l00016}{16}} do ficheiro \mbox{\hyperlink{ClassPrinter_8cpp_source}{Class\+Printer.\+cpp}}.
+Definido na linha \mbox{\hyperlink{ClassPrinter_8cpp_source_l00025}{25}} do ficheiro \mbox{\hyperlink{ClassPrinter_8cpp_source}{Class\+Printer.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00017\ \ \ \ \ ClassFile\ =\ Loader-\/>\mbox{\hyperlink{classClassLoader_a559a5967b5395e8f6e808a722ba46a72}{GetClass}}(main\_file);}
-\DoxyCodeLine{00018\ \ \ \ \ PoolPrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}(ClassFile-\/>constant\_pool);}
-\DoxyCodeLine{00019\ \ \ \ \ CodePrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}(PoolPrinter);}
-\DoxyCodeLine{00020\ \ \ \ \ PrintClassFile();}
-\DoxyCodeLine{00021\ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ ClassFile\ =\ Loader-\/>\mbox{\hyperlink{classClassLoader_a559a5967b5395e8f6e808a722ba46a72}{GetClass}}(main\_file);}
+\DoxyCodeLine{00027\ \ \ \ \ PoolPrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classConstantPoolPrinter}{ConstantPoolPrinter}}(ClassFile-\/>constant\_pool);}
+\DoxyCodeLine{00028\ \ \ \ \ CodePrinter\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classOpcodePrinter}{OpcodePrinter}}(PoolPrinter);}
+\DoxyCodeLine{00029\ \ \ \ \ PrintClassFile();}
+\DoxyCodeLine{00030\ \}}
 
 \end{DoxyCode}
 

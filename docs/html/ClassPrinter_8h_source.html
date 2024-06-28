@@ -99,51 +99,51 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;ConstantPoolPrinter.h&quot;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//TODO: depois tenho q jogar as funcao de print pra ca pra n virar bagunca o loader</span></div>
-<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classClassPrinter.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="classClassPrinter.html">ClassPrinter</a> {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_class" href="classClassPrinter.html">ClassPrinter</a>(<span class="keyword">const</span> std::string _main_file) : main_file(_main_file) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        Loader = <span class="keyword">new</span> <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    }</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> Run();</div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classClassPrinter.html">   21</a></span><span class="keyword">class </span><a class="code hl_class" href="classClassPrinter.html">ClassPrinter</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_class" href="classClassPrinter.html">ClassPrinter</a>(<span class="keyword">const</span> std::string _main_file) : main_file(_main_file) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        Loader = <span class="keyword">new</span> <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    }</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classClassPrinter.html#ada588bf422f492f6c73c2db68edb573e">Run</a>();</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::string ClassName(<span class="keyword">const</span> <a class="code hl_struct" href="structcp__info.html">cp_info</a> *Entry);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> PrintClassFile();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> PrintConstantPoolTable();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> PrintInterfaces();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> PrintFields();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> PrintMethods();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> PrintAttributes();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> PrintAttributes(std::vector&lt;attribute_info*&gt;*);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> PrintConstantPoolEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structcp__info.html">cp_info</a> *Entry, <span class="keywordtype">size_t</span> idx);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> PrintFieldEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structfield__info.html">field_info</a> * field);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">void</span> PrintMethodEntry(<a class="code hl_struct" href="structmethod__info.html">method_info</a>* Method);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> PrintAttributeEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structattribute__info.html">attribute_info</a>* Attribute, <span class="keywordtype">int</span> indent_width=4);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::string ClassAccessFlagToString(u2 flag);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    std::string MethodAccessFlagToString(u2 flag);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::string FieldAccessFlagToString(u2 flag);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    std::string GetJavaVersion(u2 major_version, u2 minor_version);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    std::string ClassName(<span class="keyword">const</span> <a class="code hl_struct" href="structcp__info.html">cp_info</a> *Entry);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> PrintClassFile();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> PrintConstantPoolTable();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> PrintInterfaces();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> PrintFields();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> PrintMethods();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> PrintAttributes();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> PrintAttributes(std::vector&lt;attribute_info*&gt;*);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> PrintConstantPoolEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structcp__info.html">cp_info</a> *Entry, <span class="keywordtype">size_t</span> idx);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> PrintFieldEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structfield__info.html">field_info</a> * field);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span> PrintMethodEntry(<a class="code hl_struct" href="structmethod__info.html">method_info</a>* Method);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">void</span> PrintAttributeEntry(<span class="keyword">const</span> <a class="code hl_struct" href="structattribute__info.html">attribute_info</a>* Attribute, <span class="keywordtype">int</span> indent_width=4);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::string ClassAccessFlagToString(u2 flag);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    std::string MethodAccessFlagToString(u2 flag);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    std::string FieldAccessFlagToString(u2 flag);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    std::string GetJavaVersion(u2 major_version, u2 minor_version);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">const</span> std::string main_file;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_struct" href="structclass__file.html">class_file</a>* ClassFile;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_class" href="classOpcodePrinter.html">OpcodePrinter</a>* CodePrinter;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="classConstantPoolPrinter.html">ConstantPoolPrinter</a>* PoolPrinter;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>* Loader;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">const</span> std::string main_file;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_struct" href="structclass__file.html">class_file</a>* ClassFile;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classOpcodePrinter.html">OpcodePrinter</a>* CodePrinter;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_class" href="classConstantPoolPrinter.html">ConstantPoolPrinter</a>* PoolPrinter;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <a class="code hl_class" href="classClassLoader.html">ClassLoader</a>* Loader;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif </span><span class="comment">//JVM_CLASSPRINTER_H</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif </span><span class="comment">//JVM_CLASSPRINTER_H</span></div>
 <div class="ttc" id="aclassClassLoader_html"><div class="ttname"><a href="classClassLoader.html">ClassLoader</a></div><div class="ttdoc">Classe responsavel por abrir arquivo .class e formar a struct class_file que o representa.</div><div class="ttdef"><b>Definição</b> <a href="ClassLoader_8h_source.html#l00026">ClassLoader.h:26</a></div></div>
-<div class="ttc" id="aclassClassPrinter_html"><div class="ttname"><a href="classClassPrinter.html">ClassPrinter</a></div><div class="ttdef"><b>Definição</b> <a href="ClassPrinter_8h_source.html#l00019">ClassPrinter.h:19</a></div></div>
+<div class="ttc" id="aclassClassPrinter_html"><div class="ttname"><a href="classClassPrinter.html">ClassPrinter</a></div><div class="ttdoc">Classe responsável pelo modo leitor_exibidor.</div><div class="ttdef"><b>Definição</b> <a href="ClassPrinter_8h_source.html#l00021">ClassPrinter.h:21</a></div></div>
+<div class="ttc" id="aclassClassPrinter_html_ada588bf422f492f6c73c2db68edb573e"><div class="ttname"><a href="classClassPrinter.html#ada588bf422f492f6c73c2db68edb573e">ClassPrinter::Run</a></div><div class="ttdeci">void Run()</div><div class="ttdef"><b>Definição</b> <a href="ClassPrinter_8cpp_source.html#l00025">ClassPrinter.cpp:25</a></div></div>
 <div class="ttc" id="aclassConstantPoolPrinter_html"><div class="ttname"><a href="classConstantPoolPrinter.html">ConstantPoolPrinter</a></div><div class="ttdef"><b>Definição</b> <a href="ConstantPoolPrinter_8h_source.html#l00011">ConstantPoolPrinter.h:11</a></div></div>
 <div class="ttc" id="aclassOpcodePrinter_html"><div class="ttname"><a href="classOpcodePrinter.html">OpcodePrinter</a></div><div class="ttdef"><b>Definição</b> <a href="OpcodePrinter_8h_source.html#l00014">OpcodePrinter.h:14</a></div></div>
 <div class="ttc" id="astructattribute__info_html"><div class="ttname"><a href="structattribute__info.html">attribute_info</a></div><div class="ttdef"><b>Definição</b> <a href="ClassFileStructs_8h_source.html#l00071">ClassFileStructs.h:71</a></div></div>

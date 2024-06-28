@@ -4,6 +4,11 @@
 
 #include "../../include/ClassPrinter/ClassPrinter.h"
 
+/**
+ * @brief retorna o nome de uma classe a partir de sua entrada na constant pool
+ * @param Entry  ponteiro para a entrada que representa uma classe
+ * @return String contendo o nome da classe na entrada
+ */
 std::string ClassPrinter::ClassName(const cp_info *Entry) {
 
     if(Entry->tag != ConstantPoolTag::CONSTANT_Class) // Classe == Object
@@ -12,7 +17,11 @@ std::string ClassPrinter::ClassName(const cp_info *Entry) {
 	return (*ClassFile->constant_pool)[Entry->name_index]->AsString();
 
 }
-
+/**
+ *  Função principal, chamada na main, que inicializa classes internas e
+ *  invoca o ClassLoader para obter a representação
+ *  interna do .class a ser exibido, então invoca o método interno PrintClassFile
+ */
 void ClassPrinter::Run() {
     ClassFile = Loader->GetClass(main_file);
     PoolPrinter = new ConstantPoolPrinter(ClassFile->constant_pool);
@@ -20,6 +29,10 @@ void ClassPrinter::Run() {
     PrintClassFile();
 }
 
+/**
+ * Função responsável por invocar os métodos internos na ordem adequada
+ * para a apresentação em ordem e formatar a saida do arquivo .class
+ */
 void ClassPrinter::PrintClassFile(){
 
 	const auto constant_pool = *ClassFile->constant_pool;
@@ -59,6 +72,12 @@ void ClassPrinter::PrintClassFile(){
     PrintInterfaces();
 }
 
+/**
+ * retorna a versao Java corresponsente a versao do arquivo .class
+ * @param major_version
+ * @param minor_version
+ * @return versao java
+ */
 std::string ClassPrinter::GetJavaVersion(u2 major_version, u2 minor_version) {
 	switch(major_version) {
 	case 45: return "1.1";
@@ -74,7 +93,10 @@ std::string ClassPrinter::GetJavaVersion(u2 major_version, u2 minor_version) {
 	}
 }
 
-
+/**
+ *  Itera por cada entrada da constant Pool e
+ *  chama a funcao responsavel por seu print
+ */
 void ClassPrinter::PrintConstantPoolTable() {
 	std::cout << "Constant pool:" << std::endl;
 	const auto & constant_pool = *ClassFile->constant_pool;
@@ -84,7 +106,10 @@ void ClassPrinter::PrintConstantPoolTable() {
 	std::cout << std::endl;
 
 }
-
+/**
+ *  Itera por cada Interaface e
+ *  chama a funcao responsavel por seu print
+ */
 void ClassPrinter::PrintInterfaces() {
 	if (ClassFile->interfaces_count > 0) {
 		std::cout << "Interfaces:" << std::endl;
@@ -94,7 +119,10 @@ void ClassPrinter::PrintInterfaces() {
 		}
 	}
 }
-
+/**
+ *  Itera por cada Field e
+ *  chama a funcao responsavel por seu print
+ */
 void ClassPrinter::PrintFields() {
 	if (ClassFile->fields_count > 0) {
 		std::cout << "Fields {" << std::endl;
@@ -105,7 +133,10 @@ void ClassPrinter::PrintFields() {
 		std::cout << "}" << std::endl;
 	}
 }
-
+/**
+ *  Itera por cada método e
+ *  chama a funcao responsavel por seu print
+ */
 void ClassPrinter::PrintMethods() {
 	std::cout << "Methods:" << std::endl;
     for (auto Method : *ClassFile->methods) {
@@ -114,7 +145,10 @@ void ClassPrinter::PrintMethods() {
 		std::cout << "}" << std::endl;
     }
 }
-
+/**
+ *  Itera por cada Atributo e
+ *  chama a funcao responsavel por seu print
+ */
 void ClassPrinter::PrintAttributes() {
 	std::cout << "Attributes:" << std::endl;
 	for(const auto a: (*ClassFile->attributes)) {
@@ -134,7 +168,11 @@ void ClassPrinter::PrintAttributes(std::vector<attribute_info*>* Attributes) {
 #define NUM_SEP 3
 #define TYPE_SEP 20
 #define INFO_SEP 20
-
+/**
+ * @brief Print formatado de uma entrada da constant pool
+ * @param Entry ponteiro para struct que representa a entrada
+ * @param idx indice da entrada na constant pool
+ */
 void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
     switch (Entry->tag) {
 	case ConstantPoolTag::CONSTANT_Utf8: {
@@ -350,7 +388,10 @@ void ClassPrinter::PrintConstantPoolEntry(const cp_info *Entry, size_t idx) {
 		break;
     }
 }
-
+/**
+ * @brief Print formatado de um field
+ * @param field Ponteiro para uma struct responsavel por representar um field
+ */
 void ClassPrinter::PrintFieldEntry(const field_info *field) {
     const cp_info* field_name_entry = (*ClassFile->constant_pool)[field->name_index];
     const std::string field_name = field_name_entry->AsString();
@@ -379,6 +420,11 @@ void ClassPrinter::PrintFieldEntry(const field_info *field) {
 	}
 }
 
+/**
+ *  @brief Print formatado de um método
+ *
+ * @param Method Ponteiro para uma struct responsavel por representar um método
+ */
 void ClassPrinter::PrintMethodEntry(method_info* Method){
     const cp_info* method_name_entry = (*ClassFile->constant_pool)[Method->name_index];
     const std::string method_name = method_name_entry->AsString();
@@ -408,7 +454,11 @@ void ClassPrinter::PrintMethodEntry(method_info* Method){
 }
 
 
-
+/**
+ *
+ * @param attr Ponteiro para uma struct responsavel por representar um atributo
+ * @param indent_width indicador da identação necessária para formatação correta
+ */
 void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_width) {
 
     const cp_info* attribute_name_entry = (*ClassFile->constant_pool)[attr->attribute_name_index];
@@ -501,6 +551,11 @@ void ClassPrinter::PrintAttributeEntry(const attribute_info *attr, int indent_wi
 	}
 }
 
+/**
+ * @brief transforma os bytes que representam as flags  de um field em uma string com seus nomes
+ * @param flag u2 que representa as flags de acesso do field
+ * @return string contendo o nome das flags ativas
+ */
 std::string ClassPrinter::FieldAccessFlagToString(u2 flag) {
 	std::vector<std::string> flag_vec;
 	for (unsigned int bit = 0; bit < 32; bit++) {
@@ -576,7 +631,11 @@ std::string ClassPrinter::FieldAccessFlagToString(u2 flag) {
 	}
 	return flag_string;
 }
-
+/**
+ * @brief transforma os bytes que representam as flags de uma classe em uma string com seus nomes
+ * @param flag u2 que representa as flags de acesso da classe
+ * @return string contendo o nome das flags ativas
+ */
 std::string ClassPrinter::ClassAccessFlagToString(u2 flag) {
 	std::vector<std::string> flag_vec;
 	for (unsigned int bit = 0; bit < 32; bit++) {
@@ -624,7 +683,11 @@ std::string ClassPrinter::ClassAccessFlagToString(u2 flag) {
 	}
 	return flag_string;
 }
-
+/**
+ * @brief transforma os bytes que representam as flags de um método em uma string com seus nomes
+ * @param flag u2 que representa as flags de acesso do método
+ * @return string contendo o nome das flags ativas
+ */
 std::string ClassPrinter::MethodAccessFlagToString(u2 flag) {
 	std::vector<std::string> flag_vec;
 	for (unsigned int bit = 0; bit < 32; bit++) {
