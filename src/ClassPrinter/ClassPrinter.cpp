@@ -79,16 +79,29 @@ void ClassPrinter::PrintClassFile(){
  * @return versao java
  */
 std::string ClassPrinter::GetJavaVersion(u2 major_version, u2 minor_version) {
+	if (major_version < 47)
+		return "JDK 1.2 (Java 2)";
 	switch(major_version) {
-	case 45: return "1.1";
-	case 46: return "1.2";
-	case 47: return "1.3";
-	case 48: return "1.4";
-	case 49: return "5";
-	case 50: return "6";
-	case 51: return "7";
-	case 52: return "8";
-	case 53: return "9";
+	case 47: return "JDK 1.3 (Java 3)";
+	case 48: return "JDK 1.4 (Java 4)" ;
+	case 49: return "Java SE 5";
+	case 50: return "Java SE 6";
+	case 51: return "Java SE 7";
+	case 52: return "Java SE 8";
+	case 53: return "Java SE 9";
+	case 54: return "Java SE 10";
+	case 55: return "Java SE 11";
+	case 56: return "Java SE 12";
+	case 57: return "Java SE 13";
+	case 58: return "Java SE 14";
+	case 59: return "Java SE 15";
+	case 60: return "Java SE 16";
+	case 61: return "Java SE 17";
+	case 62: return "Java SE 18";
+	case 63: return "Java SE 19";
+	case 64: return "Java SE 20";
+	case 65: return "Java SE 21";
+	case 66: return "Java SE 22";
 	default: return "Unknown Java Version";
 	}
 }

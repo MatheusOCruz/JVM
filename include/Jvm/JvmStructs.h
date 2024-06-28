@@ -125,7 +125,7 @@ union Cat2Value{
         u4 LowBytes;
         u4 HighBytes;
     };
-    u8 Bytes
+    u8 Bytes;
     int64_t  AsLong;
     double    AsDouble;
 };
