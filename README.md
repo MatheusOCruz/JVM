@@ -23,3 +23,6 @@ Exemplos:
     ./JVM leitor_exibidor Main
     ./JVM jvm Main
 ```
+
+# Documentação:
+Documentaçaõ gerada por Doxygen, basta abrir o arquivo ./docs/html/index.html
