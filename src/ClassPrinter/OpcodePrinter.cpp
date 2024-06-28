@@ -6,6 +6,10 @@
 #include <sstream>
 #include "../../include/ClassPrinter/OpcodePrinter.h"
 
+/**
+ * @brief Construtor da classe OpcodePrinter
+ * @param _printer Ponteiro para a classe ClassPrinter
+ */
 std::string OpcodePrinter::CodeToString(u1 _code[], const u4 code_lenght) {
     StringBuffer = "";
     code_iterator = 0;

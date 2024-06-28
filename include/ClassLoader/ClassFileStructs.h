@@ -68,6 +68,10 @@ struct cp_info{
     };
 };
 
+/**
+ * @brief attribute_info é uma estrutura que contém informações sobre um atributo de uma classe.
+ * @Details A estrutura contém um índice para o nome do atributo, o tamanho do atributo e um union com informações específicas de cada tipo de atributo.
+ */
 struct attribute_info{
     uint16_t attribute_name_index;
     uint32_t attribute_length;
@@ -99,6 +103,10 @@ struct attribute_info{
     };
 };
 
+/**
+ * @brief field_info é uma estrutura que contém informações sobre um campo de uma classe.
+ * @Details A estrutura contém um índice para o nome do campo, um índice para o descritor do campo, o número de atributos do campo e um vetor de atributos.
+ */
 struct field_info{
     uint16_t access_flags;
     uint16_t name_index;
@@ -106,6 +114,11 @@ struct field_info{
     uint16_t attributes_count;
     std::vector<attribute_info*>* attributes;
 };
+
+/**
+ * @brief method_info é uma estrutura que contém informações sobre um metodo de uma classe.
+ * @Details A estrutura contém um índice para o nome do metodo, um índice para o descritor do metodo, o número de atributos do metodo e um vetor de atributos.
+ */
 
 struct method_info{
     u2 access_flags;
@@ -115,6 +128,10 @@ struct method_info{
     std::vector<attribute_info*>* attributes;
 };
 
+/**
+ * @brief class_file é uma estrutura que contém informações sobre uma classe.
+ * @Details A estrutura contém o magic number, a versão da classe, o número de entradas na constant pool, a constant pool, as flags de acesso, o índice da classe, o índice da superclasse, o número de interfaces, as interfaces, o número de campos, os campos, o número de métodos, os métodos, o número de atributos e os atributos.
+ */
 struct class_file{
     u4                            magic;
     u2                            minor_version;
