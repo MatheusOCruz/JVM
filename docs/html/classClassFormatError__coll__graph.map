@@ -1,6 +1,6 @@
 <map id="ClassFormatError" name="ClassFormatError">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,152,140,177"/>
-<area shape="rect" id="Node000002" href="$classClassLoaderError.html" title=" " alt="" coords="7,79,139,104"/>
+<area shape="rect" id="Node000002" href="$classClassLoaderError.html" title="Super classe dos erros em tempo de leitura do arquivo .class." alt="" coords="7,79,139,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,118,75,152,70,152,70,118"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="15,5,130,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,44,75,79,70,79,70,44"/>

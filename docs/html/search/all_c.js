@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['reference_0',['Reference',['../structReference.html',1,'']]],
-  ['run_1',['Run',['../classClassPrinter.html#ada588bf422f492f6c73c2db68edb573e',1,'ClassPrinter']]],
-  ['runtimeexceptions_2',['RunTimeExceptions',['../classRunTimeExceptions.html',1,'']]]
+  ['pop_0',['Pop',['../classJVM_1_1stack.html#aee8882c131dc7f838c674b2dc9cbf25e',1,'JVM::stack']]]
 ];

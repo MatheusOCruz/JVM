@@ -80,12 +80,17 @@ $(function() {
   <div class="headertitle"><div class="title">Referência à classe Template JVM::stack&lt; T &gt;</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Versão custom da std::stack.  
+ <a href="classJVM_1_1stack.html#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="JvmStructs_8h_source.html">JvmStructs.h</a>&gt;</code></p>
 <div class="dynheader">
 Diagrama de heranças da classe JVM::stack&lt; T &gt;</div>
 <div class="dyncontent">
 <div class="center"><img src="classJVM_1_1stack__inherit__graph.png" border="0" usemap="#aJVM_1_1stack_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aJVM_1_1stack_3_01T_01_4_inherit__map" id="aJVM_1_1stack_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,133,104"/>
+<area shape="rect" title="Versão custom da std::stack." alt="" coords="5,79,133,104"/>
 <area shape="rect" title=" " alt="" coords="8,5,131,31"/>
 <area shape="poly" title=" " alt="" coords="72,44,72,79,67,79,67,44"/>
 </map>
@@ -95,7 +100,7 @@ Diagrama de colaboração para JVM::stack&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classJVM_1_1stack__coll__graph.png" border="0" usemap="#aJVM_1_1stack_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aJVM_1_1stack_3_01T_01_4_coll__map" id="aJVM_1_1stack_3_01T_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,133,104"/>
+<area shape="rect" title="Versão custom da std::stack." alt="" coords="5,79,133,104"/>
 <area shape="rect" title=" " alt="" coords="8,5,131,31"/>
 <area shape="poly" title=" " alt="" coords="72,44,72,79,67,79,67,44"/>
 </map>
@@ -104,12 +109,20 @@ Diagrama de colaboração para JVM::stack&lt; T &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Membros públicos</h2></td></tr>
 <tr class="memitem:aee8882c131dc7f838c674b2dc9cbf25e" id="r_aee8882c131dc7f838c674b2dc9cbf25e"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJVM_1_1stack.html#aee8882c131dc7f838c674b2dc9cbf25e">Pop</a> ()</td></tr>
+<tr class="memdesc:aee8882c131dc7f838c674b2dc9cbf25e"><td class="mdescLeft">&#160;</td><td class="mdescRight">retorna o elemento no topo da pilha e o desempilha  <br /></td></tr>
 <tr class="separator:aee8882c131dc7f838c674b2dc9cbf25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
-class JVM::stack&lt; T &gt;</div>
-<p class="definition">Definido na linha <a class="el" href="JvmStructs_8h_source.html#l00015">15</a> do ficheiro <a class="el" href="JvmStructs_8h_source.html">JvmStructs.h</a>.</p>
+class JVM::stack&lt; T &gt;</div><p>Versão custom da std::stack. </p>
+<dl class="tparams"><dt>Parâmetros de template</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>tipo da pilha </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definido na linha <a class="el" href="JvmStructs_8h_source.html#l00018">18</a> do ficheiro <a class="el" href="JvmStructs_8h_source.html">JvmStructs.h</a>.</p>
 </div><h2 class="groupheader">Documentação das funções</h2>
 <a id="aee8882c131dc7f838c674b2dc9cbf25e" name="aee8882c131dc7f838c674b2dc9cbf25e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee8882c131dc7f838c674b2dc9cbf25e">&#9670;&#160;</a></span>Pop()</h2>
@@ -136,15 +149,18 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definido na linha <a class="el" href="JvmStructs_8h_source.html#l00018">18</a> do ficheiro <a class="el" href="JvmStructs_8h_source.html">JvmStructs.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   18</span>               {</div>
-<div class="line"><span class="lineno">   19</span>            <span class="keywordflow">if</span>(this-&gt;empty()){</div>
-<div class="line"><span class="lineno">   20</span>                <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Pilha ta vazia meu rei\n&quot;</span>);</div>
-<div class="line"><span class="lineno">   21</span>            }</div>
-<div class="line"><span class="lineno">   22</span>            T topValue = std::stack&lt;T&gt;::top();</div>
-<div class="line"><span class="lineno">   23</span>            std::stack&lt;T&gt;::pop();</div>
-<div class="line"><span class="lineno">   24</span>            <span class="keywordflow">return</span> topValue;</div>
-<div class="line"><span class="lineno">   25</span>        }</div>
+<p>retorna o elemento no topo da pilha e o desempilha </p>
+<dl class="section return"><dt>Retorna</dt><dd>Elemento no topo da pilha </dd></dl>
+
+<p class="definition">Definido na linha <a class="el" href="JvmStructs_8h_source.html#l00024">24</a> do ficheiro <a class="el" href="JvmStructs_8h_source.html">JvmStructs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>               {</div>
+<div class="line"><span class="lineno">   25</span>            <span class="keywordflow">if</span>(this-&gt;empty()){</div>
+<div class="line"><span class="lineno">   26</span>                <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Pilha ta vazia meu rei\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   27</span>            }</div>
+<div class="line"><span class="lineno">   28</span>            T topValue = std::stack&lt;T&gt;::top();</div>
+<div class="line"><span class="lineno">   29</span>            std::stack&lt;T&gt;::pop();</div>
+<div class="line"><span class="lineno">   30</span>            <span class="keywordflow">return</span> topValue;</div>
+<div class="line"><span class="lineno">   31</span>        }</div>
 </div><!-- fragment -->
 </div>
 </div>

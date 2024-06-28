@@ -7,7 +7,9 @@
 
 
 #include <exception>
-
+/**
+ * @brief Superclasse para os erros em tempo de execuçaõ da jvm
+ */
 class RunTimeExceptions : public std::exception  {};
 
 

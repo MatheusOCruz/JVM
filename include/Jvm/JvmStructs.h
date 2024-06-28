@@ -10,11 +10,17 @@
 #include <stdexcept>
 
 namespace JVM{
-
+    /**
+     * @brief Versão custom da std::stack
+     * @tparam T tipo da pilha
+     */
     template<typename T>
     class stack : public std::stack<T>{
     public:
-
+        /**
+         * @brief retorna o elemento no topo da pilha e o desempilha
+         * @return Elemento no topo da pilha
+         */
         T Pop(){
             if(this->empty()){
                 throw std::out_of_range("Pilha ta vazia meu rei\n");
@@ -28,7 +34,9 @@ namespace JVM{
  
 }
 
-
+/**
+ * @brief Representa o Frame de execução da jvm
+ */
 struct Frame{
     std::vector<u4>* localVariables;
     JVM::stack<u4>*  OperandStack;
@@ -39,12 +47,13 @@ struct Frame{
 
 
 
-// definicao pra resolver definicao circular
 struct ClassInstance;
 struct ArrayInstance;
 struct Reference;
 
-
+/**
+ * @brief representa as possiveis entradas de um field de uma classe
+ */
 union FieldEntry{
     u1     AsByte;
     u1     AsBoolean;
@@ -64,12 +73,21 @@ struct Handle{
     class_file* ClassObject;
 };
 
+/**
+ * @brief Responsável pela representação interna de uma instância de classe
+ * possui um ponteiro para um Handle e um mapa que armazena seus fields
+ */
 struct ClassInstance{
     Handle* ClassHandle;
     std::unordered_map<std::string, FieldEntry>* ObjectData;
 };
 
-
+/**
+ * @brief Responsável pela representação interna de uma instância de Array
+ *  usa uma union entre um
+ *  void** que armazena outros arrays, caso seja n dimensional
+ *  e void* que armazena size entrads de tipo ComponenteType
+ */
 struct ArrayInstance{
     ArrayTypeCode ComponentType;
     union {
@@ -82,7 +100,10 @@ struct ArrayInstance{
 
 
 
-
+/**
+ * Struct reponsável por armazenar referências na pilha de operandos,
+ * que devem ser desemcapsulados após a verificação de tipo
+ */
 struct Reference{
     ReferenceType Type;
     union{
@@ -93,35 +114,22 @@ struct Reference{
 };
 
 
-/*
- *   pilha -> u4
- *   value.UBytes
- *   value.float
- *
- *
- *
- */
-
-
 
 
 /**
- * @union U4ToType
- * @brief Union auxiliar para representar valores cat2 (32 bits)
+ * @brief Union auxiliar para representar valores cat2 (64 bits)
+ *
  */
 union Cat2Value{
     struct{
         u4 LowBytes;
         u4 HighBytes;
     };
-	s4 AsInt;
-    u8    Bytes;
     int64_t  AsLong;
     double    AsDouble;
 };
 
 /**
- * @union U4ToType
  * @brief Union auxiliar para converter e truncar valores de/para u4 (uint32_t)
  * 
  * @var 
@@ -129,7 +137,7 @@ union Cat2Value{
  * sfvfdv
  *  
  * @def Bytes lkmlkm
- * todo explain each member
+ *
  * 
  */
 union U4ToType{

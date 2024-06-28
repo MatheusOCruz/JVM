@@ -44,8 +44,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00040}00040\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00041}00041\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00051}00051\ u8\ Jvm::popU8FromOpStack()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00052}00052\ \ \ \ \ u4\ LowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00053}00053\ \ \ \ \ u4\ HighBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00052}00052\ \ \ \ \ u4\ LowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00053}00053\ \ \ \ \ u4\ HighBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00054}00054\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{static\_cast<}u8\textcolor{keyword}{>}(HighBytes)\ <<\ 32)\ |\ LowBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00055}00055\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00056}00056\ }
@@ -154,7 +154,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00205}00205\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00213}00213\ \textcolor{keywordtype}{void}\ Jvm::PopFrameStack()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00214}00214\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00215}00215\ \ \ \ \ \mbox{\hyperlink{structFrame}{Frame}}*\ OldFrame\ =\ FrameStack.Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00215}00215\ \ \ \ \ \mbox{\hyperlink{structFrame}{Frame}}*\ OldFrame\ =\ FrameStack.\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00216}00216\ \ \ \ \ \textcolor{keyword}{delete}\ OldFrame;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00217}00217\ \ \ \ \ \textcolor{keywordflow}{if}(FrameStack.empty())}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
@@ -317,7 +317,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00414}00414\ \textcolor{comment}{//TODO:\ quando\ uma\ dimensao\ qualquer\ for\ 0,\ retorna\ o\ array\ ate\ la(ta\ na\ spec)}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00425}00425\ \mbox{\hyperlink{structReference}{Reference}}*\ NewArray(ArrayTypeCode\ Type,\ \mbox{\hyperlink{classJVM_1_1stack}{JVM::stack<int>}}\ counts,\ \textcolor{keywordtype}{int}\ dims)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00426}00426\ \ \ \ \ \textcolor{keyword}{auto}\ Array\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structArrayInstance}{ArrayInstance}};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00427}00427\ \ \ \ \ \textcolor{keywordtype}{int}\ count\ \ =\ counts.Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00427}00427\ \ \ \ \ \textcolor{keywordtype}{int}\ count\ \ =\ counts.\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00428}00428\ \ \ \ \ Array-\/>size\ =\ count;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00429}00429\ \ \ \ \ \textcolor{keywordflow}{if}(dims\ ==\ 1)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00430}00430\ \ \ \ \ \ \ \ \ Array-\/>ComponentType\ =\ Type;}
@@ -341,7 +341,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00448}00448\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00449}00449\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00450}00450\ u4\ Jvm::PopOpStack()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00451}00451\ \ \ \ \ \textcolor{keywordflow}{return}\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00451}00451\ \ \ \ \ \textcolor{keywordflow}{return}\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00452}00452\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00453}00453\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00454}00454\ }
@@ -353,14 +353,14 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00464}00464\ \ \ \ \ \textcolor{keywordflow}{return}\ (((u2)\ indexbyte1)\ <<\ 8)\ |\ indexbyte2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00465}00465\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00469}00469\ \textcolor{keywordtype}{void}\ Jvm::return\_u4()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00470}00470\ \ \ \ \ u4\ ReturnValue\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00470}00470\ \ \ \ \ u4\ ReturnValue\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00471}00471\ \ \ \ \ PopFrameStack();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00472}00472\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(ReturnValue);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00473}00473\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00477}00477\ \textcolor{keywordtype}{void}\ Jvm::return\_u8()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00478}00478\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00479}00479\ \ \ \ \ u4\ ReturnValue1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00480}00480\ \ \ \ \ u4\ ReturnValue2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00479}00479\ \ \ \ \ u4\ ReturnValue1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00480}00480\ \ \ \ \ u4\ ReturnValue2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00481}00481\ \ \ \ \ PopFrameStack();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00482}00482\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(ReturnValue2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00483}00483\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(ReturnValue1);}
@@ -397,7 +397,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00525}00525\ \ \ \ \ \textcolor{keywordflow}{if}(!isStatic)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00526}00526\ \ \ \ \ \ \ \ \ count++;\ \textcolor{comment}{//\ objectref}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00527}00527\ \ \ \ \ \textcolor{keywordflow}{while}(count-\/-\/)\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00528}00528\ \ \ \ \ \ \ \ \ u4\ value\ =\ CallerOperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00528}00528\ \ \ \ \ \ \ \ \ u4\ value\ =\ CallerOperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00529}00529\ \ \ \ \ \ \ \ \ (*CurrentFrame-\/>localVariables)[count]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00530}00530\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00531}00531\ \}}
@@ -407,33 +407,33 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00540}00540\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00541}00541\ \ \ \ \ \textcolor{keyword}{auto}\ PrintType\ =\ MethodDescriptor.substr(1,\ MethodDescriptor.size()\ -\/\ 3);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00542}00542\ \ \ \ \ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}Ljava/lang/String;"{}})\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00543}00543\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ output\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structcp__info}{cp\_info}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop())-\/>AsString();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00543}00543\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ output\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structcp__info}{cp\_info}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}())-\/>AsString();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00544}00544\ \ \ \ \ \ \ \ \ std::cout\ <<\ output;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00545}00545\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00546}00546\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}I"{}})\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00547}00547\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ output;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00548}00548\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00548}00548\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00549}00549\ \ \ \ \ \ \ \ \ std::cout<<output.AsInt;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00550}00550\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00551}00551\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}S"{}})\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00552}00552\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ output;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00553}00553\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00553}00553\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00554}00554\ \ \ \ \ \ \ \ \ std::cout\ <<\ output.AsShort;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00555}00555\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00556}00556\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}C"{}})\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00557}00557\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ output;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00558}00558\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00558}00558\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00559}00559\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{wchar\_t}\ f\ =\ output.AsChar;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00560}00560\ \ \ \ \ \ \ \ \ std::wcout\ <<\ f;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00561}00561\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00562}00562\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}B"{}})\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00563}00563\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ output;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00564}00564\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00564}00564\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00565}00565\ \ \ \ \ \ \ \ \ std::cout\ <<\ output.AsByte;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00566}00566\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00567}00567\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}F"{}})\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00568}00568\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ output;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00569}00569\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00569}00569\ \ \ \ \ \ \ \ \ output.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00570}00570\ \ \ \ \ \ \ \ \ std::cout\ <<\ output.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00571}00571\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l00572}00572\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(PrintType\ ==\ \textcolor{stringliteral}{"{}D"{}})\{}
@@ -864,9 +864,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01011}01011\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01012}01012\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01013}01013\ \textcolor{keywordtype}{void}\ Jvm::iaload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01014}01014\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01014}01014\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01015}01015\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01016}01016\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01016}01016\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01017}01017\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01018}01018\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}iaload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01019}01019\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -885,9 +885,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01032}01032\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01033}01033\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01034}01034\ \textcolor{keywordtype}{void}\ Jvm::laload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01035}01035\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01035}01035\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01036}01036\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01037}01037\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01037}01037\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01038}01038\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01039}01039\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}laload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01040}01040\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -911,9 +911,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01058}01058\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01059}01059\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01060}01060\ \textcolor{keywordtype}{void}\ Jvm::faload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01061}01061\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01061}01061\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01062}01062\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01063}01063\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01063}01063\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01064}01064\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01065}01065\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}faload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01066}01066\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -935,9 +935,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01082}01082\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01083}01083\ \textcolor{keywordtype}{void}\ Jvm::daload()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01084}01084\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01085}01085\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01085}01085\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01086}01086\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01087}01087\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01087}01087\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01088}01088\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01089}01089\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}laload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01090}01090\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -960,9 +960,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01107}01107\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01108}01108\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01109}01109\ \textcolor{keywordtype}{void}\ Jvm::aaload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01110}01110\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01110}01110\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01111}01111\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01112}01112\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01112}01112\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01113}01113\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01114}01114\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01115}01115\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}aaload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
@@ -974,7 +974,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01121}01121\ \ \ \ \ \textcolor{keywordflow}{if}(Array-\/>ComponentType\ !=\ ArrayTypeCode::T\_REF\ and\ Array-\/>ComponentType\ !=\ ArrayTypeCode::T\_ARRAY)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01122}01122\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}aaload:\ Array\ nao\ e\ de\ ref\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01123}01123\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01124}01124\ \ \ \ \ u4\ value\ =\ \textcolor{keyword}{reinterpret\_cast<}u4*\textcolor{keyword}{>}(Array-\/>DataVec)[index];}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01124}01124\ \ \ \ \ u4\ value\ =\ \textcolor{keyword}{reinterpret\_cast<}u4*\textcolor{keyword}{>}(Array-\/>ArrayVec)[index];}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01125}01125\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01126}01126\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01127}01127\ }
@@ -983,9 +983,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01130}01130\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01131}01131\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01132}01132\ \textcolor{keywordtype}{void}\ Jvm::baload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01133}01133\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01133}01133\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01134}01134\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01135}01135\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01135}01135\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01136}01136\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01137}01137\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}baload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01138}01138\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1004,9 +1004,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01151}01151\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01152}01152\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01153}01153\ \textcolor{keywordtype}{void}\ Jvm::caload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01154}01154\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01154}01154\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01155}01155\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01156}01156\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01156}01156\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01157}01157\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01158}01158\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}caload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01159}01159\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1026,9 +1026,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01173}01173\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01174}01174\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01175}01175\ \textcolor{keywordtype}{void}\ Jvm::saload()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01176}01176\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01176}01176\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01177}01177\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01178}01178\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01178}01178\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01179}01179\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01180}01180\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}saload:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01181}01181\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1048,7 +1048,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01195}01195\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01196}01196\ \textcolor{keywordtype}{void}\ Jvm::istore()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01197}01197\ \ \ \ \ u1\ index\ =\ (*CurrentCode-\/>code)[pc++];}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01198}01198\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();\ }
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01198}01198\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01199}01199\ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01200}01200\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01201}01201\ \}}
@@ -1057,8 +1057,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01204}01204\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01205}01205\ \textcolor{keywordtype}{void}\ Jvm::lstore()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01206}01206\ \ \ \ \ u1\ index\ =\ (*CurrentCode-\/>code)[pc++];}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01207}01207\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01208}01208\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01207}01207\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01208}01208\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01209}01209\ \ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01210}01210\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01211}01211\ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ highBytes;}
@@ -1071,7 +1071,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01218}01218\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01219}01219\ \textcolor{keywordtype}{void}\ Jvm::fstore()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01220}01220\ \ \ \ \ u1\ index\ =\ (*CurrentCode-\/>code)[pc++];}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01221}01221\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01221}01221\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01222}01222\ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01223}01223\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01224}01224\ }
@@ -1093,7 +1093,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01240}01240\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01241}01241\ \textcolor{keywordtype}{void}\ Jvm::astore()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01242}01242\ \ \ \ \ u1\ index\ =\ (*CurrentCode-\/>code)[pc++];}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01243}01243\ \ \ \ \ u4\ objectref\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01243}01243\ \ \ \ \ u4\ objectref\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01244}01244\ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ objectref;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01245}01245\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01246}01246\ \}}
@@ -1104,7 +1104,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01251}01251\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01252}01252\ \textcolor{keywordtype}{void}\ Jvm::istore\_0()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01253}01253\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01254}01254\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01254}01254\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01255}01255\ \ \ \ \ (*CurrentFrame-\/>localVariables)[0]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01256}01256\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01257}01257\ }
@@ -1114,7 +1114,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01261}01261\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01262}01262\ \textcolor{keywordtype}{void}\ Jvm::istore\_1()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01263}01263\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01264}01264\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01264}01264\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01265}01265\ \ \ \ \ (*CurrentFrame-\/>localVariables)[1]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01266}01266\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01267}01267\ }
@@ -1124,7 +1124,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01271}01271\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01272}01272\ \textcolor{keywordtype}{void}\ Jvm::istore\_2()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01273}01273\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01274}01274\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01274}01274\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01275}01275\ \ \ \ \ (*CurrentFrame-\/>localVariables)[2]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01276}01276\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01277}01277\ }
@@ -1134,7 +1134,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01281}01281\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01282}01282\ \textcolor{keywordtype}{void}\ Jvm::istore\_3()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01283}01283\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01284}01284\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01284}01284\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01285}01285\ \ \ \ \ (*CurrentFrame-\/>localVariables)[3]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01286}01286\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01287}01287\ }
@@ -1142,8 +1142,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01289}01289\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01290}01290\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01291}01291\ \textcolor{keywordtype}{void}\ Jvm::lstore\_0()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01292}01292\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01293}01293\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01292}01292\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01293}01293\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01294}01294\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01295}01295\ \ \ \ \ (*CurrentFrame-\/>localVariables)[0]\ =\ highBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01296}01296\ \ \ \ \ (*CurrentFrame-\/>localVariables)[0\ +\ 1]\ =\ lowBytes;}
@@ -1155,8 +1155,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01302}01302\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01303}01303\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01304}01304\ \textcolor{keywordtype}{void}\ Jvm::lstore\_1()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01305}01305\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01306}01306\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01305}01305\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01306}01306\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01307}01307\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01308}01308\ \ \ \ \ (*CurrentFrame-\/>localVariables)[1]\ =\ highBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01309}01309\ \ \ \ \ (*CurrentFrame-\/>localVariables)[1\ +\ 1]\ =\ lowBytes;}
@@ -1168,8 +1168,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01315}01315\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01316}01316\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01317}01317\ \textcolor{keywordtype}{void}\ Jvm::lstore\_2()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01318}01318\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01319}01319\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01318}01318\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01319}01319\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01320}01320\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01321}01321\ \ \ \ \ (*CurrentFrame-\/>localVariables)[2]\ =\ highBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01322}01322\ \ \ \ \ (*CurrentFrame-\/>localVariables)[2\ +\ 1]\ =\ lowBytes;}
@@ -1180,8 +1180,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01327}01327\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01328}01328\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01329}01329\ \textcolor{keywordtype}{void}\ Jvm::lstore\_3()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01330}01330\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01331}01331\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01330}01330\ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01331}01331\ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01332}01332\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01333}01333\ \ \ \ \ (*CurrentFrame-\/>localVariables)[3]\ =\ highBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01334}01334\ \ \ \ \ (*CurrentFrame-\/>localVariables)[3\ +\ 1]\ =\ lowBytes;}
@@ -1192,7 +1192,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01339}01339\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01340}01340\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01341}01341\ \textcolor{keywordtype}{void}\ Jvm::fstore\_0()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01342}01342\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01342}01342\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01343}01343\ \ \ \ \ (*CurrentFrame-\/>localVariables)[0]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01344}01344\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01345}01345\ }
@@ -1200,7 +1200,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01347}01347\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01348}01348\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01349}01349\ \textcolor{keywordtype}{void}\ Jvm::fstore\_1()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01350}01350\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01350}01350\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01351}01351\ \ \ \ \ (*CurrentFrame-\/>localVariables)[1]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01352}01352\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01353}01353\ }
@@ -1208,7 +1208,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01355}01355\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01356}01356\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01357}01357\ \textcolor{keywordtype}{void}\ Jvm::fstore\_2()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01358}01358\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01358}01358\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01359}01359\ \ \ \ \ (*CurrentFrame-\/>localVariables)[2]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01360}01360\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01361}01361\ }
@@ -1216,7 +1216,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01363}01363\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01364}01364\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01365}01365\ \textcolor{keywordtype}{void}\ Jvm::fstore\_3()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01366}01366\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01366}01366\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01367}01367\ \ \ \ \ (*CurrentFrame-\/>localVariables)[3]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01368}01368\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01369}01369\ }
@@ -1270,7 +1270,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01417}01417\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01418}01418\ \textcolor{keywordtype}{void}\ Jvm::astore\_0()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01419}01419\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01420}01420\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01420}01420\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01421}01421\ \ \ \ \ (*CurrentFrame-\/>localVariables)[0]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01422}01422\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01423}01423\ }
@@ -1279,7 +1279,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01426}01426\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01427}01427\ \textcolor{keywordtype}{void}\ Jvm::astore\_1()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01428}01428\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01429}01429\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01429}01429\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01430}01430\ \ \ \ \ (*CurrentFrame-\/>localVariables)[1]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01431}01431\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01432}01432\ }
@@ -1288,7 +1288,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01435}01435\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01436}01436\ \textcolor{keywordtype}{void}\ Jvm::astore\_2()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01437}01437\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01438}01438\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01438}01438\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01439}01439\ \ \ \ \ (*CurrentFrame-\/>localVariables)[2]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01440}01440\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01441}01441\ }
@@ -1297,7 +1297,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01444}01444\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01445}01445\ \textcolor{keywordtype}{void}\ Jvm::astore\_3()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01446}01446\ \ \ \ \ u4\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01447}01447\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01447}01447\ \ \ \ \ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01448}01448\ \ \ \ \ (*CurrentFrame-\/>localVariables)[3]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01449}01449\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01450}01450\ }
@@ -1305,10 +1305,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01452}01452\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01453}01453\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01454}01454\ \textcolor{keywordtype}{void}\ Jvm::iastore()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01455}01455\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01456}01456\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01455}01455\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01456}01456\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01457}01457\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01458}01458\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01458}01458\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01459}01459\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01460}01460\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}iastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01461}01461\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1328,9 +1328,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01475}01475\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01476}01476\ \textcolor{keywordtype}{void}\ Jvm::lastore()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01477}01477\ \ \ \ \ s8\ value\ =\ popU8FromOpStack();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01478}01478\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01478}01478\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01479}01479\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01480}01480\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01480}01480\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01481}01481\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01482}01482\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}lastore:\ referencia\ nao\ e\ para\ um\ array\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01483}01483\ }
@@ -1350,10 +1350,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01497}01497\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01498}01498\ \textcolor{keywordtype}{void}\ Jvm::fastore()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01499}01499\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01500}01500\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01501}01501\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01500}01500\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01501}01501\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01502}01502\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01503}01503\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01503}01503\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01504}01504\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01505}01505\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}fastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01506}01506\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1375,9 +1375,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01522}01522\ \textcolor{keywordtype}{void}\ Jvm::dastore()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01523}01523\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01524}01524\ \ \ \ \ value.Bytes\ =\ popU8FromOpStack();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01525}01525\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01525}01525\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01526}01526\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01527}01527\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01527}01527\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01528}01528\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01529}01529\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}dastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01530}01530\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1394,10 +1394,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01541}01541\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01542}01542\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01543}01543\ \textcolor{keywordtype}{void}\ Jvm::aastore()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01544}01544\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01545}01545\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01544}01544\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01545}01545\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01546}01546\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01547}01547\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01547}01547\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01548}01548\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01549}01549\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}aastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01550}01550\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1412,10 +1412,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01559}01559\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01560}01560\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01561}01561\ \textcolor{keywordtype}{void}\ Jvm::bastore()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01562}01562\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01563}01563\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01562}01562\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01563}01563\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01564}01564\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01565}01565\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01565}01565\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01566}01566\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01567}01567\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}bastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01568}01568\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1436,10 +1436,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01583}01583\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01584}01584\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01585}01585\ \textcolor{keywordtype}{void}\ Jvm::castore()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01586}01586\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01587}01587\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01586}01586\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01587}01587\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01588}01588\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01589}01589\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01589}01589\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01590}01590\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01591}01591\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}castore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01592}01592\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1459,10 +1459,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01606}01606\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01607}01607\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01608}01608\ \textcolor{keywordtype}{void}\ Jvm::sastore()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01609}01609\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01610}01610\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01609}01609\ \ \ \ \ s4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01610}01610\ \ \ \ \ s4\ index\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01611}01611\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01612}01612\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01612}01612\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01613}01613\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef\ ==\ NULL\ )\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01614}01614\ \ \ \ \ \ \ \ \ std::cerr<<\textcolor{stringliteral}{"{}sastore:\ referencia\ nao\ é\ acessível\(\backslash\)n"{}};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01615}01615\ \ \ \ \ \textcolor{keywordflow}{if}(ArrayRef-\/>Type\ !=\ ReferenceType::ArrayType)}
@@ -1497,7 +1497,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01644}01644\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01645}01645\ \textcolor{keywordtype}{void}\ Jvm::dup()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01646}01646\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01647}01647\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01647}01647\ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01648}01648\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01649}01649\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value);\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01650}01650\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value);\ }
@@ -1508,8 +1508,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01655}01655\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01656}01656\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01657}01657\ \textcolor{keywordtype}{void}\ Jvm::dup\_x1()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01658}01658\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01659}01659\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01658}01658\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01659}01659\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01660}01660\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01661}01661\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01662}01662\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
@@ -1521,9 +1521,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01668}01668\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01669}01669\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01670}01670\ \textcolor{keywordtype}{void}\ Jvm::dup\_x2()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01671}01671\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01672}01672\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01673}01673\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01671}01671\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01672}01672\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01673}01673\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01674}01674\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01675}01675\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01676}01676\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value3);}
@@ -1533,8 +1533,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01680}01680\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01681}01681\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01682}01682\ \textcolor{keywordtype}{void}\ Jvm::dup2()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01683}01683\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01684}01684\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01683}01683\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01684}01684\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01685}01685\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01686}01686\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01687}01687\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
@@ -1546,9 +1546,9 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01693}01693\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01694}01694\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01695}01695\ \textcolor{keywordtype}{void}\ Jvm::dup2\_x1()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01696}01696\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01697}01697\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01698}01698\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01696}01696\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01697}01697\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01698}01698\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01699}01699\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01700}01700\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01701}01701\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value3);}
@@ -1562,10 +1562,10 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01709}01709\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01710}01710\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01711}01711\ \textcolor{keywordtype}{void}\ Jvm::dup2\_x2()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01712}01712\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01713}01713\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01714}01714\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01715}01715\ \ \ \ \ u4\ value4\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01712}01712\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01713}01713\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01714}01714\ \ \ \ \ u4\ value3\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01715}01715\ \ \ \ \ u4\ value4\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01716}01716\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01717}01717\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01718}01718\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value4);}
@@ -1579,8 +1579,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01726}01726\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01727}01727\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01728}01728\ \textcolor{keywordtype}{void}\ Jvm::swap()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01729}01729\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01730}01730\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01729}01729\ \ \ \ \ u4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01730}01730\ \ \ \ \ u4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01731}01731\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value1);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01732}01732\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01733}01733\ }
@@ -1592,8 +1592,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01739}01739\ \textcolor{keywordtype}{void}\ Jvm::iadd()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01740}01740\ \ \ \ \ s4\ value1;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01741}01741\ \ \ \ \ s4\ value2;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01742}01742\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01743}01743\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01742}01742\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01743}01743\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01744}01744\ \ \ \ \ s4\ result\ =\ value1\ +\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01745}01745\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01746}01746\ \}}
@@ -1615,8 +1615,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01762}01762\ \textcolor{comment}{//\ Both\ value1\ and\ value2\ must\ be\ of\ type\ float.\ The\ values\ are\ popped\ from\ the\ operand\ stack\ and\ undergo\ value\ set\ conversion\ (§2.8.3),\ resulting\ in\ value1'\ and\ value2'.\ The\ float\ result\ is\ value1'\ +\ value2'.\ The\ result\ is\ pushed\ onto\ the\ operand\ stack.\ The\ result\ of\ an\ fadd\ instruction\ is\ governed\ by\ the\ rules\ of\ IEEE\ arithmetic:\ •\ If\ either\ value1'\ or\ value2'\ is\ NaN,\ the\ result\ is\ NaN.\ •\ The\ sum\ of\ two\ infinities\ of\ opposite\ sign\ is\ NaN.\ •\ The\ sum\ of\ two\ infinities\ of\ the\ same\ sign\ is\ the\ infinity\ of\ that\ sign.\ •\ The\ sum\ of\ an\ infinity\ and\ any\ finite\ value\ is\ equal\ to\ the\ infinity.\ •\ The\ sum\ of\ two\ zeroes\ of\ opposite\ sign\ is\ positive\ zero.\ •\ The\ sum\ of\ two\ zeroes\ of\ the\ same\ sign\ is\ the\ zero\ of\ that\ sign.\ •\ The\ sum\ of\ a\ zero\ and\ a\ nonzero\ finite\ value\ is\ equal\ to\ the\ nonzero\ value.\ •\ The\ sum\ of\ two\ nonzero\ finite\ values\ of\ the\ same\ magnitude\ and\ opposite\ sign\ is\ positive\ zero.\ •\ In\ the\ remaining\ cases,\ where\ neither\ operand\ is\ an\ infinity,\ a\ zero,\ or\ NaN\ and\ the\ values\ have\ the\ same\ sign\ or\ have\ different\ magnitudes,\ the\ sum\ is\ computed\ and\ rounded\ to\ the\ nearest\ representable\ value\ using\ IEEE\ 754\ round\ to\ nearest\ mode.\ If\ THE\ JAVA\ VIRTUAL\ MACHINE\ INSTRUCTION\ SET\ Instructions\ 6.5\ 421\ the\ magnitude\ is\ too\ large\ to\ represent\ as\ a\ float,\ we\ say\ the\ operation\ overflows;\ the\ result\ is\ then\ an\ infinity\ of\ appropriate\ sign.\ If\ the\ magnitude\ is\ too\ small\ to\ represent\ as\ a\ float,\ we\ say\ the\ operation\ underflows;\ the\ result\ is\ then\ a\ zero\ of\ appropriate\ sign.\ The\ Java\ Virtual\ Machine\ requires\ support\ of\ gradual\ underflow\ as\ defined\ by\ IEEE\ 754.\ Despite\ the\ fact\ that\ overflow,\ underflow,\ or\ loss\ of\ precision\ may\ occur,\ execution\ of\ an\ fadd\ instruction\ never\ throws\ a\ run-\/time\ ex}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01763}01763\ \textcolor{keywordtype}{void}\ Jvm::fadd()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01764}01764\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2,\ result;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01765}01765\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01766}01766\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01765}01765\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01766}01766\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01767}01767\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01768}01768\ \ \ \ \ result.AsFloat\ =\ value1.AsFloat\ +\ value2.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01769}01769\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result.UBytes));}
@@ -1635,8 +1635,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01782}01782\ \textcolor{keywordtype}{void}\ Jvm::isub()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01783}01783\ \ \ \ \ s4\ value1;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01784}01784\ \ \ \ \ s4\ value2;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01785}01785\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01786}01786\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01785}01785\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01786}01786\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01787}01787\ \ \ \ \ s4\ result\ =\ value1\ -\/\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01788}01788\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01789}01789\ \textcolor{comment}{//Despite\ the\ fact\ that\ overflow\ may\ occur,\ execution\ of\ an\ isub\ instruction\ never\ throws\ a\ run-\/time\ exception.}}
@@ -1656,8 +1656,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01803}01803\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01804}01804\ \textcolor{keywordtype}{void}\ Jvm::fsub()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01805}01805\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2,\ result;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01806}01806\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01807}01807\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01806}01806\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01807}01807\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01808}01808\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01809}01809\ \ \ \ \ result.AsFloat\ =\ value1.AsFloat\ -\/\ value2.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01810}01810\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result.UBytes));}
@@ -1680,8 +1680,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01827}01827\ \ \ \ \ s4\ value1;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01828}01828\ \ \ \ \ s4\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01829}01829\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01830}01830\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01831}01831\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01830}01830\ \ \ \ \ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01831}01831\ \ \ \ \ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01832}01832\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01833}01833\ \ \ \ \ s4\ result\ =\ value1\ *\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01834}01834\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
@@ -1704,8 +1704,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01851}01851\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01852}01852\ \textcolor{keywordtype}{void}\ Jvm::fmul()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01853}01853\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2,\ result;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01854}01854\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01855}01855\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01854}01854\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01855}01855\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01856}01856\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01857}01857\ \ \ \ \ result.AsFloat\ =\ value1.AsFloat\ *\ value2.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01858}01858\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result.UBytes));}
@@ -1725,8 +1725,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01872}01872\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01873}01873\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01874}01874\ \textcolor{keywordtype}{void}\ Jvm::idiv()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01875}01875\ \ \ \ \ \textcolor{keywordtype}{int}\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01876}01876\ \ \ \ \ \textcolor{keywordtype}{int}\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01875}01875\ \ \ \ \ \textcolor{keywordtype}{int}\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01876}01876\ \ \ \ \ \textcolor{keywordtype}{int}\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01877}01877\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01878}01878\ \ \ \ \ \textcolor{keywordflow}{if}\ (value2\ ==\ 0)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01879}01879\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classArithmeticException}{ArithmeticException}}();}
@@ -1752,8 +1752,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01899}01899\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01900}01900\ \textcolor{keywordtype}{void}\ Jvm::fdiv()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01901}01901\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2,\ result;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01902}01902\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01903}01903\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01902}01902\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01903}01903\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01904}01904\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01905}01905\ \ \ \ \ result.AsFloat\ =\ value1.AsFloat\ /\ value2.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01906}01906\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result.UBytes));}
@@ -1775,8 +1775,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01922}01922\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01923}01923\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01924}01924\ \textcolor{keywordtype}{void}\ Jvm::irem()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01925}01925\ \ \ \ \ \textcolor{keywordtype}{int}\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01926}01926\ \ \ \ \ \textcolor{keywordtype}{int}\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01925}01925\ \ \ \ \ \textcolor{keywordtype}{int}\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01926}01926\ \ \ \ \ \textcolor{keywordtype}{int}\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01927}01927\ \ \ \ \ \textcolor{keywordtype}{int}\ result;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01928}01928\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01929}01929\ \ \ \ \ value1\ -\/\ (value1\ /\ value2)\ *\ value2;}
@@ -1807,8 +1807,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01954}01954\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01955}01955\ \textcolor{keywordtype}{void}\ Jvm::frem()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01956}01956\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2,\ result;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01957}01957\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01958}01958\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01957}01957\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01958}01958\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01959}01959\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01960}01960\ \ \ \ \ \textcolor{keywordtype}{long}\ q\ =\ floor(value1.AsFloat\ /\ value2.AsFloat);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01961}01961\ }
@@ -1829,7 +1829,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01976}01976\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01977}01977\ \textcolor{keywordtype}{void}\ Jvm::ineg()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01978}01978\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01979}01979\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01979}01979\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01980}01980\ \ \ \ \ value.AsInt\ =\ value.AsInt\ *\ -\/1;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01981}01981\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01982}01982\ \}}
@@ -1843,7 +1843,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01990}01990\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01991}01991\ \textcolor{keywordtype}{void}\ Jvm::fneg()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01992}01992\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01993}01993\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01993}01993\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01994}01994\ \ \ \ \ value.AsFloat\ =\ value.AsFloat\ *\ -\/1.0;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01995}01995\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l01996}01996\ \}}
@@ -1856,23 +1856,23 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02003}02003\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02004}02004\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02005}02005\ \textcolor{keywordtype}{void}\ Jvm::ishl()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02006}02006\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02007}02007\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02006}02006\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02007}02007\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02008}02008\ \ \ \ \ s4\ result\ =\ value1\ <<\ (0x1F\ \&\ value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02009}02009\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02010}02010\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02011}02011\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02012}02012\ \textcolor{keywordtype}{void}\ Jvm::lshl()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02013}02013\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02014}02014\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02014}02014\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02015}02015\ \ \ \ \ value.Bytes\ =\ popU8FromOpStack();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02016}02016\ \ \ \ \ value.AsLong\ =\ value.AsLong\ <<\ (0x3F\ \&\ value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02017}02017\ \ \ \ \ pushU8ToOpStack(value.HighBytes,\ value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02018}02018\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02019}02019\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02020}02020\ \textcolor{keywordtype}{void}\ Jvm::ishr()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02021}02021\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02022}02022\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02021}02021\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02022}02022\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02023}02023\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02024}02024\ \ \ \ \ s4\ result\ =\ value1\ >>\ (0x1F\ \&\ value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02025}02025\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
@@ -1880,15 +1880,15 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02027}02027\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02028}02028\ \textcolor{keywordtype}{void}\ Jvm::lshr()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02029}02029\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02030}02030\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02030}02030\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02031}02031\ \ \ \ \ value.Bytes\ =\ popU8FromOpStack();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02032}02032\ \ \ \ \ value.AsLong\ =\ value.AsLong\ >>\ (0x3F\ \&\ value2);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02033}02033\ \ \ \ \ pushU8ToOpStack(value.HighBytes,\ value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02034}02034\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02035}02035\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02036}02036\ \textcolor{keywordtype}{void}\ Jvm::iushr()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02037}02037\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02038}02038\ \ \ \ \ s4\ value\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02037}02037\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02038}02038\ \ \ \ \ s4\ value\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02039}02039\ \ \ \ \ s4\ s\ =\ value2\ \&\ 0x1F;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02040}02040\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02041}02041\ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ 0)\ value\ =\ value\ >>\ s;}
@@ -1899,7 +1899,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02046}02046\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02047}02047\ \textcolor{keywordtype}{void}\ Jvm::lushr()\ \{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02048}02048\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02049}02049\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02049}02049\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02050}02050\ \ \ \ \ value.Bytes\ =\ popU8FromOpStack();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02051}02051\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02052}02052\ \ \ \ \ s4\ s\ =\ value2\ \&\ 0x1F;}
@@ -1912,8 +1912,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02059}02059\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02060}02060\ \textcolor{keywordtype}{void}\ Jvm::iand()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02061}02061\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02062}02062\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02063}02063\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02062}02062\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02063}02063\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02064}02064\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02065}02065\ \ \ \ \ s4\ result\ =\ \ value1\ \&\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02066}02066\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
@@ -1929,8 +1929,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02076}02076\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02077}02077\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02078}02078\ \textcolor{keywordtype}{void}\ Jvm::ior()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02079}02079\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02080}02080\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02079}02079\ \ \ \ \ s4\ value2\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02080}02080\ \ \ \ \ s4\ value1\ =\ \textcolor{keyword}{static\_cast<}s4\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02081}02081\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02082}02082\ \ \ \ \ s4\ result\ =\ \ value1\ |\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02083}02083\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
@@ -1946,8 +1946,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02093}02093\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02094}02094\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02095}02095\ \textcolor{keywordtype}{void}\ Jvm::ixor()\{\ \ \ \ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02096}02096\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02097}02097\ \ \ \ \ s4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02096}02096\ \ \ \ \ s4\ value2\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02097}02097\ \ \ \ \ s4\ value1\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02098}02098\ \ \ \ \ s4\ result\ =\ \ value1\ \string^\ value2;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02099}02099\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(\textcolor{keyword}{static\_cast<}u4\textcolor{keyword}{>}(result));}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02100}02100\ \}}
@@ -1970,22 +1970,22 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02117}02117\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02118}02118\ \textcolor{keywordtype}{void}\ Jvm::i2l()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02119}02119\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02120}02120\ \ \ \ \ value.AsLong\ =\ (CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02120}02120\ \ \ \ \ value.AsLong\ =\ (CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02121}02121\ \ \ \ \ pushU8ToOpStack(value.HighBytes,\ value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02122}02122\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02123}02123\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02124}02124\ \textcolor{keywordtype}{void}\ Jvm::i2f()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02125}02125\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02126}02126\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02126}02126\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02127}02127\ \ \ \ \ value.AsFloat\ =\ value.AsInt;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02128}02128\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02129}02129\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02130}02130\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02131}02131\ \textcolor{comment}{//Converte\ int\ pra\ double}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02132}02132\ \textcolor{keywordtype}{void}\ Jvm::i2d()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02133}02133\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02134}02134\ \ \ \ \ value.Bytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02135}02135\ \ \ \ \ value.AsDouble\ =\ value.AsInt;}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02133}02133\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ value\{\};}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02134}02134\ \ \ \ \ \textcolor{keyword}{auto}\ IntValue\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02135}02135\ \ \ \ \ value.AsDouble\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(IntValue);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02136}02136\ \ \ \ \ pushU8ToOpStack(value.HighBytes,\ value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02137}02137\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02138}02138\ }
@@ -2014,7 +2014,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02161}02161\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02162}02162\ \textcolor{keywordtype}{void}\ Jvm::f2i()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02163}02163\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02164}02164\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02164}02164\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02165}02165\ \ \ \ \ value.AsInt\ =\ value.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02166}02166\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02167}02167\ \}}
@@ -2023,7 +2023,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02170}02170\ \textcolor{keywordtype}{void}\ Jvm::f2l()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02171}02171\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ to\_value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02172}02172\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02173}02173\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02173}02173\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02174}02174\ \ \ \ \ to\_value.AsLong\ =\ value.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02175}02175\ \ \ \ \ pushU8ToOpStack(to\_value.HighBytes,\ to\_value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02176}02176\ }
@@ -2047,7 +2047,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02194}02194\ \textcolor{keywordtype}{void}\ Jvm::f2d()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02195}02195\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02196}02196\ \ \ \ \ \mbox{\hyperlink{unionCat2Value}{Cat2Value}}\ to\_value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02197}02197\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02197}02197\ \ \ \ \ value.UBytes\ =\ (CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02198}02198\ \ \ \ \ to\_value.AsDouble\ =\ value.AsFloat;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02199}02199\ \ \ \ \ pushU8ToOpStack(to\_value.HighBytes,\ to\_value.LowBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02200}02200\ \}}
@@ -2077,7 +2077,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02224}02224\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02225}02225\ \textcolor{keywordtype}{void}\ Jvm::i2b()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02226}02226\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02227}02227\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02227}02227\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02228}02228\ \ \ \ \ value.AsInt\ =\ value.AsByte;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02229}02229\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02230}02230\ \ \ \ \ \textcolor{keywordflow}{return};}
@@ -2085,14 +2085,14 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02232}02232\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02233}02233\ \textcolor{keywordtype}{void}\ Jvm::i2c()\{\ \ \ \ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02234}02234\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02235}02235\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02235}02235\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02236}02236\ \ \ \ \ value.AsInt\ =\ value.AsChar;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02237}02237\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02238}02238\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02239}02239\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02240}02240\ \textcolor{keywordtype}{void}\ Jvm::i2s()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02241}02241\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value\{\};}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02242}02242\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02242}02242\ \ \ \ \ value.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02243}02243\ \ \ \ \ value.AsInt\ =\ value.AsShort;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02244}02244\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(value.UBytes);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02245}02245\ \}}
@@ -2114,8 +2114,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02261}02261\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02262}02262\ \textcolor{keywordtype}{void}\ Jvm::fcmpl()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02263}02263\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02264}02264\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02265}02265\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02264}02264\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02265}02265\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02266}02266\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02267}02267\ \ \ \ \ \textcolor{keywordtype}{int}\ intValue\ =\ 9;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02268}02268\ }
@@ -2131,8 +2131,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02278}02278\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02279}02279\ \textcolor{keywordtype}{void}\ Jvm::fcmpg()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02280}02280\ \ \ \ \ \mbox{\hyperlink{unionU4ToType}{U4ToType}}\ value1,\ value2;}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02281}02281\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02282}02282\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02281}02281\ \ \ \ \ value2.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02282}02282\ \ \ \ \ value1.UBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02283}02283\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02284}02284\ \ \ \ \ \textcolor{keywordtype}{int}\ intValue\ =\ 9;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02285}02285\ }
@@ -2182,7 +2182,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02329}02329\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02330}02330\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02331}02331\ \textcolor{keywordtype}{void}\ Jvm::ifeq()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02332}02332\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02332}02332\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02333}02333\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02334}02334\ \ \ \ \ s2\ offset\ =\ GetIndex2();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02335}02335\ \ \ \ \ \textcolor{keywordflow}{if}(value\ ==\ 0)\ pc\ +=\ offset\ -\/\ 3;\ \textcolor{comment}{//\ Por\ que\ o\ PC\ ja\ andou\ 1\ +\ 2\ bytes\ branchs}}
@@ -2192,7 +2192,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02339}02339\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02340}02340\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02341}02341\ \textcolor{keywordtype}{void}\ Jvm::ifne()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02342}02342\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02342}02342\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02343}02343\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02344}02344\ \ \ \ \ s2\ offset\ =\ GetIndex2();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02345}02345\ \ \ \ \ \textcolor{keywordflow}{if}(value\ !=\ 0)\ pc\ +=\ offset\ -\/\ 3;\ \textcolor{comment}{//\ Por\ que\ o\ PC\ ja\ andou\ 1\ +\ 2\ bytes\ branchs}}
@@ -2202,7 +2202,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02349}02349\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02350}02350\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02351}02351\ \textcolor{keywordtype}{void}\ Jvm::iflt()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02352}02352\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02352}02352\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02353}02353\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02354}02354\ \ \ \ \ s2\ offset\ =\ GetIndex2();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02355}02355\ \ \ \ \ \textcolor{keywordflow}{if}(value\ <\ 0)\ pc\ +=\ offset\ -\/\ 3;\ \textcolor{comment}{//\ Por\ que\ o\ PC\ ja\ andou\ 1\ +\ 2\ bytes\ branchs}}
@@ -2214,7 +2214,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02361}02361\ \textcolor{keywordtype}{void}\ Jvm::ifge()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02362}02362\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02363}02363\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02364}02364\ \ \ \ \ \textcolor{keyword}{auto}\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02364}02364\ \ \ \ \ \textcolor{keyword}{auto}\ value\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02365}02365\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02366}02366\ \ \ \ \ \textcolor{keywordflow}{if}(value\ >=\ 0)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02367}02367\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset;}
@@ -2229,7 +2229,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02376}02376\ \textcolor{keywordtype}{void}\ Jvm::ifgt()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02377}02377\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02378}02378\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02379}02379\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02379}02379\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02380}02380\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02381}02381\ \ \ \ \ \textcolor{keywordflow}{if}(value\ >\ 0)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02382}02382\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset;}
@@ -2242,7 +2242,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02389}02389\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02390}02390\ \textcolor{keywordtype}{void}\ Jvm::ifle()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02391}02391\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02392}02392\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02392}02392\ \ \ \ \ int32\_t\ value\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02393}02393\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02394}02394\ \ \ \ \ \textcolor{keywordflow}{if}(value\ <=\ 0)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02395}02395\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset;}
@@ -2257,8 +2257,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02404}02404\ \textcolor{keywordtype}{void}\ Jvm::if\_icmpeq()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02405}02405\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02406}02406\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02407}02407\ \ \ \ \ int32\_t\ value2\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02408}02408\ \ \ \ \ int32\_t\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02407}02407\ \ \ \ \ int32\_t\ value2\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02408}02408\ \ \ \ \ int32\_t\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02409}02409\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02410}02410\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ ==\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02411}02411\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset;}
@@ -2272,8 +2272,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02419}02419\ \textcolor{keywordtype}{void}\ Jvm::if\_icmpne()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02420}02420\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02421}02421\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02422}02422\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02423}02423\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02422}02422\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02423}02423\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02424}02424\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02425}02425\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ !=\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02426}02426\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset;}
@@ -2286,8 +2286,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02433}02433\ \textcolor{keywordtype}{void}\ Jvm::if\_icmplt()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02434}02434\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02435}02435\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02436}02436\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02437}02437\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02436}02436\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02437}02437\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02438}02438\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02439}02439\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ <\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02440}02440\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset\ ;}
@@ -2301,8 +2301,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02448}02448\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02449}02449\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02450}02450\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02451}02451\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02452}02452\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02451}02451\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02452}02452\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02453}02453\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02454}02454\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ >=\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02455}02455\ }
@@ -2315,8 +2315,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02462}02462\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02463}02463\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02464}02464\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02465}02465\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02466}02466\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02465}02465\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02466}02466\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02467}02467\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02468}02468\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ >\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02469}02469\ }
@@ -2329,8 +2329,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02476}02476\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02477}02477\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02478}02478\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02479}02479\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02480}02480\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02479}02479\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02480}02480\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02481}02481\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02482}02482\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ <=\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02483}02483\ }
@@ -2343,8 +2343,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02490}02490\ \textcolor{keywordtype}{void}\ Jvm::if\_acmpeq()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02491}02491\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02492}02492\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02493}02493\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02494}02494\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02493}02493\ \ \ \ \ \textcolor{keyword}{auto}\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02494}02494\ \ \ \ \ \textcolor{keyword}{auto}\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02495}02495\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02496}02496\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ ==\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02497}02497\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset\ ;}
@@ -2355,8 +2355,8 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02502}02502\ \textcolor{keywordtype}{void}\ Jvm::if\_acmpne()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02503}02503\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02504}02504\ \ \ \ \ \textcolor{keyword}{auto}\ branchoffset\ =\ \textcolor{keyword}{static\_cast<}int16\_t\textcolor{keyword}{>}(GetIndex2())\ -\/3;\ \textcolor{comment}{//\ em\ relacao\ ao\ \$}}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02505}02505\ \ \ \ \ int32\_t\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02506}02506\ \ \ \ \ int32\_t\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02505}02505\ \ \ \ \ int32\_t\ value2\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02506}02506\ \ \ \ \ int32\_t\ value1\ =\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02507}02507\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02508}02508\ \ \ \ \ \textcolor{keywordflow}{if}(value1\ !=\ value2)\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02509}02509\ \ \ \ \ \ \ \ \ pc\ +=\ branchoffset\ ;}
@@ -2741,7 +2741,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02888}02888\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02889}02889\ \textcolor{keywordtype}{void}\ Jvm::newarray()\{}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02890}02890\ }
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02891}02891\ \ \ \ \ \textcolor{keyword}{auto}\ Count\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02891}02891\ \ \ \ \ \textcolor{keyword}{auto}\ Count\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02892}02892\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02893}02893\ \ \ \ \ \textcolor{keywordflow}{if}(Count\ <\ 0)}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02894}02894\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classNegativeArraySizeException}{NegativeArraySizeException}}();}
@@ -2793,7 +2793,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02940}02940\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02941}02941\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02942}02942\ \textcolor{keywordtype}{void}\ Jvm::arraylength()\{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02943}02943\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02943}02943\ \ \ \ \ \textcolor{keyword}{auto}*\ ArrayRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02944}02944\ \ \ \ \ \textcolor{keyword}{auto}*\ Array\ =\ ArrayRef-\/>ArrayRef;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02945}02945\ \ \ \ \ CurrentFrame-\/>OperandStack-\/>push(Array-\/>size);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02946}02946\ \}}
@@ -2809,7 +2809,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02956}02956\ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02957}02957\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02958}02958\ \textcolor{keywordtype}{void}\ Jvm::instanceof()\ \{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02959}02959\ \ \ \ \ \textcolor{keyword}{auto}\ ObjectRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02959}02959\ \ \ \ \ \textcolor{keyword}{auto}\ ObjectRef\ =\ \textcolor{keyword}{reinterpret\_cast<}\mbox{\hyperlink{structReference}{Reference}}*\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02960}02960\ \ \ \ \ \textcolor{keyword}{auto}\ index\ =\ GetIndex2();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02961}02961\ \ \ \ \ \textcolor{keywordtype}{int}\ result\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l02962}02962\ \ \ \ \ \textcolor{keywordflow}{if}(ObjectRef-\/>Nullref\ !=\ \textcolor{keyword}{nullptr})\ \{}
@@ -2862,14 +2862,14 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03009}03009\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_astore):}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03010}03010\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_fstore):}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03011}03011\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_istore):\ \{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03012}03012\ \ \ \ \ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03012}03012\ \ \ \ \ \ \ \ \ u4\ value\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03013}03013\ \ \ \ \ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ value;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03014}03014\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03015}03015\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03016}03016\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_dstore):}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03017}03017\ \ \ \ \ \textcolor{keywordflow}{case}(WideOp::WIDE\_lstore):\ \{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03018}03018\ \ \ \ \ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03019}03019\ \ \ \ \ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>Pop();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03018}03018\ \ \ \ \ \ \ \ \ u4\ lowBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03019}03019\ \ \ \ \ \ \ \ \ u4\ highBytes\ =\ CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}();}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03020}03020\ \ \ \ \ \ \ \ \ (*CurrentFrame-\/>localVariables)[index]\ =\ highBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03021}03021\ \ \ \ \ \ \ \ \ (*CurrentFrame-\/>localVariables)[index\ +\ 1]\ =\ lowBytes;}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03022}03022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
@@ -2940,7 +2940,7 @@
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03087}03087\ }
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03088}03088\ \ \ \ \ \textcolor{comment}{//\ pega\ o\ tamanho\ de\ cada\ dimensao}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03089}03089\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dimensions;\ ++i)\ \{}
-\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03090}03090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ count\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>Pop());}
+\DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03090}03090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ count\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(CurrentFrame-\/>OperandStack-\/>\mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}}());}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03091}03091\ \ \ \ \ \ \ \ \ sizes.push(count);}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03092}03092\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Jvm_8cpp_source_l03093}03093\ }

@@ -5,7 +5,9 @@
 #ifndef JVM_JVMENUMS_H
 #define JVM_JVMENUMS_H
 
-
+/**
+ * Possíveis entradas de um Array
+ */
 enum class ArrayTypeCode{
     T_BOOLEAN = 4,
     T_CHAR    = 5,
@@ -19,6 +21,9 @@ enum class ArrayTypeCode{
     T_ARRAY   = 13,
 };
 
+/**
+ * Possíveis entradas em um Referece type
+ */
 enum class ReferenceType{
     NullReference,
     ClassType,

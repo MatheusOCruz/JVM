@@ -13,7 +13,9 @@
 #include "JvmEnums.h"
 #include "RunTimeExceptions.h"
 #include "../ClassPrinter/OpcodePrinter.h"
-
+/**
+ * @brief Classe responsável pelo movo jvm, ou seja, o interpretador
+ */
 class Jvm {
 public:
      explicit Jvm(std::string _main_file) : MainClass(std::move(_main_file)) {}

@@ -8,6 +8,9 @@
 #include <exception>
 #include <string>
 #include "../typedefs.h"
+/**
+ * @brief Super classe dos erros em tempo de leitura do arquivo .class
+ */
 class ClassLoaderError : public std::exception {
 
 };

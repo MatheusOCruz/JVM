@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['stack_0',['stack',['../classJVM_1_1stack.html',1,'JVM']]],
-  ['stack_3c_20frame_20_2a_20_3e_1',['stack&lt; Frame * &gt;',['../classJVM_1_1stack.html',1,'JVM']]],
-  ['stack_3c_20u4_20_3e_2',['stack&lt; u4 &gt;',['../classJVM_1_1stack.html',1,'JVM']]]
+  ['reference_0',['Reference',['../structReference.html',1,'']]],
+  ['run_1',['Run',['../classClassPrinter.html#ada588bf422f492f6c73c2db68edb573e',1,'ClassPrinter']]],
+  ['runtimeexceptions_2',['RunTimeExceptions',['../classRunTimeExceptions.html',1,'']]]
 ];

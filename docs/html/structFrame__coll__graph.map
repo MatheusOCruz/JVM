@@ -1,5 +1,5 @@
 <map id="Frame" name="Frame">
-<area shape="rect" id="Node000001" title=" " alt="" coords="186,168,249,193"/>
+<area shape="rect" id="Node000001" title="Representa o Frame de execução da jvm." alt="" coords="186,168,249,193"/>
 <area shape="rect" id="Node000002" href="$classJVM_1_1stack.html" title=" " alt="" coords="5,80,141,105"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,115,118,142,152,159,186,170,185,175,150,164,114,146,87,119"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="6,5,141,31"/>
