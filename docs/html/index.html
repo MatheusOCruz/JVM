@@ -10,6 +10,7 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<link href="search/style.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -78,5 +79,66 @@ $(function() {
 <hr class="footer"/><address class="footer"><small>
 Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
+<div class="container">
+  <h3>Resumo</h3>
+  <p>
+   A JVM desenvolvida é capaz de interpretar bytecode Java, executar instruções básicas e gerenciar a memória de forma eficiente.
+   Este projeto envolveu o entendimento profundo da especificação da JVM, bem como a implementação de um leitor de bytecode,
+   um interpretador de instruções e um coletor de lixo básico.
+  </p>
+
+  <h3>Introdução</h3>
+  <p>
+   A Máquina Virtual Java (JVM) é um componente fundamental do ecossistema Java, sendo responsável pela execução de programas Java,
+   independentemente do hardware e do sistema operacional subjacente. A JVM permite que programas escritos em Java sejam portáveis,
+   seguros e de alto desempenho. Este trabalho teve como foco a construção de uma JVM educacional, destinada a compreender os
+   princípios de funcionamento das JVMs comerciais.
+  </p>
+
+ <h3>Metodologia</h3>
+  <p>
+   A implementação da JVM foi dividida em várias etapas principais:
+    <ul>
+         <li>
+          <strong>Leitura do Bytecode:</strong>
+          <p>
+           Desenvolvemos um leitor de bytecode capaz de interpretar arquivos .class gerados pelo compilador Java (javac).
+           Utilizamos a especificação oficial da JVM para entender o formato do arquivo .class, que inclui informações sobre a versão do Java,
+           a constante pool, definições de métodos e atributos.
+          </p>
+         </li>
+         <li>
+          <strong>Interpretador de Instruções:</strong>
+          <p>
+           O interpretador foi projetado para executar as instruções contidas nos métodos dos arquivos .class.
+           Implementamos um loop de execução que lê uma instrução, decodifica-a e executa-a.
+           As instruções suportadas incluíram operações aritméticas, controle de fluxo (como if e goto), e manipulação de pilha.
+          </p>
+         </li>
+         <li>
+          <strong>Gerenciamento de Memória:</strong>
+          <p>
+           Implementamos um coletor de lixo básico utilizando a estratégia de marcação e varredura (mark-and-sweep).
+           O gerenciamento de memória é crucial para a execução de programas Java, pois a JVM deve alocar e desalocar memória de
+           forma eficiente para evitar vazamentos de memória e garantir a disponibilidade de recursos.
+          </p>
+         </li>
+         <li>
+          <strong>Suporte a Tipos de Dados:</strong>
+          <p>
+           A JVM desenvolvida suportou tipos de dados primitivos como int, float, double, e char, além de referências a objetos.
+           Implementamos uma pilha de operandos e um conjunto de registros locais para armazenar variáveis durante a execução dos métodos.
+          </p>
+         </li>
+    </ul>
+  </p>
+
+ <h3>Resultados</h3>
+ <p>
+  A JVM construída foi capaz de executar programas Java simples, demonstrando o funcionamento correto das instruções implementadas e a
+  eficácia do gerenciamento de memória. Testamos a JVM com uma série de programas de teste que incluíam cálculos aritméticos,
+  manipulação de strings e controle de fluxo.
+ </p>
+</div>
 </body>
 </html>
