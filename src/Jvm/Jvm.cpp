@@ -510,7 +510,7 @@ void Jvm::invoke(std::string ClassName, std::string MethodName, std::string Desc
     NewFrame();
     CurrentClass = GetClass(ClassName);
     CurrentFrame->frameClass = CurrentClass;
-    GetMethod(MethodName);
+    GetMethod(MethodName, Descriptor);
     GetCurrentMethodCode();
     SaveFrameState();
 
@@ -1974,76 +1974,48 @@ void Jvm::drem(){
     pushU8ToOpStack(result.HighBytes, result.LowBytes);
 }
 
-
 void Jvm::ineg(){    
-    s4 value;
-    value = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 result = - value;
-    CurrentFrame->OperandStack->push(static_cast<u4>(result));
+	U4ToType value;
+    value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsInt = value.AsInt * -1;
+    CurrentFrame->OperandStack->push(value.UBytes);
 }
-
-
-
 
 void Jvm::lneg(){    
-    Cat2Value value{};
-    value.AsLong = -1* popU8FromOpStack();
-
+    Cat2Value value;
+	value.Bytes = popU8FromOpStack();
+    value.AsLong = value.AsLong * -1;
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
-
-
 
 void Jvm::fneg(){    
-    float value = -1 * CurrentFrame->OperandStack->Pop();
-    CurrentFrame->OperandStack->push(value);
-
+	U4ToType value;
+    value.UBytes = CurrentFrame->OperandStack->Pop();
+	value.AsFloat = value.AsFloat * -1.0;
+    CurrentFrame->OperandStack->push(value.UBytes);
 }
-
-
-
 
 void Jvm::dneg(){
-    Cat2Value value{};
-    double result = -1* popU8FromOpStack();
-    value.AsDouble = result;
-
-
+    Cat2Value value;
+	value.Bytes = popU8FromOpStack();
+    value.AsDouble = value.AsDouble * -1.0;
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
-
-
 
 void Jvm::ishl(){    
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-
     s4 result = value1 << (0x1F & value2);
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
-
 }
-
-
-
 
 void Jvm::lshl(){    
     Cat2Value value{};
-    long value2 = popU8FromOpStack();
-    long value1 = popU8FromOpStack();
-
-    value.AsLong = value1 << (0x3F & value2 );
-
-
+    s4 value2 = CurrentFrame->OperandStack->Pop();
+    value.Bytes = popU8FromOpStack();
+    value.AsLong = value.AsLong << (0x3F & value2);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
-
-
 
 void Jvm::ishr(){    
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
@@ -2053,61 +2025,46 @@ void Jvm::ishr(){
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
 }
 
-
-
 void Jvm::lshr(){    
     Cat2Value value{};
-    long value2 = popU8FromOpStack();
-    long value1 = popU8FromOpStack();
-
-    value.AsLong = value1 >> (0x3F & value2 );
-
-
+    s4 value2 = CurrentFrame->OperandStack->Pop();
+    value.Bytes = popU8FromOpStack();
+    value.AsLong = value.AsLong >> (0x3F & value2);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
 
 void Jvm::iushr(){    
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
-    s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    s4 value = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+    s4 s = value2 & 0x1F;
 
-    s4 shift = value2 & 0x1F;
-    u4 result = (value1) >> shift;
+	if (value > 0) value = value >> s;
+	else            value = (value >> s) + (2 << ~s);
 
-    CurrentFrame->OperandStack->push(result);
-
+    CurrentFrame->OperandStack->push(value);
 }
 
-
-
-
-void Jvm::lushr(){
+void Jvm::lushr() {
     Cat2Value value{};
-    int value2 = CurrentFrame->OperandStack->Pop();
-    long value1 = popU8FromOpStack();
+    s4 value2 = CurrentFrame->OperandStack->Pop();
+    value.Bytes = popU8FromOpStack();
 
-    value.AsLong = value1 >> (value2 & 0x3F);
+    s4 s = value2 & 0x1F;
+
+	if (value.AsLong > 0) value.AsLong = value.AsLong >> s;
+	else                  value.AsLong = (value.AsLong >> s) + (2L << ~s);
 
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
-
-
 
 void Jvm::iand(){
 
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
+
     s4 result =  value1 & value2;
-
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
-
 }
-
-
-
 
 void Jvm::land(){    
     Cat2Value value{};
@@ -2115,28 +2072,16 @@ void Jvm::land(){
     long value1 = popU8FromOpStack();
 
     value.AsLong = value1 & value2;
-
-
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
 }
-
-
-
 
 void Jvm::ior(){    
     s4 value2 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
     s4 value1 = static_cast<s4>(CurrentFrame->OperandStack->Pop());
 
     s4 result =  value1 | value2;
-
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
-
-
 }
-
-
-
 
 void Jvm::lor(){    
     Cat2Value value{};
@@ -2144,28 +2089,15 @@ void Jvm::lor(){
     long value1 = popU8FromOpStack();
 
     value.AsLong = value1 | value2;
-
-
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
-
 }
-
-
-
 
 void Jvm::ixor(){    
     s4 value2 = CurrentFrame->OperandStack->Pop();
     s4 value1 = CurrentFrame->OperandStack->Pop();
-
     s4 result =  value1 ^ value2;
-
     CurrentFrame->OperandStack->push(static_cast<u4>(result));
-
 }
-
-
-
 
 void Jvm::lxor(){
     Cat2Value value{};
@@ -2173,11 +2105,7 @@ void Jvm::lxor(){
     long value1 = popU8FromOpStack();
 
     value.AsLong = value1 ^ value2;
-
-
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
-
-
 }
 
 void Jvm::iinc(){
