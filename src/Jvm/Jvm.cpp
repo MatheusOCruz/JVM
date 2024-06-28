@@ -1121,7 +1121,7 @@ void Jvm::aaload(){
     if(Array->ComponentType != ArrayTypeCode::T_REF and Array->ComponentType != ArrayTypeCode::T_ARRAY)
         std::cerr<<"aaload: Array nao e de ref\n";
 
-    u4 value = reinterpret_cast<u4*>(Array->DataVec)[index];
+    u4 value = reinterpret_cast<u4*>(Array->ArrayVec)[index];
     CurrentFrame->OperandStack->push(value);
 
 
