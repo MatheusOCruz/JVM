@@ -2130,9 +2130,9 @@ void Jvm::i2f(){
 
 //Converte int pra double
 void Jvm::i2d(){
-    Cat2Value value;
-    value.Bytes = CurrentFrame->OperandStack->Pop();
-	value.AsDouble = value.AsInt;
+    Cat2Value value{};
+    auto IntValue = static_cast<int>(CurrentFrame->OperandStack->Pop());
+	value.AsDouble = static_cast<double>(IntValue);
     pushU8ToOpStack(value.HighBytes, value.LowBytes);
 }
 

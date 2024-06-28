@@ -1,8 +1,8 @@
 <map id="Representação gráfica da hiearquia da classe" name="Representação gráfica da hiearquia da classe">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,203,120,228"/>
-<area shape="rect" id="Node000001" href="$classClassLoaderError.html" title=" " alt="" coords="177,129,309,155"/>
+<area shape="rect" id="Node000001" href="$classClassLoaderError.html" title="Super classe dos erros em tempo de leitura do arquivo .class." alt="" coords="177,129,309,155"/>
 <area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="107,195,210,152,212,157,109,200"/>
-<area shape="rect" id="Node000007" href="$classRunTimeExceptions.html" title=" " alt="" coords="168,252,319,277"/>
+<area shape="rect" id="Node000007" href="$classRunTimeExceptions.html" title="Superclasse para os erros em tempo de execuçaõ da jvm." alt="" coords="168,252,319,277"/>
 <area shape="poly" id="edge7_Node000000_Node000007" title=" " alt="" coords="124,229,196,249,195,254,123,234"/>
 <area shape="rect" id="Node000002" href="$classClassCircularityError.html" title=" " alt="" coords="401,5,555,31"/>
 <area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="264,118,308,77,336,57,366,40,400,27,401,32,368,44,339,61,311,82,267,122"/>

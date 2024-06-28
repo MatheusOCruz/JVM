@@ -12,52 +12,52 @@
 \DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <exception>}}
 \DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <string>}}
 \DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}../typedefs.h"{}}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00011}\mbox{\hyperlink{classClassLoaderError}{00011}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ :\ \textcolor{keyword}{public}\ std::exception\ \{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00012}00012\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00013}00013\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00014}00014\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00015}00015\ \textcolor{comment}{//}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00016}\mbox{\hyperlink{classClassFormatError}{00016}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassFormatError}{ClassFormatError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ \{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00017}00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00018}00018\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classClassFormatError}{ClassFormatError}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_class\_name)\ :\ class\_name(\_class\_name)\ \{\}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00019}00019\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00020}00020\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ class\_name;}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00022}00022\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00023}00023\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00024}00024\ \textcolor{comment}{//\ usado\ pra\ indentificar\ um\ arquivo\ .class\ que\ usa\ representacao}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00025}00025\ \textcolor{comment}{//\ fora\ da\ suportada,\ ou\ seja,\ qualquer\ coisa\ dps\ do\ java8}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00026}\mbox{\hyperlink{classUnsupportedClassVersionError}{00026}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnsupportedClassVersionError}{UnsupportedClassVersionError}}\ :\ \ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ \{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00027}00027\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00028}00028\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classUnsupportedClassVersionError}{UnsupportedClassVersionError}}(u2\ \_major\_version)\ :\ major\_version(\_major\_version)\ \{\};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00029}00029\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00030}00030\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00031}00031\ \ \ \ \ \textcolor{keyword}{const}\ u2\ major\_version;}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00032}00032\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00033}00033\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00034}00034\ \textcolor{comment}{//\ caso\ nao\ seja\ possivel\ encontrar\ o\ arquivo}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00035}00035\ \textcolor{comment}{//\ que\ defina\ a\ classe\ sendo\ carregada}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00036}\mbox{\hyperlink{classNoClassDefFoundError}{00036}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classNoClassDefFoundError}{NoClassDefFoundError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00037}00037\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00038}00038\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNoClassDefFoundError}{NoClassDefFoundError}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_class\_name)\ :\ class\_name(\_class\_name)\ \{\}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00040}00040\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00041}00041\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ class\_name;}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00042}00042\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00043}00043\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00044}00044\ \textcolor{comment}{//\ caso\ a\ superclasse\ de\ C\ seja\ uma\ interface,\ ou}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00045}00045\ \textcolor{comment}{//\ caso\ uma\ superinterface\ de\ C\ nao\ seja\ uma\ interface}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00046}\mbox{\hyperlink{classIncompatibleClassChangeError}{00046}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIncompatibleClassChangeError}{IncompatibleClassChangeError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00047}00047\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00048}00048\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00049}00049\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00050}00050\ \textcolor{comment}{//\ caso\ qualquer\ superclasse\ da\ classe\ C}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00051}00051\ \textcolor{comment}{//\ tenha\ C\ como\ superclasse,\ ou}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00052}00052\ \textcolor{comment}{//\ casp\ qualquer\ superinterface\ de\ C\ seja\ C}}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00053}\mbox{\hyperlink{classClassCircularityError}{00053}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassCircularityError}{ClassCircularityError}}:\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00054}00054\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00055}00055\ \};}
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00057}00057\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSLOADERERRORS\_H}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00014}\mbox{\hyperlink{classClassLoaderError}{00014}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ :\ \textcolor{keyword}{public}\ std::exception\ \{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00016}00016\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00018}00018\ \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00019}\mbox{\hyperlink{classClassFormatError}{00019}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassFormatError}{ClassFormatError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ \{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00020}00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00021}00021\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classClassFormatError}{ClassFormatError}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_class\_name)\ :\ class\_name(\_class\_name)\ \{\}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00022}00022\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00023}00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00024}00024\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ class\_name;}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00025}00025\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00027}00027\ \textcolor{comment}{//\ usado\ pra\ indentificar\ um\ arquivo\ .class\ que\ usa\ representacao}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00028}00028\ \textcolor{comment}{//\ fora\ da\ suportada,\ ou\ seja,\ qualquer\ coisa\ dps\ do\ java8}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00029}\mbox{\hyperlink{classUnsupportedClassVersionError}{00029}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUnsupportedClassVersionError}{UnsupportedClassVersionError}}\ :\ \ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\ \{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00030}00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00031}00031\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classUnsupportedClassVersionError}{UnsupportedClassVersionError}}(u2\ \_major\_version)\ :\ major\_version(\_major\_version)\ \{\};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00032}00032\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00033}00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00034}00034\ \ \ \ \ \textcolor{keyword}{const}\ u2\ major\_version;}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00035}00035\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00037}00037\ \textcolor{comment}{//\ caso\ nao\ seja\ possivel\ encontrar\ o\ arquivo}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00038}00038\ \textcolor{comment}{//\ que\ defina\ a\ classe\ sendo\ carregada}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00039}\mbox{\hyperlink{classNoClassDefFoundError}{00039}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classNoClassDefFoundError}{NoClassDefFoundError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00040}00040\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00041}00041\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classNoClassDefFoundError}{NoClassDefFoundError}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_class\_name)\ :\ class\_name(\_class\_name)\ \{\}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00042}00042\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ what()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00043}00043\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00044}00044\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ class\_name;}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00045}00045\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00047}00047\ \textcolor{comment}{//\ caso\ a\ superclasse\ de\ C\ seja\ uma\ interface,\ ou}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00048}00048\ \textcolor{comment}{//\ caso\ uma\ superinterface\ de\ C\ nao\ seja\ uma\ interface}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00049}\mbox{\hyperlink{classIncompatibleClassChangeError}{00049}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIncompatibleClassChangeError}{IncompatibleClassChangeError}}\ :\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00051}00051\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00053}00053\ \textcolor{comment}{//\ caso\ qualquer\ superclasse\ da\ classe\ C}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00054}00054\ \textcolor{comment}{//\ tenha\ C\ como\ superclasse,\ ou}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00055}00055\ \textcolor{comment}{//\ casp\ qualquer\ superinterface\ de\ C\ seja\ C}}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00056}\mbox{\hyperlink{classClassCircularityError}{00056}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classClassCircularityError}{ClassCircularityError}}:\ \mbox{\hyperlink{classClassLoaderError}{ClassLoaderError}}\{}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00058}00058\ \};}
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{ClassLoaderErrors_8h_source_l00060}00060\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//JVM\_CLASSLOADERERRORS\_H}}
 
 \end{DoxyCode}

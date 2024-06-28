@@ -117,22 +117,19 @@ struct Reference{
 
 
 /**
- * @union U4ToType
- * @brief Union auxiliar para representar valores cat2 (32 bits)
+ * @brief Union auxiliar para representar valores cat2 (64 bits)
+ *
  */
 union Cat2Value{
     struct{
         u4 LowBytes;
         u4 HighBytes;
     };
-	s4 AsInt;
-    u8    Bytes;
     int64_t  AsLong;
     double    AsDouble;
 };
 
 /**
- * @union U4ToType
  * @brief Union auxiliar para converter e truncar valores de/para u4 (uint32_t)
  * 
  * @var 

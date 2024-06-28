@@ -2,6 +2,15 @@
 \hypertarget{classJVM_1_1stack}{}\label{classJVM_1_1stack}\index{JVM::stack$<$ T $>$@{JVM::stack$<$ T $>$}}
 
 
+Versão custom da std\+::stack.  
+
+
+
+
+{\ttfamily \#include $<$Jvm\+Structs.\+h$>$}
+
+
+
 Diagrama de heranças da classe JVM\+::stack\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -22,15 +31,22 @@ Diagrama de colaboração para JVM\+::stack\texorpdfstring{$<$}{<} T \texorpdfst
 \begin{DoxyCompactItemize}
 \item 
 T \mbox{\hyperlink{classJVM_1_1stack_aee8882c131dc7f838c674b2dc9cbf25e}{Pop}} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em retorna o elemento no topo da pilha e o desempilha \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Descrição detalhada}
 \subsubsection*{template$<$typename T$>$\newline
 class JVM\+::stack$<$ T $>$}
+Versão custom da std\+::stack. 
 
 
-Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00015}{15}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
+\begin{DoxyTemplParams}{Parâmetros de template}
+{\em T} & tipo da pilha \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00018}{18}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
 
 
 
@@ -44,18 +60,25 @@ T \mbox{\hyperlink{classJVM_1_1stack}{JVM\+::stack}}$<$ T $>$\+::\+Pop (\begin{D
 
 
 
-Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00018}{18}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
+retorna o elemento no topo da pilha e o desempilha 
+
+\begin{DoxyReturn}{Retorna}
+Elemento no topo da pilha 
+\end{DoxyReturn}
+
+
+Definido na linha \mbox{\hyperlink{JvmStructs_8h_source_l00024}{24}} do ficheiro \mbox{\hyperlink{JvmStructs_8h_source}{Jvm\+Structs.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(this-\/>empty())\{}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}Pilha\ ta\ vazia\ meu\ rei\(\backslash\)n"{}});}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ T\ topValue\ =\ std::stack<T>::top();}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ std::stack<T>::pop();}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ topValue;}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(this-\/>empty())\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}Pilha\ ta\ vazia\ meu\ rei\(\backslash\)n"{}});}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ T\ topValue\ =\ std::stack<T>::top();}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ std::stack<T>::pop();}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ topValue;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \}}
 
 \end{DoxyCode}
 

@@ -1,5 +1,5 @@
 <map id="ClassLoaderError" name="ClassLoaderError">
-<area shape="rect" id="Node000001" title=" " alt="" coords="168,104,300,129"/>
+<area shape="rect" id="Node000001" title="Super classe dos erros em tempo de leitura do arquivo .class." alt="" coords="168,104,300,129"/>
 <area shape="rect" id="Node000003" href="$classClassCircularityError.html" title=" " alt="" coords="382,5,537,31"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="260,93,300,65,347,40,381,28,383,33,349,44,302,70,263,97"/>
 <area shape="rect" id="Node000004" href="$classClassFormatError.html" title=" " alt="" coords="392,55,527,80"/>
